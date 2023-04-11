@@ -1,0 +1,51 @@
+.drippingBg{
+    background-image: url("/images/project/drippingBg.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.dashboardText{
+    font-size: 16px; 
+    color: hsl(0, 0%, 0%);
+}
+
+.dashboardDate{
+    color: hsl(0, 100%, 50%);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dashboardActiveID{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dashboardTimer{
+    color: hsl(0, 0%, 0%);
+}
+
+.dashboardTimerText{
+    margin-left: 10px;
+    font-size: 36px; 
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 414px) {
+    .drippingBg {
+        background-image: url("/images/project/drippingBgOnly.png");
+    }
+
+    .dashboardText{
+        margin-left: 12px;
+    }
+
+    .dashboardTimerText{
+        font-size: 24px; 
+    }
+}
+
+@media only screen and (min-width: 375px) and (max-width: 414px) {
+    .dashboardTimerText{
+        font-size: 16px; 
+    }
+}

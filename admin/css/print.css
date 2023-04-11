@@ -1,0 +1,17 @@
+
+/*
+ For print invoice
+ can add and format any id or class for printing
+ */
+
+@media print {
+
+    #invoiceBack{
+        display : none;
+    }
+
+    #print{
+        display : none;
+    }
+}
+

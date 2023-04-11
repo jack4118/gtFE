@@ -1,0 +1,231 @@
+#printContent {
+    display: none;
+}
+
+.invoiceOuterWrapper {
+    background-color: #fff;
+    padding: 10px;
+    position: relative;
+}
+
+.default-half {
+    width: 50%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.invoiceFooterImg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 350px;
+    z-index: 1;
+}
+
+.invoiceWrapper {
+    max-width: 1400px;
+    margin: auto;
+    padding: 30px 50px 100px 30px;
+    color: #000;
+    z-index: 100;
+}
+
+.invoiceCompanyName {
+    color: #27A9E0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.invoiceBold {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.invoiceThin {
+    font-size: 14px;
+    font-weight: 200;
+}
+
+.invoiceBoldLarge {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.invoiceThinLarge {
+    font-weight: 200;
+    font-size: 16px;
+}
+
+.invoiceLogo {
+    width: 250px;
+    max-width: 90%;
+}
+
+.invoiceTable thead tr th:first-child {
+    border-left: 1px solid #f8f8f8 !important;
+}
+
+.invoiceTable thead tr th:last-child {
+    border-right: 1px solid #f8f8f8 !important;    
+}
+
+
+.invoiceTable thead tr th {
+    background-color: #f8f8f8 !important;
+    border-left: 1px solid transparent !important;
+    border-right: 1px solid transparent !important;
+}
+
+.invoiceTable tbody td:first-child {
+    border-left: 1px solid #f8f8f8 !important;
+}
+
+.invoiceTable tbody td:last-child {
+    border-right: 1px solid #f8f8f8 !important;
+}
+
+.invoiceTable tbody td {
+    background-color:  #fff !important;
+    border-left: 1px solid transparent !important;
+    border-right: 1px solid transparent !important;
+}
+
+.totalRow {
+    border: 1px solid transparent !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+
+.grandTotalBox {
+    background-color: #27A9E0;
+    color: #fff;
+    font-size: 20px;
+    display: inline-block;
+    padding: 5px 10px;
+}
+
+.invoiceTotalAmount {
+    font-weight: 600;
+    width: 150px;
+    display: inline-block;
+}
+
+.remarksBox {
+    background-color: #F2FAFE;
+    padding: 10px;
+}
+
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .chargesTitle {
+    display: none;
+  }
+
+  .mobileReverse {
+    flex-direction: column-reverse;
+  }
+
+  .mobile-full {
+    width: 100%;
+    margin: 15px 0;
+  }
+
+  .invoiceWrapper {
+    padding: 30px 20px;
+  }
+
+  .invoiceFooterImg {
+    width: 150px;
+  }
+
+  .invoiceTotalAmount {
+      width: unset;
+  }
+
+  .remarksBox {
+    margin-bottom: 10px;
+  }
+
+}
+
+
+@media print {
+
+    @page {
+      size: auto;
+    }
+
+    * {
+        font-family: Arial;
+        line-height: unset;
+    }
+
+    .invoiceCompanyName {
+        font-size: 25px;
+    }
+
+    .invoiceBold, .invoiceThin {
+        font-size: 18px;
+    }
+
+    .invoiceBoldLarge, .invoiceThinLarge {
+        font-size: 20px;
+    }
+
+
+    .headerMenu, .sidebarMenuWrapper, .sideMenuWrapper,.pageContent,.footer, .modal, .modal-backdrop {
+        display: none !important;
+    }
+
+    #printContent {
+        display: block !important;
+    }
+
+    .invoiceOuterWrapper {
+        width: 100%;
+    }
+    
+    .invoiceWrapper {
+        padding: 45px;
+    }
+
+    .invoiceCompanyName {
+        color: #23beff !important;
+    }
+
+    .invoiceLogo {
+        width: 350px !important;
+        max-width: 350px !important;
+    }
+
+    .table-bordered .totalRow {
+        border: 1px solid transparent !important;
+    }
+
+    .invoiceFooterImg {
+        position: fixed;
+        width: 40%;
+        max-width: 40%;
+    }
+
+    .grandTotalBox {
+        background-color: #23beff !important;
+        color: #fff !important;
+    }
+
+    #grandTotal {
+        color: #fff !important;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        color: #000 !important;
+    }
+
+    .table td {
+        color: #000 !important;
+        font-size: 18px !important;
+    }
+
+
+
+}
