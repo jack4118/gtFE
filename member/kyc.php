@@ -323,7 +323,8 @@
             </div>
             <!-- <div class="modalLine"></div> -->
             <div class="modal-body modalBodyFont align-self-center text-center">
-                <img src="/images/project/successIcon.png" class="img-fluid">
+                <!-- <img src="/images/project/successIcon.png" class="img-fluid"> -->
+                <i class="fa fa-check"></i>
                 <div class="mt-3 modal-title">
                     <?php echo $translations['M00268'][$language]; //Confirmation ?>
                 </div>

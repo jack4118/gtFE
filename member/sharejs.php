@@ -69,6 +69,10 @@
 <!--end::Global Theme Bundle -->
 <script src="language/lang_<?php echo $language; ?>.js?v=<?php echo filemtime('language/lang_'.$language.'.js'); ?>"></script>
 
+<script src="js/jquery.migrate.js" type="text/javascript"></script>
+<script src="js/lightslider.js" type="text/javascript"></script>
+<script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+
 <?php include "headerjs.php" ?>
 
 <script type="text/javascript">
@@ -104,7 +108,10 @@
 
       // E-Catalogue Drop Down
       var pageName = "<?php echo basename($_SERVER['PHP_SELF']);?>";
-      if(pageName == 'homepage.php' || pageName == 'companyProfile.php' || pageName == 'productPortfolio.php' || pageName == 'productListing.php' || pageName == 'contactUs.php' || pageName == 'shoppingCart.php' || pageName == 'checkout.php' || pageName == 'checkoutStep2.php' || pageName == 'payment.php') {
+      if(pageName == 'login.php' || pageName == 'publicRegistration.php'){
+        return true;
+      }
+      if(pageName == 'homepage.php' || pageName == 'companyProfile.php' || pageName == 'productPortfolio.php' || pageName == 'productListing.php' || pageName == 'contactUs.php' || pageName == 'shoppingCart.php' || pageName == 'checkout.php' || pageName == 'checkoutStep2.php' || pageName == 'payment.php' || pageName == 'foodMenu.php' || pageName == 'foodDetails.php' || pageName == 'favourite' || pageName == '404') {
         var formData   = {
             command     : "getECatalogueList"
         };
@@ -179,7 +186,7 @@
               'command'   : 'memberLogin',
               'username'  : username,
               'password'  : password,
-              'loginType' : loginType,
+              'loginType' : "phone",
               current_page
           };
 
@@ -445,7 +452,7 @@
         var sessionID = "<?php echo $sessionID;?>";
 
         if(sessionID == '') {
-          if((pageName == 'homepage.php') || (pageName == 'accessDenied.php') || (pageName == 'publicRegistration.php') || (pageName == 'publicRegistrationConfirmation.php') || (pageName == 'publicRegistrationSuccess.php') || (pageName == 'resetPassword.php') || (pageName == 'resetPasswordVerification.php') || (pageName == 'resetPasswordSuccess.php') || (pageName == 'landingPage.php') || (pageName == 'productListing.php') || (pageName == 'companyProfile.php') || (pageName == 'memberBenefits.php') || (pageName == 'productPortfolio.php') || (pageName == 'contactUs.php') || (pageName == 'productDetail.php') || (pageName == 'shoppingCart.php' || pageName == 'termsAndConditions.php' || pageName == 'viewInvoiceApp.php'))
+          if((pageName == 'homepage.php') || (pageName == 'accessDenied.php') || (pageName == 'publicRegistration.php') || (pageName == 'publicRegistrationConfirmation.php') || (pageName == 'publicRegistrationSuccess.php') || (pageName == 'resetPassword.php') || (pageName == 'resetPasswordVerification.php') || (pageName == 'resetPasswordSuccess.php') || (pageName == 'landingPage.php') || (pageName == 'productListing.php') || (pageName == 'companyProfile.php') || (pageName == 'memberBenefits.php') || (pageName == 'productPortfolio.php') || (pageName == 'contactUs.php') || (pageName == 'productDetail.php') || (pageName == 'shoppingCart.php' || pageName == 'termsAndConditions.php' || pageName == 'viewInvoiceApp.php') || (pageName == 'payment.php') || (pageName == 'confirmOrder.php') || (pageName == 'checkoutAddress.php') || (pageName == 'reviewOrder.php'))
             return true;
         }  
 
@@ -483,11 +490,11 @@
           });*/
 
           
-          formData  = {
-              command : "getNavBarDetails"
-          };
-          fCallback = getNavBarDetails;
-          ajaxSend("scripts/reqDefault.php", formData, "POST", fCallback, debug, bypassBlocking, bypassLoading, 0);
+          // formData  = {
+          //     command : "getNavBarDetails"
+          // };
+          // fCallback = getNavBarDetails;
+          // ajaxSend("scripts/reqDefault.php", formData, "POST", fCallback, debug, bypassBlocking, bypassLoading, 0);
 
 
 
@@ -497,40 +504,41 @@
 
           setTimeout(function(){
 
-            clearCart();
+            // clearCart();
             localStorage.removeItem('discountPercentage');
             localStorage.removeItem('kycStatus');
 
-            $.ajax({
-              type: 'POST',
-              url: 'scripts/reqLogin.php',
-              data: {type : "logout"},
-              success : function(result) {
-              },
-              error : function(result) {
-              }
-            });
-            errorHandler(3, '<?php echo $translations['M03304'][$language]; //Your session had timed out due to inactivity. ?>');
-            window.ajaxEnabled = false;
+          //   $.ajax({
+          //     type: 'POST',
+          //     url: 'scripts/reqLogin.php',
+          //     data: {type : "logout"},
+          //     success : function(result) {
+          //     },
+          //     error : function(result) {
+          //     }
+          //   });
+          //   errorHandler(3, '<?php echo $translations['M03304'][$language]; //Your session had timed out due to inactivity. ?>');
+          //   window.ajaxEnabled = false;
+          
           }, sessionExpireTime*1000);
 
           if((currentTime - sessionTimeOut) > sessionExpireTime) {
 
-            clearCart();
+            // clearCart();
             localStorage.removeItem('discountPercentage');
             localStorage.removeItem('kycStatus');
             
-            $.ajax({
-              type: 'POST',
-              url: 'scripts/reqLogin.php',
-              data: {type : "logout"},
-              success	: function(result) {
-              },
-              error	: function(result) {
-              }
-            });
-            errorHandler(3, '<?php echo $translations['M03304'][$language]; //Your session had timed out due to inactivity. ?>');
-            window.ajaxEnabled = false;
+            // $.ajax({
+            //   type: 'POST',
+            //   url: 'scripts/reqLogin.php',
+            //   data: {type : "logout"},
+            //   success	: function(result) {
+            //   },
+            //   error	: function(result) {
+            //   }
+            // });
+            // errorHandler(3, '<?php echo $translations['M03304'][$language]; //Your session had timed out due to inactivity. ?>');
+            // window.ajaxEnabled = false;
           }
           else {
             <?php $_SESSION["sessionTimeOut"] = time(); //Reset session ?>
@@ -633,71 +641,71 @@
     });
   }
 
-  function getNavBarDetails(data, message) {
-    var starterKitPurchased = data.starterKitPurchased;
-    var placementExist = data.placementExist;
+  // function getNavBarDetails(data, message) {
+  //   var starterKitPurchased = data.starterKitPurchased;
+  //   var placementExist = data.placementExist;
 
-    localStorage.setItem('hasplacementPosition', data.placementExist)
+  //   localStorage.setItem('hasplacementPosition', data.placementExist)
     
 
-    if(starterKitPurchased == 0){
-      if(placementExist == 0){
-        $("#placementPositionWrap").show();
-      }
-    }
+  //   if(starterKitPurchased == 0){
+  //     if(placementExist == 0){
+  //       $("#placementPositionWrap").show();
+  //     }
+  //   }
 
-    if(data.placementExist == 1){
-      $("#hasPlacementPosition").show();
-    }else{
-      var pageName = "<?php echo basename($_SERVER['PHP_SELF']);?>";
-      if(pageName == 'placementDiagram.php'){
-        window.location.replace('dashboard')
-      }
-    }
+  //   if(data.placementExist == 1){
+  //     $("#hasPlacementPosition").show();
+  //   }else{
+  //     var pageName = "<?php echo basename($_SERVER['PHP_SELF']);?>";
+  //     if(pageName == 'placementDiagram.php'){
+  //       window.location.replace('dashboard')
+  //     }
+  //   }
 
-    var cartNo = data.shpCartCount;
+  //   var cartNo = data.shpCartCount;
 
-    if (cartNo > 0) {
-        if (cartNo > 99) {
-            $(".cartNo").html('...')
-        } else {
-            $(".cartNo").html(cartNo)
-        }
-        $(".cartNo").show()
-    } else {
-        $(".cartNo").hide() 
-    }
+  //   if (cartNo > 0) {
+  //       if (cartNo > 99) {
+  //           $(".cartNo").html('...')
+  //       } else {
+  //           $(".cartNo").html(cartNo)
+  //       }
+  //       $(".cartNo").show()
+  //   } else {
+  //       $(".cartNo").hide() 
+  //   }
 
     
-    // getBackendCart()
+  //   // getBackendCart()
 
-    localStorage.setItem('discountPercentage', data.discountPercentage)
+  //   localStorage.setItem('discountPercentage', data.discountPercentage)
 
-    getKYC(data.memberKycStatus)
+  //   getKYC(data.memberKycStatus)
 
-    localStorage.setItem('starterKitPurchased', data.starterKitPurchased)
+  //   localStorage.setItem('starterKitPurchased', data.starterKitPurchased)
 
-    // if (data.memberKycStatus == "New") {
-    //   $('#noticeKYC').show();
-    //   $('#kycMsg').html('<?php echo $translations['M00032'][$language]; //You haven't set KYC information. ?>');
-    // } else if (data.memberKycStatus == "Waiting Approval") {
-    //   $('#noticeKYC').show();
-    //   $('#kycMsg').html('<?php echo $translations['M00041'][$language]; //Pending: Your KYC information are pending to be verified. ?>');
-    // } else if (data.memberKycStatus == "Rejected") {
-    //   $('#noticeKYC').show();
-    //   $('#kycMsg').html('<?php echo $translations['M00042'][$language]; //Rejected: Your KYC information failed to be verified. ?>');
-    // } else {
-    //   $('#noticeKYC').hide();
-    // }
+  //   // if (data.memberKycStatus == "New") {
+  //   //   $('#noticeKYC').show();
+  //   //   $('#kycMsg').html('<?php echo $translations['M00032'][$language]; //You haven't set KYC information. ?>');
+  //   // } else if (data.memberKycStatus == "Waiting Approval") {
+  //   //   $('#noticeKYC').show();
+  //   //   $('#kycMsg').html('<?php echo $translations['M00041'][$language]; //Pending: Your KYC information are pending to be verified. ?>');
+  //   // } else if (data.memberKycStatus == "Rejected") {
+  //   //   $('#noticeKYC').show();
+  //   //   $('#kycMsg').html('<?php echo $translations['M00042'][$language]; //Rejected: Your KYC information failed to be verified. ?>');
+  //   // } else {
+  //   //   $('#noticeKYC').hide();
+  //   // }
 
 
-    // if (data.walletAddressTab == 1) {
-    //   $('.walletAddressDisplay').show();
-    // } else {
-    //   $('.walletAddressDisplay').hide();
-    // }
+  //   // if (data.walletAddressTab == 1) {
+  //   //   $('.walletAddressDisplay').show();
+  //   // } else {
+  //   //   $('.walletAddressDisplay').hide();
+  //   // }
     
-  }
+  // }
 
   function listUnreadNews(data, message) {
     if (data) {
@@ -1084,8 +1092,8 @@ $('#forgotNextBtn').click(function(){
       command : "accountOwnerVerification",
       identityType : $('#idType option:selected').val(),
       identityNumber : $('#IDInput').val(),
-      name : $('#idFullName').val(),
-      dob : dateToTimestamp($('#dobForgotID').val())
+      name : $('#idFullName').val()
+      //dob : dateToTimestamp($('#dobForgotID').val())
     };
         
     fCallback = successFindID;
@@ -1096,8 +1104,8 @@ $('#forgotNextBtn').click(function(){
       identityType : $('#idTypePwd option:selected').val(),
       identityNumber : $('#ktpPwdInput').val(),
       name : $('#pwdFullName').val(),
-      dob : dateToTimestamp($('#dobForgotPwd').val()),
-      email : $('#pwdFullNameInp').val(),
+      //dob : dateToTimestamp($('#dobForgotPwd').val()),
+      phone : $('#pwdFullNameInp').val(),
       step : '2',
       verificationCode : $('#verificationCode').val()
     }; 
@@ -1112,11 +1120,11 @@ $('#sendCodeForgotPwd').click(function(){
 
   var formData  = {
     command : "memberResetPasswordVerification",
-    identityType : $('#idTypePwd option:selected').val(),
-    identityNumber : $('#ktpPwdInput').val(),
-    name : $('#pwdFullName').val(),
-    dob : dateToTimestamp($('#dobForgotPwd').val()),
-    email : $('#pwdFullNameInp').val()
+    //identityType : $('#idTypePwd option:selected').val(),
+    //identityNumber : $('#ktpPwdInput').val(),
+    //name : $('#pwdFullName').val(),
+    //dob : dateToTimestamp($('#dobForgotPwd').val()),
+    phone : $('#pwdFullNameInp').val()
   };
       
   fCallback = otpCallbackForgotPwd;
@@ -1180,11 +1188,11 @@ function successVerifyPwd(data,message){
     $('.invalid-feedback').remove();
     var formData  = {
       command : "memberResetPassword",
-      identityType : $('#idTypePwd option:selected').val(),
-      identityNumber : $('#ktpPwdInput').val(),
-      name : $('#pwdFullName').val(),
-      dob : dateToTimestamp($('#dobForgotPwd').val()),
-      email : $('#pwdFullNameInp').val(),
+      //identityType : $('#idTypePwd option:selected').val(),
+      //identityNumber : $('#ktpPwdInput').val(),
+      //name : $('#pwdFullName').val(),
+      //dob : dateToTimestamp($('#dobForgotPwd').val()),
+      phone : $('#pwdFullNameInp').val(),
       verificationCode : $('#verificationCode').val(),
       password : $('#pwdInp').val(),
       retypePassword : $('#retypePassword').val()
@@ -1197,6 +1205,16 @@ function successVerifyPwd(data,message){
 function successResetPwd(data,message){
   $('#forgotPwdModal').modal('hide');
   showMessage(message , 'success', '<?php echo $translations['M02651'][$language]; //Congratulation ?>', 'success', 'homepage.php');
+}
+
+function deliveryModal(data,message) {
+  showMessage('<img src="images/project/delivery-english.jpg" class="img-fluid">', '', '', 'edit', '');
+
+  $(".modal-content i").css("display","none");
+  $("#canvasTitle").css("display","none");
+  $(".modal-header").css("padding","0px 20px");
+  $(".modal-body").css("padding-top","0px");
+  $(".modal-footer").css("padding-bottom","20px");
 }
 
 </script>

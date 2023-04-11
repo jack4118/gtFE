@@ -43,24 +43,26 @@ session_start();
                                                 </div>
                                             </div>
 
-                                            <div class="col-sm-4 form-group">
+                                            <!-- <div class="col-sm-4 form-group">
                                                 <label class="control-label" for="">
                                                     <?php echo $translations['A00937'][$language]; /* Invoice Number */?>
                                                 </label>
                                                 <input type="text" class="form-control" dataName="invoiceNo" dataType="text">
-                                            </div>
+                                            </div> -->
 
-                                            <div class="col-sm-4 form-group">
+                                            <!-- <div class="col-sm-4 form-group">
                                                 <label class="control-label">
                                                     <?php echo $translations['A00148'][$language]; /* Member ID */ ?>
                                                 </label>
                                                 <input type="text" class="form-control" dataName="memberID" dataType="text">
+                                            </div> -->
+
+                                            <div class="col-sm-4 form-group">
+                                                <label class="control-label">
+                                                    <?php echo 'Username'; /* Username */ ?>
+                                                </label>
+                                                <input type="text" class="form-control" dataName="username" dataType="text">
                                             </div>
-
-
-                                        </div>
-
-                                        <div class="col-sm-12 px-0">
 
                                             <div class="col-sm-4 form-group">
                                                 <label class="control-label">
@@ -75,7 +77,29 @@ session_start();
                                                 </span>
                                                 <input type="text" class="form-control name" dataName="fullname" dataType="text">
                                             </div>
+                                        </div>
 
+                                        <div class="col-sm-12 px-0">
+
+                                            <div class="col-sm-4 form-group">
+                                                <label class="control-label" for="">
+                                                    Payment Method
+                                                </label>
+                                                <select id="payment_method" type="text" class="form-control" dataName="payment_method" dataType="text">
+                                                    <option value="">
+                                                        <?php echo $translations['A00055'][$language]; /* All */ ?>
+                                                    </option>
+                                                    <option value="FPX">
+                                                        FPX
+                                                    </option>
+                                                    <option value="ManualBankTransfer">
+                                                        Manual Bank Transfer
+                                                    </option>
+                                                    <option value="QRCode">
+                                                        QR Code
+                                                    </option>
+                                                </select> 
+                                            </div>
 
                                             <div class="col-sm-4 form-group">
                                                 <label class="control-label" for="">
@@ -88,8 +112,8 @@ session_start();
                                                     <option value="delivery">
                                                         Delivery
                                                     </option>
-                                                    <option value="pickup">
-                                                        Pick Up
+                                                    <option value="Pickup">
+                                                        Selft Pickup
                                                     </option>
                                                 </select> 
                                             </div>
@@ -105,11 +129,17 @@ session_start();
                                                     <option value="Paid">
                                                         Paid
                                                     </option>
-                                                    <option value="Partial">
-                                                        Partial
+                                                    <option value="Pending">
+                                                        Pending
                                                     </option>
-                                                    <option value="Completed">
-                                                        Completed
+                                                    <option value="Waiting for Payment">
+                                                        Waiting for Payment
+                                                    </option>
+                                                    <option value="Payment Verified">
+                                                        Payment Verified
+                                                    </option>
+                                                    <option value="Cancelled">
+                                                        Cancelled
                                                     </option>
                                                 </select> 
                                             </div>
@@ -124,12 +154,12 @@ session_start();
                                                 <input type="text" class="form-control" dataName="poNumber" dataType="text">
                                             </div>
 
-                                            <div class="col-sm-4 form-group">
+                                            <!-- <div class="col-sm-4 form-group">
                                                 <label class="control-label">
                                                     DO Number
                                                 </label>
                                                 <input type="text" class="form-control" dataName="doNumber" dataType="text">
-                                            </div>
+                                            </div> -->
                                         </div>
 
                                     </form>
@@ -185,16 +215,16 @@ session_start();
     var btnArray = {};// Array('view');
     var thArray  = Array (
         "Date",
-        "Invoice Number",
-        "SO Number",
-        "DO Number",
+        // "Invoice Number",
+        "SO",
+        // "DO Number",
         "Full Name",
-        "Member ID",
+        "user name",
         "Payment Method",
         "Delivery Method",
         "Status",
         "View Details",
-        "Issue DO"
+        // "Issue DO"
     );
 
     var method         = 'POST';
@@ -238,11 +268,12 @@ session_start();
             var searchData = buildSearchDataByType(searchId);
             var thArray  = Array (
                 "Date",
-                "Invoice Number",
+                // "Invoice Number",
                 "SO Number",
-                "DO Number",
+                // "DO Number",
                 "Full Name",
                 "Member ID",
+                "Username",
                 "Payment Method",
                 "Delivery Method",
                 "Status"
@@ -250,11 +281,12 @@ session_start();
 
             var key = Array(
                 'created_at',
-                'invoiceNumber',
+                // 'invoiceNumber',
                 'poNumber',
-                'DONumber',
+                // 'DONumber',
                 'fullname',
                 'memberID',
+                'username',
                 'paymentMethod',
                 'deliveryOption',
                 'statusDisplay'
@@ -276,6 +308,7 @@ session_start();
     });
 
     function loadDefaultListing(data, message) {
+        console.log(data);
         data ? $("#exportBtn").show() : $("#exportBtn").hide();
         $('#basicwizard').show();
         
@@ -310,16 +343,16 @@ session_start();
 
                 var rebuildData = {
                     created_at          : v['created_at'],
-                    invoiceNumber       : v['invoiceNumber'],
+                    // invoiceNumber       : v['invoiceNumber'],
                     poNumber            : v['poNumber'],
-                    DONumber            : v['DONumber'],
+                    // DONumber            : v['DONumber'],
                     fullname            : v['fullname'],
-                    memberID            : v['memberID'],
+                    memberID            : v['username'],
                     paymentMethod       : v['paymentMethod'],
                     deliveryOption      : v['deliveryOption'],
                     statusDisplay       : v['statusDisplay'],
-                    buildView           : buildView,
-                    issueDO
+                    buildView           : buildView
+                    // issueDO
                 };
                 newList.push(rebuildData);
             });

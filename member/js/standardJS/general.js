@@ -6,12 +6,13 @@
  function showCanvas() {
      $('body').css({'cursor' : 'wait'});
      $("button, a").addClass('unclickable');
-     // $('#canvasLoader').removeClass('hide');
+     $('#canvasLoader').removeClass('hide');
  }
 
  function hideCanvas() {
      $('body').css({'cursor' : 'default'});
      setTimeout(function() {
+         $("#canvasLoader").addClass('hide');
          $("button, a").removeClass('unclickable');
      }, 1000);
  }
@@ -94,7 +95,7 @@ function showMessage(message, status, title, favicon, url, canvasBtnArray) {
 *
 **/
 
-function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoading, importFlag) {
+function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoading, importFlag ,errMsgCustom = false) {
     if(!window.ajaxEnabled)
         return false;
     method = method || "POST";
@@ -117,6 +118,7 @@ function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoad
         console.log("url:"+url+" ## val:"+JSON.stringify(val, null, 4)+" ## method:"+method+" ## fCallback:"+fCallback.name+" ## debug:"+debug+" ## bypassBlocking:"+bypassBlocking+" ## ajaxBlocking:"+ajaxBlocking);
     
     if(ajaxBlocking === 0 || bypassBlocking){//prevent spam click
+
         ajaxBlocking = 1;
         $.ajax({
             url: url,
@@ -126,6 +128,8 @@ function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoad
             processData: processData,
 //            async: true,
             success: function(result){
+                $('.is-invalid').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
                 if(!result)
                     showMessage('Error loading content. Please check your connection and try again.', 'error', translations["M00157"][language], '', '');
                 
@@ -158,7 +162,7 @@ function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoad
             },
             error: function(xhr) {
                 if(debug)
-                    console.log(xhr);
+                    // console.log(xhr);
                 var message = xhr.status + ' ' + xhr.statusText;
                 showMessage(xhr.responseText, 'error', message, 'times-circle', '');
             },
@@ -187,8 +191,8 @@ function errorHandler(errorCode, errorMsg) {
             showMessage(errorMsg, "Error", translations["M00157"][language],"error", "");
             break;
         case 3:
-            localStorage.clear();
-            showMessage(errorMsg, "Error", translations["M00158"][language],"error", "homepage");
+            // localStorage.clear();
+            // showMessage(errorMsg, "Error", translations["M00158"][language],"error", "homepage");
             break;
         case 4:
             $(location).attr('href', 'maintenance');
@@ -484,9 +488,9 @@ function formatTime(timeString) {
 * dataName - for switch case in search
 * dataValue - input value
 */
-function buildSearchDataByType(searchID) {
+function buildSearchDataByType(searchID ,liname) {
     search = $('#'+searchID);
-    
+
     var dataForm = [];
     var dataName, dataType, dataValue, dataParent;
     var inputType;
@@ -501,11 +505,14 @@ function buildSearchDataByType(searchID) {
         
         // Reset variable
         inputType = '';
-        
         if(formGroup.find('input').length)
             inputType = 'input';
         else if (formGroup.find('select').length)
             inputType = 'select';
+        else if(formGroup.find('li').length){
+            inputType = 'li';
+        }
+        // console.log("li");
         else
             return true;
         
@@ -518,7 +525,7 @@ function buildSearchDataByType(searchID) {
         
         formGroup.find(inputType).each(function() {
             var inputValue = $(this);
-            
+            console.log(inputValue);
             // Reset variable
             dataName = '';
             dataType = '';
@@ -533,8 +540,13 @@ function buildSearchDataByType(searchID) {
             
             if(inputType == 'select')
                 dataValue = inputValue.find('option:selected').val();
-            else
+            else if(inputType == 'li'){
+                dataValue = liname;
+            }
+            else{
                 dataValue = inputValue.val();
+            }
+
             
             i++;
             switch(dataType) {
@@ -652,7 +664,11 @@ function checkFloatNumber(value){
     return value.match(/^-?\d*(\.\d+)?$/);
 }
 
-function errorDisplay(type,errorMsg){    
+function errorDisplay(type,errorMsg){
+    $("#"+type).removeClass('is-invalid');
+    $("#"+type).parent().find('.invalid-feedback').remove();
+    
+    console.log(type); 
     if (type=="captcha") {
         $("#"+type).addClass('is-invalid');
         $("#"+type).parent().after('<div class="invalid-feedback">'+errorMsg+'</div>');

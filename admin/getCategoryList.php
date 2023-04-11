@@ -44,14 +44,14 @@
 
                                                 <div class="col-sm-4 form-group">
                                                     <label class="control-label">
-                                                        <?php echo $translations['A00377'][$language]; /* Updated At */?>
+                                                        <?php echo $translations['A00112'][$language]; /* Created At */?>
                                                     </label>
                                                     <div class="input-group input-daterange">
-                                                        <input type="text" class="form-control" dataName="updatedAt" dataType="dateRange">
+                                                        <input type="text" class="form-control" dataName="createdAt" dataType="dateRange">
                                                         <span class="input-group-addon">
                                                             <?php echo $translations['A00139'][$language]; /* to */?>
                                                         </span>
-                                                        <input type="text" class="form-control" dataName="updatedAt" dataType="dateRange">
+                                                        <input type="text" class="form-control" dataName="createdAt" dataType="dateRange">
                                                     </div>
                                                 </div>
 
@@ -127,7 +127,7 @@
                                     <div id="basicwizard" class="pull-in" style="display: none">
                                         <div class="tab-content b-0 m-b-0 p-t-0">
                                             <div id="alertMsg" class="text-center alert" style="display: none;"></div>
-                                            <div>
+                                            <!-- <div>
                                                 <div class="cateTab">
                                                     <div class="cateItem cateItem2">
                                                         <input class="typeRadio" id="package" type="radio" value="package" name="typeRadio" checked />
@@ -143,13 +143,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="cateblock" style="padding: 10px;">
+                                            <div class="cateblock" style="padding: 10px;"> -->
                                                 <div id="announcementListDiv" class="table-responsive"></div>
                                                 <span id="paginateText"></span>
                                                 <div class="text-center">
                                                     <ul class="pagination pagination-md" id="pagerAnnouncementList"></ul>
                                                 </div>
-                                            </div>
+                                            <!-- </div> -->
                                         </div>
                                     </div>
                                 </form>
@@ -175,9 +175,9 @@
         var pagerId  = 'pagerAnnouncementList';
         var btnArray = {};
         var thArray  = Array (
-            "Updated At",
+            "Created At",
             "Name",
-            "Type",
+            // "Type",
             "Status",
             "Edit"
         );
@@ -254,14 +254,14 @@
                 var selected = $('.typeRadio:checked').val();
                 var catType = selected.charAt(0).toUpperCase() + selected.slice(1);
                 var thArray  = Array (
-                    "Updated At",
+                    "Created At",
                     "Name",
                     "Type",
                     "Status"
                 );
 
                 var key = Array(
-                    'updatedAt',
+                    'createdAt',
                     'display',
                     'type',
                     'statusDisplay'
@@ -325,9 +325,9 @@
                     `;
 
                     var rebuildData = {
-                        updated_at : v['updatedAt'],
-                        display : v['display'],
-                        type : v['type'],
+                        created_at : v['createdAt'],
+                        display : v['name'],
+                        // type : v['type'],
                         statusDisplay : v['statusDisplay'],
                         buildBtn : buildBtn
                     };

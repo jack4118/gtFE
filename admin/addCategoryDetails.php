@@ -23,10 +23,10 @@
                             <div class="card-box">
                                 <div class="row">
 
-                                    <div class="">
-                                        <!-- <label>Category Type</label> -->
+                                    <!-- <div class="">
+                                        <label>Category Type</label>
                                         <div class="cateTab">
-                                            <!-- <div class="radio radio-info radio-inline"> -->
+                                            <div class="radio radio-info radio-inline">
                                             <div class="cateItem">
                                                 <input class="typeRadio" id="package" type="radio" value="package" name="typeRadio" checked />
                                                 <label for="package">
@@ -40,7 +40,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="col-xs-12 cateblock">
                                         <div class="row">
@@ -204,8 +204,9 @@
                 var formData  = {
                     command     : 'addCategoryInventory',
                     category    : category,
-                    type        : type,
-                    status      : status
+                    // type        : type,
+                    status      : status,
+                    categoryInvId   : 1
                 };
 
                 fCallback = submitCallback;

@@ -23,11 +23,11 @@
                             <div class="card-box">
                                 <div class="row">
 
-                                    <div>
+                                    <!-- <div> -->
                                         <!-- <label>Category Type</label> -->
-                                        <div class="cateTab">
+                                        <!-- <div class="cateTab"> -->
                                             <!-- <div class="radio radio-info radio-inline"> -->
-                                            <div class="cateItem">
+                                            <!-- <div class="cateItem">
                                                 <input class="typeRadio" id="Package" type="radio" value="package" name="typeRadio" />
                                                 <label for="Package">
                                                     <?php echo $translations['A00203'][$language]; /* Package */?>
@@ -40,9 +40,9 @@
                                                 </label>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-                                    <div class="col-xs-12 cateblock">
+                                    <div class="col-xs-12 cateblock" style="border-width: 1px 1px 1px 1px;">
                                         <div class="row">
 
                                             <div class="col-sm-5 col-xs-12">
@@ -203,7 +203,7 @@
                 var formData  = {
                     command         : 'editCategoryInventory',
                     category        : category,
-                    type            : type,
+                    // type            : type,
                     status          : status,
                     categoryInvId   : id
                 };
@@ -222,8 +222,6 @@
         });*/
 
         function loadDefaultListing(data, message) {
-            // console.log(data);
-
             // $("#name").val(data.productCategoryList.name);
             var type = data.categoryRes.type;
             var status = data.categoryRes.status;

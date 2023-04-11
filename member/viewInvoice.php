@@ -1,244 +1,140 @@
 <?php include 'include/config.php'; ?>
 <?php include 'head.php'; ?>
-<?php include 'header.php'; ?>
+<?php include 'homepageHeader.php'; ?>
 
 <link href="css/invoice.css" rel="stylesheet" type="text/css" />
+<link href="css/homepage.css?v=<?php echo filemtime('css/homepage.css'); ?>" rel="stylesheet" type="text/css" />
 
-<section class="pageContent loginPagePadding">
-	<div class="pageTitle">
-		<span><?php echo $translations['M02974'][$language] /*Invoice*/ ?></span>
-	</div>
-
+<section class="pageContent loginPagePadding section">
     <div id="invoiceContent" class="invoiceOuterWrapper whiteBg mt-3">
         <div class="invoiceWrapper">
-            <div class="col-12">
-                <div class="row mobileReverse">
-                    <div class="mobile-full default-half">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <span class='invoiceCompanyName'>PT META FIZ INTERNASIONAL</span>
-                            </div>
-                            <div class="col-12">
-                                <span class="invoiceBold"><?php echo $translations['M03258'][$language] /*Address*/ ?>:</span>
-                                <span class="invoiceThin companyAddress" id="companyAddress">-</span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBold"><?php echo $translations['M03227'][$language] /*Phone*/ ?>:</span>
-                                <span class="invoiceThin companyPhone" id="companyPhone">-</span>
-                            </div>
-                            <!-- <div class="col-12 mt-2">
-                                <span class="invoiceBold"><?php echo $translations['M03436'][$language] /*Fax*/ ?>:</span>
-                                <span class="invoiceThin companyFax" id="companyFax">-</span>
-                            </div> -->
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBold"><?php echo $translations['M02655'][$language] /*Email*/ ?>:</span>
-                                <span class="invoiceThin companyEmail" id="companyEmail">-</span>
-                            </div>
-                        </div>
+            <div class="col-12 text-center pb-5">
+                <span class="titleText larger bold text-uppercase" data-lang="M00237"><?php echo $translations['M00237'][$language] /*Invoice*/ ?></span>
+            </div>
+            <div class="col-12 pt-5">
+                <div class="row pb-5">
+                    <div class="col-12 col-md-6 text-center text-md-left">
+                        <img src="images/project/logo-colour.png" width="250px">
                     </div>
-                    <div class="mobile-full default-half">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <img class="invoiceLogo" src="images/project/companyLogoText.png">
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBoldLarge"><?php echo $translations['M00532'][$language] /*Invoice No*/ ?>:</span>
-                                <span class="invoiceThinLarge invoiceNo" id="invoiceNo">-</span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBoldLarge"><?php echo $translations['M02995'][$language] /*Tracking No*/ ?>:</span>
-                                <span class="invoiceThinLarge trackingNo" id="trackingNo">-</span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBoldLarge"><?php echo $translations['M00525'][$language] /*Transaction Date*/ ?>:</span>
-                                <span class="invoiceThinLarge invoiceDate" id="invoiceDate">-</span>
-                            </div>
-                        </div>
+                    <div class="col-12 col-md-6 text-center text-md-right mt-5 mt-md-0">
+                        <div class="bodyText larger bold" id="companyAddress">-</div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12">
+                <div class="row pt-5">
+                    <div class="col-12 col-md-6">
+                        <div class="bodyText larger bold" data-lang="M03438"><?php echo $translations['M03438'][$language] /* Ship To */ ?>:</div>
+                        <div class="bodyText smaller mt-2" id="shippingAddress">-</div>
+                    </div>
+                    <div class="col-12 col-md-6 mt-5 mt-md-0">
+                        <div class="bodyText larger bold" data-lang="M03437"><?php echo $translations['M03437'][$language] /* Bill To */ ?>:</div>
+                        <div class="bodyText smaller mt-2" id="billingAddress">-</div>
+                    </div>
+                </div>
+                <div class="row pt-5">
+                    <div class="col-12">
+                        <div class="borderBottom darkGrey normal"></div>
+                    </div>
+                </div>
+                <div class="row py-4">
+                    <div class="col-12 col-md-6">
+                        <div class="bodyText larger bold" data-lang="M03908"><?php echo $translations['M03908'][$language] /* Order Number */ ?></div>
+                        <div class="bodyText smaller mt-2" id="orderNumber">-</div>
+                    </div>
+                    <div class="col-12 col-md-6 mt-5 mt-md-0">
+                        <div class="bodyText larger bold" data-lang="M03909"><?php echo $translations['M03909'][$language] /* Order Date */ ?></div>
+                        <div class="bodyText smaller mt-2" id="orderDate">-</div>
+                    </div>
+                </div>
                 <div class="row">
-                    <div class="mobile-full default-half mt-5">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <span class='invoiceBoldLarge'><?php echo $translations['M03437'][$language] /*Bill To*/ ?>:</span>
-                            </div>
-                            <div class="col-12">
-                                <span class="invoiceBold"><?php echo $translations['M00377'][$language] /*Name */ ?>:</span>
-                                <span class="invoiceThin" id="billingFullName">-</span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBold"><?php echo $translations['M00548'][$language] /*Member ID */ ?>:</span>
-                                <span class="invoiceThin" id="memberID">-</span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBold"><?php echo $translations['M02466'][$language] /*Address */ ?>:</span>
-                                <span class="invoiceThin" id="billingAddress">-</span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBold"><?php echo $translations['M03227'][$language] /*Phone */ ?>:</span>
-                                <span class="invoiceThin" id="billingPhone">-</span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBold"><?php echo $translations['M02655'][$language] /*Email */ ?>:</span>
-                                <span class="invoiceThin" id="billingEmail">-</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mobile-full default-half mt-5">
-                        <div class="row" id="deliverySection" style="display: none;">
-                            <div class="col-12 mb-3">
-                                <span class='invoiceBoldLarge'><?php echo $translations['M03438'][$language] /*Ship To */ ?>:</span>
-                            </div>
-                            <div class="col-12">
-                                <span class="invoiceBold"><?php echo $translations['M00377'][$language] /*Name */ ?>:</span>
-                                <span class="invoiceThin" id="deliveryFullName">-</span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBold"><?php echo $translations['M02466'][$language] /*Address */ ?>:</span>
-                                <span class="invoiceThin" id="deliveryAddress"></span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBold"><?php echo $translations['M03227'][$language] /*Phone */ ?>:</span>
-                                <span class="invoiceThin" id="deliveryPhone"></span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <span class="invoiceBold"><?php echo $translations['M02655'][$language] /*Email */ ?>:</span>
-                                <span class="invoiceThin" id="deliveryEmail"></span>
-                            </div>
-                        </div>
-                        <div class="row" id="pickupSection" style="display: none;">
-                            <div class="col-12 mb-3">
-                                <span class='invoiceBoldLarge'><?php echo $translations['M03255'][$language] /*Pickup */ ?>:</span>
-                            </div>
-                            <div class="col-12">
-                                <span class="invoiceBold"><?php echo $translations['M02466'][$language] /*Address */ ?>:</span>
-                                <span class="invoiceThin" id="pickupAddress"></span>
-                            </div>
-                        </div>
+                    <div class="col-12">
+                        <div class="borderBottom darkGrey normal"></div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 mt-5">
-                <form>
-                    <div id="basicwizardInvoice" class="pull-in col-12 px-0">
-                        <div class="tab-content b-0 m-b-0 p-t-0">
-                            <div id="alertMsgInvoice" class="text-center" style="display: block;"></div>
-                            <div id="invoiceDiv" class="table-responsive"></div>
-                            <!-- <span id="paginateText"></span>
-                            <div class="text-center">
-                                <ul class="pagination pagination-md" id="pagerList"></ul>
-                            </div> -->
-                        </div>
+                <div class="row pt-5">
+                    <div class="col-12">
+                        <form>
+                            <div id="basicwizardInvoice" class="pull-in col-12 px-0">
+                                <div class="tab-content b-0 m-b-0 p-t-0">
+                                    <div id="alertMsgInvoice" class="text-center" style="display: block;"></div>
+                                    <div id="invoiceDiv" class="table-responsive"></div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
-            <div class="col-12 mt-4">
-                <div class="row">
-                    <div class="default-half mobile-full remarksBox">
-                        <div class="row">
-                            <div class="col-12">
-                                <?php echo $translations['M03459'][$language] /*Special Note */ ?>: <span id="specialNote" style="font-weight: 600; word-break: break-all;">-</span>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <?php echo $translations['M03160'][$language] /*Remarks */ ?>: <span id="remark" style="font-weight: 600; word-break: break-all;">-</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="default-half mobile-full">
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <?php echo $translations['M03264'][$language] /*Subtotal */ ?>: <span id ="subtotal" class="invoiceTotalAmount"></span>
-                            </div>
-                            <div class="col-12 text-right">
-                                <?php echo $translations['M02823'][$language] /*Tax */ ?> (<span id="taxPercentage"></span>%): <span id ="taxCharges" class="invoiceTotalAmount"></span>
-                            </div>
-                            <div class="col-12 text-right" id="insuranceChargesDisplay">   
-                            </div>
-                            <div class="col-12 text-right">
-                                <?php echo $translations['M03388'][$language] /*Shipping */ ?>: <span id ="deliveryFee" class="invoiceTotalAmount"></span>
-                            </div>
-                            <div class="col-12 text-right" id="discountAmountDiv" style="display: none;">
-                                <?php echo $translations['M03527'][$language] /*Discount */ ?> (<span id="discountCode"></span>): <span id ="discountAmount" class="invoiceTotalAmount" style="color: red;"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 mt-5 text-right">
-                <div class="grandTotalBox">
-                    <?php echo $translations['M03267'][$language] /*Total */ ?>:
-                    <span id="grandTotal" class="invoiceTotalAmount"></span>
                 </div>
             </div>
         </div>
-        <img class="invoiceFooterImg" src="images/project/invoiceFooter.png">
     </div>
 
-    <div class="col-12 mt-4">
-        <button type="button" onclick="window.location.href='orderListing.php'" class="btn btn-default waves-effect waves-light"><?php echo $translations['M00218'][$language]; /* Back */ ?></button>
-        <button id="download" type="button" class="btn btn-primary waves-effect waves-light" style="background: #27a9e0; margin-left: 10px;">
-            <?php echo $translations['M03434'][$language]; /* Download Invoice */ ?>
+    <div class="d-flex flex-column flex-md-row align-items-center py-5">
+        <button type="button" class="btn btn-primary grey col-12 col-lg-2 col-md-3 text-center mr-0 mr-md-4" id="backBtn">
+            <div class="bodyText smaller text-white" data-lang="M00218"><?php echo $translations['M00218'][$language] /* Back */ ?></div>
+        </button>
+        <button type="button" class="btn btn-primary col-12 col-lg-3 col-md-4 text-center mt-3 mt-md-0" id="download">
+            <div class="bodyText smaller text-white" data-lang="M03434"><?php echo $translations['M03434'][$language]; /* Download Invoice */ ?></div>
         </button>
     </div>
-
 </section>
 
+<?php include 'homepageFooter.php'; ?>
 
-<?php include 'footer.php'; ?>
 </body>
 
-
-
 <!-- Print Content  -->
-
-
 <div id="printContent" class="invoiceOuterWrapper whiteBg">
     <div class="invoiceWrapper">
-        <div class="col-12">
-            <div class="row mobileReverse">
-                <div class="mobile-full default-half">
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <span class='invoiceCompanyName'>PT META FIZ INTERNASIONAL</span>
-                        </div>
-                        <div class="col-12">
-                            <span class="invoiceBold"><?php echo $translations['M03258'][$language] /*Address*/ ?>:</span>
-                            <span class="invoiceThin companyAddress">-</span>
-                        </div>
-                        <div class="col-12 mt-2">
-                            <span class="invoiceBold"><?php echo $translations['M03227'][$language] /*Phone*/ ?>:</span>
-                            <span class="invoiceThin companyPhone">-</span>
-                        </div>
-                        <!-- <div class="col-12 mt-2">
-                            <span class="invoiceBold"><?php echo $translations['M03436'][$language] /*Fax*/ ?>:</span>
-                            <span class="invoiceThin companyFax">-</span>
-                        </div> -->
-                        <div class="col-12 mt-2">
-                            <span class="invoiceBold"><?php echo $translations['M02655'][$language] /*Email*/ ?>:</span>
-                            <span class="invoiceThin companyEmail">-</span>
-                        </div>
-                    </div>
+        <div class="col-12 text-center pb-5">
+            <span class="titleText larger bold text-uppercase" data-lang="M00237"><?php echo $translations['M00237'][$language] /*Invoice*/ ?></span>
+        </div>
+        <div class="col-12 pt-5">
+            <div class="row pb-5">
+                <div class="col-6 text-left">
+                    <img src="images/project/logo-colour.png" width="250px">
                 </div>
-                <div class="mobile-full default-half">
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <img class="invoiceLogo" src="images/project/companyLogoText.png">
+                <div class="col-6 text-right">
+                    <div class="bodyText larger bold" id="companyAddress2">-</div>
+                </div>
+            </div>
+            <div class="row pt-5">
+                <div class="col-6">
+                    <div class="bodyText larger bold" data-lang="M03438"><?php echo $translations['M03438'][$language] /* Ship To */ ?>:</div>
+                    <div class="bodyText smaller mt-2" id="shippingAddress2">-</div>
+                </div>
+                <div class="col-6">
+                    <div class="bodyText larger bold" data-lang="M03437"><?php echo $translations['M03437'][$language] /* Bill To */ ?>:</div>
+                    <div class="bodyText smaller mt-2" id="billingAddress2">-</div>
+                </div>
+            </div>
+            <div class="row pt-5">
+                <div class="col-12">
+                    <div class="borderBottom darkGrey normal"></div>
+                </div>
+            </div>
+            <div class="row py-4">
+                <div class="col-6">
+                    <div class="bodyText larger bold" data-lang="M03908"><?php echo $translations['M03908'][$language] /* Order Number */ ?></div>
+                    <div class="bodyText smaller mt-2" id="orderNumber2">-</div>
+                </div>
+                <div class="col-6">
+                    <div class="bodyText larger bold" data-lang="M03909"><?php echo $translations['M03909'][$language] /* Order Date */ ?></div>
+                    <div class="bodyText smaller mt-2" id="orderDate2">-</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="borderBottom darkGrey normal"></div>
+                </div>
+            </div>
+            <div class="row pt-5">
+                <div class="col-12">
+                    <form>
+                        <div id="basicwizardInvoice2" class="pull-in col-12 px-0">
+                            <div class="tab-content b-0 m-b-0 p-t-0">
+                                <div id="alertMsgInvoice2" class="text-center" style="display: block;"></div>
+                                <div id="invoiceDiv2" class="table-responsive"></div>
+                            </div>
                         </div>
-                        <div class="col-12 mt-2">
-                            <span class="invoiceBoldLarge"><?php echo $translations['M00532'][$language] /*Invoice No*/ ?>:</span>
-                            <span class="invoiceThinLarge invoiceNo">-</span>
-                        </div>
-                        <div class="col-12 mt-2">
-                            <span class="invoiceBoldLarge"><?php echo $translations['M00532'][$language] /*Invoice No*/ ?>:</span>
-                            <span class="invoiceThinLarge trackingNo">-</span>
-                        </div>
-                        <div class="col-12 mt-2">
-                            <span class="invoiceBoldLarge"><?php echo $translations['M00525'][$language] /*Transaction Date*/ ?>:</span>
-                            <span class="invoiceThinLarge invoiceDate">-</span>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -251,7 +147,6 @@
 
 </html>
 
-
 <script>
 var url             = 'scripts/reqDefault.php';
 var method          = 'POST';
@@ -262,9 +157,7 @@ var pageNumber      = 1;
 var formData        = "";
 var fCallback       = "";
 
-var invoiceID = '<?php echo $_POST['invoiceID']  ?>'
-
-
+var saleId          = '<?php echo $_POST['id']  ?>'
 
 var invoiceDivId    = 'invoiceDiv';
 var invoiceTableId  = 'invoiceTable';
@@ -272,158 +165,130 @@ var invoicePagerId  = 'invoicePagerList';
 var btnArrayInvoice = {};
 
 var thArrayInvoice  = Array (
-    "<?php echo $translations['M02919'][$language]; /* Item */ ?>",
-    "<?php echo $translations['M03441'][$language]; /* Total Weight */ ?> (kg)",
-    "<?php echo $translations['M03129'][$language]; /* Price */ ?>",
-    "<?php echo $translations['M03130'][$language]; /* PV */ ?>",
-    "<?php echo $translations['M02246'][$language]; /* Quantity */ ?>",
-    "<?php echo $translations['M03133'][$language]; /* Total */ ?>"
+    "<?php echo $translations['M03910'][$language] /* Product */ ?>",
+    "<?php echo $translations['M00244'][$language] /* Quantity */ ?>",
+    "<?php echo $translations['M00242'][$language] /* Unit Price */ ?>",
+    "<?php echo $translations['M01795'][$language] /* Amount */ ?>",
 );
 
-
-
 $(document).ready(function() {
+    if(!saleId) {
+        showMessage('<?php echo $translations['M03911'][$language] /* Invalid Order. */ ?>', 'warning', '<?php echo $translations['M00237'][$language] /*Invoice*/ ?>', 'warning', 'paymentListing');
+    }
 
 
     formData  = {
-        command     : "getInvoiceDetail",
-        invOrderID   : invoiceID
+        command     : "getSaleDetail",
+        SaleID      : saleId
     };
     fCallback = loadInvoiceDetails;
     ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
+    $('#backBtn').click(function() {
+        $.redirect('paymentListing');
+    })
 
-
-	$("body").keyup(function(event) {
-		if (event.keyCode == 13) {
-			$("#searchBtn").click();
-		}
-	});
-
-	
+    $('#download').click(function() {
+        window.print();
+    })
 });
-
 
 function loadInvoiceDetails(data, message) {
 
-    var billingAddress = data.billingAddressDetail
-    var subDistrict = billingAddress.subDistrict ? billingAddress.subDistrict + ", " : ""
-    var address = billingAddress.address + ", " + billingAddress.district + ", " + subDistrict + billingAddress.city + ", " + billingAddress.state + ", " + billingAddress.postCode + ", " + billingAddress.country
-    $("#billingFullName").html(billingAddress.fullname)
-    $("#billingAddress").html(address)
-    $("#billingPhone").html("+"+ billingAddress.dialingArea + " " + billingAddress.phone)
-    $("#billingEmail").html(billingAddress.email || "-")
-    $("#memberID").html(data.clientDetail.memberID || "-")
+    if(data) {
+        var companyAddress = data.companyAddressAct;
+        var companyContact = data.companyContact;
+        var shippingAddress = data.deliveryAddressDetail;
+        var billingAddress = data.billingAddressDetail;
+        var invoiceDetail = data.invoiceDetail;
+        var packageList = data.packageList;
+        var subtotal = data.subtotal;
 
+        var company = `
+            <div class="bodyText smaller bold">${companyAddress['name']} ${companyAddress['registrationNo']}</div>
+            <div class="bodyText smaller">${companyAddress['address']}</div>
+            <div class="bodyText smaller">${companyAddress['postCode']} ${companyAddress['city']}</div>
+            <div class="bodyText smaller">${companyAddress['state']}</div>
+            <div class="bodyText smaller" data-lang="M03912"><?php echo $translations['M03912'][$language] /* Phone number */ ?>: +${companyContact['contactNo']}</div>
+            <div class="bodyText smaller" data-lang="M03913"><?php echo $translations['M03913'][$language] /* Email */ ?>: ${companyContact['email']}</div>
+        `;
+        $('#companyAddress').html(company);
+        $('#companyAddress2').html(company);
 
-    $("#specialNote").html(data.invoiceDetail.specialNote)
-    $("#remark").html(data.invoiceDetail.remark)
+        var shipping = `
+            <div class="bodyText smaller bold">${shippingAddress['fullname']}</div>
+            <div class="bodyText smaller">${shippingAddress['address']}</div>
+            <div class="bodyText smaller">${shippingAddress['postCode']} ${shippingAddress['city']}</div>
+            <div class="bodyText smaller">${shippingAddress['state']} ${shippingAddress['country']}</div>
+            <div class="bodyText smaller" data-lang="M03912"><?php echo $translations['M03912'][$language] /* Phone number */ ?>: +${billingAddress['dialingArea']}${shippingAddress['phone']}</div>
+        `;
+        $('#shippingAddress').html(shipping);
+        $('#shippingAddress2').html(shipping);
 
-    var insuranceTax = data.invoiceDetail.insuranceTax;
-    var insuranceDisplay;
+        var billing = `
+            <div class="bodyText smaller bold">${billingAddress['fullname']}</div>
+            <div class="bodyText smaller">${billingAddress['address']}</div>
+            <div class="bodyText smaller">${billingAddress['postCode']} ${billingAddress['city']}</div>
+            <div class="bodyText smaller">${billingAddress['state']} ${billingAddress['country']}</div>
+            <div class="bodyText smaller" data-lang="M03912"><?php echo $translations['M03912'][$language] /* Phone number */ ?>: +${billingAddress['dialingArea']}${billingAddress['phone']}</div>
+        `;
+        $('#billingAddress').html(billing);
+        $('#billingAddress2').html(billing);
 
-    data.showInsuranceTax == 0 ? insuranceDisplay = " " : insuranceDisplay = ` <span data-lang="M03762"><?php echo $translations['M03762'][$language] /*Insurance Charges*/ ?>:</span> <span class="invoiceTotalAmount">${insuranceTax}</span>`
-    $("#insuranceChargesDisplay").html(insuranceDisplay);
+        $('#orderNumber').html(invoiceDetail.id);
+        $('#orderNumber2').html(invoiceDetail.id);
 
+        $('#orderDate').html(invoiceDetail.createdAt);
+        $('#orderDate2').html(invoiceDetail.createdAt);
 
-
-    switch (data.invoiceDetail.deliveryOption) {
-        case 'delivery':
-            var deliveryAddress = data.deliveryAddressDetail
-            var subDistrict = deliveryAddress.subDistrict ? deliveryAddress.subDistrict + ", " : ""
-            var address = deliveryAddress.address + ", " + deliveryAddress.district + ", " + subDistrict + deliveryAddress.city + ", " + deliveryAddress.state + ", " + deliveryAddress.postCode + ", " + deliveryAddress.country
-            $("#deliveryFullName").html(deliveryAddress.fullname)
-            $("#deliveryAddress").html(address)
-            $("#deliveryPhone").html("+"+ deliveryAddress.dialingArea + " " + deliveryAddress.phone)
-            $("#deliveryEmail").html(deliveryAddress.email || "-")
-            $("#deliverySection").show();
-            $("#pickupSection").hide();
-        break;
-
-        case 'pickup':
-            $("#pickupAddress").html(data.deliveryAddressDetail.pickUpAddress)
-            $("#deliverySection").hide();
-            $("#pickupSection").show();
-        break;
-    }
-
-    $("#companyAddress").html(data.companyAddress)
-    $("#companyPhone").html(data.companyContact.contactNo)
-    // $("#companyFax").html(data.companyContact.fax)
-    $("#companyEmail").html(data.companyContact.email)
-
-    $("#invoiceNo").html(data.invoiceDetail.referenceNo)
-    $("#trackingNo").html(data.invoiceDetail.trackingNo)
-    $("#invoiceDate").html(data.invoiceDetail.createdAt)
-
-
-    $("#subtotal").html(numberThousand(data.invoiceDetail.subTotal, 2))
-    $("#taxPercentage").html(parseFloat(data.taxPercentage))
-    $("#taxCharges").html(numberThousand(data.invoiceDetail.taxCharges, 2))
-    $("#deliveryFee").html(numberThousand(data.invoiceDetail.deliveryFee, 2))
-    $("#grandTotal").html(numberThousand(data.invoiceDetail.paidAmount, 2))
-    if(data.voucherData) {
-        $("#discountAmountDiv").show()
-        $("#discountCode").html(data.voucherData.voucherCode)
-        $("#discountAmount").html(numberThousand(data.voucherData.realDiscountAmount, 2))
-    }
-
-    var tableNo;
-
-    if (data.packageList) {
         var newList = [];
-        var packageList = data.packageList
+        $.each(packageList, function(k, v) {
+            var productName = '';
 
-        $.each(packageList, function(k,v) {
-            var buildPackageName = `
-                ${v['packageDisplay']}
+            productName += `
+                <div class="bodyText smaller">${v['packageDisplay']}</div>
             `;
 
-            $.each(v['productList'], function(k2,v2) {
-                buildPackageName += `
-                    <br>-${v2['productDisplay']} × ${parseInt(v2['stockQuantity'])}
-                `
-            })
+            if(v['product_attribute_name'] != '') {
+                productName += `
+                    <div class="bodyText smaller">(${v['product_attribute_name']})</div>
+                `;
+            }
 
             var rebuildData = {
-                buildPackageName,
-                totalProductWeight: numberThousand(v['totalProductWeight'], 2),
-                packagePrice: numberThousand(v['packagePrice'], 2),
-                pvPrice: numberThousand(v['pvPrice'], 2),
-                packageQuantity: parseInt(v['packageQuantity']),
-                totalPackagePrice: numberThousand(v['totalPackagePrice'], 2),
-
+                productName     : productName,
+                quantity        : numberThousand(v['packageQuantity'], 0),
+                unitPrice       : 'RM' + numberThousand(v['packagePrice'], 2),
+                amount          : 'RM' + numberThousand(v['totalPackagePrice'], 2),
             };
-            // ++j;
+
             newList.push(rebuildData);
-        })
+        });
+
+        var tableNo;
 
         buildTable(newList, invoiceTableId, invoiceDivId, thArrayInvoice, btnArrayInvoice, message, tableNo);
         pagination(invoicePagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
-        $('#' + invoiceTableId).addClass('invoiceTable');
+        $('#' + invoiceTableId).find('tbody').after(`
+            <thead>
+                <tr>
+                    <th colspan="3" class="text-right">Sub Total:</th>
+                    <th>RM${numberThousand(subtotal, 2)}</th>
+                </tr>
+            </thead>
+        `);
 
+        $('#' + invoiceTableId).addClass('invoiceTable');
         $('#' + invoiceTableId).find('thead tr, tbody tr').each(function () {
             $(this).find('th:eq(1), td:eq(1)').css('text-align', "right");
             $(this).find('th:eq(2), td:eq(2)').css('text-align', "right");
             $(this).find('th:eq(3), td:eq(3)').css('text-align', "right");
-            $(this).find('th:eq(4), td:eq(4)').css('text-align', "right");
-            $(this).find('th:eq(5), td:eq(5)').css('text-align', "right");
         });
 
-
-
+        var table = $('#basicwizardInvoice').html();
+        $('#basicwizardInvoice2').html(table);
     }
-
-
 }
-
-
-$(document).on("click", "#download", function() {
-    var invoiceContent = $("#invoiceContent").html()
-    $("#printContent").html(invoiceContent)
-    window.print()
-})
-
 
 </script>

@@ -1,6 +1,7 @@
 <coinRate>
  <Data>
-  <name>bonusCredit</name>
+  <!-- <name>bonusCredit</name> -->
+  <name>gotastyCredit</name>
   <value>1.00000000</value>
  </Data>
  <Data>

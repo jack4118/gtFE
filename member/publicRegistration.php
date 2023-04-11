@@ -32,1029 +32,27 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
 ?>
 
 <link href="css/login.css?v=<?php echo filemtime('css/login.css'); ?>" rel="stylesheet" type="text/css" />
+<link href="css/homepage.css?v=<?php echo filemtime('css/homepage.css'); ?>" rel="stylesheet" type="text/css" />
 
-<input type="hidden" name="" class="hideFunction">
-<body class="kt-page--loading-enabled kt-page--loading kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header--minimize-topbar kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-page--loading" style="background-color: #f8f8f8">
-    <div class="modal fade" id="canvasMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="padding-left:17px; padding-right: 17px;" aria-modal="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span id="canvasTitle" class="modal-title"></span>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modalLine"></div>
-                <div class="modal-body modalBodyFont">
-                    <div id="canvasAlertMessage"></div>
-                </div>
-                <div class="modal-footer">
-                     <button id="canvasCloseBtn" type="button" class="btn btnDefaultModal" data-dismiss="modal"><?php echo $translations['M00112'][$language]; //Close ?></button>
+<body  class="kt-page--loading-enabled kt-page--loading kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header--minimize-topbar kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-page--loading loginPage" style="background-color: #f8f8f8">
+    <?php include 'homepageHeader.php';?>
 
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <section class="registerPage">
+    <section class="jp-page-banner login-signup">
         <div class="kt-container">
-            <div class="col-12">
-                <div class="row justify-content-center loginBlock register">
-                    <div class="col-xl-7 col-lg-10 col-11" style="margin: 80px auto">
-                        <div class="row cardWrapper">
-                            <div class="col-6 logoBlock text-left">
-                                <img src="./images/project/companyLogo2.png" alt="Logo" style="height: 90px;">
-                                <!-- <img src="<?php echo $config['logoURL']; ?>" style="height: 80px;"> -->
-                            </div>
-                            <div class="col-6 mb-2 mt-2 text-right">
-                                <div class="btn-group">
-                                    <div class="d-inline-block dropdown-toggle languageFontRegister beforeLoginForm px-3 py-2 my-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="cursor: pointer;">
-                                        <?php echo $config["languages"][$language]['displayName'] ?>
-                                    </div>
-                                    <div class="dropdown-menu dropdown-menu-right dropdown_language">
-                                        <?php $languageArr = $config["languages"]; 
-                                            foreach($languageArr as $key => $value) {
-                                        ?>
-                                            <a class="dropdown-item changeLanguage" href="javascript:;" language="<?php echo $key; ?>" languageISO="<?php echo $languageArr[$key]['isoCode']; ?>"><?php echo $languageArr[$key]['displayName']; ?></a>
-                                      <?php } ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 mt-4 mb-5">
-                                <h2 class="d-block my-0 loginTitle" data-lang="M03106">
-                                    <?php echo $translations['M03136'][$language]; //Register An Account ?>
-                                </h2>
-                            </div>
-
-                            <div class="col-12 mt-3 mt-md-0 mb-lg-5">
-                                <ul class="col-12 progressBarDesc">
-                                    <li style="z-index: 4;" class="active"><span data-lang="M03137"><?php echo $translations['M03137'][$language]; //Personal Information ?></span></li>
-                                    <li style="z-index: 3;"><span data-lang="M03138"><?php echo $translations['M03138'][$language]; //Billing Address & Delivery Address ?></span></li>
-                                    <li style="z-index: 2;"><span data-lang="M03139"><?php echo $translations['M03139'][$language]; //Bank Info ?><br><span>(<?php echo $translations['M03256'][$language]; //Optional ?>)</span></span></li>
-                                    <li style="z-index: 1;"><span data-lang="M03140"><?php echo $translations['M03140'][$language]; //Additional Info ?></span></li>
-                                    <li style="z-index: 0;"><span data-lang="M03141"><?php echo $translations['M03141'][$language]; //Review Form ?></span></li>
-                                </ul>
-                            </div>
-
-                            <div id="registerSection01" class="col-12">
-                                <div class="mb-3 d-lg-none" style="color: #000;"><?php echo $translations['M03137'][$language]; //Personal Information ?></div>
-                                <div class="row align-items-md-baseline">
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M00177"><span class="text-danger">* </span><?php echo $translations['M00177'][$language]; //Full Name ?></span> (<?php echo $translations['M03142'][$language]; //Information entered must be exact as per IC ?>)
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="name" placeholder="<?php echo $translations['M02434'][$language]; //Enter your full name ?>">
-                                        <span id="nameError" class="customError text-danger" error="error"></span>
-                                    </div>
-                                    
-                                    <!-- <div class="col-md-6 mt-4 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M00104"><?php echo $translations['M00104'][$language]; //Username ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="username" placeholder="<?php echo $translations['M03143'][$language]; //Enter your preferred username ?>">
-                                        <span id="usernameError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M00187"><span class="text-danger">* </span><?php echo $translations['M00187'][$language]; //Email Addresss ?></span>
-                                            <!-- <small> | <?php echo $translations['M02154'][$language]; /* Register code will be sent to this email except China */ ?></small> -->
-                                        </label>
-                                        <input type="email" class="form-control beforeLoginForm" id="email" placeholder="<?php echo $translations['M03144'][$language]; //Enter your email address ?>">
-                                        <span id="emailError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03145"><span class="text-danger">* </span><?php echo $translations['M03145'][$language]; //Phone Number ?></span>
-                                            <!-- <small> | <?php echo $translations['M02155'][$language]; /* Register code will be sent to this number ONLY China */ ?></small> -->
-                                        </label>
-                                        <div id="phone" class="row justify-content-between mx-0 form-control beforeLoginForm" style="display: flex; height: auto; line-height: normal; padding: 0;">
-                                            <!-- <input class="form-control col-3" id="phoneCode" placeholder="+60" style="border: none;"> -->
-                                            <select id="dialingArea" class="form-control beforeLoginForm my-0" style="border: none; max-width: 90px;"></select>
-                                            <input oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control beforeLoginForm col ml-1 my-0" id="phoneNo" placeholder="<?php echo $translations['M02436'][$language]; //Enter Your Phone Number ?>" style="border: none;">
-                                        </div>
-                                        <span id="phoneError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <!-- <div class="col-md-12 mb-4">
-                                        <label class="formLabel">
-                                            <?php echo $translations['B00252'][$language]; //Identity Number ?>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="identityNumber" placeholder="<?php echo $translations['B00252'][$language]; //Identity Number ?>">
-                                        <span id="identityNumberError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M01058"><span class="text-danger">* </span><?php echo $translations['M01058'][$language]; //Date of Birth ?></span>
-                                        </label>
-                                        <div class="position-relative">
-                                            <input type="text" class="form-control beforeLoginForm" id="dateOfBirth" placeholder="<?php echo $translations['M03146'][$language]; //Select your date of birth ?>">
-                                            <i class="far fa-calendar-alt calIco active" onclick="$('#dateOfBirth').focus();"></i>
-                                            <span id="dateOfBirthError" class="customError text-danger" error="error"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03147"><span class="text-danger">* </span><?php echo $translations['M03147'][$language]; //Gender ?></span>
-                                        </label>
-                                        <select id="gender" class="form-control beforeLoginForm">
-                                            <option value="" data-lang="M03148"><?php echo $translations['M00054'][$language]; //Please Select ?></option>
-                                            <option value="male" data-lang="M03148"><?php echo $translations['M03148'][$language]; //Male ?></option>
-                                            <option value="female" data-lang="M03149"><?php echo $translations['M03149'][$language]; //Female ?></option>
-                                        </select>
-                                        <span id="genderError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <!-- <div class="col-md-12 mb-4">
-                                        <label class="formLabel">
-                                            <?php echo $translations['M00037'][$language]; //Country ?>
-                                        </label>
-                                        <select id="country" class="form-control beforeLoginForm">
-                                            <option value=""><?php echo $translations['M00179'][$language]; ?></option>
-                                        </select>
-                                        <span id="countryError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03150"><span class="text-danger">* </span><?php echo $translations['M03150'][$language]; //Password ?></span>
-                                        </label>
-                                        <div class="position-relative">
-                                            <input type="password" class="form-control beforeLoginForm" id="password" placeholder="<?php echo $translations['M02439'][$language]; //Enter Your Password ?>">
-                                            <i class="far fa-eye-slash eyeIco active"></i>
-                                            <span id="passwordError" class="customError text-danger" error="error"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M00191"><span class="text-danger">* </span><?php echo $translations['M00191'][$language]; //Retype Password ?></span>
-                                        </label>
-                                        <div class="position-relative">
-                                            <input type="password" class="form-control beforeLoginForm" id="checkPassword" placeholder="<?php echo $translations['M03151'][$language]; //Confirm your password ?>">
-                                            <i class="far fa-eye-slash eyeIco1 active"></i>
-                                            <span id="checkPasswordError" class="customError text-danger" error="error"></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- <div class="col-md-12 mb-4">
-                                        <label class="formLabel">
-                                            <?php echo $translations['M00042'][$language]; //Transaction Password ?>
-                                        </label>
-                                        <input type="password" class="form-control beforeLoginForm" id="tPassword" placeholder="<?php echo $translations['M00042'][$language]; //Transaction Password ?>">
-                                        <span id="tPasswordError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <!-- <div class="col-md-12 mb-4">
-                                        <label class="formLabel">
-                                            <?php echo $translations['M00043'][$language]; //Retype Transaction Password ?>
-                                        </label>
-                                        <input type="password" class="form-control beforeLoginForm" id="checkTPassword" placeholder="<?php echo $translations['M00043'][$language]; //Retype Transaction Password ?>">
-                                        <span id="checkTPasswordError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M01651"><span class="text-danger">* </span><?php echo $translations['M01651'][$language]; //Sponsor Username ?></span>
-                                        </label>
-                                          <?php if($_GET['qr']){ ?>
-                                            <input type="text" class="form-control beforeLoginForm" id="sponsorUsername" disabled value="<?php echo $_GET['qr'] ?>">
-                                          <?php }else{ ?>
-                                            <input type="text" class="form-control beforeLoginForm" id="sponsorUsername" placeholder="<?php echo $translations['M02441'][$language]; //Enter your Sponsor Username ?>" onkeyup="updateMemberName()">
-                                          <?php } ?>
-                                        <span id="sponsorUsernameError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M02933"><?php echo $translations['M02933'][$language]; //Sponsor Username ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="sponsorName" disabled>
-                                        <span id="sponsorUsernameError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <!-- <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M00195"><?php echo $translations['M00195'][$language]; //Placement  Username ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="placementUsername">
-                                        <span id="placementUsernameError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <!-- <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M00197"><?php echo $translations['M00197'][$language]; //Placement Position ?></span>
-                                        </label>
-                                        <div class="kt-radio-inline loginRadio row mt-4">
-                                            <label for="leftCheckbox" class="col-md-6 col-12 otpCheckbox">
-                                                <label class="kt-radio bankRadio mt_x" data-lang="M00198">
-                                                    <input type="radio" name="leftRightPosition" value="1" id="leftCheckbox" checked>
-                                                    <label class="formLabel beforeLogin boldTxt"><?php echo $translations['M00198'][$language]; //Left ?></label>
-                                                    <span></span>
-                                                </label>
-                                            </label>
-                                            <label class="col-md-6 col-12 otpCheckbox" for="rightCheckbox" >
-                                                <label class="kt-radio walletRadio mt_x" data-lang="M00200">
-                                                    <input type="radio" name="leftRightPosition" value="2" id="rightCheckbox">
-                                                    <label class="formLabel beforeLogin boldTxt"><?php echo $translations['M00200'][$language]; //Right ?></label>
-                                                    <span></span>
-                                                </label>
-                                            </label>
-                                        </div>
-                                        <span id="placementPositionError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <div class="col-md-6 mb-4"></div>
-
-                                    <!-- <div class="col-md-12 mb-4 <?php if($fromQR){echo 'hide';} ?>">
-                                        <label class="formLabel"><?php echo $translations['M00196'][$language]; //Placement Username ?></label>
-                                        <input id="placementUsername" class="form-control inputDesign" type="text" placeholder="<?php echo $translations['M00196'][$language]; //Placement Username ?>">
-                                    </div> -->
-
-                                    <!-- <div class="col-md-12 mb-4 <?php if($fromQR){echo 'hide';} ?>">
-                                        <div id="placementPosition" class="kt-radio-inline loginRadio" style="margin-top: 5px;">
-                                            <label class="kt-radio">
-                                                <input type="radio" name="placementPosition" value="1"><?php echo $translations['M00198'][$language]; //Left ?>
-                                                <span></span>
-                                            </label>
-                                            <label class="kt-radio">
-                                                <input type="radio" name="placementPosition" value="2"><?php echo $translations['M00200'][$language]; //Right ?>
-                                                <span></span>
-                                            </label>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div id="loginError" class="col-12" style="color: #ff2222;"></div> -->
-
-                                    <div class="col-md-6">
-                                        <div class="row justify-content-between">
-                                            <div class="col-6 col-lg-6">
-                                                <button id="nextBtn" class="btn btn-primary loginBtn nextBtn w-100 letterSpace" onclick="nextSection(1)" data-lang="M00155"><?php echo $translations['M00155'][$language]; //Next ?></button>
-                                            </div>
-                                            <div class="col-6 col-lg-6 text-right">
-                                                <button id="cancelBtn" class="btn btn-default loginBtn cancelBtn w-100 letterSpace" data-lang="M00278"><?php echo $translations['M00278'][$language]; //Cancel ?></button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- <div class="col-12 py-4">
-                                        <div class="row justify-content-between">
-                                            <div class="col-6 col-lg-6 <?php if($fromQR){echo 'hide';} ?>">
-                                                <a class="text-center btn loginBtn back d-block w-100" href="login.php">
-                                                    <?php echo $translations['M00163'][$language]; //BACK ?>
-                                                </a>
-                                            </div>
-                                            <div class="col-6 col-lg-6 text-right">
-                                                <button id="signUpBtn" class="btn loginBtn w-100"><?php echo $translations['M00200'][$language]; //SIGN UP ?></button>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                </div>
-                            </div>
-
-                            <div id="registerSection02" class="col-12" style="display: none;">
-                                <div class="mb-3 d-lg-none" style="color: #000;"><?php echo $translations['M03138'][$language]; //Billing Address & Delivery Address ?></div>
-                                <div  class="row align-items-baseline">
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M02466"><span class="text-danger">* </span><?php echo $translations['M02466'][$language]; //Address ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="address" placeholder="<?php echo $translations['M03152'][$language]; //Enter your address ?>">
-                                        <span id="addressError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M00178"><span class="text-danger">* </span><?php echo $translations['M00178'][$language]; //Country ?></span>
-                                        </label>
-                                        <select id="countryID" class="form-control beforeLoginForm">
-                                            <option value="-"><?php echo $translations['M00054'][$language]; //Please Select ?></option>
-                                        </select>
-                                        <span id="countryIDError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel" >
-                                            <span class="labelTitle"data-lang="M00181"><span class="text-danger">* </span><?php echo $translations['M00181'][$language]; //Province ?></span>
-                                        </label>
-                                        <select id="state" class="form-control beforeLoginForm">
-                                            <option value="-"><?php echo $translations['M00054'][$language]; //Please Select ?></option>
-                                        </select>
-                                        <span id="stateError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M00676"><span class="text-danger">* </span><?php echo $translations['M00676'][$language]; //City ?></span>
-                                        </label>
-                                        <select id="city" class="form-control beforeLoginForm" disabled="">
-                                            <option value="-"><?php echo $translations['M00054'][$language]; //Please Select ?></option>
-                                        </select>
-                                        <span id="cityError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <!-- <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03153"><span class="text-danger">* </span><?php echo $translations['M03153'][$language]; //Street Name ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="streetName" placeholder="<?php echo $translations['M03154'][$language]; //Enter your street name ?>">
-                                        <span id="streetNameError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03497"><span class="text-danger">* </span> <?php echo $translations['M03497'][$language]; //District ?> </span>
-                                        </label>
-                                        <select id="district" class="form-control beforeLoginForm" disabled="">
-                                            <option value="-"><?php echo $translations['M00054'][$language]; //Please Select ?></option>
-                                        </select>
-                                        <span id="districtError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03155"><span class="text-danger">* </span><?php echo $translations['M03155'][$language]; //Sub-District ?></span>
-                                        </label>
-                                        <select id="subDistrict" class="form-control beforeLoginForm" disabled="">
-                                            <option value="-"><?php echo $translations['M00054'][$language]; //Please Select ?></option>
-                                        </select>
-                                        <span id="subDistrictError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03158"><span class="text-danger">* </span><?php echo $translations['M03158'][$language]; //Zip Code ?></span>
-                                        </label>
-                                        <select id="postalCode" class="form-control beforeLoginForm" disabled="">
-                                            <option value="-"><?php echo $translations['M00054'][$language]; //Please Select ?></option>
-                                        </select>
-                                        <span id="postalCodeError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <!-- <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03158"><span class="text-danger">* </span><?php echo $translations['M03158'][$language]; //Postal Code ?></span>
-                                        </label>
-                                        <input oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); this.value = this.value.match(/[0-9]{0,5}/);" type="text" class="form-control beforeLoginForm" id="postalCode" placeholder="<?php echo $translations['M03159'][$language]; //Enter your postal code ?>">
-                                        <span id="postalCodeError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <!-- <div class="col-md-12 mb-4">
-                                        <label class="formLabel">
-                                            <?php echo $translations['B00252'][$language]; //Identity Number ?>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="identityNumber" placeholder="<?php echo $translations['B00252'][$language]; //Identity Number ?>">
-                                        <span id="identityNumberError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <!-- <div class="col-md-6 mb-4">
-                                        <label class="formLabel" >
-                                            <span class="labelTitle"data-lang="M00180"><span class="text-danger">* </span><?php echo $translations['M00180'][$language]; //State ?></span>
-                                        </label>
-                                        <select id="state" class="form-control beforeLoginForm">
-                                            <option><?php echo $translations['M03427'][$language]; //Select State ?></option>
-                                        </select>
-                                        <span id="stateError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <!-- <div class="col-md-12 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03160"><?php echo $translations['M03160'][$language]; //Remarks ?></span>
-                                        </label>
-                                        <textarea type="text" class="form-control beforeLoginForm" id="remarks" placeholder="<?php echo $translations['M03161'][$language]; //Enter remarks ?>" style="min-height: 100px;"></textarea>
-                                        <span id="remarksError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <div class="col-md-12 mb-4">
-                                        <input type="checkbox" id="addressType" name="addressType">
-                                        <label for="addressType" class="formLabel" data-lang="M03162">
-                                            <?php echo $translations['M03162'][$language]; //Use this address as my delivery address ?>
-                                        </label>
-                                    </div>
-
-                                    <!-- <div class="col-md-12 mb-4">
-                                        <label class="formLabel">
-                                            <?php echo $translations['M00042'][$language]; //Transaction Password ?>
-                                        </label>
-                                        <input type="password" class="form-control beforeLoginForm" id="tPassword" placeholder="<?php echo $translations['M00042'][$language]; //Transaction Password ?>">
-                                        <span id="tPasswordError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <!-- <div class="col-md-12 mb-4">
-                                        <label class="formLabel">
-                                            <?php echo $translations['M00043'][$language]; //Retype Transaction Password ?>
-                                        </label>
-                                        <input type="password" class="form-control beforeLoginForm" id="checkTPassword" placeholder="<?php echo $translations['M00043'][$language]; //Retype Transaction Password ?>">
-                                        <span id="checkTPasswordError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <!-- <div class="col-md-12 mb-4 <?php if($fromQR){echo 'hide';} ?>">
-                                        <label class="formLabel"><?php echo $translations['M00196'][$language]; //Placement Username ?></label>
-                                        <input id="placementUsername" class="form-control inputDesign" type="text" placeholder="<?php echo $translations['M00196'][$language]; //Placement Username ?>">
-                                    </div> -->
-
-                                    <!-- <div class="col-md-12 mb-4 <?php if($fromQR){echo 'hide';} ?>">
-                                        <div id="placementPosition" class="kt-radio-inline loginRadio" style="margin-top: 5px;">
-                                            <label class="kt-radio">
-                                                <input type="radio" name="placementPosition" value="1"><?php echo $translations['M00198'][$language]; //Left ?>
-                                                <span></span>
-                                            </label>
-                                            <label class="kt-radio">
-                                                <input type="radio" name="placementPosition" value="2"><?php echo $translations['M00200'][$language]; //Right ?>
-                                                <span></span>
-                                            </label>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div id="loginError" class="col-12" style="color: #ff2222;"></div> -->
-
-                                    <div class="col-md-6">
-                                        <div class="row justify-content-between">
-                                            <div class="col-6 col-lg-6">
-                                                <button id="nextBtn" class="btn btn-primary loginBtn nextBtn w-100 letterSpace" onclick="nextSection(2)" data-lang="M00155"><?php echo $translations['M00155'][$language]; //Next ?></button>
-                                            </div>
-                                            <div class="col-6 col-lg-6">
-                                                <button id="backBtn" class="btn btn-default w-100 letterSpace" onclick="goToSection(1)" data-lang="M00278"><?php echo $translations['M00218'][$language]; //Back ?></button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- <div class="col-12 py-4">
-                                        <div class="row justify-content-between">
-                                            <div class="col-6 col-lg-6 <?php if($fromQR){echo 'hide';} ?>">
-                                                <a class="text-center btn loginBtn back d-block w-100" href="login.php">
-                                                    <?php echo $translations['M00163'][$language]; //BACK ?>
-                                                </a>
-                                            </div>
-                                            <div class="col-6 col-lg-6 text-right">
-                                                <button id="signUpBtn" class="btn loginBtn w-100"><?php echo $translations['M00200'][$language]; //SIGN UP ?></button>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                </div>
-                            </div>
-
-                            <div id="registerSection03" style="display: none;">
-                                <div class="mb-3 d-lg-none" style="color: #000;"><?php echo $translations['M03139'][$language]; //Bank Info ?></div>
-                                <!-- <div class="col-md-6 col-12 mb-4">
-                                    <div class="row">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03605"><span class="text-danger">* </span><?php echo $translations['M03605'][$language]; //Bank Option ?></span>
-                                        </label>
-                                        <div class="ml-5">
-                                            <label>
-                                                <input type="radio" id="addBank" name="bankOption" value="1"  class="bankOption" checked>
-                                                <span for='addBank'><?php echo $translations['M02697'][$language]; //Add ?></span>
-                                            </label>
-                                            <label class="ml-3">
-                                                <input type="radio" id="skipBank" name="bankOption" value="0"  class="bankOption">
-                                                <span for='skipBank'><?php echo $translations['M02141'][$language]; //Skip ?></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div> -->
-                                <div class="row align-items-baseline">                                    
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03163"><?php echo $translations['M03163'][$language]; //Bank Name ?></span>
-                                        </label>
-                                        <!-- <input type="text" class="form-control beforeLoginForm" id="bankName" placeholder="Enter your bank name"> -->
-                                        <select id="bankType" class="form-control beforeLoginForm bankField">
-                                            <option value="">
-                                                <?php echo $translations['M03442'][$language]; //Select Bank ?>
-                                            </option>
-                                        </select>
-                                        <span id="bankTypeError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03164"><?php echo $translations['M03164'][$language]; //Bank Branch ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm bankField" id="branch" placeholder="<?php echo $translations['M03165'][$language]; //Enter your bank branch ?>">
-                                        <span id="branchError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03166"><?php echo $translations['M03166'][$language]; //Bank City ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm bankField" id="bankCity" placeholder="<?php echo $translations['M03167'][$language]; //Enter your bank city ?>">
-                                        <span id="bankCityError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03168"><?php echo $translations['M03168'][$language]; //Account Holder's Name ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm bankField" id="accountHolder" placeholder="<?php echo $translations['M03169'][$language]; //Enter your bank account holder's name ?>">
-                                        <span id="accountHolderError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M02913"><?php echo $translations['M02913'][$language]; //Bank Account Number ?></span>
-                                        </label>
-                                        <input oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control beforeLoginForm bankField" id="accountNo" placeholder="<?php echo $translations['M03170'][$language]; //Enter your bank account number ?>">
-                                        <span id="accountNoError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4"></div>
-
-                                    <!-- <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle">Bank Account Front Page</span>
-                                        </label>
-                                        <div id="bankAccFrontPage" class="col-md-12 beforeLoginForm flexUploadDiv">
-                                            <input type="hidden" id="bankAccFrontPageData">
-                                            <input type="hidden" id="bankAccFrontPageName">
-                                            <input type="hidden" id="bankAccFrontPageSize">
-                                            <input type="hidden" id="bankAccFrontPageType">
-                                            <input type="hidden" id="bankAccFrontPageFlag">
-                                            <input type="file" id="bankAccFrontPageUpload" class="hide" accept="image/jpeg, image/png, image/gif, image/bmp, image/tiff" onchange="displayFileName('bankAccFrontPage', this)">
-                                            <button class="uploadBtn" id="uploadBtn" onclick="$('#bankAccFrontPageUpload').click();">Upload</button>
-                                            <input type="text" class="flexUploadInput" id="bankAccFrontPageFileName" placeholder="No file chosen" style="background: transparent;" disabled>
-                                        </div>
-                                        <span id="bankAccFrontPageError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <!-- <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle">State</span>
-                                        </label>
-                                        <select id="state" class="form-control beforeLoginForm">
-                                            <option value="Kuala Lumpur">Kuala Lumpur</option>
-                                            <option value="Selangor">Selangor</option>
-                                        </select>
-                                        <span id="stateError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <!-- <div class="col-md-12 mb-4 <?php if($fromQR){echo 'hide';} ?>">
-                                        <label class="formLabel"><?php echo $translations['M00196'][$language]; //Placement Username ?></label>
-                                        <input id="placementUsername" class="form-control inputDesign" type="text" placeholder="<?php echo $translations['M00196'][$language]; //Placement Username ?>">
-                                    </div> -->
-
-                                    <!-- <div class="col-md-12 mb-4 <?php if($fromQR){echo 'hide';} ?>">
-                                        <div id="placementPosition" class="kt-radio-inline loginRadio" style="margin-top: 5px;">
-                                            <label class="kt-radio">
-                                                <input type="radio" name="placementPosition" value="1"><?php echo $translations['M00198'][$language]; //Left ?>
-                                                <span></span>
-                                            </label>
-                                            <label class="kt-radio">
-                                                <input type="radio" name="placementPosition" value="2"><?php echo $translations['M00200'][$language]; //Right ?>
-                                                <span></span>
-                                            </label>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div id="loginError" class="col-12" style="color: #ff2222;"></div> -->
-
-                                    <div class="col-md-6">
-                                        <div class="row justify-content-between">
-                                            <div class="col-4 col-lg-4">
-                                                <button id="nextBtn" class="btn btn-primary loginBtn nextBtn w-100 letterSpace" onclick="nextSection(3,'1')" data-lang="M00155"><?php echo $translations['M00155'][$language]; //Next ?></button>
-                                            </div>
-                                            <div class="col-4 col-lg-4">
-                                                <button id="skipBtn" class="btn btn-primary loginBtn nextBtn w-100 letterSpace" onclick="nextSection(3,'0')" data-lang="M00155"><?php echo $translations['M02141'][$language]; //Skip ?></button>
-                                            </div>
-                                            <div class="col-4 col-lg-4">
-                                                <button id="backBtn" class="btn btn-default w-100 letterSpace" onclick="goToSection(2)" data-lang="M00278"><?php echo $translations['M00218'][$language]; //Back ?></button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- <div class="col-12 py-4">
-                                        <div class="row justify-content-between">
-                                            <div class="col-6 col-lg-6 <?php if($fromQR){echo 'hide';} ?>">
-                                                <a class="text-center btn loginBtn back d-block w-100" href="login.php">
-                                                    <?php echo $translations['M00163'][$language]; //BACK ?>
-                                                </a>
-                                            </div>
-                                            <div class="col-6 col-lg-6 text-right">
-                                                <button id="signUpBtn" class="btn loginBtn w-100"><?php echo $translations['M00200'][$language]; //SIGN UP ?></button>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                </div>
-                            </div>
-
-                            <div id="registerSection04" style="display: none;">
-                                <div class="mb-3 d-lg-none" style="color: #000;"><?php echo $translations['M03140'][$language]; //Additional Info ?></div>
-                                <div class="row align-items-baseline">
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M00327"><span class="text-danger">* </span><?php echo $translations['M00327'][$language]; //Status ?></span>
-                                        </label>
-                                        <select id="martialStatus" class="form-control beforeLoginForm">
-                                            <option><?php echo $translations['M03443'][$language]; //Select Status ?></option>
-                                            <option value="single" data-lang="M03171"><?php echo $translations['M03171'][$language]; //Single ?></option>
-                                            <option value="married" data-lang="M03172"><?php echo $translations['M03172'][$language]; //Married ?></option>
-                                            <option value="widowed" data-lang="M03173"><?php echo $translations['M03173'][$language]; //Widowed ?></option>
-                                            <option value="divorced" data-lang="M03174"><?php echo $translations['M03174'][$language]; //Divorced ?></option>
-                                            <option value="separated" data-lang="M03175"><?php echo $translations['M03175'][$language]; //Separated ?></option>
-                                        </select>
-                                        <span id="martialStatusError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="03176"><span class="text-danger">* </span><?php echo $translations['M03176'][$language]; //Numbers of Child ?></span>
-                                        </label>
-                                        <input oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control beforeLoginForm" id="childNumber" placeholder="<?php echo $translations['M03177'][$language]; //Enter your numbers of child ?>">
-                                        <span id="childNumberError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03474"><span class="text-danger">* </span><?php echo $translations['M03474'][$language]; //Child Age ?></span>
-                                        </label>
-                                        <select id="childAge" class="form-control beforeLoginForm" disabled>
-                                            <option value=""><?php echo $translations['M03475'][$language]; //--- Select Age --- ?></option>
-                                        </select>
-                                        <span id="childAgeError" class="customError text-danger" error="error"></span>
-                                        <div id="childAgeList" class="row" style="margin-top: 20px; display: none;"></div>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03180"><span class="text-danger">* </span><?php echo $translations['M03180'][$language]; //ID Type ?></span>
-                                        </label>
-                                        <!-- <input type="text" class="form-control beforeLoginForm" id="IDType" placeholder="Enter your ID Type"> -->
-                                        <select id="identityType" class="form-control beforeLoginForm">
-                                            <option value="nric" data-lang="M03181"><?php echo $translations['M03181'][$language]; //KTP ?></option>
-                                            <option value="passport" data-lang="M03182"><?php echo $translations['M03182'][$language]; //Passport ?></option>
-                                        </select>
-                                        <span id="identityTypeError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div id="identityNumberDiv" class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03183"><span class="text-danger">* </span><?php echo $translations['M03183'][$language]; //ID Number (KTP) ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="identityNumber" placeholder="<?php echo $translations['M03184'][$language]; //Enter your KTP ID Number ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
-                                        <span id="identityNumberError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div id="passportNumberDiv" class="col-md-6 mb-4" style="display: none;">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03185"><span class="text-danger">* </span><?php echo $translations['M03185'][$language]; //Passport Number ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="passportNumber" placeholder="<?php echo $translations['M03186'][$language]; //Enter your passport number ?>">
-                                        <span id="passportNumberError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle" data-lang="M03178"><?php echo $translations['M03178'][$language]; //NPWP Number ?></span>
-                                        </label>
-                                        <input type="text" class="form-control beforeLoginForm" id="taxNumber" placeholder="<?php echo $translations['M03179'][$language]; //Enter your NPWP Number ?>">
-                                        <span id="taxNumberError" class="customError text-danger" error="error"></span>
-                                    </div>
-
-                                    <!-- <div class="col-md-6 mb-4">
-                                        <label class="formLabel">
-                                            <span class="labelTitle">ID Image</span>
-                                        </label>
-                                        <div id="ktpImage" class="col-md-12 beforeLoginForm flexUploadDiv">
-                                            <input type="hidden" id="ktpImageData">
-                                            <input type="hidden" id="ktpImageName">
-                                            <input type="hidden" id="ktpImageSize">
-                                            <input type="hidden" id="ktpImageType">
-                                            <input type="hidden" id="ktpImageFlag">
-                                            <input type="file" id="ktpImageUpload" class="hide" accept="image/jpeg, image/png, image/gif, image/bmp, image/tiff" onchange="displayFileName('ktpImage', this)">
-                                            <button class="uploadBtn" id="uploadBtn" onclick="$('#ktpImageUpload').click();">Upload</button>
-                                            <input type="text" class="flexUploadInput" id="ktpImageFileName" placeholder="No file chosen" style="background: transparent;" disabled>
-                                        </div>
-                                        <span id="ktpImageError" class="customError text-danger" error="error"></span>
-                                    </div> -->
-
-                                    <!-- <div class="col-md-6 mt-4 mb-4"></div> -->
-
-                                    <div class="col-md-6">
-                                        <div class="row justify-content-between">
-                                            <div class="col-6 col-lg-6">
-                                                <button id="nextBtn" class="btn btn-primary loginBtn nextBtn w-100 letterSpace" onclick="nextSection(4)" data-lang="M00155"><?php echo $translations['M00155'][$language]; //Next ?></button>
-                                            </div>
-                                            <div class="col-6 col-lg-6">
-                                                <button id="backBtn" class="btn btn-default w-100 letterSpace" onclick="goToSection(3)" data-lang="M00278"><?php echo $translations['M00218'][$language]; //Back ?></button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- <div class="col-12 py-4">
-                                        <div class="row justify-content-between">
-                                            <div class="col-6 col-lg-6 <?php if($fromQR){echo 'hide';} ?>">
-                                                <a class="text-center btn loginBtn back d-block w-100" href="login.php">
-                                                    <?php echo $translations['M00163'][$language]; //BACK ?>
-                                                </a>
-                                            </div>
-                                            <div class="col-6 col-lg-6 text-right">
-                                                <button id="signUpBtn" class="btn loginBtn w-100"><?php echo $translations['M00200'][$language]; //SIGN UP ?></button>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                </div>
-                            </div>
-
-                            <div id="registerSection05" style="display: none;">
-                                <div class="mb-3 d-lg-none" style="color: #000;"><?php echo $translations['M03141'][$language]; //Review Form ?></div>
-                                <div class="row align-items-baseline">
-                                    <div class="col-md-6 mb-4">
-                                        <div class="col-md-12 reviewTableHeader">
-                                            <label class="formLabel mr-3">
-                                                <span class="labelTitle" data-lang="M03137"><?php echo $translations['M03137'][$language]; //Personal Information ?></span>
-                                            </label>
-                                            <label class="formLabel">
-                                                <span class="labelTitle reviewTableEdit" onclick="goToSection(1)"><?php echo $translations['M00226'][$language]; //Edit ?></span>
-                                            </label>
-                                        </div>
-
-                                        <div class="col-md-12 mb-4 mt-4">
-                                            <table class="reviewTable">
-                                                <tbody>
-                                                    <tr>
-                                                        <td data-lang="M00177"><?php echo $translations['M00177'][$language]; //Full Name ?></td>
-                                                        <td>:</td>
-                                                        <td id="nameDisplay"></td>
-                                                    </tr>
-                                                    <!-- <tr>
-                                                        <td data-lang="M00104"><?php echo $translations['M00104'][$language]; //Username ?></td>
-                                                        <td>:</td>
-                                                        <td id="usernameDisplay"></td>
-                                                    </tr> -->
-                                                    <tr>
-                                                        <td data-lang="M00187"><?php echo $translations['M00187'][$language]; //Email Addresss ?></td>
-                                                        <td>:</td>
-                                                        <td id="emailDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03145"><?php echo $translations['M03145'][$language]; //Phone Number ?></td>
-                                                        <td>:</td>
-                                                        <td id="phoneDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M01058"><?php echo $translations['M01058'][$language]; //Date of Birth ?></td>
-                                                        <td>:</td>
-                                                        <td id="dateOfBirthDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03147"><?php echo $translations['M03147'][$language]; //Gender ?></td>
-                                                        <td>:</td>
-                                                        <td id="genderDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M01651"><?php echo $translations['M01651'][$language]; //Sponsor Username ?></td>
-                                                        <td>:</td>
-                                                        <td id="sponsorUsernameDisplay"></td>
-                                                    </tr>
-                                                    <!-- <tr>
-                                                        <td data-lang="M00195"><?php echo $translations['M00195'][$language]; //Placement Username ?></td>
-                                                        <td>:</td>
-                                                        <td id="placemetUsernameDisplay"></td>
-                                                    </tr> -->
-                                                    <!-- <tr>
-                                                        <td data-lang="M00197"><?php echo $translations['M00197'][$language]; //Placement Position ?></td>
-                                                        <td>:</td>
-                                                        <td id="placementPositionDisplay"></td>
-                                                    </tr> -->
-                                                </tbody>
-                                            </table>
-                                            <!-- <div class="row mb-2">
-                                                <div class="col-4">Full Name</div>
-                                                <div class="col-1">:</div>
-                                                <div class="col-7">Tan Ming Teong</div>
-                                            </div>
-                                            <div class="row mb-2">
-                                                <div class="col-4">Username</div>
-                                                <div class="col-1">:</div>
-                                                <div class="col-7">Director123</div>
-                                            </div>
-                                            <div class="row mb-2">
-                                                <div class="col-4">Email Address</div>
-                                                <div class="col-1">:</div>
-                                                <div class="col-7">example123@gmail.com</div>
-                                            </div>
-                                            <div class="row mb-2">
-                                                <div class="col-4">Phone Number</div>
-                                                <div class="col-1">:</div>
-                                                <div class="col-7">+601234567890</div>
-                                            </div>
-                                            <div class="row mb-2">
-                                                <div class="col-4">Date of Birth</div>
-                                                <div class="col-1">:</div>
-                                                <div class="col-7">12/12/1998</div>
-                                            </div>
-                                            <div class="row mb-2">
-                                                <div class="col-4">Gender</div>
-                                                <div class="col-1">:</div>
-                                                <div class="col-7">Male</div>
-                                            </div>
-                                            <div class="row mb-2">
-                                                <div class="col-4 mb-2">Sponsor ID</div>
-                                                <div class="col-1 mb-2">:</div>
-                                                <div class="col-7 mb-2">1234567</div>
-                                            </div> -->
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mt-4 mb-4">
-                                        <div class="col-md-12 reviewTableHeader">
-                                            <label class="formLabel mr-3">
-                                                <span class="labelTitle" data-lang="M03138"><?php echo $translations['M03138'][$language]; //Billing Address & Delivery Address ?></span>
-                                            </label>
-                                            <label class="formLabel">
-                                                <span class="labelTitle reviewTableEdit" onclick="goToSection(2)"><?php echo $translations['M00226'][$language]; //Edit ?></span>
-                                            </label>
-                                        </div>
-
-                                        <div class="col-md-12 mt-4 mb-4">
-                                            <table class="reviewTable">
-                                                <tbody>
-                                                    <tr>
-                                                        <td data-lang="M02466"><?php echo $translations['M02466'][$language]; //Address ?></td>
-                                                        <td>:</td>
-                                                        <td id="addressDisplay"></td>
-                                                    </tr>
-                                                    <!-- <tr>
-                                                        <td data-lang="M03153"><?php echo $translations['M03153'][$language]; //Street Name ?></td>
-                                                        <td>:</td>
-                                                        <td id="streetNameDisplay"></td>
-                                                    </tr> -->
-                                                    <tr>
-                                                        <td data-lang="M03155"><!-- <?php echo $translations['M03155'][$language]; //Sub-District ?> -->District</td>
-                                                        <td>:</td>
-                                                        <td id="districtDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03155"><?php echo $translations['M03155'][$language]; //Sub-District ?></td>
-                                                        <td>:</td>
-                                                        <td id="subDistrictDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03158"><?php echo $translations['M03158'][$language]; //Postal Code ?></td>
-                                                        <td>:</td>
-                                                        <td id="postalCodeDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M00676"><?php echo $translations['M00676'][$language]; //City ?></td>
-                                                        <td>:</td>
-                                                        <td id="cityDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M00181"><?php echo $translations['M00181'][$language]; //Province ?></td>
-                                                        <td>:</td>
-                                                        <td id="stateDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M00178"><?php echo $translations['M00178'][$language]; //Country ?></td>
-                                                        <td>:</td>
-                                                        <td id="countryDisplay"></td>
-                                                    </tr>
-                                                    <!-- <tr>
-                                                        <td data-lang="M03160"><?php echo $translations['M03160'][$language]; //Remarks ?></td>
-                                                        <td>:</td>
-                                                        <td id="remarksDisplay"></td>
-                                                    </tr> -->
-                                                    <!-- <tr>
-                                                        <td data-lang="M03283"><?php echo $translations['M03283'][$language]; //Address Type ?></td>
-                                                        <td>:</td>
-                                                        <td id="addressTypeDisplay"></td>
-                                                    </tr> -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mt-4 mb-4">
-                                        <div class="col-md-12 reviewTableHeader">
-                                            <label class="formLabel mr-3">
-                                                <span class="labelTitle" data-lang="M03139"><?php echo $translations['M03139'][$language]; //Bank Info ?></span>
-                                            </label>
-                                            <label class="formLabel">
-                                                <span class="labelTitle reviewTableEdit" onclick="goToSection(3)"><?php echo $translations['M00226'][$language]; //Edit ?></span>
-                                            </label>
-                                        </div>
-
-                                        <div class="col-md-12 mt-4 mb-4">
-                                            <table class="reviewTable">
-                                                <tbody>
-                                                    <tr>
-                                                        <td data-lang="M03163"><?php echo $translations['M03163'][$language]; //Bank Name ?></td>
-                                                        <td>:</td>
-                                                        <td id="bankTypeDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03164"><?php echo $translations['M03164'][$language]; //Bank Branch ?></td>
-                                                        <td>:</td>
-                                                        <td id="branchDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03166"><?php echo $translations['M03166'][$language]; //Bank City ?></td>
-                                                        <td>:</td>
-                                                        <td id="bankCityDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03168"><?php echo $translations['M03168'][$language]; //Account Holder's Name ?></td>
-                                                        <td>:</td>
-                                                        <td id="accountHolderDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M02913"><?php echo $translations['M02913'][$language]; //Bank Account Number ?></td>
-                                                        <td>:</td>
-                                                        <td id="accountNoDisplay"></td>
-                                                    </tr>
-                                                    <!-- <tr>
-                                                        <td>Bank Account Front Page</td>
-                                                        <td>:</td>
-                                                        <td>hello.png</td>
-                                                    </tr> -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mt-4 mb-4">
-                                        <div class="col-md-12 reviewTableHeader">
-                                            <label class="formLabel mr-3">
-                                                <span class="labelTitle" data-lang="M03140"><?php echo $translations['M03140'][$language]; //AddItional Info ?></span>
-                                            </label>
-                                            <label class="formLabel">
-                                                <span class="labelTitle reviewTableEdit" onclick="goToSection(4)"><?php echo $translations['M00226'][$language]; //Edit ?></span>
-                                            </label>
-                                        </div>
-
-                                        <div class="col-md-12 mt-4 mb-4">
-                                            <table class="reviewTable">
-                                                <tbody>
-                                                    <tr>
-                                                        <td data-lang="M00327"><?php echo $translations['M00327'][$language]; //Status ?></td>
-                                                        <td>:</td>
-                                                        <td id="martialStatusDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03176"><?php echo $translations['M03176'][$language]; //Numbers of Child ?></td>
-                                                        <td>:</td>
-                                                        <td id="childNumberDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03176"><?php echo $translations['M03474'][$language]; //Child Age ?></td>
-                                                        <td>:</td>
-                                                        <td id="childAgeDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03178"><?php echo $translations['M03178'][$language]; //NPWP Number ?></td>
-                                                        <td>:</td>
-                                                        <td id="taxNumberDisplay"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td data-lang="M03180"><?php echo $translations['M03180'][$language]; //ID Type ?></td>
-                                                        <td>:</td>
-                                                        <td id="identityTypeDisplay"></td>
-                                                    </tr>
-                                                    <tr id="identityNumberDisplayRow">
-                                                        <td data-lang="M03183"><?php echo $translations['M03183'][$language]; //ID Number (KTP) ?></td>
-                                                        <td>:</td>
-                                                        <td id="identityNumberDisplay"></td>
-                                                    </tr>
-                                                    <tr id="passportNumberDisplayRow">
-                                                        <td data-lang="M03185"><?php echo $translations['M03185'][$language]; //Passport Number ?></td>
-                                                        <td>:</td>
-                                                        <td id="passportNumberDisplay"></td>
-                                                    </tr>
-                                                    <!-- <tr>
-                                                        <td>ID Image</td>
-                                                        <td>:</td>
-                                                        <td>hello.png</td>
-                                                    </tr> -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="row justify-content-between">
-                                            <div class="col-6 col-lg-6">
-                                                <button id="submitBtn" class="btn btn-primary loginBtn nextBtn w-100 letterSpace" data-lang="M02515"><?php echo $translations['M02515'][$language]; //Submit ?></button>
-                                            </div>
-                                            <div class="col-6 col-lg-6">
-                                                <button id="backBtn" class="btn btn-default w-100 letterSpace" onclick="goToSection(4)" data-lang="M00278"><?php echo $translations['M00218'][$language]; //Back ?></button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- <div class="col-12 py-4">
-                                        <div class="row justify-content-between">
-                                            <div class="col-6 col-lg-6 <?php if($fromQR){echo 'hide';} ?>">
-                                                <a class="text-center btn loginBtn back d-block w-100" href="login.php">
-                                                    <?php echo $translations['M00163'][$language]; //BACK ?>
-                                                </a>
-                                            </div>
-                                            <div class="col-6 col-lg-6 text-right">
-                                                <button id="signUpBtn" class="btn loginBtn w-100"><?php echo $translations['M00200'][$language]; //SIGN UP ?></button>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                </div>
-                            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-5 col-lg-3">
+                    <h1 data-lang="M03848"><?php echo $translations['M03848'][$language]; //Enjoy Favourite Food Instantly!?> </h1>
+                </div>
+                <div class="col-sm-6 col-md-7 offset-lg-3 col-lg-6">
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="#" target="_blank"><img src="images/project/sm1.png" class="img-fluid"></a>
+                            <a href="#" target="_blank"><img src="images/project/sm2.png" class="img-fluid"></a>
+                            <a href="#" target="_blank"><img src="images/project/sm3.png" class="img-fluid"></a>
+                            <a href="#" target="_blank"><img src="images/project/sm4.png" class="img-fluid"></a>
+                        </div>
+                        <div class="col-12 call-us" data-lang="M03849">
+                            <?php echo $translations['M03849'][$language]; //Call us at?>: <font style="font-weight: 400;">+6018-2626000</font>
                         </div>
                     </div>
                 </div>
@@ -1062,7 +60,129 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
         </div>
     </section>
 
-<!-- <?php include 'footerLogin.php'; ?> -->
+    <section class="loginPage">
+        <div class="kt-container">
+            <div class="col-12">
+                <div class="login-signup-card row">
+                    <div class="col-md-6">
+                        <h3 data-lang="M03855"><?php echo $translations['M03855'][$language]; //Sign Up ?></h3>
+
+                        <div class="tab-content">
+                            <div class="page1 tab-pane fade in active show">
+                                <div>
+                                    <label data-lang="M03851"><?php echo $translations['M03851'][$language]; //Phone Number ?></label>
+                                    <div class="row phone">
+                                        <select id="dialingArea" class="form-control1 beforeLoginForm col-3">
+                                            <option value="60" selected>+60</option>
+                                        </select>
+                                        <input oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" type="text" id="phone" class="form-control beforeLoginForm col ml-1">
+                                    </div>
+                                </div>
+                                
+                                <div class="position-relative">
+                                    <label data-lang="M03859"><?php echo $translations['M03859'][$language]; //Verification Code ?></label>                        
+                                    <input type="text" class="form-control beforeLoginForm" id="otp">
+                                    <!-- <div id="verificationCodeError" class="customError text-danger"></div> -->
+                                    <div class="input-group-append col-md-5 col-6 px-0 resend-otp" style="">
+                                        <button id="resend-otp" class="btn button-grey w-100" data-lang="M03860">
+                                            <?php echo $translations['M03860'][$language]; //Request OTP ?>
+                                        </button>
+
+                                        <span class="form__button-wrapper timer col-6" style="display: none; color: #fff; width: 95px;">
+                                            <span class=" mt-3 " style="display:block; color: #000; width: 95px;"></span>
+                                        </span>                 
+                                    </div>
+                                </div>
+                                
+                                <div class="position-relative">
+                                    <label data-lang="M03852"><?php echo $translations['M03852'][$language]; //Password ?></label>                        
+                                    <input type="password" class="form-control beforeLoginForm" id="password" placeholder="Enter Your Password">
+                                    <!-- <div id="passwordError" class="customError text-danger" error="error"></div> -->
+                                    <div class="input-group-append col-1 col-sm-1 icon-see">
+                                        <span class="input-group-text captchaIcon" style="padding:unset">
+                                            <i class="far fa-eye eyeIco active" style="cursor: pointer; color: #939393;"></i>
+                                        </span>                        
+                                    </div>
+                                </div>
+                                
+                                <div class="position-relative">
+                                    <label data-lang="M03861"><?php echo $translations['M03861'][$language]; //Confirm Password ?></label>                        
+                                    <input type="password" class="form-control beforeLoginForm" id="checkPassword" placeholder="Enter Your Password">
+                                    <!-- <div id="checkPasswordError" class="customError text-danger" error="error"></div> -->
+                                    <div class="input-group-append col-1 col-sm-1 icon-see">
+                                        <span class="input-group-text captchaIcon" style="padding:unset">
+                                            <i class="far fa-eye eyeIco1 active" style="cursor: pointer; color: #939393;"></i>
+                                        </span>                        
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label data-lang="M03858"><?php echo $translations['M03858'][$language]; //Referral Mobile Number ?></label>
+                                    <div class="row">
+                                        <select id="sponsorDialingArea" class="form-control1 beforeLoginForm col-3">
+                                            <option value="60" selected>+60</option>
+                                        </select>
+                                        <input oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" type="text" id="referral" class="form-control beforeLoginForm col ml-1">
+                                    </div>                      
+                                    <!-- <div id="sponsorIdCodeError" class="customError text-danger"></div> -->
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="note" data-lang="M03862"><?php echo $translations['M03862'][$language]; //Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purpose described in our privacy policy. ?></p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col">
+                                        <button class="btn button-red signUpBtn" data-lang="M03855">
+                                            <?php echo $translations['M03855'][$language]; //Sign Up ?>
+                                        </button>
+                                    </div>
+                                    <div class="col"></div>
+                                </div>
+                            </div>
+
+                            <div class="page2 tab-pane fade">
+                                <h5 data-lang="M03863"><?php echo $translations['M03863'][$language]; //You are almost there !?></h5>
+                                <p data-lang="M03864"><?php echo $translations['M03864'][$language]; //To ensure you having a good experience with our platform, we would like to know your name. Please help to fill in your name in order to complete registration. Once you complete register, you may start shopping and get reward points for each purchase. ?></p>
+
+                                <label data-lang="M03865"><?php echo $translations['M03865'][$language]; //Full Name ?></label>                        
+                                <input type="text" class="form-control beforeLoginForm" id="fullName" placeholder="Enter Your Full Name">
+                                <div id="fullNameError" class="invalid-feedback" style="display:block;"></div>
+
+                                <div class="row mt-4">
+                                    <div class="col">
+                                        <button class="btn button-red signUpBtn" data-lang="M03855">
+                                            <?php echo $translations['M03855'][$language]; //Sign Up ?>
+                                        </button>
+                                    </div>
+                                    <div class="col"></div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="col-md-6">
+                        <h3 data-lang="M03866"><?php echo $translations['M00108'][$language]; //Sign In ?></h3>
+                        <p data-lang="M03867"><?php echo $translations['M03867'][$language]; //Sign in to your account if you already have an account with GoTasty. ?></p>
+
+                        <div class="row mt-4">
+                            <div class="col">
+                                <button id="loginBtn" class="btn button-red" data-lang="M03868">
+                                    <?php echo $translations['M03868'][$language]; //Sign In Here ?>
+                                </button>
+                            </div>
+                            <div class="col">
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>        
+    </section>
+
+<?php include 'homepageFooter.php'; ?>
+
 <?php include 'sharejs.php'; ?>
 
 
@@ -1073,7 +193,7 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
 
 <script>
 
-    var url             = 'scripts/reqDefault.php';
+    var url             = 'scripts/reqLogin.php';
     var jsonUrl         = 'json/addressList.json';
     var method          = 'POST';
     var debug           = 0;
@@ -1095,14 +215,55 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
     $(document).ready(function(){
         
         window.ajaxEnabled = true;
+        loadDefaultListing();
+        //send OTP
+        $('#sendCodeSignUp').click(function(){
+            $(".invalid-feedback").remove();
+            var phoneFullNumber = "60" + $('#phoneNo').val()
+            // var phoneFullNumber = $('#dialingArea option:selected').val() + $('#phoneNo').val()
+            var formData  = {
+                command : "accountSignUpVerification",
+                type : 'register',
+                dialCode: $('#dialingArea option:selected').val(),
+                number: $('#phoneNo').val(),
+                phone : phoneFullNumber
+            };
+            fCallback = otpCallbackSignup;
+            ajaxSend("scripts/reqDefault.php", formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        });
 
+        $('#nextBtn').click(function(){
+            $("input").each(function(){
+            $(this).removeClass('is-invalid');
+            $('.invalid-feedback').html("");
+        });
+        // var phoneFullNumber = $('#dialingArea option:selected').val() + $('#phoneNo').val()
         var formData  = {
-            command   : "getRegistrationDetailMember"
-        };
-        var fCallback = loadDefaultListing;
-        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+          command : "accountSignUpVerification",
+            dialCode: $('#dialingArea option:selected').val(),
+            type : 'register',
+            number: $('#phoneNo').val(),
+            step: 2,
+            phone : phoneFullNumber,
+            verificationCode : $('#verificationCode').val()
+        }; 
+        fCallback = successVerifyOTP;
+        ajaxSend("scripts/reqDefault.php", formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0); 
+        });
 
-        updateMemberName();
+        // var formData  = {
+        //     command   : "getRegistrationDetailMember"
+        // };
+        // var fCallback = loadCountryList;
+        // ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
+        // var formData  = {
+        //     command   : "getRegistrationDetailMember"
+        // };
+        // var fCallback = loadDefaultListing;
+        // ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
+        // updateMemberName();
 
         // getBankOption = $('input[name="bankOption"]:checked').val();
 
@@ -1110,18 +271,18 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
             $.redirect('homepage');
         });
 
-        $('#dialingArea').change(function() {
-            var country = $('#dialingArea option:selected').attr('name');
-            $(`#countryID option[name="${country}"]`).prop('selected', true);
+        // $('#dialingArea').change(function() {
+        //     var country = $('#dialingArea option:selected').attr('name');
+        //     $(`#countryID option[name="${country}"]`).prop('selected', true);
 
-            var dialingCountry = $('#dialingArea option:selected').attr('name');
-            $("#countryID > option").each(function() {
-                if($(this).attr('name') === dialingCountry)
-                    $("#countryID").val($(this).val()).change();
-            });
+        //     var dialingCountry = $('#dialingArea option:selected').attr('name');
+        //     $("#countryID > option").each(function() {
+        //         if($(this).attr('name') === dialingCountry)
+        //             $("#countryID").val($(this).val()).change();
+        //     });
 
-            countryChanged();
-        });
+        //     countryChanged();
+        // });
 
         $('#countryID').change(function() {
             countryChanged();
@@ -1190,6 +351,53 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
     
 // })
 
+function otpCallbackSignup(data, message) {
+  $('#dialingArea, #phoneNo').attr('disabled',true);
+  if(data.remainingTime) {
+    var second = data.remainingTime;
+
+    var minutes = Math.floor(second/60);
+    var seconds = second - (minutes*60);
+
+    var leftTime = `${minutes==0?"":minutes + "m"} ${seconds}s.`;
+
+
+    countDownSignUp('#sendCodeSignUp', second);
+    showMessage(`${message.replace(".", leftTime)}`, "warning", "<?php echo $translations['E00730'][$language]; /* Error */ ?>", "warning");
+  }else{
+    countDownSignUp('#sendCodeSignUp', data.resendOTPCountDown);
+    showMessage(message, "success", "<?php echo $translations['M03456'][$language]; /* Send OTP Code */ ?>", "success");
+  }
+}
+
+function countDownSignUp(id, second){
+  var minutes = Math.floor(second/60);
+  var seconds = second - (minutes*60);
+
+  if(minutes == 0 && seconds == 0){
+    $('#sendCodeSignUp').show();
+    $('#timerSignUpResend').hide();
+    return;
+  }else if(minutes == 0 && seconds != 0){
+    $('#sendCodeSignUp').hide();
+    // $('#sendCode').show();
+    $('#timerSignUpResend span').empty().append(seconds+"s");
+    setTimeout('countDownSignUp(sendCodeSignUp,'+(second-1)+')',1000);
+  }else{
+    $('#sendCodeSignUp').hide();
+    $('#timerSignUpResend').show();
+    $('#timerSignUpResend span').empty().append(minutes+"m"+" "+seconds+"s");
+    setTimeout('countDownSignUp(sendCodeSignUp,'+(second-1)+')',1000);
+  }
+}
+
+
+function successVerifyOTP(data,message){
+  $('#verificationCode').attr('disabled',true);
+  $('.invalid-feedback').remove();
+  nextSection(1);
+}
+
 function updateMemberName() {
     var memberID = $('#sponsorUsername').val();
     if(memberID.length >= 7) {
@@ -1218,184 +426,14 @@ function SortByName(a, b){
 
 
 function loadDefaultListing(data,message){
-    childAgeOption = data.childAgeOption;
-    bankList = data.bankDetails;
+    // childAgeOption = data.childAgeOption;
+    // bankList = data.bankDetails;
 
-    if(childAgeOption) {
-        $.each(childAgeOption, function(k, v) {
-            $('#childAge').append(`<option value="${k}">${v['display']}`);
-        });
-    }
-
-    $.getJSON(jsonUrl, function( jsonData ) {
-
-        saveJsonData = jsonData;
-        var firstCountry = saveJsonData['countriesList'][0]['id'];
-
-        if(saveJsonData['countriesList']) {
-            $.each(saveJsonData['countriesList'], function(k,v) {
-                var selected = '';
-
-                var countryDisplay = '';
-                countryDisplay = v['display'];
-
-                $('#countryID').append('<option value="'+v['id']+'" data-code="+'+v['countryCode']+'" name="'+v['name']+'" '+selected+'>'+countryDisplay+'</option>');
-                $('#dialingArea').append('<option value="'+v['countryCode']+'" data-code="+'+v['countryCode']+'" name="'+v['name']+'" display="'+countryDisplay+'" '+selected+'>+'+v['countryCode']+'</option>');
-
-                $('#countryID option[value=100]').attr('selected','selected');
-
-            });
-
-            // if (country) {
-            //     $('#country').val(country);
-            // }
-            
-            // var phoneCode = $('#country option:selected').attr('data-code');
-            // $('#phoneCode').text(phoneCode);
-        }
-
-        // filter state based on country selected then build option
-        var countryID = $("#countryID").val();
-        filterData("state", countryID, "country_id", "stateList", "id", "stateDisplay");
-
-
-        // filter city based on state selected then build option
-        var stateID = $("#state").val();
-        filterData("city", stateID, "state_id", "cityList", "id", "cityDisplay");
-
-        // filter district based on state selected then build option
-        var cityID = $("#city").val();
-        filterData("district", cityID, "city_id", "countyList", "id", "countyDisplay");
-
-        // filter sub district based on state selected then build option
-        var countyID = $("#district").val();
-        filterData("subDistrict", countyID, "county_id", "subCountyList", "id", "subCountyDisplay");
-
-        // filter zipcode based on state selected then build option
-        var subCountyID = $("#subDistrict").val();
-        filterData("postalCode", subCountyID, "sub_county_id", "postalCodeList", "id", "postalCode");
-
-        $('#countryID').change(function(){
-            var countryID = $("#countryID").val();
-            filterData("state", countryID, "country_id", "stateList", "id", "stateDisplay");
-
-            var stateID = $("#state").val();
-            filterData("city", stateID, "state_id", "cityList", "id", "cityDisplay");
-
-            var cityID = $("#city").val();
-            filterData("district", cityID, "city_id", "countyList", "id", "countyDisplay");
-
-            var countyID = $("#district").val();
-            filterData("subDistrict", countyID, "county_id", "subCountyList", "id", "subCountyDisplay");
-
-            var subCountyID = $("#subDistrict").val();
-            filterData("postalCode", subCountyID, "sub_county_id", "postalCodeList", "id", "postalCode");
-
-            $('#state').prop("disabled",true);
-            $('#city').prop("disabled",true);
-            $('#district').prop("disabled",true);
-            $('#subDistrict').prop("disabled",true);
-            $('#postalCode').prop("disabled",true);
-
-            var countryDDL = $('#countryID option:selected').val();
-            countryDDL != "-"? ($('#state').prop("disabled",false)) : ($('#state').prop("disabled",true));
-            var stateDDL = $('#state option:selected').val();
-            stateDDL != "-"? ($('#city').prop("disabled",false)) : ($('#city').prop("disabled",true));
-            var cityDDL = $('#city option:selected').val();
-            cityDDL != "-"? ($('#district').prop("disabled",false)) : ($('#district').prop("disabled",true));
-            var districtDDL = $('#district option:selected').val();
-            districtDDL != "-"? ($('#subDistrict').prop("disabled",false)) : ($('#subDistrict').prop("disabled",true));
-            var subDistrictDDL = $('#subDistrict option:selected').val();
-            subDistrictDDL != "-"? ($('#postalCode').prop("disabled",false)) : ($('#postalCode').prop("disabled",true));
-        });
-
-        $("#state").change(function(){
-            var stateID = $(this).val();
-            filterData("city", stateID, "state_id", "cityList", "id", "cityDisplay");
-
-            var cityID = $("#city").val();
-            filterData("district", cityID, "city_id", "countyList", "id", "countyDisplay");
-
-            var countyID = $("#district").val();
-            filterData("subDistrict", countyID, "county_id", "subCountyList", "id", "subCountyDisplay");
-
-            var subCountyID = $("#subDistrict").val();
-            filterData("postalCode", subCountyID, "sub_county_id", "postalCodeList", "id", "postalCode");
-
-            $('#city').prop("disabled",true);
-            $('#district').prop("disabled",true);
-            $('#subDistrict').prop("disabled",true);
-            $('#postalCode').prop("disabled",true);
-
-            var stateDDL = $('#state option:selected').val();
-            stateDDL != "-"? ($('#city').prop("disabled",false)) : ($('#city').prop("disabled",true));
-            var cityDDL = $('#city option:selected').val();
-            cityDDL != "-"? ($('#district').prop("disabled",false)) : ($('#district').prop("disabled",true));
-            var districtDDL = $('#district option:selected').val();
-            districtDDL != "-"? ($('#subDistrict').prop("disabled",false)) : ($('#subDistrict').prop("disabled",true));
-            var subDistrictDDL = $('#subDistrict option:selected').val();
-            subDistrictDDL != "-"? ($('#postalCode').prop("disabled",false)) : ($('#postalCode').prop("disabled",true));
-        });
-
-        $("#city").change(function(){
-            var cityID = $(this).val();
-            filterData("district", cityID, "city_id", "countyList", "id", "countyDisplay");
-
-            var countyID = $("#district").val();
-            filterData("subDistrict", countyID, "county_id", "subCountyList", "id", "subCountyDisplay");
-
-            var subCountyID = $("#subDistrict").val();
-            filterData("postalCode", subCountyID, "sub_county_id", "postalCodeList", "id", "postalCode");
-
-            $('#district').prop("disabled",true);
-            $('#subDistrict').prop("disabled",true);
-            $('#postalCode').prop("disabled",true);
-
-            var cityDDL = $('#city option:selected').val();
-            cityDDL != "-"? ($('#district').prop("disabled",false)) : ($('#district').prop("disabled",true));
-            var districtDDL = $('#district option:selected').val();
-            districtDDL != "-"? ($('#subDistrict').prop("disabled",false)) : ($('#subDistrict').prop("disabled",true));
-            var subDistrictDDL = $('#subDistrict option:selected').val();
-            subDistrictDDL != "-"? ($('#postalCode').prop("disabled",false)) : ($('#postalCode').prop("disabled",true));
-        });
-
-        $("#district").change(function(){
-            var countyID = $(this).val();
-            filterData("subDistrict", countyID, "county_id", "subCountyList", "id", "subCountyDisplay");
-
-            var subCountyID = $("#subDistrict").val();
-            filterData("postalCode", subCountyID, "sub_county_id", "postalCodeList", "id", "postalCode");
-
-            $('#subDistrict').prop("disabled",true);
-            $('#postalCode').prop("disabled",true);
-
-            var districtDDL = $('#district option:selected').val();
-            districtDDL != "-"? ($('#subDistrict').prop("disabled",false)) : ($('#subDistrict').prop("disabled",true));
-            var subDistrictDDL = $('#subDistrict option:selected').val();
-            subDistrictDDL != "-"? ($('#postalCode').prop("disabled",false)) : ($('#postalCode').prop("disabled",true));
-        });
-
-        $("#subDistrict").change(function(){
-            var subCountyID = $(this).val();
-            filterData("postalCode", subCountyID, "sub_county_id", "postalCodeList", "id", "postalCode");
-
-            $('#postalCode').prop("disabled",true);
-
-            var subDistrictDDL = $('#subDistrict option:selected').val();
-            subDistrictDDL != "-"? ($('#postalCode').prop("disabled",false)) : ($('#postalCode').prop("disabled",true));
-        });
-
-        if(bankList) {
-            $.each(bankList, function(key) {
-                var selected = '';
-                if(bankList[key][0]['country_id']==firstCountry) {
-                    $.each(bankList[key], function(k) {
-                        $('#bankType').append('<option value="'+bankList[key][k]['id']+'" data-code="'+bankList[key][k]['country_id']+'" name="'+bankList[key][k]['name']+'" '+selected+'>'+bankList[key][k]['display']+'</option>');
-                    });
-                }
-            });
-        }
-    });
+    // if(childAgeOption) {
+    //     $.each(childAgeOption, function(k, v) {
+    //         $('#childAge').append(`<option value="${k}">${v['display']}`);
+    //     });
+    // }
 }
 
 function filterData(nextSelectID, id, idVariable, nextAdd, value, display) {
@@ -1440,15 +478,15 @@ function blur() {
   });
 }
 
-[].forEach.call(document.querySelectorAll('#dialingArea'), function(s) {
-    s.addEventListener('focus', focus);
-    s.addEventListener('blur', blur);
-    blur.call(s);
-});
+// [].forEach.call(document.querySelectorAll('#dialingArea'), function(s) {
+//     s.addEventListener('focus', focus);
+//     s.addEventListener('blur', blur);
+//     blur.call(s);
+// });
 
-$('#dialingArea').change(function() {
-    $('#dialingArea').blur();
-});
+// $('#dialingArea').change(function() {
+//     $('#dialingArea').blur();
+// });
 
 function countryChanged() {
     var countryID = $('#countryID option:selected').val();
@@ -1530,12 +568,12 @@ $('.eyeIco').click(function() {
         $(this).removeClass('fa-eye-slash');
         $(this).addClass('fa-eye');
 
-        $('#password').attr('type','text');
+        $('#password').attr('type','password');
     } else {
         $(this).removeClass('fa-eye');
         $(this).addClass('fa-eye-slash');
 
-        $('#password').attr('type','password');
+        $('#password').attr('type','text');
     }
 });
 
@@ -1544,12 +582,12 @@ $('.eyeIco1').click(function() {
         $(this).removeClass('fa-eye-slash');
         $(this).addClass('fa-eye');
 
-        $('#checkPassword').attr('type','text');
+        $('#checkPassword').attr('type','password');
     } else {
         $(this).removeClass('fa-eye');
         $(this).addClass('fa-eye-slash');
 
-        $('#checkPassword').attr('type','password');
+        $('#checkPassword').attr('type','text');
     }
 });
 
@@ -1579,6 +617,7 @@ function nextSection(selectedIndex,bankOptional) {
     var password = $('#password').val();
     var checkPassword = $('#checkPassword').val();
     var sponsorName = $('#sponsorUsername').val();
+    var otpCode = $('#verificationCode').val();
     // leftRightPosition = $("input[name=leftRightPosition]:checked").val();
 
     var countryDDL = $('#countryID option:selected').val();
@@ -1644,6 +683,7 @@ function nextSection(selectedIndex,bankOptional) {
         password        : password,
         checkPassword   : checkPassword,
         sponsorName     : sponsorName,
+        otpCode         : otpCode,
         // placementPosition : leftRightPosition,
         /*address         : address,
         streetName      : streetName,
@@ -1801,7 +841,12 @@ function completeSection(data, message) {
             $('#passportNumberDisplayRow').show();
         }
 
-        goToSection(++currentIndex);
+        if (currentIndex == 1){
+            //skip to 3
+            goToSection(5)
+        }else {
+         goToSection(++currentIndex);
+       }
     }
 }
 
@@ -2029,6 +1074,185 @@ function completeRegistration(data, message) {
 
     return uploadData;
 }*/
+$('#loginBtn').click(function() {
+    $.redirect("login");
+})
 
+$('#resend-otp').click(function(){ 
+    $("input").each(function(){
+        $(this).removeClass('is-invalid');
+        $('.invalid-feedback').html("");
+    });
+
+    // $('#phoneError').hide();
+    // $('#verificationCodeError').hide();
+    // $('#passwordError').hide();
+    // $('#passwordError').hide();
+
+    var dialCode = $('#dialingArea option:selected').val();;
+    var number = $('#phone').val();
+    var phone = dialCode + number;
+    // var retypePassword = $('#retypePassword').val();
+
+    var formData  = {
+        command     : "accountSignUpVerification",
+        type        : "register",
+        dialCode    : dialCode,
+        number      : number,
+        phone       : phone,
+    };
+    fCallback = otpCallback; 
+    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+});
+
+function otpCallback(data, message) {
+    showMessage(message, 'success', '<?php echo $translations['M03914'][$language] /* Send OTP Code */ ?>', 'success','');
+    countDown(data.resendOTPCountDown);
+}
+
+function countDown(second){
+    var minutes = Math.floor(second/60);
+    var seconds = second - (minutes*60);
+    if(minutes == 0 && seconds == 0){
+        $('#resend-otp').text('<?php echo $translations['M03558'][$language] /* Resend OTP */ ?>')
+        $('#resend-otp').show();
+        $('.timer').hide();
+        return;
+    }else if(minutes == 0 && seconds != 0){
+        $('#resend-otp').hide();
+        $('#timer').show();
+        $('.timer span').empty().append(seconds+" "+"Sec");
+        setTimeout('countDown('+(second-1)+')',1000);
+    }else{
+        // console.log(second)
+        $('#resend-otp').hide();
+        $('.timer').show();
+        $('.timer span').empty().append(minutes+" "+"Min"+" "+seconds+" "+"Sec");
+        setTimeout('countDown('+(second-1)+')',1000);
+    }
+}
+
+$('.signUpBtn').click(function(){
+    $("input").each(function(){
+        $(this).removeClass('is-invalid');
+        $('.invalid-feedback').html("");
+    });
+
+    // $('#phoneError').hide();
+    // $('#verificationCodeError').hide();
+    // $('#passwordError').hide();
+    // $('#passwordError').hide();
+
+    var dialingArea = $('#dialingArea option:selected').val();
+    var number = $('#phone').val();
+    var phone = number;
+    var otpCode = $('#otp').val();
+    var password = $('#password').val();
+    var checkPassword = $('#checkPassword').val();
+    var sponsorDialingArea = $('#sponsorDialingArea').val();
+    var sponsorId = $('#referral').val();
+    var fullName = $('#fullName').val();
+    var username = $('#dialingArea option:selected').val() + $('#phone').val();
+
+    var formData  = {
+        command     : "publicRegistrationConfirmation",
+        registerType: "free",
+        dialingArea : dialingArea,
+        phone       : phone,
+        password    : password,
+        checkPassword : checkPassword,
+        otpCode     : otpCode,
+        type        : "register",
+        fullName        : fullName,
+        username    : username,
+    };
+
+    if(sponsorId != '') {
+        formData['sponsorId'] = sponsorDialingArea + sponsorId;
+    } else {
+        formData['sponsorId'] = '';
+    }
+    // fCallback = signUpCallback; 
+    // ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0); 
+    showCanvas();
+
+    $.ajax({
+        type     : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+        url      : 'scripts/reqDefault.php', // the url where we want to POST
+        data     : formData, // our data object
+        dataType : 'text', // what type of data do we expect back from the server
+        encode   : true
+    })
+    .done(function(data) {
+        var obj = JSON.parse(data);
+
+        if(obj.status =='error' && obj.statusMsg == 'Invalid Referral ID') {
+            hideCanvas();
+            $('#sponsorIdCodeError').text("<?php echo $translations['M03915'][$language] /* Invalid Referral Mobile Number */ ?>");
+            $('#sponsorId').css("border-color","#ff0000");
+        } else if(obj.status != 'ok') {
+            if(obj.statusMsg != ''){
+                if(obj.data != null && obj.data.field) {
+                    hideCanvas();
+                    showCustomErrorField(obj.data.field, obj.statusMsg);
+                }else if(obj.statusMsg == "Please Enter Username") {
+                    hideCanvas();
+                    $('#fullName').addClass('is-invalid');
+                    $('#fullNameError').html('<?php echo $translations['M01963'][$language] /* Please Enter Full Name */ ?>');
+
+                    $('.page1').removeClass('active');
+                    $('.page1').removeClass('in'); 
+                    $('.page1').removeClass('show'); 
+
+                    $('.page2').addClass('active');
+                    $('.page2').addClass('in');
+                    $('.page2').addClass('show');
+                }else {
+                    hideCanvas();
+                    errorHandler(obj.code, obj.statusMsg); 
+                }                  
+            }
+        } else if(obj.status =='ok') {
+            hideCanvas();
+            // $.redirect('homepage');
+            var formData  = {
+                'command'   : 'memberLogin',
+                'id'  : "",
+                'username'  : username,
+                'loginBy' : "phone",
+                'password'   : password
+            };
+
+            $.ajax({
+                type     : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                url      : 'scripts/reqLogin.php', // the url where we want to POST
+                data     : formData, // our data object
+                dataType : 'text', // what type of data do we expect back from the server
+                encode   : true
+            })
+            .done(function(data) {
+                var obj = JSON.parse(data);
+                hideCanvas();
+                if(obj.status == "ok") {
+                    clearCart();
+                    window.location.href = "homepage";
+                }
+            })
+        }      
+        else {
+            $('.page1').removeClass('active');
+            $('.page1').removeClass('in'); 
+            $('.page1').removeClass('show'); 
+
+            $('.page2').addClass('active');
+            $('.page2').addClass('in');
+            $('.page2').addClass('show');
+        }
+    })
+});
+
+function signUpCallback(data, message) {
+    showMessage(message, 'success', '<?php echo $translations['M03456'][$language]; /* Send OTP Code */ ?>', 'success','');
+}
 
 </script>

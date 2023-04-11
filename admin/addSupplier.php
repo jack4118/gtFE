@@ -42,6 +42,18 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                             <span id="addressError" class="customError text-danger"></span>
                                         </div>
 
+                                        <div class="col-xs-12" style="margin-top: 20px">
+                                            <label>Email Address</label>
+                                            <input id="email" type="text" class="form-control">
+                                            <span id="emailError" class="customError text-danger"></span>
+                                        </div>
+
+                                        <div class="col-xs-12" style="margin-top: 20px">
+                                            <label>Person In Charge</label>
+                                            <input id="pic" type="text" class="form-control">
+                                            <span id="picError" class="customError text-danger"></span>
+                                        </div>
+
                                         <div class="col-xs-12" style="margin-top: 20px;">
                                             <label>Supplier Contact No</label>
                                             <div id="phone" class="row justify-content-between form-control" style="display: flex; height: auto; line-height: normal; padding: 0; margin: 0;">
@@ -121,12 +133,16 @@ var resizefunc = [];</script>
             var dialCode = $('#dialCode option:selected').val();
             var contact = $('#contact').val();
             var status = $("input[name=statusRadio]:checked").val();
+            var email = $("#email").val();
+            var pic = $("#pic").val();
 
             var formData  = {
                 command     : 'addSupplier',
                 name        : name,
                 code        : code,
                 address     : address,
+                email       : email,
+                pic         : pic,
                 dialCode    : dialCode,
                 contact     : contact,
                 status      : status

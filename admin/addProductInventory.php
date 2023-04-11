@@ -52,87 +52,141 @@ $_SESSION['lastVisited'] = $thisPage;
                                                 <span id="invProductNameError" class="errorSpan text-danger"></span>
                                                 <span id="nameError" class="errorSpan text-danger"></span>
                                             </div>
+                                        </div>
 
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Vendor Name</label>
+                                                <select id="vendorName" class="form-control" dataName="vendorName" dataType="text">
+                                                </select>
+                                                <span id="vendorNameError" class="errorSpan text-danger"></span>
+                                            </div>
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>SKU Code</label>
                                                 <input id="skuCode" type="text" class="form-control">
-                                                <span id="codeError" class="errorSpan text-danger"></span>
+                                                <span id="skuCodeError" class="errorSpan text-danger"></span>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px;">
-                                                <label>Product Weight in KG, Weight (KG)</label>
-                                                <input id="weight" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); this.value = this.value.match(/^[0-9]+\.?[0-9]{0,3}/); this.value = this.value!=''?addCormer(this.value):'';">
-                                                <span id="weightError" class="errorSpan text-danger"></span>
+                                                <label>Product Type</label>
+                                                <select id="productType" class="form-control" dataName="productType" dataType="text">
+                                                </select>
+                                                <span id="productTypeError" class="errorSpan text-danger"></span>
                                             </div>
-
-                                            <!-- <div class="col-xs-12" style="margin-top: 20px;">
-                                                <label>Price</label>
-                                                <input id="productCost" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); this.value = this.value.match(/^[0-9]+\.?[0-9]{0,2}/);">
-                                                <span id="productCostError" class="errorSpan text-danger"></span>
-                                            </div> -->
-                                        <!-- </div> -->
-                                    <!-- </div> -->
-
-                                    <!-- <div class="col-sm-6 col-xs-12"> -->
-                                        <!-- <div class="row"> -->
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Expired Day</label>
+                                                <input id="expiredDay" type="number" class="form-control">
+                                                <span id="expiredDayError" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>Category</label>
                                                 <select id="category" class="form-control category" dataName="category" dataType="text">
                                                 </select>
                                                 <span id="categoryError" class="errorSpan text-danger"></span>
-                                            </div>
-
-                                            <!-- <div class="col-xs-12" style="margin-top: 20px">
-                                                <label>Category</label>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <select id="category" class="form-control category" dataName="category" dataType="text">
-                                                            <option value="">
-                                                                <?php echo $translations['A00055'][$language]; /* All */ ?>
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div id="addCategoryList" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll;">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <span id="categoryError" class="errorSpan text-danger"></span>
-                                            </div> -->
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <!-- <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
-                                        <label>Name Languages</label>
-                                    </div>
-
-                                    <div class="col-xs-12">
                                         <div class="row">
-                                            <div id="buildNameLanguages"></div>
-                                            <div class="col-md-4 addLanguageBtn" style="display: none;">
-                                                <div class="addLanguageImage" onclick="addLanguage()">
-                                                    <b><i class="fa fa-plus-circle"></i></b>
-                                                    <span>Add Name Languages</span>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Cost</label>
+                                                <input id="cost" type="number" class="form-control">
+                                                <span id="costError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Sale Price</label>
+                                                <input id="salePrice" type="number" class="form-control">
+                                                <span id="costSuggest" class="errorSpan"></span>
+                                                <span id="salePriceError" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Description</label>
+                                                <textarea id="description" class="form-control" rows="4" cols="50"></textarea>
+                                                <span id="descriptionError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Cooking Time</label>
+                                                <textarea id="cookingTime" class="form-control" rows="4" cols="50"></textarea>
+                                                <span id="cookingTimeError" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Cooking Suggestion</label>
+                                                <textarea id="cookingSuggestion" class="form-control" rows="4" cols="50"></textarea>
+                                                <span id="cookingSuggestionError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Full Instruction</label>
+                                                <textarea id="fullInstruction" class="form-control" rows="4" cols="50"></textarea>
+                                                <span id="fullInstructionError" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Full Instruction 2</label>
+                                                <textarea id="fullInstruction2" class="form-control" rows="4" cols="50"></textarea>
+                                                <span id="fullInstruction2Error" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Video</label>
+                                                <input id="video" type="text" class="form-control">
+                                                <span id="videoError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Video 2</label>
+                                                <input id="video2" type="text" class="form-control">
+                                                <span id="video2Error" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
+                                                Product Images (Recommended Size: 600 x 310 px)
+                                            </div>
+
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <div id="buildImg">
+                                                    </div>
+
+                                                    <div class="col-md-4 addImgBtn" style="display: none;">
+                                                        <div class="addProductImage" onclick="addImage()">
+                                                            <b><i class="fa fa-plus-circle"></i></b>
+                                                            <span>Add Images</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <span id="imgError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <span id="imgTypeError" class="errorSpan text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-xs-12">
-                                        <span id="nameLanguagesError" class="errorSpan text-danger"></span><br>
-                                        <span id="descrLanguagesError" class="errorSpan text-danger"></span>
-                                    </div> -->
-
                                     <div class="col-sm-6 col-xs-12">
                                         <div class="row">
                                             <div class="col-xs-12" style="margin-top: 20px;">
                                                 <label>Status</label>
                                                 <div id="status" class="m-b-20">
-                                                    <!-- <div class="radio radio-info radio-inline"> -->
                                                     <div class="radio radio-inline">
                                                         <input id="active" type="radio" value="Active" name="statusRadio" checked="checked"/>
                                                         <label for="active">
@@ -153,365 +207,65 @@ $_SESSION['lastVisited'] = $thisPage;
                                     <div class="col-xs-12" style="margin-top: 20px;">
                                         <div class="row">
                                             <div class="col-xs-12" style="border: 1px solid #ff9804; background-color: #fff0db; padding: 10px;">
-                                                <!-- <input type="checkbox" class="hidden" id="isStock"> -->
-                                                <div class="row" onclick="toggleStockBox()">
+                                                <div class="row" onclick="toggleAttributeBox()">
                                                     <div class="col-xs-12">
-                                                        <!-- <span><i class="fa fa-minus stockIco"></i><b style="margin-left: 20px;">Stock In</b></span> -->
-                                                        <input type="checkbox" id="isStock" onclick="toggleStockBox()" style="margin: 0;"><label for="isStock" onclick="toggleStockBox()" style="margin: 0;">Stock In</label>
+                                                        <input type="checkbox" id="isVariant" onclick="toggleAttributeBox()" style="margin: 0;"><label for="isVariant" onclick="toggleAttributeBox()" style="margin: 0;">Variant</label>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="stockBox" class="col-xs-12" style="border: 1px solid #ff9804; background-color: #fff0db; padding: 20px; display: none;">
-                                                <div class="row">
-                                                    <div class="col-xs-12 contentPageTitle">
-                                                        Stock Details
+                                            <div id="attributeBox" class="col-xs-12" style="border: 1px solid #ff9804; background-color: #fff0db; padding: 20px; display: none;">
+                                                <div id="attr1" class="col-xs-6">
+                                                    <div class="col-xs-12" style="margin-top: 20px">
+                                                        <label>Attribute 1</label>
+                                                        <select id="attribute1" type="text" class="attribute form-control"></select>
+                                                        <span id="attribute1Error" class="errorSpan text-danger"></span>
+                                                    </div>
+                                                    <div class="col-xs-12" style="margin-top: 20px">
+                                                        <label>Value</label>
+                                                        <select id="attributeVal1" class="attributeVal form-control"></select>
+                                                        <span id="attributeVal1Error" class="errorSpan text-danger"></span>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div id="attributeVal1List" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll; background: white;">
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-xs-6 input-daterange" style="margin-top: 20px">
-                                                        <label>Date</label>
-                                                        <input id="stockDate" type="text" class="form-control" disabled>
-                                                        <span id="stockDateError" class="errorSpan text-danger"></span>
+                                                <div id="attr2" class="col-xs-6">
+                                                    <div class="col-xs-12" style="margin-top: 20px">
+                                                        <label>Attribute 2</label>
+                                                        <select id="attribute2" type="text" class="attribute form-control"></select>
+                                                        <span id="attribute2Error" class="errorSpan text-danger"></span>
                                                     </div>
-                                                    <div class="col-xs-6" style="margin-top: 20px">
-                                                        <label>Supplier Code - Name</label>
-                                                        <select id="stockSupplierID" class="form-control"></select>
-                                                        <span id="stockSupplierIDError" class="errorSpan text-danger"></span>
+                                                    <div class="col-xs-12" style="margin-top: 20px">
+                                                        <label>Value</label>
+                                                        <select id="attributeVal2" class="attributeVal form-control"></select>
+                                                        <span id="attributeVal2Error" class="errorSpan text-danger"></span>
                                                     </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-xs-6" style="margin-top: 20px">
-                                                        <label>Supplier DO (Optional)</label>
-                                                        <input id="stockSupplierDO" type="text" class="form-control">
-                                                        <span id="stockSupplierDOError" class="errorSpan text-danger"></span>
-                                                    </div>
-                                                    <!-- <div class="col-xs-6" style="margin-top: 20px">
-                                                        <label>SKU Code</label>
-                                                        <input id="stockSKU" type="text" class="form-control">
-                                                        <span id="skuCodeError" class="errorSpan text-danger"></span>
-                                                    </div> -->
-                                                <!-- </div> -->
-
-                                                <!-- <div class="row"> -->
-                                                    <div class="col-xs-6" style="margin-top: 20px">
-                                                        <label>Quantity of Stock</label>
-                                                        <input id="stockQty" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); this.value = this.value!=''?addCormer(this.value):'';" onkeyup="displayTotalStockFee()">
-                                                        <span id="quantityError" class="errorSpan text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-xs-6" style="margin-top: 20px">
-                                                        <label>Cost Price Per Quantity</label>
-                                                        <input id="stockCost" type="text" class="form-control limitNum" onkeyup="displayTotalStockFee()">
-                                                        <span id="costError" class="errorSpan text-danger"></span>
-                                                    </div>
-                                                <!-- </div> -->
-
-                                                <!-- <div class="row"> -->
-                                                    <div class="col-xs-6" style="margin-top: 20px">
-                                                        <label>Total Cost Price</label>
-                                                        <input id="totalStockFee" type="text" class="form-control" disabled>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-xs-6" style="margin-top: 20px;">
-                                                        <!-- <label>Fee & Charges</label> -->
-                                                        <input type="checkbox" id="addFee" name="addFee" style="margin: 0;">
-                                                        <label for="addFee">Fee & Charges</label>
-                                                        <input id="stockFee" type="text" class="form-control" style="display: none;">
-                                                        <span id="stockFeeError" class="errorSpan text-danger"></span>
+                                                    <div class="col-xs-12">
+                                                        <div id="attributeVal2List" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll; background: white;">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-xs-12" style="margin-top: 20px;">
+                                    <div id="packageBox" class="col-xs-12" style="margin-top: 20px;  display: none;">
                                         <div class="row">
-                                            <div class="col-xs-12" style="border: 1px solid #308fce; background-color: #e7f5ff; padding: 10px;">
-                                                <!-- <input type="checkbox" class="hidden" id="isPackage"> -->
-                                                <div class="row" onclick="togglePackageBox()">
-                                                    <div class="col-xs-12">
-                                                        <!-- <span><i class="fa fa-minus packageIco"></i><b style="margin-left: 20px;">Add Package</b></span> -->
-                                                        <input type="checkbox" id="isPackage" onclick="togglePackageBox()" style="margin: 0;"><label for="isPackage" onclick="togglePackageBox()" style="margin: 0;">Add Package</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="packageBox" class="col-xs-12" style="border: 1px solid #308fce; background-color: #e7f5ff; padding: 20px; display: none;">
-                                                <div class="row">
-                                                    <div class="col-xs-12 contentPageTitle">
-                                                        Package Details
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-xs-6">
-                                                        <div class="row">
-                                                            <div class="col-xs-12" style="margin-top: 20px">
-                                                                <label>PV Price</label>
-                                                                <input id="pvPrice" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); this.value = this.value.match(/^[0-9]+\.?[0-9]{0,2}/); this.value = this.value!=''?addCormer(this.value):'';">
-                                                                <span id="pvPriceError" class="errorSpan text-danger"></span>
-                                                            </div>
-
-                                                    <!-- <div class="col-xs-6 input-daterange" style="margin-top: 20px">
-                                                        <label>Active Date</label>
-                                                        <input id="activeDate" type="text" class="form-control" disabled>
-                                                        <span id="activeDateError" class="errorSpan text-danger"></span>
-                                                    </div> -->
-
-                                                            <div class="col-xs-12" style="margin-top: 20px">
-                                                                <label>Package Quantity (Optional)</label>
-                                                                <input id="packageQuantity" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'); this.value = this.value!=''?addCormer(this.value):'';">
-                                                                <span id="packageQuantityError" class="errorSpan text-danger"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                <!-- </div> -->
-
-                                                <!-- <div class="row"> -->
-
-                                                    <!-- <div class="col-xs-12" style="margin-top: 20px">
-                                                        <label>Package Price</label>
-                                                        <input id="packagePrice" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); this.value = this.value.match(/^[0-9]+\.?[0-9]{0,2}/);">
-                                                        <span id="packagePriceError" class="errorSpan text-danger"></span>
-                                                    </div> -->
-
-                                                    <!-- <div class="col-xs-12" style="margin-top: 20px">
-                                                        <label>Promotion Price (Optional)</label>
-                                                        <input id="promoPrice" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); this.value = this.value.match(/^[0-9]+\.?[0-9]{0,2}/);">
-                                                        <span id="promoPriceError" class="errorSpan text-danger"></span>
-                                                    </div> -->
-
-                                                    <!-- <div class="col-xs-6" style="margin-top: 20px">
-                                                        <label>Product Quantity</label>
-                                                        <input id="productQuantity" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
-                                                        <span id="productQuantityError" class="errorSpan text-danger"></span>
-                                                    </div> -->
-
-                                                    <div class="col-xs-6" style="margin-top: 20px">
-                                                        <label>Category</label>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <select id="packageCategory" class="form-control category" dataName="packageCategory" dataType="text">
-                                                                    <option value="">
-                                                                        <?php echo $translations['A00055'][$language]; /* All */ ?>
-                                                                    </option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div id="addPackageCategoryList" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll;">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <span id="packageCategoryError" class="errorSpan text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
+                                            <div class="col-xs-12" style="border: 1px solid #ff9804; background-color: #fff0db; padding: 20px;">
+                                                <div class="col-xs-12">
                                                     <div class="col-xs-12" style="margin-top: 20px">
-                                                        <label>
-                                                            Price Setting
-                                                        </label>
-                                                        <div class="row">
-                                                            <div class="col-xs-12">
-                                                                <div class="row">
-                                                                    <div class="col-xs-12 chargesTitle">
-                                                                        <div class="row">
-                                                                            <div class="col-xs-2">
-                                                                                Country
-                                                                            </div>
-                                                                            <div class="col-xs-10">
-                                                                                <div class="row">
-                                                                                    <div class="col-xs-3">
-                                                                                        Retail Price
-                                                                                    </div>
-                                                                                    <div class="col-xs-3">
-                                                                                        Promotion Price
-                                                                                    </div>
-                                                                                    <div class="col-xs-3">
-                                                                                        Member Price (25%)
-                                                                                    </div>
-                                                                                    <div class="col-xs-3">
-                                                                                        Member Price (30%)
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="col-xs-12">
-                                                                        <div id="buildListing" class="row"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                        <label>Package</label>
+                                                        <select id="package" type="text" class="package form-control"></select>
+                                                        <span id="packageError" class="errorSpan text-danger"></span>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div id="packageList" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll; background: white;">
                                                         </div>
-                                                    </div>
-
-                                                    <div class="col-xs-12">
-                                                        <span id="countryError" class="errorSpan text-danger"></span>
-                                                    </div>
-
-                                                    <!-- <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
-                                                        Country
-                                                    </div> -->
-
-                                                    <!-- <div class="col-xs-12">
-                                                        <div class="row">
-                                                            <div class="col-sm-6 col-xs-12">
-                                                                <div class="row">
-                                                                    <div class="col-md-12 contentPageTitle" style="margin-top: 20px;">
-                                                                        <label class="control-label">
-                                                                            <?php echo $translations['A00153'][$language]; /* Country */ ?>
-                                                                        </label>
-                                                                        <select id="country" class="form-control country" dataName="country" dataType="text">
-                                                                            <option value="">
-                                                                                <?php echo $translations['A00055'][$language]; /* All */ ?>
-                                                                            </option>
-                                                                            <?php foreach($_SESSION["countryList"] as $key => $value) { ?>
-                                                                                <option value="<?php echo $value['id']; ?>">
-                                                                                    <?php echo $value['display']; ?>
-                                                                                </option>
-                                                                            <?php } ?>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <div id="addCountryList" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll;">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
-                                                        <label>Name Languages</label>
-                                                    </div>
-
-                                                    <div class="col-xs-12">
-                                                        <div class="row">
-                                                            <div id="buildNameLanguages"></div>
-                                                            <div class="col-md-4 addLanguageBtn" style="display: none;">
-                                                                <div class="addLanguageImage" onclick="addLanguage()">
-                                                                    <b><i class="fa fa-plus-circle"></i></b>
-                                                                    <span>Add Name Languages</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-xs-12">
-                                                        <span id="nameLanguagesError" class="errorSpan text-danger"></span><br>
-                                                        <span id="descrLanguagesError" class="errorSpan text-danger"></span>
-                                                    </div>
-
-                                                    <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
-                                                        Package Images (Recommended Size: 600 x 310 px)
-                                                    </div>
-
-                                                    <div class="col-xs-12">
-                                                        <div class="row">
-                                                            <div id="buildImg">
-                                                            </div>
-
-                                                            <div class="col-md-4 addImgBtn" style="display: none;">
-                                                                <div class="addLanguageImage" onclick="addImage()">
-                                                                    <b><i class="fa fa-plus-circle"></i></b>
-                                                                    <span>Add Images</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-xs-12">
-                                                        <span id="imgError" class="errorSpan text-danger"></span>
-                                                    </div>
-                                                    <div class="col-xs-12">
-                                                        <span id="imgTypeError" class="errorSpan text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
-                                                        Upload Video
-                                                    </div>
-                                                    
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <div id="buildVideo"></div>
-                                                            <!-- <div class="col-md-4">
-                                                                <form style="display:block" name="form" method="post" target="" action="" enctype="multipart/form-data" >
-                                                                    <div class="popupEmallVideoWrapper">
-                                                                        <input type="hidden" id="storeVideoData1">
-                                                                        <input type="hidden" id="storeVideoName1">
-                                                                        <input type="hidden" id="storeVideoSize1">
-                                                                         <input type="hidden" id="storeVideoType1">
-                                                                        <input type="hidden" id="storeVideoFlag1">
-                                                                        <input type="file" id="uploadVideo" class="hided" accept="video/*" style="display:none" onchange="displayVideoName('1', this)">
-                                                                        <div>
-                                                                            <a href="javascript:;" onclick="$('#uploadVideo').click();" class="btn btn-primary btnUpload">Upload</a>
-                                                                            <span id="videoName1" class="fileName">No Video Uploaded</span>
-                                                                            <a id="showVideo1" href="javascript:;" class="btn" style="display: none;padding:6px;" onclick="showVideo('1')">
-                                                                                <i class="fa fa-eye"></i>
-                                                                            </a>
-                                                                            <a id="deleteVideo1" href="javascript:;" class="btn" style="display:none;padding:6px;" onclick="deleteVideo('1')">
-                                                                                <i class="fa fa-times"></i>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div> -->
-                                                            <div class="col-md-4 addVideoBtn" style="display: none;">
-                                                                <div class="addLanguageImage" onclick="addVideo()">
-                                                                    <b><i class="fa fa-plus-circle"></i></b>
-                                                                    <span>Add Videos</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-xs-12">
-                                                        <span id="videoError" class="errorSpan text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <!-- <div class="col-xs-12" style="margin-top: 20px;">
-                                                        <input type="checkbox" id="catalogue" name="catalogue">
-                                                        <label for="catalogue">E-Catalogue</label>
-                                                    </div> -->
-
-                                                    <div class="col-xs-12" style="margin-top: 20px;">
-                                                        <input type="checkbox" id="bBasic" name="bBasic">
-                                                        <label for="bBasic">Business Basic</label>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <!-- <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
-                                                Sub Packages
-                                            </div>
-
-                                            <div class="col-xs-12">
-                                                <div class="row">
-                                                    <div id="buildPackage"></div>
-                                                    <div class="col-md-4 addPackageBtn" style="display: none;">
-                                                        <div class="addLanguageImage" onclick="addPackage()">
-                                                            <b><i class="fa fa-plus-circle"></i></b>
-                                                            <span>Add Packages</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
                                         </div>
                                     </div>
 
@@ -614,6 +368,9 @@ $_SESSION['lastVisited'] = $thisPage;
         // var selectedPayment = [];
         // var selectedDeposit = [];
         var createdData = new FormData();
+        var attributeValList = [];
+        var results = [];
+        var packageProductList = [];
 
         // var divId    = 'productListDiv';
         // var tableId  = 'productListTable';
@@ -648,16 +405,16 @@ $_SESSION['lastVisited'] = $thisPage;
                 // $(this).val('');
             });
 
-            $('#packageCategory').change(function(){
+            $('#category').change(function(){
                 var categoryID = $(this).find("option:selected").val();
                 var category = $(this).find("option:selected").text();
 
                 if(categoryID != "") {
                     var categoryDiv = `
-                    <div id="${categoryID}" data-select="packageCategory" class="categoryTag includecategoryTag" style="">${category} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                    <div id="${categoryID}" data-select="category" class="categoryTag includecategoryTag" style="">${category} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
                     `;
 
-                    $("#addPackageCategoryList").append(categoryDiv);
+                    $("#addCategoryList").append(categoryDiv);
 
                     $(this).find("option:selected").remove();
                     $(this).val('');
@@ -722,8 +479,133 @@ $_SESSION['lastVisited'] = $thisPage;
                 csel.val("");
             });*/
 
+            $('#cost').on('change', function() {
+                if($(this).val() == '') {
+                    $('#costSuggest').hide();
+                } else {
+                    var cost = $(this).val();
+                    var sale_price = (cost * (100 + discountPercentage)) / 100;
+
+                    $('#costSuggest').text('Suggested sale price is RM ' + numberThousand(sale_price, 2));
+                }
+            });
+
             $('#addFee').change(function() {
                 $('#addFee').is(':checked') ? $('#stockFee').show() : $('#stockFee').hide();
+            });
+
+            $('.attribute').on('change', function() {
+                var attrId = $(this).val();
+                var inputId = $(this).parent().parent().attr('id');
+
+                var formData  = {
+                    command : 'getAttributeDetail',
+                    attrId  : attrId,
+                    type    : 'get',
+                    inputId : inputId,
+                };
+                fCallback = loadAttribute;
+                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, 1, 0);
+            });
+
+            $('.attributeVal').change(function(){
+                var attrID = $(this).find("option:selected").val();
+                var attr   = $(this).find("option:selected").text();
+                var input  = $(this).attr('id'); 
+
+                if(attrID != "") {
+                    var attrDiv = `
+                        <div id="${attrID}" data-select="${input}" class="attributeTag includeAttributeTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px;">${attr} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                    `;
+
+                    $("#"+input+"List").append(attrDiv);
+
+                    $(this).find("option:selected").remove();
+                    $(this).val('');
+                }
+            });
+
+            $(document).on("click",".attributeTag",function() {
+                $(this).remove();
+                var selectId = $(this).attr('data-select');
+                var categoryId = $(this).attr('id');
+                var category = $(this).text();
+                var optionHtml = `<option value=""><?php echo $translations['A00055'][$language]; /* All */ ?></option>`;
+
+                var csel = $("#"+selectId);
+                var appendHtml  = `<option value="${categoryId}">${category}</option>`;
+                csel.append(appendHtml);
+                csel.html(csel.find('option').sort(function(x, y) {
+                    return $(x).text() > $(y).text() ? 1 : -1;
+                }));
+
+                csel.prepend(optionHtml);
+                csel.find("option[value='']").not(':first').remove();
+
+                csel.val("");
+            });
+
+            $('#vendorName').on('change', function() {
+                var vendorId = $(this).val();
+                if(vendorId != '') {
+                    var formData  = {
+                        command  : 'generateProductSKU',
+                        vendorId : vendorId,
+                    };
+                    fCallback = loadProductSKU;
+                    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, 1, 0);
+                }
+            });
+
+            $('#productType').on('change', function() {
+                var productType = $(this).val();
+                if(productType == 'Package') {
+                    var formData  = {
+                        command : 'getPackageProductList',
+                        type    : productType,
+                    };
+                    fCallback = loadPackageProduct;
+                    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, 1, 0);
+                } else {
+                    $('#packageBox').hide();
+                }
+            });
+
+            $('#package').change(function(){
+                var packageID = $(this).find("option:selected").val();
+                var package   = $(this).find("option:selected").text();
+                var input     = $(this).attr('id'); 
+
+                if(packageID != "") {
+                    var packDiv = `
+                        <div id="${packageID}" data-select="${input}" class="packageTag includePackageTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px;">${package} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                    `;
+
+                    $("#packageList").append(packDiv);
+
+                    $(this).find("option:selected").remove();
+                    $(this).val('');
+                }
+            });
+
+            $(document).on("click",".packageTag",function() {
+                $(this).remove();
+                var selectId = $(this).attr('data-select');
+                var categoryId = $(this).attr('id');
+                var category = $(this).text();
+                var optionHtml = `<option value=""><?php echo $translations['A00055'][$language]; /* All */ ?></option>`;
+
+                var csel = $("#"+selectId);
+                var appendHtml  = `<option value="${categoryId}">${category}</option>`;
+                csel.append(appendHtml);
+                csel.html(csel.find('option').sort(function(x, y) {
+                    return $(x).text() > $(y).text() ? 1 : -1;
+                }));
+
+                csel.prepend(optionHtml);
+                csel.find("option[value='']").not(':first').remove();
+
+                csel.val("");
             });
 
             $('#submitBtn').click(function() {
@@ -736,9 +618,22 @@ $_SESSION['lastVisited'] = $thisPage;
                 var invProductName = $("#invProductName").val();
                 var skuCode = $("#skuCode").val();
                 var status = $("input[name=statusRadio]:checked").val();
-                var category = $('#category option:selected').val();
-                var weight = $("#weight").val().replace(/[^0-9.]/g, '');
+                var category = [];
+                // var weight = $("#weight").val().replace(/[^0-9.]/g, '');
                 // var productCost = $("#productCost").val();
+                var productType = $("#productType").val();
+                var expiredDay = $('#expiredDay').val();
+                var description = $('#description').val();
+                var cost = $('#cost').val();
+                var salePrice = $('#salePrice').val();
+                var cookingTime = $('#cookingTime').val();
+                var cookingSuggestion = $('#cookingSuggestion').val();
+                var fullInstruction = $('#fullInstruction').val();
+                var fullInstruction2 = $('#fullInstruction2').val();
+                var vendorId = $('#vendorName option:selected').val();
+                var video = $('#video').val();
+                var video2 = $('#video2').val();
+                var packageProduct = [];
 
                 packageNameLanguages = [];
                 $(".productNameInput").each(function(){
@@ -762,18 +657,17 @@ $_SESSION['lastVisited'] = $thisPage;
                     packageDescrLanguages.push(buildDescrLanguages);
                 });
 
-                var isPackage = $('#isPackage').is(':checked') ? "1" : "0";
-                var pvPrice = $("#pvPrice").val().replace(/[^0-9.]/g, '');
+                // var pvPrice = $("#pvPrice").val().replace(/[^0-9.]/g, '');
                 // var packagePrice = $('#packagePrice').val();
                 // var promoPrice = $('#promoPrice').val();
-                var packageQuantity = $('#packageQuantity').val().replace(/[^0-9.]/g, '');
+                // var packageQuantity = $('#packageQuantity').val().replace(/[^0-9.]/g, '');
                 // var productQuantity = $('#productQuantity').val();
                 // var activeDate = dateToTimestamp($('#activeDate').val());
                 // var catalogue = $('#catalogue').is(':checked') ? "1" : "0";
-                var bBasic = $('#bBasic').is(':checked') ? "1" : "0";
-                var packageCategory = [];
+                // var bBasic = $('#bBasic').is(':checked') ? "1" : "0";
+                // var packageCategory = [];
                 $('.includecategoryTag').each(function (index, value) {  
-                    packageCategory.push(value.id);
+                    category.push(value.id);
                 });
 
                 /*countryTagArr = [];
@@ -823,15 +717,15 @@ $_SESSION['lastVisited'] = $thisPage;
                         // }
 
                         reqData = {
-                            imgName: imgName,
-                            imgData: imgData,
-                            imgType : imgType,
-                            imgSize : imgSize,
-                            uploadType : imgUploadType
+                            imgName : imgName,
+                            imgData : JSON.stringify(imgData),
+                            // imgType : imgType,
+                            // imgSize : imgSize,
+                            // uploadType : imgUploadType
                         };
                         
                         uploadImageData.push(reqData);
-                        uploadImage.push(buildUploadImage);
+                        uploadImage.push(reqData);
                     }
                 });
 
@@ -881,14 +775,35 @@ $_SESSION['lastVisited'] = $thisPage;
                     return false;
                 }*/
 
-                var isStock = $('#isStock').is(':checked') ? "1" : "0";
-                var stockDate = dateToTimestamp($('#stockDate').val());
-                var stockSupplierID = $('#stockSupplierID option:selected').val();
-                var stockSupplierDO = $('#stockSupplierDO').val();
+                var isVariant = $('#isVariant').is(':checked') ? "1" : "0";
+                var attrData = [];
+                var variants = '';
+                $('.includeAttributeTag').each(function (index, value) {  
+                    var input = $(this).parent().attr('id');
+                    input = input.replace('attributeVal', '');
+                    input = input.replace('List', '');
+
+                    if (!attrData[input]) {
+                        attrData[input] = [];
+                    }
+                    attrData[input].push(value.id);
+                    variants = Object.assign({}, attrData);
+                });
+
+                var packageData = [];
+                var variants = '';
+                $('.includePackageTag').each(function (index, value) {  
+                    packageProduct.push(value.id);
+                });
+
+                // var variants = attrDataCopy;
+                // var stockDate = dateToTimestamp($('#stockDate').val());
+                // var stockSupplierID = $('#stockSupplierID option:selected').val();
+                // var stockSupplierDO = $('#stockSupplierDO').val();
                 // var stockSKU = $('#stockSKU').val();
-                var stockQty = $('#stockQty').val().replace(/[^0-9.]/g, '');
-                var stockCost = $('#stockCost').val().replace(/[^0-9.]/g, '');
-                var stockFee = $('#addFee').is(':checked') ? $('#stockFee').val() : "";
+                // var stockQty = $('#stockQty').val().replace(/[^0-9.]/g, '');
+                // var stockCost = $('#stockCost').val().replace(/[^0-9.]/g, '');
+                // var stockFee = $('#addFee').is(':checked') ? $('#stockFee').val() : "";
 
                 /*var subPackageArr = [];
                 $.each($(".productBoxes"), function(k,v){
@@ -926,53 +841,80 @@ $_SESSION['lastVisited'] = $thisPage;
                         depositArr : depositArr
                     });
                 });*/
+                var fullInstruc = [
+                    fullInstruction, fullInstruction2
+                ];
+
+                var videoList = [];
+
+                if(video == '' && video2 == '') {
+                    videoList = [];
+                } else {
+                    videoList = [
+                        video, video2
+                    ];
+                }
 
                 var formData  = {
-                    command         : 'verifyAddProductInventory',
-                    invProductName  : invProductName,
-                    skuCode         : skuCode,
-                    status          : status,
-                    category        : category,
-                    weight          : weight,
+                    command           : 'verifyAddProductInventory',
+                    invProductName    : invProductName,
+                    skuCode           : skuCode,
+                    status            : status,
+                    productType       : productType,
+                    expired_day       : expiredDay,
+                    description       : description,
+                    cost              : cost,
+                    salePrice         : salePrice,
+                    cookingTime       : cookingTime,
+                    cookingSuggest    : cookingSuggestion,
+                    fullInstruc       : fullInstruc,
+                    vendorId          : vendorId,
+                    category          : category,
+                    videoList         : videoList,
+                    // weight          : weight,
                     // productCost     : productCost,
                     // nameLanguages   : nameLanguages,
                     // descrLanguages  : descrLanguages
                     // country         : country,
                     // price           : price,
                     // subPackageArr   : subPackageArr,
-                    // uploadImage     : uploadImage
+                    uploadImage       : uploadImage,
                 };
-                if(isPackage == "1") {
-                    formData['isPackage'] = isPackage;
-                    formData['pvPrice'] = pvPrice;
-                    // formData['packagePrice'] = packagePrice;
-                    // formData['promoPrice'] = promoPrice;
-                    formData['packageQuantity'] = packageQuantity;
-                    // formData['productQuantity'] = productQuantity;
-                    // formData['activeDate'] = activeDate;
-                    formData['packageCategory'] = packageCategory;
-                    formData['priceSetting'] = priceSetting;
-                    // formData['country'] = countryTagArr;
-                    formData['packageNameLanguages'] = packageNameLanguages;
-                    formData['packageDescrLanguages'] = packageDescrLanguages;
-                    formData['uploadImage'] = uploadImage;
-                    formData['uploadVideo'] = uploadVideo;
-                    // formData['catalogue'] = catalogue;
-                    formData['bBasic'] = bBasic;
-                }
-                if(isStock == "1") {
-                    formData['isStock'] = isStock;
-                    formData['stockDate'] = stockDate;
-                    formData['stockSupplierID'] = stockSupplierID;
-                    formData['stockSupplierDO'] = stockSupplierDO;
+                // if(isPackage == "1") {
+                //     formData['isPackage'] = isPackage;
+                //     formData['pvPrice'] = pvPrice;
+                //     // formData['packagePrice'] = packagePrice;
+                //     // formData['promoPrice'] = promoPrice;
+                //     formData['packageQuantity'] = packageQuantity;
+                //     // formData['productQuantity'] = productQuantity;
+                //     // formData['activeDate'] = activeDate;
+                //     formData['packageCategory'] = packageCategory;
+                //     formData['priceSetting'] = priceSetting;
+                //     // formData['country'] = countryTagArr;
+                //     formData['packageNameLanguages'] = packageNameLanguages;
+                //     formData['packageDescrLanguages'] = packageDescrLanguages;
+                //     formData['uploadImage'] = uploadImage;
+                //     formData['uploadVideo'] = uploadVideo;
+                //     // formData['catalogue'] = catalogue;
+                //     formData['bBasic'] = bBasic;
+                // }
+                if(isVariant == "1") {
+                    formData['isVariant'] = isVariant;
+                    formData['variants']  = variants;
+                    // formData['stockDate'] = stockDate;
+                    // formData['stockSupplierID'] = stockSupplierID;
+                    // formData['stockSupplierDO'] = stockSupplierDO;
                     // formData['stockSKU'] = stockSKU;
-                    formData['stockQty'] = stockQty;
-                    formData['stockCost'] = stockCost;
-                    formData['stockFee'] = stockFee;
+                    // formData['stockQty'] = stockQty;
+                    // formData['stockCost'] = stockCost;
+                    // formData['stockFee'] = stockFee;
                 }
-                createdData = formData;
-                // console.log(formData);
 
+                if(productType == 'Package') {
+                    formData['packageProduct'] = packageProduct;
+                }
+
+                createdData = formData;
                 fCallback = verificationCallback;
                 // isPackage=="1" ? fCallback=submitCallback : fCallback=addProductSuccess;
                 // fCallback = submitCallback;
@@ -1081,6 +1023,9 @@ $_SESSION['lastVisited'] = $thisPage;
 
             categoryOption = "";
             if(data.categoryList) {
+                categoryOption += `
+                    <option value="">Select Category</option>
+                `
                 $.each(data.categoryList, function(k,v){
                     categoryOption += `
                         <option value="${v['id']}">${v['categoryDisplay']}</option>
@@ -1090,18 +1035,35 @@ $_SESSION['lastVisited'] = $thisPage;
 
             var buildSupplier = "";
             if(data.supplierList) {
+                buildSupplier += `
+                    <option value="">Select Vendor</option>
+                `
                 $.each(data.supplierList, function(k, v) {
-                    $('#stockSupplierID').append(`<option value="${v['supplierID']}">${v['code']} - ${v['name']}</option>`);
+                    buildSupplier += `
+                        <option value="${v['supplierID']}">${v['code']} - ${v['name']}</option>
+                    `
+                });
+                $('#vendorName').append(buildSupplier);
+            }
+
+            attributeOption = "";
+            if(data.productAttrList) {
+                attributeOption += `<option value=""> All </option>`;
+
+                $.each(data.productAttrList, function(k,v){
+                    attributeOption += `
+                        <option value="${v['id']}">${v['name']}</option>
+                    `;
                 });
             }
 
-            packageCategoryOption = `
-                <option value="">Select Package Categories</option>
-            `;
-            if(data.packageCategoryList) {
-                $.each(data.packageCategoryList, function(k,v){
-                    packageCategoryOption += `
-                        <option value="${v['id']}">${v['categoryDisplay']}</option>
+            typeOption = "";
+            if(data.productType) {
+                typeOption += `<option value=""> All </option>`;
+
+                $.each(data.productType, function(k,v){
+                    typeOption += `
+                        <option value="${v['name']}">${v['name']}</option>
                     `;
                 });
             }
@@ -1185,11 +1147,51 @@ $_SESSION['lastVisited'] = $thisPage;
 
             // $("#firstLanguage").html(buildOption);
             $("#category").html(categoryOption);
-            $("#packageCategory").html(packageCategoryOption);
+            $(".attribute").html(attributeOption);
+            $('#productType').html(typeOption);
+            // $("#packageCategory").html(packageCategoryOption);
             // $("#country").html(buildCountry);
             $(".addLanguageBtn").show();
             $(".addImgBtn").show();
             $(".addVideoBtn").show();
+        }
+
+        function loadAttribute(data, message) {
+            var inputId = data.inputId;
+            attributeValList.push(data.attributeDetail);
+
+            attributeDetail = "";
+            attributeDetail += `<option value=""> All </option>`;
+
+            $.each(data.attributeDetail, function(k,v){
+                attributeDetail += `
+                    <option value="${v['id']}">${v['name']}</option>
+                `;
+            });
+
+            $('#'+inputId+' .attributeVal').html(attributeDetail);
+        }
+
+        function loadProductSKU(data, message) {
+            var skuNumber = data.productSku;
+            $('#skuCode').val(skuNumber);
+        }
+
+        function loadPackageProduct(data, message) {
+            packageProductList = data.productList;
+            $('#packageBox').show();
+
+            packageDetail = "";
+            packageDetail += `<option value=""> All </option>`;
+
+            if(data.productList) {
+                $.each(data.productList, function(k,v){
+                    packageDetail += `
+                        <option value="${v['id']}">${v['name']}</option>
+                    `;
+                });
+                $('#package').html(packageDetail);
+            }
         }
 
         function addLanguage() {
@@ -1726,9 +1728,9 @@ $_SESSION['lastVisited'] = $thisPage;
             }
         }
 
-        function toggleStockBox() {
-            $('#isStock').prop('checked', !$('#isStock').prop('checked'));
-            $('#isStock').is(':checked') ? $('#stockBox').show() : $('#stockBox').hide();
+        function toggleAttributeBox() {
+            $('#isVariant').prop('checked', !$('#isVariant').prop('checked'));
+            $('#isVariant').is(':checked') ? $('#attributeBox').show() : $('#attributeBox').hide();
             // $('.stockIco').toggleClass('fa-minus fa-plus');
         }
 

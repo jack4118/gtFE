@@ -21,12 +21,13 @@ else
   switch($command)
   {
     case "memberLogin":
+    // case "publicRegistrationConfirmation":
     // if($_SESSION['captcha'] == strtoupper($_POST['captcha']) || !empty($_POST['id']))
     // {
       $params = array(
         "id"       => $_POST['id'],
         "username" => $_POST['username'],
-        "loginBy" => $_POST['loginType'],
+        "loginBy" => "phone",
         "password" => $_POST['password']
       );
 
@@ -44,7 +45,9 @@ else
       $memo                = $userData['memo'];
       $blockedRights       = $userData['blockedRights'];
       $name                = $userData['name'];
+      $dataweww                =$userData['sessionID '];
 
+      $_SESSION["test1"]                        =$dataweww;
       $_SESSION["name"]                         = $name;
       $_SESSION["userEmail"]                    = $userEmail;
       $_SESSION["userID"]                       = $userID;
@@ -125,6 +128,55 @@ else
       $result = json_encode($result);
 
       break;
+      // case "getNavBarDetails":
+      case "accountSignUpVerification":
+
+        $params = array(
+              'phone' => $_POST['phone'],
+              'type' => $_POST['type'],
+              'dialCode' => $_POST['dialCode'],
+              'number' => $_POST['number'],
+            ); 
+            
+            $result = $post->curl($command, $params);
+            $result = json_decode($result, true);
+            if ($result['sessionData']['newSessionID']) {
+                $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
+                $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
+            } 
+            $_SESSION["consolecode"] =$result["code"];
+            if ($result["code"] == 5 || $result["code"] == 3){
+                setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
+            }
+            if ($result["code"] == 0) {
+                $_SESSION["username"] = $result["data"]["userDetails"]["username"];
+                $_SESSION["userID"] = $result["data"]["userDetails"]["userID"];
+                $_SESSION["sessionID"] = $result["data"]["userDetails"]["sessionID"];
+                setcookie("sessionData", json_encode($_SESSION));
+            }
+            $result = json_encode($result);
+
+            echo $result;
+
+            break;
+      case "memberGetMemberName":
+      case "publicRegistration":
+      // case "publicRegistrationConfirmation":
+       $result = $post->curl($command, $params);
+
+            $result = json_decode($result, true);
+            if ($result['sessionData']['newSessionID']) {
+                $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
+                $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
+            } 
+            if ($result["code"] == 5 || $result["code"] == 3){
+                setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
+            }
+            $result = json_encode($result);
+
+            echo $result;
+
+            break;
   }
 }
 ?>

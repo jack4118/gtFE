@@ -31,7 +31,7 @@ session_start();
                                 <div class="mobile-full default-half m-t-20">
                                     <div class="row">
                                         <div class="col-xs-12 m-b-10">
-                                            <span class='invoiceCompanyName'>PT META FIZ INTERNASIONAL</span>
+                                            <span class='invoiceCompanyName'>Go Tasty Sdn. Bhd</span>
                                         </div>
                                         <div class="col-xs-12">
                                             <span class="invoiceBold">Address:</span>
@@ -53,19 +53,19 @@ session_start();
                                 </div>
                                 <div class="mobile-full default-half m-t-20">
                                     <div class="row">
-                                        <div class="col-xs-12 m-b-10">
-                                            <img class="invoiceLogo" src="images/logo.png">
-                                        </div>
+                                        <!-- <div class="col-xs-12 m-b-10">
+                                            <img class="invoiceLogo" src="images/GoTasty.png">
+                                        </div> -->
                                         <div class="col-xs-12">
-                                            <span class='invoiceCompanyName'>PO No: </span><span class="invoiceCompanyName" id="purchaseOrderNo">-</span>
+                                            <span class='invoiceCompanyName'>Sale No: </span><span class="invoiceCompanyName" id="purchaseOrderNo">-</span>
                                         </div>
-                                        <div class="col-xs-12 m-t-5">
+                                        <!-- <div class="col-xs-12 m-t-5">
                                             <span class="invoiceBoldLarge">Invoice No:</span>
                                             <span class="invoiceThinLarge" id="invoiceNo">-</span>
-                                        </div>
+                                        </div> -->
                                         <div class="col-xs-12 m-t-5">
-                                            <span class="invoiceBoldLarge">Tracking No:</span>
-                                            <span class="invoiceThinLarge" id="trackingNo">-</span>
+                                            <span class="invoiceBoldLarge">Status:</span>
+                                            <span class="invoiceThinLarge" id="trackingStatus">-</span>
                                         </div>
                                         <div class="col-xs-12 m-t-5">
                                             <span class="invoiceBoldLarge">Transaction Date:</span>
@@ -98,10 +98,10 @@ session_start();
                                             <span class="invoiceBold">Phone:</span>
                                             <span class="invoiceThin" id="billingPhone">-</span>
                                         </div>
-                                        <div class="col-xs-12 m-t-5">
+                                        <!-- <div class="col-xs-12 m-t-5">
                                             <span class="invoiceBold">Email:</span>
                                             <span class="invoiceThin" id="billingEmail">-</span>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="mobile-full default-half m-t-20">
@@ -121,10 +121,10 @@ session_start();
                                             <span class="invoiceBold">Phone:</span>
                                             <span class="invoiceThin" id="deliveryPhone"></span>
                                         </div>
-                                        <div class="col-xs-12 m-t-5">
+                                        <!-- <div class="col-xs-12 m-t-5">
                                             <span class="invoiceBold">Email:</span>
                                             <span class="invoiceThin" id="deliveryEmail"></span>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="row" id="pickupSection" style="display: none;">
                                         <div class="col-xs-12 m-b-10">
@@ -224,9 +224,8 @@ session_start();
     var btnArray = {};
     var thArray  = Array(
         "Item",
-        "Total Weight (kg)",
+        "Attribute",
         "Price",
-        "PV",
         "Quantity",
         "Total"
     );
@@ -252,8 +251,8 @@ session_start();
         // poStatus !== 'Completed' ? $('#issueDO').show() : $('#issueDO').hide();
 
         formData  = {
-            command     : "getPODetail",
-            invOrderID   : poID
+            command     : "getSaleDetail",
+            SaleID   : poID
         };
         fCallback = loadDefaultListing;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
@@ -268,17 +267,26 @@ session_start();
     });
 
     function loadDefaultListing(data, message) {
-        var billingAddress = data.billingAddressDetail
-        var subDistrict = billingAddress.subDistrict ? billingAddress.subDistrict + ", " : ""
-        var address = billingAddress.address + ", " + billingAddress.district + ", " + subDistrict + billingAddress.city + ", " + billingAddress.state + ", " + billingAddress.postCode + ", " + billingAddress.country
-        $("#billingFullName").html(billingAddress.fullname)
-        $("#billingAddress").html(address)
-        $("#billingPhone").html("+"+ billingAddress.dialingArea + " " + billingAddress.phone)
-        $("#billingEmail").html(billingAddress.email || "-")
+        if (data.billingAddressDetail){
+            var billingAddress = data.billingAddressDetail
+            // var subDistrict = billingAddress.subDistrict ? billingAddress.subDistrict + ", " : ""
+            // var address = billingAddress.address + ", " + billingAddress.district + ", " + subDistrict + billingAddress.city + ", " + billingAddress.state + ", " + billingAddress.postCode + ", " + billingAddress.country
+            var address = billingAddress.address + ", " + billingAddress.city + ", " + billingAddress.state + ", " + billingAddress.postCode + ", " + billingAddress.country
+            $("#billingFullName").html(billingAddress.fullname)
+            $("#billingAddress").html(address)
+            $("#billingPhone").html("+"+ billingAddress.dialingArea + " " + billingAddress.phone)
+            $("#billingEmail").html(billingAddress.email || "-")
+        }else{
+            $("#billingFullName").html("-")
+            $("#billingAddress").html("-")
+            $("#billingPhone").html("-")
+            $("#billingEmail").html("-")
+        }
+      
         $("#memberID").html(data.clientDetail.memberID || "-")
 
-        $("#specialNote").html(data.invoiceDetail.specialNote)
-        $("#remark").html(data.invoiceDetail.remark)
+        // $("#specialNote").html(data.invoiceDetail.specialNote)
+        // $("#remark").html(data.invoiceDetail.remark)
 
         var DOBtnFlag = data.issueDOAllowed;
         if(DOBtnFlag == 0){
@@ -294,11 +302,12 @@ session_start();
         $("#insuranceChargesDisplay").html(insuranceDisplay);
 
 
-        switch (data.invoiceDetail.deliveryOption) {
+        switch (data.invoiceDetail.deliveryMethod.toLowerCase()) {
             case 'delivery':
                 var deliveryAddress = data.deliveryAddressDetail
-                var subDistrict = deliveryAddress.subDistrict ? deliveryAddress.subDistrict + ", " : ""
-                var address = deliveryAddress.address + ", " + deliveryAddress.district + ", " + subDistrict + deliveryAddress.city + ", " + deliveryAddress.state + ", " + deliveryAddress.postCode + ", " + deliveryAddress.country
+                // var subDistrict = deliveryAddress.subDistrict ? deliveryAddress.subDistrict + ", " : ""
+                // var address = deliveryAddress.address + ", " + deliveryAddress.district + ", " + subDistrict + deliveryAddress.city + ", " + deliveryAddress.state + ", " + deliveryAddress.postCode + ", " + deliveryAddress.country
+                var address = deliveryAddress.address + ", " + deliveryAddress.city + ", " + deliveryAddress.state + ", " + deliveryAddress.postCode + ", " + deliveryAddress.country
                 $("#deliveryFullName").html(deliveryAddress.fullname)
                 $("#deliveryAddress").html(address)
                 $("#deliveryPhone").html("+"+ deliveryAddress.dialingArea + " " + deliveryAddress.phone)
@@ -319,16 +328,16 @@ session_start();
         // $("#companyFax").html(data.companyContact.fax)
         $("#companyEmail").html(data.companyContact.email)
 
-        $("#purchaseOrderNo").html(data.invoiceDetail.purchaseOrderNo)
+        $("#purchaseOrderNo").html(data.invoiceDetail.id)
         $("#invoiceNo").html(data.invoiceDetail.referenceNo)
-        $("#trackingNo").html(data.invoiceDetail.trackingNo)
+        $("#trackingStatus").html(data.invoiceDetail.status)
         $("#invoiceDate").html(data.invoiceDetail.createdAt)
 
-        $("#subtotal").html(numberThousand(data.invoiceDetail.subTotal, 2))
+        $("#subtotal").html(numberThousand(data.invoiceDetail.subtotal, 2))
         $("#taxPercentage").html(parseFloat(data.taxPercentage))
-        $("#taxCharges").html(numberThousand(data.invoiceDetail.taxCharges, 2))
-        $("#deliveryFee").html(numberThousand(data.invoiceDetail.deliveryFee, 2))
-        $("#grandTotal").html(numberThousand(data.invoiceDetail.paidAmount, 2))
+        $("#taxCharges").html(numberThousand(data.invoiceDetail.paymentTax, 2))
+        $("#deliveryFee").html(numberThousand(data.invoiceDetail.shippingfee, 2))
+        $("#grandTotal").html(numberThousand(data.invoiceDetail.paymentAmount, 2))
         if(data.voucherData) {
             $("#discountAmountDiv").show()
             $("#discountCode").html(data.voucherData.voucherCode)
@@ -347,17 +356,17 @@ session_start();
                     ${v['packageDisplay']}
                 `;
 
-                $.each(v['productList'], function(k2,v2) {
-                    buildPackageName += `
-                        <br>-${v2['productDisplay']} × ${parseInt(v2['stockQuantity'])}
-                    `
-                })
+                // $.each(v['productList'], function(k2,v2) {
+                //     buildPackageName += `
+                //         <br>-${v2['productDisplay']} × ${parseInt(v2['stockQuantity'])}
+                //     `
+                // })
 
                 var rebuildData = {
                     buildPackageName,
-                    totalProductWeight: numberThousand(v['totalProductWeight'], 2),
+                    // totalProductWeight: numberThousand(v['totalProductWeight'], 2),
+                    pvPrice: (v['product_attribute_name']),
                     packagePrice: numberThousand(v['packagePrice'], 2),
-                    pvPrice: numberThousand(v['pvPrice'], 2),
                     packageQuantity: parseInt(v['packageQuantity']),
                     totalPackagePrice: numberThousand(v['totalPackagePrice'], 2),
 

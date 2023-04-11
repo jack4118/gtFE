@@ -1,159 +1,113 @@
-<?php include 'include/config.php'; ?>
-<?php include 'head.php'; ?>
+<?php 
+include 'include/config.php';
+include 'head.php'; 
+?>
 
 <link href="css/login.css?v=<?php echo filemtime('css/login.css'); ?>" rel="stylesheet" type="text/css" />
+<link href="css/homepage.css?v=<?php echo filemtime('css/homepage.css'); ?>" rel="stylesheet" type="text/css" />
 
 <body  class="kt-page--loading-enabled kt-page--loading kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header--minimize-topbar kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-page--loading loginPage" style="background-color: #f8f8f8">
+    <?php include 'homepageHeader.php';?>
 
-    <section class="forgotPasswordPage">
+    <section class="jp-page-banner login-signup">
         <div class="kt-container">
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-xl-4 col-lg-5 col-md-7 col-12" style="margin-top: 30px;margin-bottom: 30px;">
-                        <div class="row">
-                            <div class="col-12 text-right d-block d-sm-none">
-                                <div class="btn-group">
-                                    <span type="" class="dropdown-toggle languageFont" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="cursor: pointer;">
-                                        <?php echo $config["languages"][$language]['displayName'] ?>
-                                    </span>
-                                    <div class="dropdown-menu dropdown_language">
-                                        <?php $languages = $config['languages']; ?>
-                                        <?php foreach($languages as $key => $value) { 
-                                            if ($key=="chineseSimplified" || $key=="chineseTraditional") {
-                                                $flag="chinese";
-                                            }else if ($key == "korean"){
-                                                $flag="korean";
-                                            }else if ($key == "vietnam"){
-                                                $flag="vietnam";
-                                            }else if ($key == "japanese"){
-                                                $flag="japanese";
-                                            }else if($key == 'english'){
-                                                $flag="english";
-                                            }else if ($key == "thailand"){
-                                                $flag="thai";
-                                            }
-                                            ?>
-                                            <a href="javascript:void(0)" class="changeLanguage dropdown-item" language="<?php echo $key; ?>" style="margin-top: 0;margin-bottom: 0;">
-                                                <img style="width: 20px;margin-right: 5px;" src ="images/language/<?php echo $flag; ?>.png">
-                                                <?php echo $languages[$key]['displayName']; ?>
-                                            </a>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <a href="login.php">
-                                    <img src="<?php echo $config['logoURL']; ?>" style="height: 70px;">
-                                </a>
-                            </div>
-                            <div class="col-12 loginTitle" style="margin-top: 20px;">
-                                <?php echo $translations['M00289'][$language]; //Reset Password ?>
-                            </div>
-
-                            <div class="col-12" style="margin-top: 20px;">
-                                <form>
-                                    <div class="col-12 px-0">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <label class="formLabel"><?php echo $translations['M00036'][$language]; /* Username */ ?></label>
-                                                <input autocomplete="off" id="username" class="form-control beforeLoginForm" type="text" >
-                                            </div>
-                                            <div class="col-12 mt-4">
-                                                <label class="formLabel"><?php echo $translations['M00039'][$language]; /* Email */ ?></label>
-                                                <input autocomplete="off" id="email" class="form-control beforeLoginForm" type="text" placeholder="example: sample@gmail.com">
-                                            </div>
-
-                                            <div class="col-12 mt-4" id="passwordDIV" style="display: none;">
-                                                <label class="formLabel"><?php echo $translations['M00083'][$language]; //New Password ?></label>
-                                                <input autocomplete="off" id="newPassword" class="form-control beforeLoginForm" type="password" placeholder="">
-                                            </div>
-
-                                            <div class="col-12 mt-4" id="rePasswordDIV" style="display: none;">
-                                                <label class="formLabel"><?php echo $translations['M00084'][$language]; //Re-Type New Password ?></label>
-                                                <input autocomplete="off" id="rePassword" class="form-control beforeLoginForm" type="password" placeholder="">
-                                            </div>
-
-                                            <div class="col-12 mt-4" id="verificationDIV" style="display: none;">
-                                                <label class="formLabel">
-                                                    <?php echo $translations['M00390'][$language]; //OTP Code ?>
-                                                </label>
-                                                <div class="input-group">
-                                                    <input id="inputCode" class="form-control beforeLoginForm" type="text">
-
-                                                    <button class="btn btnPrimary ml-2 py-0" id="sendCode" type="button" style="width: 150px; height: 34px;"><?php echo $translations['M00391'][$language]; //Send Code ?></button>
-
-                                                    <span id="timer" class="form__button-wrapper text-center" style="display: none; color: #fff; width: 95px;">
-                                                        <span class="p-3" style="display:block"></span>
-                                                    </span>
-                                                </div>
-                                                <span id="otpCode" class="text-danger"></span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <div class="col-12" style="margin-top: 20px;">
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <button id="resetPassword" type="button" class="btn beforeLoginBtn" style=""><?php echo $translations['M00034'][$language]; //Next ?></button>
-                                        <button id="resetPassword2" type="button" class="ml-0 btn beforeLoginBtn" style="display: none;"><?php echo $translations['M00289'][$language]; //Reset Password ?></button>
-                                    </div>
-                                    <div class="col-md-6 col-12 align-self-center">
-                                        <a href="login.php" class="forgotPasswordBtn">
-                                            <?php echo $translations['M01449'][$language]; //BACK TO LOGIN ?>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12 d-block d-sm-none" style="color: #000">
-                                <?php echo $translations['M01024'][$language]; //Don’t have an account? ?> <a href="publicRegistration.php" style="color: #000;font-weight: 600;text-transform: uppercase;"><?php echo $translations['M01985'][$language]; //SIGN UP ?></a>
-                            </div>
-                        </div>
-                    </div>
-
-              
-
-
-                    
-
-
+            <div class="row">
+                <div class="col-sm-6 col-md-5 col-lg-3">
+                    <h1 data-lang="M03848"><?php echo $translations['M03848'][$language]; //Enjoy Favourite Food Instantly!?> </h1>
                 </div>
-            </div>
-        </div>
-
-        <div class="registerBox">
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-12 loginFont">
-                        <?php echo $translations['M00002'][$language]; //Don’t have an account? ?> <a href="publicRegistration.php" class="signupFontLink" style="text-transform: uppercase;"><?php echo $translations['M01985'][$language]; //SIGN UP ?></a> 
-                    </div>
-                    <div class="col-12">
-                        <div class="btn-group">
-                            <span type="" class="dropdown-toggle languageFont" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="cursor: pointer;">
-                                <?php echo $config["languages"][$language]['displayName'] ?>
-                            </span>
-                            <div class="dropdown-menu dropdown_language" x-placement="bottom-end" style="position: absolute; top: 0px; left: 0px; transform: translate3d(-52px, 38px, 0px);overflow: hidden;">
-                              <?php
-                                  $languageArr = $config["languages"];
-                                  foreach($languageArr as $key => $value) {
-                              ?>
-                                    <a class="dropdown-item changeLanguage" href="javascript:;" language="<?php echo $key; ?>" languageISO="<?php echo $languageArr[$key]['isoCode']; ?>"><?php echo $languageArr[$key]['displayName']; ?></a>
-                              <?php
-                                  }
-                              ?>
-                            </div>
+                <div class="col-sm-6 col-md-7 offset-lg-3 col-lg-6">
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="#" target="_blank"><img src="images/project/sm1.png" class="img-fluid"></a>
+                            <a href="#" target="_blank"><img src="images/project/sm2.png" class="img-fluid"></a>
+                            <a href="#" target="_blank"><img src="images/project/sm3.png" class="img-fluid"></a>
+                            <a href="#" target="_blank"><img src="images/project/sm4.png" class="img-fluid"></a>
+                        </div>
+                        <div class="col-12 call-us">
+                            <?php echo $translations['M03849'][$language]; //Call us at?>: <font style="font-weight: 400;">+6018-2626000</font>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
     </section>
 
-<?php include 'footerLogin.php'; ?>
+    <section class="loginPage forgot-password">
+        <div class="kt-container">
+            <div class="row justify-content-center" style="margin-left: unset; margin-right: unset;">
+                <div class="col-md-6 col-lg-5 col-xl-4">
+                    <div class="login-signup-card row">
+                        <div class="col-12 p-5">
+                            <h3 class="text-center" data-lang="M03854"><?php echo $translations['M03866'][$language]; //Forgot Password? ?></h3>
+
+                            <div>
+                                <label data-lang="M03851"><?php echo $translations['M03851'][$language]; //Phone Number ?></label>
+                                <div class="row phone">
+                                    <select id="dialingArea" class="form-control1 beforeLoginForm col-3">
+                                        <!-- <option value="71">+71</option> -->
+                                        <option value="60" selected>+60</option>
+                                    </select>
+                                    <input oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control beforeLoginForm col ml-1" id="phone">
+                                </div>
+                            </div>
+                            
+                            <div class="position-relative">
+                                <label data-lang="M03859"><?php echo $translations['M03859'][$language]; //Verification Code ?></label>                        
+                                <input type="text" class="form-control beforeLoginForm" id="otp">
+                                <div id="verificationCodeError" class="customError text-danger"></div>
+                                <div class="input-group-append col-md-6 col-7 resend-otp" style="margin-top: 0; padding: 0 !important;">
+                                    <button id="resend-otp" class="btn button-green w-100" data-lang="M03860">
+                                        <?php echo $translations['M03860'][$language]; //Request OTP ?>
+                                    </button>
+
+                                    <span class="form__button-wrapper timer col-4" style="display: none; color: #fff; width: 95px;">
+                                        <span class=" mt-3 " style="display:block; color: #000; width: 95px;"></span>
+                                    </span>                 
+                                </div>
+                            </div>
+                            
+                            <div class="position-relative">
+                                <label data-lang="M03869"><?php echo $translations['M03869'][$language]; //New Password ?></label>                        
+                                <input type="password" class="form-control beforeLoginForm" id="password" placeholder="Enter Your Password">
+                                <div id="passwordError" class="customError text-danger" error="error"></div>
+                                <div class="input-group-append col-1 col-sm-1 icon-see">
+                                    <span class="input-group-text captchaIcon" style="padding:unset">
+                                        <i class="far fa-eye eyeIco active" style="cursor: pointer; color: #939393;"></i>
+                                    </span>                        
+                                </div>
+                            </div>
+                            
+                            <div class="position-relative">
+                                <label data-lang="M03870"><?php echo $translations['M03870'][$language]; //Confirm New Password ?></label>                        
+                                <input type="password" class="form-control beforeLoginForm" id="checkPassword" placeholder="Enter Your Password">
+                                <div id="checkPasswordError" class="customError text-danger" error="error"></div>
+                                <div class="input-group-append col-1 col-sm-1 icon-see">
+                                    <span class="input-group-text captchaIcon" style="padding:unset">
+                                        <i class="far fa-eye eyeIco1 active" style="cursor: pointer; color: #939393;"></i>
+                                    </span>                        
+                                </div>
+                            </div>
+
+                            <div class="row mt-4 justify-content-center">
+                                <div class="col">
+                                    <button id="resetBtn" class="btn button-red button-reset-password" style="padding: .65rem .85rem;" data-lang="M03871">
+                                        <?php echo $translations['M03871'][$language]; //Reset Password ?>
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button id="backBtn" class="btn button-link" data-lang="M03872">
+                                        <?php echo $translations['M03872'][$language]; //Back to Login ?>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </section>
+
+<?php include 'homepageFooter.php'; ?>
 
 <?php include 'sharejs.php'; ?>
 
@@ -162,184 +116,231 @@
 
 </html>
 
-
-
-
 <script>
-var url             = 'scripts/reqDefault.php';
-var method          = 'POST';
-var debug           = 0;
-var bypassBlocking  = 0;
-var bypassLoading   = 0;
-var fCallback = "";
-var loginType = "username";
-var username, captcha, newPassword, rePassword, verificationCode;
 
-$(document).ready(function(){
-  // $('input:radio[name="radioInline"]').change(function(){
-  //     if ($(this).val() == '0') {
-  //       $("#username").attr("placeholder", "<?php echo $translations['M00187'][$language]; //Enter mobile number ?>");
-  //        $("#username").attr("oninput", "this.value = this.value.replace(/[^0-9.]/g, \'\');");
-  //        loginType = "telNumber";
+    $(document).ready(function(){
+        var url             = 'scripts/reqDefault.php';
+        var method          = 'POST';
+        var debug           = 0;
+        var bypassBlocking  = 0;
+        var bypassLoading   = 0;
+        var fCallback = "";
 
-  //     }
+        // default login type
+        var username  = $('#dialingArea option:selected').val() + $('#phone').val();
+        var password  = $('#password').val();
 
+        if (username) {
+            var formData  = {
+                'command'   : 'memberLogin',
+                'id'        : "",
+                'loginBy' : "phone",
+                'username'  : username,
+                'password'  : password,
+            };
 
-  //     $("input.form-control").each(function(){
-  //         $(this).val('');
-  //         $(this).removeClass('is-invalid');
-  //         $('.invalid-feedback').html("");
-  //     });
-  // });
+            // validateLogin(formData);
+        }
 
-  $("#resetPassword").click(function(){
-    username = $("#username").val();
-    email = $("#email").val();
-    captcha = $('#captcha').val();
+        // $('#secureCodeRefresh').click(function(event) {
+        //     $("#captchaImage").attr("src", "captcha.php?" + Math.round(new Date().getTime() / 1000));
+        //     $('input#captcha').val("");
+        // });
 
-    $("input").each(function(){
-        $(this).removeClass('is-invalid');
-        $('.invalid-feedback').html("");
+        $("body").keyup(function(event) {
+            if (event.keyCode == 13) {
+                $("#loginBtn").click();
+            }
+        });
+
+        $('#loginBtn').click(function(){
+            $('#loginError').hide();
+            var username = $('#username').val();
+            var password = $('#password').val();
+            // var captcha = $('#captcha').val();
+
+            $("input").each(function(){
+                $(this).removeClass('is-invalid');
+                $('.invalid-feedback').html("");
+            });
+
+            $('#secureCodeRefresh').parent().removeClass('inputError');
+
+            showCanvas();
+
+            username = $('#dialingArea option:selected').val() + $('#phone').val();
+            password = $('#password').val();
+
+            var formData  = {
+                'command'   : 'memberLogin',
+                'id'  : "",
+                'username'  : username,
+                'loginBy' : "phone",
+                'password'   : password
+            };
+
+            validateLogin(formData);
+        });
+
     });
 
-    $('#secureCodeRefresh').parent().removeClass('inputError');
+    function validateLogin(formData){
+        startRecordTime("Login Performance");
+        $.ajax({
+                    type     : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                    url      : 'scripts/reqLogin.php', // the url where we want to POST
+                    data     : formData, // our data object
+                    dataType : 'text', // what type of data do we expect back from the server
+                    encode   : true
+                })
+        .done(function(data) {
+            var obj = JSON.parse(data);
+            hideCanvas();
+            if(obj.status == "ok") {
+                window.location.href = "homepage";
+            }
+            else {
+                refreshCaptcha();
+                if(obj.statusMsg != '')
+                {
+                    if(obj.data != null && obj.data.field)
+                            showCustomErrorField(obj.data.field, obj.statusMsg);
+                        else
+                            errorHandler(obj.code, obj.statusMsg);
+                }
+            }
+        });
+    }
 
-    if (username == "")
-    {
-        if (loginType=="telNumber") {
-      errorDisplay("username","<?php echo $translations['E00664'][$language]; //Please Enter Mobile Number. ?>");
-            refreshCaptcha();
+    function refreshCaptcha(){
+        $('input#captcha').val("");
+        $("#captchaImage").attr("src", "captcha.php?" + Math.round(new Date().getTime() / 1000));
+    }
+
+    $('#signUpBtn').click(function() {
+        $.redirect("publicRegistration");
+    })
+
+    $('#forgotPasswordBtn').click(function() {
+        $.redirect("resetPassword");
+    })
+
+
+    $('#resend-otp').click(function(){
+        $("input").each(function(){
+            $(this).removeClass('is-invalid');
+            $('.invalid-feedback').html("");
+        });
+
+        $('#phoneError').hide();
+        $('#verificationCodeError').hide();
+        $('#passwordError').hide();
+        $('#passwordError').hide();
+
+        var dialCode = $('#dialingArea option:selected').val();;
+        var number = $('#phone').val();
+        var phone = dialCode + number;
+        // var retypePassword = $('#retypePassword').val();
+
+        var formData  = {
+            command     : "memberResetPasswordVerification",
+            phone       : phone,
+        };
+        fCallback = otpCallback; 
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    });
+
+    function otpCallback(data, message) {
+        showMessage(message, 'success', 'Send OTP Code', 'success','');
+        countDown(data.resendOTPCountDown);
+    }
+
+    function countDown(second){
+        var minutes = Math.floor(second/60);
+        var seconds = second - (minutes*60);
+        if(minutes == 0 && seconds == 0){
+            $('#resend-otp').text('Resend OTP')
+            $('#resend-otp').show();
+            $('.timer').hide();
+            return;
+        }else if(minutes == 0 && seconds != 0){
+            $('#resend-otp').hide();
+            $('#timer').show();
+            $('.timer span').empty().append(seconds+" "+"Sec");
+            setTimeout('countDown('+(second-1)+')',1000);
         }else{
-            errorDisplay("username","<?php echo $translations['E00116'][$language]; //Please Enter Username. ?>");
-            refreshCaptcha();
+            // console.log(second)
+            $('#resend-otp').hide();
+            $('.timer').show();
+            $('.timer span').empty().append(minutes+" "+"Min"+" "+seconds+" "+"Sec");
+            setTimeout('countDown('+(second-1)+')',1000);
         }
     }
 
-    showCanvas();
+    $('#resetBtn').click(function(){
+        $("input").each(function(){
+            $(this).removeClass('is-invalid');
+            $('.invalid-feedback').html("");
+        });
 
-      var formData  = {
-          'command' : 'forgotPasswordVerification',
-          'username': username,
-          'type' : "email",
-          'receiveInput' : email,
-      };
+        $('#phoneError').hide();
+        $('#verificationCodeError').hide();
+        $('#passwordError').hide();
+        $('#passwordError').hide();
 
-      var fCallback = validateToResetPassword;
+        var dialCode = $('#dialingArea option:selected').val();;
+        var number = $('#phone').val();
+        var phone = dialCode + number;
+        var retypePassword = $('#checkPassword').val();
+        var password = $('#password').val();
+        var verificationCode = $('#otp').val();
+
+        var formData  = {
+            command     : "memberResetPassword",
+            clientID    : "",
+            phone       : phone,
+            verificationCode : verificationCode,
+            password    : password,
+            retypePassword : retypePassword,
+            otpType : "phone"
+        };
+        fCallback = resetCallback; 
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-
-  });
-
-  $('#sendCode').click(function(){
-      var formData  = {
-          command : "sendOTPCode",
-          // type : "resetPassword",
-          'username': username,
-          'value' : '0'
-      };
-      fCallback = otpCallback;
-      ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-  });
-
-
-
-
-
-  $("#resetPassword2").click(function(){
-    email = $("#email").val();
-    password = $("#newPassword").val();
-    retypePassword = $("#rePassword").val();
-    verificationCode = $("#inputCode").val();
-
-    $("input").each(function(){
-        $(this).removeClass('is-invalid');
-        $('.invalid-feedback').html("");
     });
 
-    if (password == "")
-    {
-      errorDisplay("newPassword","<?php echo $translations['M00517'][$language]; //Please Enter Your New Password. ?>");
-      // refreshCaptcha();
-    }
-    else if (retypePassword == "")
-    {
-      errorDisplay("rePassword","<?php echo $translations['M00518'][$language]; //Please Retype Your New Password. ?>");
-      // refreshCaptcha();
-    }
-    else if (verificationCode == "")
-    {
-      errorDisplay("verificationDIV","<?php echo $translations['M00193'][$language]; //Please Renter Your New Password. ?>");
-      // refreshCaptcha();
-    }
-    else
-    {
-      showCanvas();
-
-      var formData  = {
-          'command' : 'forgotPasswordConfirmation',
-          'username': username,
-          "type" : "email",
-          "receiveInput" : email,
-          'password': password,
-          'retypePassword' : retypePassword,
-          'otpCode': verificationCode
-      };
-
-      var fCallback = memberResetPassword;
-        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    function resetCallback(data, message) {
+        showMessage(message, 'success', 'Reset Password', 'success','homepage');
     }
 
-  });
+    $('#backBtn').click(function() {
+        $.redirect("login");
+    })
 
+    $('.eyeIco').click(function() {    
+    if($(this).hasClass('fa-eye-slash')) {
+        $(this).removeClass('fa-eye-slash');
+        $(this).addClass('fa-eye');
+
+        $('#password').attr('type','password');
+    } else {
+        $(this).removeClass('fa-eye');
+        $(this).addClass('fa-eye-slash');
+
+        $('#password').attr('type','text');
+    }
 });
 
-function validateToResetPassword(data, message)
-{
-  $("#resetPassword").hide();
-  $("#captchaDIV").hide();
-  $("#resetPassword2").show();
-  $("#passwordDIV").show();
-  $("#rePasswordDIV").show();
-  $("#verificationDIV").show();
-  $("#section1").css('pointer-events', 'none');
+$('.eyeIco1').click(function() {    
+    if($(this).hasClass('fa-eye-slash')) {
+        $(this).removeClass('fa-eye-slash');
+        $(this).addClass('fa-eye');
 
-  countDown('',180);
-}
+        $('#checkPassword').attr('type','password');
+    } else {
+        $(this).removeClass('fa-eye');
+        $(this).addClass('fa-eye-slash');
 
-function memberResetPassword(data, message)
-{
-  showMessage('<?php echo $translations['M00287'][$language]; //Succesfully reset password. ?>', "success", "<?php echo $translations['M00289'][$language]; //Reset Pasword ?>","", "login.php");
-
-
-}
-
-
-function refreshCaptcha(){
-    $('input#captcha').val("");
-    $("#captchaImage").attr("src", "captcha.php?" + Math.round(new Date().getTime() / 1000));
-}
-
-function otpCallback(data, message) {
-    // otpCode = data.otpCode;
-    countDown('#sendCode', 180);
-}
-
-function countDown(id, second){
-    var minutes = Math.floor(second/60);
-    var seconds = second - (minutes*60);
-    if(minutes == 0 && seconds == 0){
-        $('#sendCode').show();
-        $('#timer').hide();
-        return;
-    }else if(minutes == 0 && seconds != 0){
-        $('#sendCode').hide();
-        $('#timer').show();
-        $('#timer span').empty().append(seconds+"<?php echo $translations['M00995'][$language]; /* Sec */ ?>");
-        setTimeout('countDown(sendCode,'+(second-1)+')',1000);
-    }else{
-        $('#sendCode').hide();
-        $('#timer').show();
-        $('#timer span').empty().append(minutes+"<?php echo $translations['M00994'][$language]; /* Min */ ?>"+" "+seconds+"<?php echo $translations['M00995'][$language]; /* Sec */ ?>");
-        setTimeout('countDown(sendCode,'+(second-1)+')',1000);
+        $('#checkPassword').attr('type','text');
     }
-  }
+});
 </script>

@@ -156,10 +156,6 @@
         font-size: 12px;
     }
 
-    .whiteBg{
-        padding: 25px;
-    }
-
     .circle-wrap,
     .circle-wrap2,
     .circle-wrap3 {
@@ -194,5 +190,36 @@
         font-size: 18px;
         font-weight: 600;
         color: #fd9f41;
+    }
+
+    .mobileSidebar{
+        width: 50%;
+    }
+
+    .isDefaultSlider {
+        top: 1.5rem;
+        right: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .titleText.larger {
+        font-size: 30px;
+    }
+    
+    .titleText.smaller {
+        font-size: 20px;
+    }
+
+    .bodyText.larger {
+        font-size: 14px;
+    }
+
+    .mobileSidebar{
+        width: 80% !important;
+    }
+
+    .isDefaultSlider {
+        position: static;
     }
 }

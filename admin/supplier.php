@@ -154,6 +154,8 @@
             "Supplier ID",
             "Supplier Contact No",
             "Supplier Address",
+            "Email Address",
+            "Person In Charge",
             "Status",
             "Edit"
         );
@@ -234,6 +236,8 @@
                     "Supplier Name",
                     "Supplier ID",
                     "Supplier Address",
+                    "Email Address",
+                    "Person In Charge",
                     "Supplier Contact No",
                     "Status"
                 );
@@ -243,6 +247,8 @@
                     'code',
                     // 'description',
                     'address',
+                    'email',
+                    'pic',
                     'phone',
                     'status'
                 );
@@ -301,6 +307,8 @@
                         code                : v['code'],
                         phone               : v['phone'],
                         address             : v['address'],
+                        email               : v['email'],
+                        pic                 : v['pic'],
                         status              : v['status'],
                         buildBtn            : buildBtn
                     };

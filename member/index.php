@@ -3,7 +3,7 @@
     session_start();
 
     if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
-        header("Location: dashboard");
+        header("Location: homepage");
 
     }
     else {

@@ -22,7 +22,7 @@
 }
 
 #canvasLoaderContainer i {
-    color: #006cc1;
+    color: #d03a31;
 }
 
 .show{
@@ -48,11 +48,11 @@
     margin: 0 -6px;
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
-    border-bottom: 21.6px solid #006cc1;
+    border-bottom: 21.6px solid #d03a31;
     -webkit-animation: blink 1s infinite;
     animation: blink 1s infinite;
-    -webkit-filter: drop-shadow(0 0 18px #006cc1);
-    filter: drop-shadow(0 0 18px #006cc1);
+    -webkit-filter: drop-shadow(0 0 18px #d03a31);
+    filter: drop-shadow(0 0 18px #d03a31);
 }
 .arrowLoading.down {
     -webkit-transform: rotate(180deg);

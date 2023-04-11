@@ -86,29 +86,7 @@ $countryList = $_SESSION['countryList'];
 
                                             <div class="col-xs-12">
                                                 <div class="row">
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            Sponsor ID
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="sponsor" dataType="text">
-                                                    </div>
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            Main Leader ID
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="mainLeaderUsername" dataType="text">
-                                                    </div>
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            Rank
-                                                        </label>
-                                                        <select class="form-control" dataName="rank" dataType="select">
-                                                            <option value="">All</option>
-                                                            <?php foreach($_SESSION["rankList"] as $value){ ?>
-                                                                <option value="<?php echo $value['id']; ?>"><?php echo $value['display']; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
+
                                                     <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             <?php echo $translations['A00104'][$language]; /* Disabled */ ?>   
@@ -225,22 +203,24 @@ $countryList = $_SESSION['countryList'];
         '<?php echo $translations['A00148'][$language]; /* Member ID */ ?>',
         // '<?php echo $translations['A00102'][$language]; /* Username */ ?>',
         '<?php echo $translations['A00117'][$language]; /* Full Name */ ?>',
-        'Sponsor ID',
-        'Sponsor Name',
-        'Main Leader ID',
+        // 'Sponsor ID',
+        // 'Sponsor Name',
+        // 'Main Leader ID',
         '<?php echo $translations['A00153'][$language]; /* Country */ ?>',
         '<?php echo $translations['A00194'][$language]; /* City */ ?>',
-        '<?php echo $translations['A00984'][$language]; /* Rank */?>',
-        'PVP',
-        'PGP',
-        'Active Leg',
-        'DVP',
-        'Nearest Upline Director',
+        // '<?php echo $translations['A00984'][$language]; /* Rank */?>',
+        // 'PVP',
+        // 'PGP',
+        // 'Active Leg',
+        // 'DVP',
+        // 'Nearest Upline Director',
         // '<?php echo $translations['A00104'][$language]; /* Disabled */ ?>',
         // '<?php echo $translations['A00156'][$language]; /* Suspended */ ?>',
         // '<?php echo $translations['A00164'][$language]; /* Freezed */ ?>',
-        '<?php echo $translations['A00113'][$language]; /* Last login */ ?>',
-        '<?php echo $translations['A01350'][$language]; /* Last Login IP Address */ ?>',
+        '<?php echo $translations['A00113'][$language]; /* Last login */ ?>', 
+        '<?php echo $translations['A01350'][$language]; /* Total Amount */ ?>', //
+        '<?php echo $translations['A00156'][$language]; /* Total Point */ ?>',
+        '<?php echo $translations['A00164'][$language]; /* Point Amount */ ?>',
         '<?php echo $translations['M01026'][$language]; /* Join Date */ ?>',
         '<?php echo $translations['A00318'][$language]; /* Status */ ?>'
         );
@@ -305,21 +285,24 @@ $countryList = $_SESSION['countryList'];
             'memberID',
             // 'username',
             'name',
-            'sponsorMemberID',
-            'sponsorName',
-            'mainLeaderUsername',
+            // 'sponsorMemberID',
+            // 'sponsorName',
+            // 'mainLeaderUsername',
             'country',
             'city',
-            'rank',
-            'pvp',
-            'pgp',
-            'activeLeg',
-            'dvp',
-            'nearDirector',
+            // 'rank',
+            // 'pvp',
+            // 'pgp',
+            // 'activeLeg',
+            // 'dvp',
+            // 'nearDirector',
             // 'disabled',
             // 'suspended',
             // 'freezed',
             'lastLogin',
+            'balance',
+            'balance_to_point',
+            // 'point_to_balance',
             'lastLoginIp',
             'createdAt',
             'status'
@@ -360,9 +343,9 @@ $countryList = $_SESSION['countryList'];
                     v['name'] = "-";
                 }
 
-                if (v['mainLeaderUsername'] == "") {
-                    v['mainLeaderUsername'] = "-";
-                }
+                // if (v['mainLeaderUsername'] == "") {
+                //     v['mainLeaderUsername'] = "-";
+                // }
 
                 if (v['lastLoginIp'] == "") {
                     v['lastLoginIp'] = "-";
@@ -373,22 +356,26 @@ $countryList = $_SESSION['countryList'];
                     memberID : v['memberID'],
                     // username : v['username'],
                     name : v['name'],
-                    sponsorMemberID : v['sponsorMemberID'],
-                    sponsorName : v['sponsorName'],
-                    mainLeaderUsername : v['mainLeaderUsername'],
+                    // sponsorMemberID : v['sponsorMemberID'],
+                    // sponsorName : v['sponsorName'],
+                    // mainLeaderUsername : v['mainLeaderUsername'],
                     country : v['country'],
                     city : v['city'],
-                    rank : v['rank'],
-                    pvp : addCormer(v['pvp']),
-                    pgp : addCormer(v['pgp']),
-                    activeLeg : addCormer(v['activeLeg']),
-                    dvp : addCormer(v['dvp']),
-                    nearDirector : v['nearDirector'],
+                    // rank : v['rank'],
+                    // pvp : addCormer(v['pvp']),
+                    // pgp : addCormer(v['pgp']),
+                    // activeLeg : addCormer(v['activeLeg']),
+                    // dvp : addCormer(v['dvp']),
+                    // nearDirector : v['nearDirector'],
                     // disabled: v['disabled'],                    
                     // suspended : v['suspended'],
                     // freezed : v['freezed'],
+                    // lastLogin : v['lastLogin'],
                     lastLogin : v['lastLogin'],
                     lastLoginIp : v['lastLoginIp'],
+                    balance : v['balance'],
+                    balance_to_point : v['balance_to_point'],
+                    // point_to_balance : v['point_to_balance'],
                     createdAt : v['createdAt'],
                     status : v['status']
                 };

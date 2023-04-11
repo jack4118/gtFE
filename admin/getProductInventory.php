@@ -223,20 +223,29 @@
             "Created Date",
             "SKU Code",
             "Product Name",
-            // "Description",
-            "Category",
-            "Weight",
-            // "Price",
-            "Total Stock",
-            "No. of Stock Sold",
-            "Stock Balance",
             "Status",
-            "Updater ID",
+            "Product Type",
+            "Description",
+            "Cost",
+            "Sale Price",
+            "Cooking Time",
+            "Cooking Suggestion",
+            "Full Instruction",
+            "Full Instruction 2",
+            "Vendor Name",
+            "Category",
+            "Expired Day",
+            // "Weight",
+            // "Price",
+            // "Total Stock",
+            // "No. of Stock Sold",
+            // "Stock Balance",
+            // "Updater ID",
             "Updated At",
             "Edit",
-            "Add Stock",
-            "View Stock",
-            "View Transaction"
+            // "Add Stock",
+            // "View Stock",
+            // "View Transaction"
         );
 
         //View Details Table
@@ -323,13 +332,13 @@
                     "Product Name",
                     // "Description",
                     "Category",
-                    "Weight",
+                    // "Weight",
                     // "Price",
-                    "Total Stock",
-                    "No. of Stock Sold",
-                    "Stock Balance",
+                    // "Total Stock",
+                    // "No. of Stock Sold",
+                    // "Stock Balance",
                     "Status",
-                    "Updater ID",
+                    // "Updater ID",
                     "Updated At"
                 );
                 var key = Array(
@@ -338,13 +347,13 @@
                     'name',
                     // 'description',
                     'categoryDisplay',
-                    'weight',
+                    // 'weight',
                     // 'productCost',
-                    'totalStock',
-                    'totalStockOut',
-                    'quantity',
+                    // 'totalStock',
+                    // 'totalStockOut',
+                    // 'quantity',
                     'status',
-                    'updater_id',
+                    // 'updater_id',
                     'updated_at'
                 );
 
@@ -456,21 +465,30 @@
                         created_at          : v['created_at'],
                         code                : v['skuCode'],
                         name                : v['name'],
-                        // description      : v['description'],
-                        category            : v['categoryDisplay'],
-                        weight              : addCommas(v['weight']),
-                        // productCost      : numberThousand(v['productCost'], 2),
-                        totalStock          : numberThousand(v['totalStock'], 0),
-                        totalStockOut       : numberThousand(v['totalStockOut'], 0),
-                        quantity            : numberThousand(v['quantity'], 0),
                         status              : v['status'],
-                        updater_id          : v['updater_id'],
+                        productType         : v['productType'],
+                        description         : v['description'],
+                        cost                : numberThousand(v['cost'], 2),
+                        salePrice           : numberThousand(v['salePrice'], 2),
+                        cookingTime         : v['cookingTime'],
+                        cookingSuggestion   : v['cookingSuggestion'],
+                        fullInstruction     : v['fullInstruction'],
+                        fullInstruction2    : v['fullInstruction2'],
+                        vendorName          : v['vendorName'],
+                        category            : v['categoryDisplay'],
+                        expiredDay          : v['expiredDay'],
+                        // weight              : addCommas(v['weight']),
+                        // productCost      : numberThousand(v['productCost'], 2),
+                        // totalStock          : numberThousand(v['totalStock'], 0),
+                        // totalStockOut       : numberThousand(v['totalStockOut'], 0),
+                        // quantity            : numberThousand(v['quantity'], 0),
+                        // updater_id          : v['updater_id'],
                         updated_at          : v['updated_at'],
                         // status           : buildStatusDropdown,
                         buildBtn            : buildBtn,
-                        adjustBtn           : adjustBtn,
-                        viewStockBtn        : viewStockBtn,
-                        viewTransBtn        : viewTransBtn
+                        // adjustBtn           : adjustBtn,
+                        // viewStockBtn        : viewStockBtn,
+                        // viewTransBtn        : viewTransBtn
                     };
                     newList.push(rebuildData);
                 });
@@ -480,14 +498,14 @@
             pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
             $('#' + tableId).find('tbody tr, thead tr').each(function () {
-                $(this).find('td:last-child, th:last-child').css('text-align', "center");
-                $(this).find('td:eq(-2), th:eq(-2)').css('text-align', "center");
-                $(this).find('td:eq(-3), th:eq(-3)').css('text-align', "center");
-                $(this).find('td:eq(-4), th:eq(-4)').css('text-align', "center");
-                $(this).find('td:eq(4), th:eq(4)').css('text-align', "right");
-                $(this).find('td:eq(5), th:eq(5)').css('text-align', "right");
-                // $(this).find('td:eq(6), th:eq(6)').css('text-align', "right");
-                // $(this).find('td:eq(7), th:eq(7)').css('text-align', "right");
+                // $(this).find('td:last-child, th:last-child').css('text-align', "center");
+                // $(this).find('td:eq(-2), th:eq(-2)').css('text-align', "center");
+                // $(this).find('td:eq(-3), th:eq(-3)').css('text-align', "center");
+                // $(this).find('td:eq(-4), th:eq(-4)').css('text-align', "center");
+                // $(this).find('td:eq(4), th:eq(4)').css('text-align', "right");
+                // $(this).find('td:eq(5), th:eq(5)').css('text-align', "right");
+                $(this).find('td:eq(6)').css('text-align', "right");
+                $(this).find('td:eq(7)').css('text-align', "right");
             });
         }
 

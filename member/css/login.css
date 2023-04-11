@@ -1210,10 +1210,10 @@ label {
 
 .eyeIco, .eyeIco1, .calIco {
     display: none;
-    position: absolute;
+/*    position: absolute;*/
     right: 15px;
     top: calc((1.5em + 1.6rem + 5px) * 0.5);
-    transform: translateY(-50%);
+/*    transform: translateY(-50%);*/
     color: #848E9C;
     cursor: pointer;
 }
@@ -1487,14 +1487,6 @@ select.form-control:active {
     position: absolute;
     top: 20px;
     right: 0;
-}
-
-
-.loginPage {
-    background-image: url('../images/project/loginBG1.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
 
 .forgotPasswordPage {

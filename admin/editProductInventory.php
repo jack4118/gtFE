@@ -49,80 +49,138 @@ $_SESSION['lastVisited'] = $thisPage;
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>Product Name</label>
                                                 <input id="invProductName" type="text" class="form-control">
+                                                <span id="invProductNameError" class="errorSpan text-danger"></span>
                                                 <span id="nameError" class="errorSpan text-danger"></span>
                                             </div>
+                                        </div>
 
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Vendor Name</label>
+                                                <select id="vendorName" class="form-control" dataName="vendorName" dataType="text">
+                                                </select>
+                                                <span id="vendorNameError" class="errorSpan text-danger"></span>
+                                            </div>
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>SKU Code</label>
-                                                <input id="code" type="text" class="form-control" disabled>
-                                                <span id="codeError" class="errorSpan text-danger"></span>
+                                                <input id="skuCode" type="text" class="form-control">
+                                                <span id="skuCodeError" class="errorSpan text-danger"></span>
                                             </div>
+                                        </div>
 
+                                        <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px;">
-                                                <label>Product Weight in KG, Weight (KG)</label>
-                                                <input id="weight" type="text" class="form-control"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); this.value = this.value.match(/^[0-9]+\.?[0-9]{0,3}/); this.value = this.value!=''?addCormer(this.value):'';">
-                                                <span id="weightError" class="errorSpan text-danger"></span>
+                                                <label>Product Type</label>
+                                                <select id="productType" class="form-control" dataName="productType" dataType="text">
+                                                </select>
+                                                <span id="productTypeError" class="errorSpan text-danger"></span>
                                             </div>
-
-                                            <!-- <div class="col-xs-12" style="margin-top: 20px;">
-                                                <label>Price</label>
-                                                <input id="productCost" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); this.value = this.value.match(/^[0-9]+\.?[0-9]{0,2}/);">
-                                                <span id="productCostError" class="errorSpan text-danger"></span>
-                                            </div> -->
-                                        <!-- </div> -->
-                                    <!-- </div> -->
-
-                                    <!-- <div class="col-sm-6 col-xs-12"> -->
-                                        <!-- <div class="row"> -->
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Expired Day</label>
+                                                <input id="expiredDay" type="number" class="form-control">
+                                                <span id="expiredDayError" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>Category</label>
                                                 <select id="category" class="form-control category" dataName="category" dataType="text">
                                                 </select>
                                                 <span id="categoryError" class="errorSpan text-danger"></span>
-                                            </div>
-
-                                            <!-- <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
-                                                <label>Category</label>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <select id="category" class="form-control category" dataName="category" dataType="text">
-                                                            <option value="">
-                                                                <?php echo $translations['A00055'][$language]; /* All */ ?>
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div id="addCategoryList" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll;">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <span id="categoryError" class="errorSpan text-danger"></span>
-                                            </div> -->
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <!-- <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
-                                        <label>Name Languages</label>
-                                    </div>
-
-                                    <div class="col-xs-12">
                                         <div class="row">
-                                            <div id="buildLanguage"></div>
-                                            <div class="col-md-4 addLanguageBtn" style="display: none;">
-                                                <div class="addLanguageImage" onclick="addLanguage()">
-                                                    <b><i class="fa fa-plus-circle"></i></b>
-                                                    <span>Add Languages</span>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Cost</label>
+                                                <input id="cost" type="number" class="form-control">
+                                                <span id="costError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Sale Price</label>
+                                                <input id="salePrice" type="number" class="form-control">
+                                                <span id="costSuggest" class="errorSpan"></span>
+                                                <span id="salePriceError" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Description</label>
+                                                <textarea id="description" class="form-control" rows="4" cols="50"></textarea>
+                                                <span id="descriptionError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Cooking Time</label>
+                                                <textarea id="cookingTime" class="form-control" rows="4" cols="50"></textarea>
+                                                <span id="cookingTimeError" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Cooking Suggestion</label>
+                                                <textarea id="cookingSuggestion" class="form-control" rows="4" cols="50"></textarea>
+                                                <span id="cookingSuggestionError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Full Instruction</label>
+                                                <textarea id="fullInstruction" class="form-control" rows="4" cols="50"></textarea>
+                                                <span id="fullInstructionError" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Full Instruction 2</label>
+                                                <textarea id="fullInstruction2" class="form-control" rows="4" cols="50"></textarea>
+                                                <span id="fullInstruction2Error" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Video</label>
+                                                <input id="video1" type="text" class="form-control">
+                                                <span id="videoError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Video 2</label>
+                                                <input id="video2" type="text" class="form-control">
+                                                <span id="video2Error" class="errorSpan text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
+                                                Product Images (Recommended Size: 600 x 310 px)
+                                            </div>
+
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <div id="buildImg">
+                                                    </div>
+
+                                                    <div class="col-md-4 addImgBtn" style="display: none;">
+                                                        <div class="addProductImage" onclick="addImage()">
+                                                            <b><i class="fa fa-plus-circle"></i></b>
+                                                            <span>Add Images</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <span id="imgError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <span id="imgTypeError" class="errorSpan text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-xs-12">
-                                        <span id="nameLanguagesError" class="errorSpan text-danger"></span><br>
-                                        <span id="descrLanguagesError" class="errorSpan text-danger"></span>
-                                    </div> -->
 
                                     <div class="col-sm-6 col-xs-12">
                                         <div class="row">
@@ -147,40 +205,72 @@ $_SESSION['lastVisited'] = $thisPage;
                                         </div>
                                     </div>
 
-                                    <!-- 
-                                        "status": "Pending", "On Sale", "Sold Out", "Close"
-                                        "distributionStatus": "Pending", "Distributing", "Ended", "Close"
-                                     -->
+                                    <div class="col-xs-12" style="margin-top: 20px;">
+                                        <div class="row">
+                                            <div class="col-xs-12" style="border: 1px solid #ff9804; background-color: #fff0db; padding: 10px;">
+                                                <div class="row" onclick="toggleAttributeBox()">
+                                                    <div class="col-xs-12">
+                                                        <input type="checkbox" id="isVariant" onclick="toggleAttributeBox()" style="margin: 0;"><label for="isVariant" onclick="toggleAttributeBox()" style="margin: 0;">Variant</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="attributeBox" class="col-xs-12" style="border: 1px solid #ff9804; background-color: #fff0db; padding: 20px; display: none;">
+                                                <div id="attr1" class="col-xs-6">
+                                                    <div class="col-xs-12" style="margin-top: 20px">
+                                                        <label>Attribute 1</label>
+                                                        <select id="attribute1" type="text" class="attribute form-control"></select>
+                                                        <span id="attribute1Error" class="errorSpan text-danger"></span>
+                                                    </div>
+                                                    <div class="col-xs-12" style="margin-top: 20px">
+                                                        <label>Value</label>
+                                                        <select id="attributeVal1" class="form-control attributeVal" dataName="attributeVal1" dataType="text">
+                                                        </select>
+                                                        <span id="attributeVal1Error" class="errorSpan text-danger"></span>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div id="attributeVal1List" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll; background: white;">
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                    <!-- <div class="col-xs-12" style="margin-top: 20px;">
-                                        <label>Distribution Status</label>
-                                        <div id="dstatus" class="m-b-20">
-                                            <div class="radio radio-info radio-inline">
-                                                <input id="dPending" type="radio" class="dStatusRadio" value="Pending" name="dStatusRadio"/>
-                                                <label for="dPending">
-                                                    Pending
-                                                </label>
-                                            </div>
-                                            <div class="radio radio-info radio-inline">
-                                                <input id="ddistributing" type="radio" class="dStatusRadio" value="Distributing" name="dStatusRadio"/>
-                                                <label for="ddistributing">
-                                                    Distributing
-                                                </label>
-                                            </div>
-                                            <div class="radio radio-info radio-inline">
-                                                <input id="dended" type="radio" class="dStatusRadio" value="Ended" name="dStatusRadio"/>
-                                                <label for="dended">
-                                                    Ended
-                                                </label>
-                                            </div>
-                                            <div class="radio radio-info radio-inline">
-                                                <input id="dclose" type="radio" class="dStatusRadio" value="Close" name="dStatusRadio"/>
-                                                <label for="dclose">
-                                                    Close
-                                                </label>
+                                                <div id="attr2" class="col-xs-6">
+                                                    <div class="col-xs-12" style="margin-top: 20px">
+                                                        <label>Attribute 2</label>
+                                                        <select id="attribute2" type="text" class="attribute form-control"></select>
+                                                        <span id="attribute2Error" class="errorSpan text-danger"></span>
+                                                    </div>
+                                                    <div class="col-xs-12" style="margin-top: 20px">
+                                                        <label>Value</label>
+                                                        <select id="attributeVal2" class="form-control attributeVal" dataName="attributeVal2" dataType="text">
+                                                        </select>
+                                                        <span id="attributeVal2Error" class="errorSpan text-danger"></span>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div id="attributeVal2List" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll; background: white;">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
+
+                                    <div id="packageBox" class="col-xs-12" style="margin-top: 20px;  display: none;">
+                                        <div class="row">
+                                            <div class="col-xs-12" style="border: 1px solid #ff9804; background-color: #fff0db; padding: 20px;">
+                                                <div class="col-xs-12">
+                                                    <div class="col-xs-12" style="margin-top: 20px">
+                                                        <label>Package</label>
+                                                        <select id="package" type="text" class="package form-control"></select>
+                                                        <span id="packageError" class="errorSpan text-danger"></span>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div id="packageList" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll; background: white;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="col-xs-12" style="margin-top: 20px;margin-bottom: 20px;">
                                         <div id="submitBtn" class="btn btn-primary waves-effect waves-light">
@@ -199,7 +289,7 @@ $_SESSION['lastVisited'] = $thisPage;
         </div>
     </div>
 
-    <!-- <div class="modal fade" id="showImage" role="dialog">
+    <div class="modal fade" id="showImage" role="dialog">
         <div class="modal-dialog modal-xs" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -220,7 +310,7 @@ $_SESSION['lastVisited'] = $thisPage;
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
    
 	<!-- <div class="modal fade" id="modalProcessing" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="padding-left: 17px; padding-right: 25px;" aria-modal="true" data-backdrop="static" data-keyboard="false">
@@ -256,18 +346,19 @@ $_SESSION['lastVisited'] = $thisPage;
         var reqVideoData =  new FormData();
         // var nameLanguages;
         // var descrLanguages;
-        // var uploadImage;
+        var uploadImage;
         // var uploadImageData;
         // var uploadVideo;
         var buildOption;
         var buildOptionLength = 0;
         // var buildCountry;
         var addLangCount = 0;
-        // var addImgCount = 0;
-        // var addImgIDNum = 0;
+        var addImgCount = 0;
+        var addImgIDNum = 0;
         // var uploadFileType = 'image';
         var id = "<?php echo $_POST['id']; ?>";
-        // var dataURL = "<?php echo $config['tempMediaUrl']; ?>product/";
+        var dataURL = "<?php echo $config['tempMediaUrl']; ?>";
+        var discountPercentage = 0;
 
         // var divId    = 'productListDiv';
         // var tableId  = 'productListTable';
@@ -279,6 +370,11 @@ $_SESSION['lastVisited'] = $thisPage;
         //     "Quantity"
         // );
         // var pageNumber      = 1; 
+        var attributeValList = [];
+        var attrIdList = [];
+        var videoId = [];
+        var varFlag = 0;
+        var imageId = [];
 
         $(document).ready(function() {
 
@@ -290,7 +386,18 @@ $_SESSION['lastVisited'] = $thisPage;
             fCallback = loadDefaultListing;
             ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
-            /*$('#category').change(function(){
+            $('#cost').on('change', function() {
+                if($(this).val() == '') {
+                    $('#costSuggest').hide();
+                } else {
+                    var cost = $(this).val();
+                    var sale_price = (cost * (100 + discountPercentage)) / 100;
+
+                    $('#costSuggest').text('Suggested sale price is RM ' + numberThousand(sale_price, 2));
+                }
+            });
+
+            $('#category').change(function(){
                 var categoryID = $(this).find("option:selected").val();
                 var category = $(this).find("option:selected").text();
 
@@ -325,7 +432,134 @@ $_SESSION['lastVisited'] = $thisPage;
                 csel.find("option[value='']").not(':first').remove();
 
                 csel.val("");
-            });*/
+            });
+
+            $('.attribute').on('change', function() {
+                var attrId = $(this).val();
+                var inputId = $(this).parent().parent().attr('id');
+
+                var formData  = {
+                    command : 'getAttributeDetail',
+                    attrId  : attrId,
+                    type    : 'get',
+                    inputId : inputId,
+                };
+                fCallback = loadAttribute;
+                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, 1, 0);
+            });
+
+            $('.attributeVal').on('change',function(){
+                var attrID = $(this).find("option:selected").val();
+                var attr   = $(this).find("option:selected").text();
+                var input  = $(this).attr('id');
+
+                if(attrID != "") {
+                    var attrDiv = `
+                        <div id="${attrID}" data-select="${input}" class="attributeTag includeAttributeTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px;">${attr} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                    `;
+
+                    $("#"+input+"List").append(attrDiv);
+                    $(this).find("option:selected").remove();
+                    $(this).val('');
+                }
+            });
+
+            $(document).on("click",".attributeTag",function() {
+                $(this).remove();
+                var selectId = $(this).attr('data-select');
+                var attrID = $(this).attr('id');
+                var attr = $(this).text();
+                var optionHtml = `<option value=""><?php echo $translations['A00055'][$language]; /* All */ ?></option>`;
+
+                var csel = $("#"+selectId);
+                var appendHtml  = `<option value="${attrID}">${attr}</option>`;
+                csel.append(appendHtml);
+                csel.html(csel.find('option').sort(function(x, y) {
+                    return $(x).text() > $(y).text() ? 1 : -1;
+                }));
+
+                csel.prepend(optionHtml);
+                csel.find("option[value='']").not(':first').remove();
+                csel.val("");
+            });
+
+            $('#vendorName').on('change', function() {
+                var vendorId = $(this).val();
+                if(vendorId != '') {
+                    var formData  = {
+                        command  : 'generateProductSKU',
+                        vendorId : vendorId,
+                    };
+                    fCallback = loadProductSKU;
+                    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, 1, 0);
+                }
+            });
+
+            $('#productType').on('change', function() {
+                var productType = $(this).val();
+                if(productType == 'Package') {
+                    var formData  = {
+                        command : 'getPackageProductList',
+                        type    : productType,
+                    };
+                    fCallback = loadPackageProduct;
+                    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, 1, 0);
+                } else {
+                    $('#packageBox').hide();
+                }
+            });
+
+            $('#package').change(function(){
+                var packageID = $(this).find("option:selected").val();
+                var package   = $(this).find("option:selected").text();
+                var input     = $(this).attr('id'); 
+
+                if(packageID != "") {
+                    var packDiv = `
+                        <div id="${packageID}" data-select="${input}" class="packageTag includePackageTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px;">${package} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                    `;
+
+                    $("#packageList").append(packDiv);
+
+                    $(this).find("option:selected").remove();
+                    $(this).val('');
+                }
+            });
+
+            $(document).on("click",".packageTag",function() {
+                $(this).remove();
+                var selectId = $(this).attr('data-select');
+                var categoryId = $(this).attr('id');
+                var category = $(this).text();
+                var optionHtml = `<option value=""><?php echo $translations['A00055'][$language]; /* All */ ?></option>`;
+
+                var csel = $("#"+selectId);
+                var appendHtml  = `<option value="${categoryId}">${category}</option>`;
+                csel.append(appendHtml);
+                csel.html(csel.find('option').sort(function(x, y) {
+                    return $(x).text() > $(y).text() ? 1 : -1;
+                }));
+
+                csel.prepend(optionHtml);
+                csel.find("option[value='']").not(':first').remove();
+
+                csel.val("");
+            });
+
+            function loadAttribute(data, message) {
+                var inputId = data.inputId;
+                attributeValList.push(data.attributeDetail);
+
+                attributeDetail = "";
+                attributeDetail += `<option value=""> All </option>`;
+
+                $.each(data.attributeDetail, function(k,v){
+                    attributeDetail += `
+                        <option value="${v['id']}">${v['name']}</option>
+                    `;
+                });
+                $('#'+inputId+' .attributeVal').html(attributeDetail);
+            }
 
             $('#submitBtn').click(function() {
 
@@ -335,16 +569,55 @@ $_SESSION['lastVisited'] = $thisPage;
                 // var videoSizeFlag = true;
 
                 var invProductName = $("#invProductName").val();
-                // var code = $("#code").val();
+                var code = $("#skuCode").val();
                 var status = $("input[name=statusRadio]:checked").val()
-                var category = $('#category option:selected').val();
-                /*var category = [];
+                var productType = $("#productType").val();
+                var expiredDay = $('#expiredDay').val();
+                var description = $('#description').val();
+                var cost = $('#cost').val();
+                var salePrice = $('#salePrice').val();
+                var cookingTime = $('#cookingTime').val();
+                var cookingSuggestion = $('#cookingSuggestion').val();
+                var fullInstruction = $('#fullInstruction').val();
+                var fullInstruction2 = $('#fullInstruction2').val();
+                var vendorId = $('#vendorName option:selected').val();
+                var video = $('#video1').val();
+                var video2 = $('#video2').val();
+                var packageProduct = [];
+
+                var category = [];
                 $('.includecategoryTag').each(function (index, value) {  
                     category.push(value.id);
-                });*/
+                });
+
+                var isVariant = $('#isVariant').is(':checked') ? "1" : "0";
+                var attrData = [];
+                var variants = '';
+                var checkVariant = [];
+                $('.includeAttributeTag').each(function (index, value) {  
+                    var input = $(this).parent().attr('id');
+                    input = input.replace('attributeVal', '');
+                    input = input.replace('List', '');
+
+                    if (!attrData[input]) {
+                        attrData[input] = [];
+                    }
+                    attrData[input].push(value.id);
+                    checkVariant.push(value.id);
+                    variants = Object.assign({}, attrData);
+                });
+
+                // check the variant is same or not
+                if(JSON.stringify(checkVariant) == JSON.stringify(attrIdList)) {
+                    varFlag = 1;
+                    variants = [];
+                } else {
+                    varFlag = 0;
+                }
+
                 // var country = $("#country").val();
-                var weight = $("#weight").val().replace(/[^0-9.]/g, '');
-                var productCost = $("#productCost").val();
+                // var weight = $("#weight").val().replace(/[^0-9.]/g, '');
+                // var productCost = $("#productCost").val();
 
 
                 // var quantity = $("#quantity").val();
@@ -400,7 +673,7 @@ $_SESSION['lastVisited'] = $thisPage;
                 //     descrLanguages.push(buildDescrLanguages);
                 // });
 
-                /*uploadImage = [];
+                uploadImage = [];
                 uploadImageData = [];
                 $(".popupMemoImageWrapper").each(function() {
                     var imgData = $(this).find('[id^="storeFileData"]').val();
@@ -408,7 +681,13 @@ $_SESSION['lastVisited'] = $thisPage;
                     var imgType = $(this).find('[id^="storeFileType"]').val();
                     var imgSize = $(this).find('[id^="storeFileSize"]').val();
                     var imgFlag = $(this).find('[id^="storeFileFlag"]').val();
+                    var imgID   = $(this).find('[id^="storeFileID"]').val();
                     var imgUploadType = $(this).find('[id^="storeFileUploadType"]').val();
+
+                    if(typeof(imgID) == 'undefined') {
+                        imgID = '';
+                    }
+
                     buildUploadImage = {
                         imgName : imgName,
                         imgType : imgType,
@@ -422,14 +701,15 @@ $_SESSION['lastVisited'] = $thisPage;
                     // }
 
                     reqData = {
-                        imgName: imgName,
-                        imgData: imgData,
+                        imgID      : imgID,
+                        imgName    : imgName,
+                        imgData    : JSON.stringify(imgData),
                         uploadType : imgUploadType
                     };
                     
                     uploadImageData.push(reqData);
-                    uploadImage.push(buildUploadImage);
-                });*/
+                    uploadImage.push(reqData);
+                });
 
                 /*if(!videoSizeFlag || !imgSizeFlag) {
                     if(!imgSizeFlag)
@@ -444,16 +724,48 @@ $_SESSION['lastVisited'] = $thisPage;
 
                 $("#imgError").text("");
                 $("#videoError").text("");*/
+                var packageData = [];
+                var variants = '';
+                $('.includePackageTag').each(function (index, value) {  
+                    packageProduct.push(value.id);
+                });
+
+                var fullInstruc = [
+                    fullInstruction, fullInstruction2
+                ];
+
+                var videoList = [];
+
+                if(video == '' && video2 == '') {
+                    videoList = [];
+                } else {
+                    videoList = [
+                        video, video2
+                    ];
+                }
 
                 var formData  = {
                     command         : 'editProductInventory', 
                     productInvId    : id,
                     invProductName  : invProductName,
-                    // code            : code,
+                    code            : code,
                     status          : status,
+                    productType     : productType,
+                    expired_day     : expiredDay,
+                    description     : description,
+                    cost            : cost,
+                    salePrice       : salePrice,
+                    cookingTime     : cookingTime,
+                    cookingSuggest  : cookingSuggestion,
+                    fullInstruc     : fullInstruc,
+                    vendorId        : vendorId,
                     category        : category,
-                    weight          : weight,
-                    productCost     : productCost,
+                    videoList       : videoList,
+                    videoId         : videoId,
+                    uploadImage     : uploadImage,
+                    imageId         : imageId,
+                    // weight          : weight,
+                    // productCost     : productCost,
                     // nameLanguages   : nameLanguages,
                     // descrLanguages  : descrLanguages
                     // country         : [country],
@@ -468,9 +780,16 @@ $_SESSION['lastVisited'] = $thisPage;
                     // updateType      : "product"
                 };
 
+                if(isVariant == "1") {
+                    formData['isVariant']    = isVariant;
+                    formData['variants']     = variants;
+                }
+
+                if(productType == 'Package') {
+                    formData['packageProduct'] = packageProduct;
+                }
                 fCallback = submitCallback;
                 ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-                
             });
 
             $('#backBtn').click(function() {
@@ -579,11 +898,20 @@ $_SESSION['lastVisited'] = $thisPage;
         // }
 
         function loadDefaultListing(data, message) {
+            console.log(data);
             $("#invProductName").val(data.productDetails.name);
-            $("#code").val(data.productDetails.skuCode);
+            $("#skuCode").val(data.productDetails.skuCode);
             $('input[name=statusRadio]').filter('[value='+data.productDetails.status+']').prop('checked', true);
             $("#weight").val(data.productDetails.weight);
-            $("#productCost").val(Number(data.productDetails.cost));
+            $('#expiredDay').val(data.productDetails.expired_day);
+            $('#description').val(data.productDetails.description);
+            $('#cost').val(numberThousand(data.productDetails.cost,2));
+            $('#salePrice').val(numberThousand(data.productDetails.sale_price, 2));
+            $('#cookingTime').val(data.productDetails.cooking_time);
+            $('#cookingSuggestion').val(data.productDetails.cooking_suggestion);
+            $('#fullInstruction').val(data.productDetails.full_instruction);
+            $('#fullInstruction2').val(data.productDetails.full_instruction2);
+            discountPercentage = data.discountPercentage || 0;
 
             buildOptionLength = 0;
 
@@ -598,38 +926,152 @@ $_SESSION['lastVisited'] = $thisPage;
             });
 
             categoryOption = "";
-            /*if(data.categoryList) {
-                $.each(data.categoryList, function(k,v){
-                    var checked = "";
-                    Object.values(data.productDetails.category).indexOf(v['categoryDisplay'])>-1 ? checked="checked" : checked="";
-                    categoryOption += `
-                        <input type="checkbox" id="category${k+1}" name="categoryCheckbox" value="${v['id']}" ${checked}>
-                        <label for="category${k+1}">${v['categoryDisplay']}</label><br>
-                    `;
-                });
-            }*/
             if(data.categoryList) {
+                categoryOption += `
+                    <option value="">Select Category</option>
+                `
                 $.each(data.categoryList, function(k,v) {
                     categoryOption += `
                         <option value="${v['id']}" name="${v['name']}">${v['categoryDisplay']}</option>
                     `;
                 });
                 $("#category").html(categoryOption);
-                $('#category option[name="'+data.productDetails.category[0]+'"]').prop('selected', true);
-                /*$.each(data.categoryList, function(k,v) {
-                    var categoryID = v['id'];
-                    var category = v['categoryDisplay'];
 
-                    if(Object.values(data.productDetails.category).indexOf(category)>-1) {
+                if(data.productCategory) {
+                    $.each(data.productCategory, function(k,v) {
+                        var categoryID = v['id'];
+                        var category = v['name'];
                         var categoryDiv = `
                             <div id="${categoryID}" data-select="category" class="categoryTag includecategoryTag" style="">${category} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
                         `;
 
                         $("#addCategoryList").append(categoryDiv);
-
                         $('#category').find(`option[value=${categoryID}]`).remove();
+                    });
+                }
+            }
+
+            var buildSupplier = "";
+            if(data.supplierList) {
+                buildSupplier += `
+                    <option value="">Select Vendor</option>
+                `
+                $.each(data.supplierList, function(k, v) {
+                    buildSupplier += `
+                        <option value="${v['supplierID']}">${v['code']} - ${v['name']}</option>
+                    `
+                });
+                $('#vendorName').append(buildSupplier);
+            }
+            $('#vendorName').val(data.productDetails.vendor_id);
+
+            if(data.attrIdList) {
+                toggleAttributeBox();
+
+                if(data.productAttrList) {
+                    attributeOption = "";
+                    attributeOption += `<option value=""> All </option>`;
+
+                    $.each(data.productAttrList, function(k,v){
+                        attributeOption += `
+                            <option value="${v['id']}">${v['name']}</option>
+                        `;
+                    });
+                    $(".attribute").html(attributeOption);
+                }
+
+                $.each(data.attrIdList, function(key,val) {
+                    var attId = val['pa_id'];
+                    var input = '';
+                    input = 'attributeVal'+(key+1);
+                    
+                    $('#attribute'+(key+1)).val(attId);
+
+                    if(data.attribute) {
+                        attributeDetail = "";
+                        attributeDetail += `<option value=""> All </option>`;
+
+                        $.each(data.attribute, function(key1,val1){
+                            if(attId == val1['product_attribute_id']) {
+                                attributeDetail += `
+                                    <option value="${val1['id']}">${val1['name']}</option>
+                                `;
+                            }
+                            $('#'+input+'').html(attributeDetail);
+                        });
+    
+                        $.each(val['id'], function(k,v) {
+                            attrIdList.push(v.toString());
+                            var attrDiv = `
+                                <div id="${v}" data-select="${input}" class="attributeTag includeAttributeTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px;">${val['name'][k]} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                            `;
+                            $('#'+input+'List').append(attrDiv);
+    
+                            input = 'attributeVal'+(key+1);
+                            var select = document.getElementById(input);
+                            var options = select.options;
+    
+                            for (var i = 0; i < options.length; i++) {
+                                if (options[i].value == v) {
+                                    select.removeChild(options[i]);
+                                    break;
+                                }
+                            }
+                        });
                     }
-                });*/
+                });
+            } else {
+                attributeOption = "";
+                if(data.productAttrList) {
+                    attributeOption += `<option value=""> All </option>`;
+
+                    $.each(data.productAttrList, function(k,v){
+                        attributeOption += `
+                            <option value="${v['id']}">${v['name']}</option>
+                        `;
+                    });
+                }
+                $(".attribute").html(attributeOption);
+            }
+
+            typeOption = "";
+            if(data.productType) {
+                typeOption += `<option value=""> All </option>`;
+
+                $.each(data.productType, function(k,v){
+                    typeOption += `
+                        <option value="${v['name']}">${v['name']}</option>
+                    `;
+                });
+            }
+            $('#productType').html(typeOption);
+            $("#productType").val(data.productDetails.product_type);
+
+            if(data.packageProduct) {
+                $('#packageBox').show();
+
+                packageDetail = "";
+                packageDetail += `<option value=""> All </option>`;
+
+                if(data.productList) {
+                    $.each(data.productList, function(k,v){
+                        packageDetail += `
+                            <option value="${v['id']}">${v['name']}</option>
+                        `;
+                    });
+                    $('#package').html(packageDetail);
+                }
+
+                $.each(data.packageProduct, function(k,v) {
+                    var packageID = v['product_id'];
+                    var package = v['name'];
+                    var packageDiv = `
+                        <div id="${packageID}" data-select="package" class="packageTag includePackageTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px;">${package} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                    `;
+
+                    $("#packageList").append(packageDiv);
+                    $('#package').find(`option[value=${packageID}]`).remove();
+                });
             }
 
             // buildCountry = ""; 
@@ -647,7 +1089,7 @@ $_SESSION['lastVisited'] = $thisPage;
             // $("#category").html(categoryOption);
             // $("#country").html(buildCountry);
             // $(".addLanguageBtn").show();
-            // $(".addImgBtn").show();
+            $(".addImgBtn").show();
 
 
 
@@ -711,57 +1153,55 @@ $_SESSION['lastVisited'] = $thisPage;
                 $(this).val(getArr.content);
             });
 
-
-
-            /*if (data.productDetails.imageName) {
-                $.each(data.productDetails.imageName, function(k,v){
-                    addImgCount = addImgCount + 1;
-                    addImgIDNum = addImgIDNum + 1;
-        
-                    var buildImg = "";
-        
-                    buildImg += `
-                        <div class="col-sm-4 col-xs-12">
-                            <div class="popupMemoImageWrapper" imageFlag="0">
-                    `;
-        
-                    buildImg +=`
-                                <a href="javascript:;" class="closeBtn" onclick="closeDivImg(this)">×</a>
-                                <input type="hidden" id="storeFileData${addImgIDNum}" value="${dataURL+v.value}">
-                                <input type="hidden" id="storeFileName${addImgIDNum}" value="${v.value}">
-                                <input type="hidden" id="storeFileType${addImgIDNum}" value="${v.value}">
-                                <input type="hidden" id="storeFileSize${addImgIDNum}" value="${v.value}">
-                                <input type="hidden" id="storeFileFlag${addImgIDNum}" value="0">
-                                <input type="hidden" id="storeFileUploadType${addImgIDNum}" value="${(v.value).toLowerCase()}">
-                                <input type="hidden" id="viewFileData${addImgIDNum}" value="${dataURL+v.value}">
-                                <input type="file" id="fileUpload${addImgIDNum}" class="hide" accept="image/jpeg, image/png, image/gif, image/bmp, image/tiff" onchange="displayFileName('${addImgIDNum}', this)">
-                                <div>
-                                    <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
-                                    <span id="fileName${addImgIDNum}" class="fileName">
-                                        ${v.value}
-                                    </span>
-                                    <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="padding: 6px;" onclick="showImg('${addImgIDNum}')">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a id="deleteImg${addImgIDNum}" href="javascript:;" class="btn" style="padding:6px;" onclick="deleteImg('${addImgIDNum}')">
-                                        <i class="fa fa-times"></i>
-                                    </a>
+            if(data.productDetails.media != '') {
+                $.each(data.productDetails.media, function(k,v) {
+                    if(v['type'] == 'video') {
+                        videoId.push(v['id']);
+    
+                        $('#video'+(k+1)).val(v['url']);
+                    } else if(v['type'] == 'Image') {
+                        addImgCount = addImgCount + 1;
+                        addImgIDNum = addImgIDNum + 1;
+            
+                        var buildImg = "";
+            
+                        buildImg += `
+                            <div class="col-sm-4 col-xs-12">
+                                <div class="popupMemoImageWrapper" imageFlag="0">
+                        `;
+            
+                        buildImg +=`
+                                    <a href="javascript:;" class="closeBtn" onclick="closeDivImg(this)">×</a>
+                                    <input type="hidden" id="storeFileData${addImgIDNum}" value="${v.url}">
+                                    <input type="hidden" id="storeFileFlag${addImgIDNum}" value="0">
+                                    <input type="hidden" id="storeFileName${addImgIDNum}" value="${v.name}">
+                                    <input type="hidden" id="storeFileType${addImgIDNum}" value="${v.name}">
+                                    <input type="hidden" id="storeFileSize${addImgIDNum}" value="${v.name}">
+                                    <input type="hidden" id="storeFileSize${addImgIDNum}" value="${v.name}">
+                                    <input type="hidden" id="storeFileID${addImgIDNum}" value="${v.id}">
+                                    <input type="hidden" id="storeFileUploadType${addImgIDNum}" value="${(v.name).toLowerCase()}">
+                                    <input type="hidden" id="viewFileData${addImgIDNum}" value="${v.url}">
+                                    <input type="file" id="fileUpload${addImgIDNum}" class="hide" accept="image/jpeg, image/png, image/gif, image/bmp, image/tiff" onchange="displayFileName('${addImgIDNum}', this)">
+                                    <div>
+                                        <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
+                                        <span id="fileName${addImgIDNum}" class="fileName">
+                                            ${v.name}
+                                        </span>
+                                        <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="padding: 6px;" onclick="showImg('${addImgIDNum}')">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a id="deleteImg${addImgIDNum}" href="javascript:;" class="btn" style="padding:6px;" onclick="deleteImg('${addImgIDNum}')">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
-        
-                    $("#buildImg").append(buildImg);
-        
-                    if (addImgCount > 0) {
-                        $(".addImgBtn").hide();
+                        `;
+            
+                        $("#buildImg").append(buildImg);
                     }
                 });
-            }*/
-
-            // $("#rate").val(data.rate);
-
-            // calcAmount();
+            }
         }
 
         function addLanguage() {
@@ -799,7 +1239,7 @@ $_SESSION['lastVisited'] = $thisPage;
             }
         }
 
-        /*function addImage() {
+        function addImage() {
             addImgCount = addImgCount + 1;
             addImgIDNum = addImgIDNum + 1;
 
@@ -831,12 +1271,7 @@ $_SESSION['lastVisited'] = $thisPage;
             `;
 
             $("#buildImg").append(buildImg);
-
-            if (addImgCount == 1) {
-                $(".addImgBtn").hide();
-            }
-            
-        }*/
+        }
 
         function closeDiv(n) {
             var getThisInd = $('.closeBtn').index($(n));
@@ -846,14 +1281,19 @@ $_SESSION['lastVisited'] = $thisPage;
             $('.addLanguageBtn').show();
         }
 
-        /*function closeDivImg(n) {
+        function closeDivImg(n) {
             addImgCount = addImgCount - 1;
-            $(".addImgBtn").show();
+
+            var img = $(n).parent().find('[id^="storeFileID"]').val();
+
+            if(typeof(img) != 'undefined') {
+                imageId.push(img);
+            }
             $(n).parent().parent().remove();
 
             $("#imgTypeError").html("");
             $("#imgError").html("");
-        }*/
+        }
 
         function detectDuplicate(n) {
 
@@ -877,7 +1317,12 @@ $_SESSION['lastVisited'] = $thisPage;
             }
         }
 
-        /*function deleteImg(id) {
+        function toggleAttributeBox() {
+            $('#isVariant').prop('checked', !$('#isVariant').prop('checked'));
+            $('#isVariant').is(':checked') ? $('#attributeBox').show() : $('#attributeBox').hide();
+        }
+
+        function deleteImg(id) {
             $("#fileUpload"+id).val("");
             $("#fileName"+id).text("No File Uploaded");
             $("#storeFileData"+id).val("");
@@ -888,17 +1333,18 @@ $_SESSION['lastVisited'] = $thisPage;
             $("#viewImg"+id).hide();
             $("#deleteImg"+id).hide();
 
-        }*/
+        }
 
-        /*function showImg(n) {
+        function showImg(n) {
             $("#modalImg").attr('style','display: block');
-            $("#modalImg").attr('src', $("#storeFileData"+n).val());
+            var imageSrc = $("#storeFileData"+n).val();
+            $("#modalImg").attr('src', imageSrc);
             $("#modalVideo").attr('style','display:none');
             $("#showImage").modal();
-        }*/
+        }
 
 
-        /*function displayFileName(id, n) {
+        function displayFileName(id, n) {
             var dFileName = $("#fileName"+id);
 
             if (n.files && n.files[0]) {
@@ -932,7 +1378,7 @@ $_SESSION['lastVisited'] = $thisPage;
 
                 reader.readAsDataURL(n.files[0]);
             }
-        }*/
+        }
 
     //     function submitCallback(data, message) {
 	   //      if(data){

@@ -42,6 +42,18 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                             <span id="addressError" class="customError text-danger"></span>
                                         </div>
 
+                                        <div class="col-xs-12" style="margin-top: 20px">
+                                            <label>Email Address</label>
+                                            <input id="email" type="text" class="form-control">
+                                            <span id="emailError" class="customError text-danger"></span>
+                                        </div>
+                                        
+                                        <div class="col-xs-12" style="margin-top: 20px">
+                                            <label>Person In Charge</label>
+                                            <input id="pic" type="text" class="form-control">
+                                            <span id="picError" class="customError text-danger"></span>
+                                        </div>
+
                                         <div class="col-xs-12" style="margin-top: 20px;">
                                             <label>Supplier Contact No</label>
                                             <div id="phone" class="row justify-content-between form-control" style="display: flex; height: auto; line-height: normal; padding: 0; margin: 0;">
@@ -111,11 +123,15 @@ var resizefunc = [];</script>
             $('#dialCode').prop('disabled',true);
             $('#contact').prop('disabled',true);
             $('.statusRadio').prop('disabled',true);
+            $('#email').prop('disabled',true);
+            $('#pic').prop('disabled',true);
         }else{
             $('#address').prop('disabled',false);
             $('#dialCode').prop('disabled',false);
             $('#contact').prop('disabled',false);
             $('.statusRadio').prop('disabled',false);
+            $('#email').prop('disabled',false);
+            $('#pic').prop('disabled',false);
         }
 
         var formData  = {
@@ -131,6 +147,8 @@ var resizefunc = [];</script>
             var name = $('#name').val();
             var code = $('#code').val();
             var address = $('#address').val();
+            var email = $('#email').val();
+            var pic = $('#pic').val();
             var dialCode = $('#dialCode option:selected').val();
             var contact = $('#contact').val();
             var status = $("input[name=statusRadio]:checked").val();
@@ -141,6 +159,8 @@ var resizefunc = [];</script>
                 name        : name,
                 code        : code,
                 address     : address,
+                email       : email,
+                pic         : pic,
                 dialCode    : dialCode,
                 contact     : contact,
                 status      : status
@@ -171,7 +191,9 @@ var resizefunc = [];</script>
         }
         $('#name').val(data.name);
         $('#code').val(data.code);
-        $('#address').val(data.address);
+        $('#address').val(data.address[0].address);
+        $('#email').val(data.email);
+        $('#pic').val(data.pic);
         $('#dialCode option[value="'+data.dialCode+'"]').prop('selected', true);
         $('#contact').val(data.phone);
         $('input[name=statusRadio]').filter('[value='+data.status+']').prop('checked', true);

@@ -30,6 +30,7 @@
     display: inline;
     letter-spacing: 0;
     font-size: 14px;
+    cursor: pointer;
 }
 
 .dropdownIcon {
@@ -482,19 +483,6 @@
         display: none;
     }
 
-    .homepageHeader {
-        width: 100%;
-        position: fixed;
-        top: 100%;
-        left: 0;
-        height: 100vh;
-        background: unset;
-        background-color: #fff;
-        padding-top: 50px;
-        overflow-y: auto;
-        transition: all .5s ease;
-    }
-
     .headerMenuItem {
         width: 100%;
     }
@@ -623,10 +611,6 @@
         display: none;
     }
 
-    .menuIcon.fas, .menuIcon.fa {
-        font-size: 30px;
-    }
-
     .mobileSidebar .dropdown-content {
         position: relative;
         margin-top: 15px;
@@ -651,6 +635,18 @@
 
 /* Mobile View */
 @media (max-width: 767px) {
+    .homepageHeader {
+        width: 100%;
+        position: fixed;
+        top: 100%;
+        left: 0;
+        height: 100vh;
+        background: unset;
+        background-color: #fff;
+        padding-top: 50px;
+        overflow-y: auto;
+        transition: all .5s ease;
+    }
 }
 
 /* Sidebar Ipad Pro View, keep this at last */

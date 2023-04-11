@@ -84,9 +84,15 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label>
-                                                            <?php echo $translations['A00154'][$language]; /* Sponsor Username */ ?>
+                                                            <?php echo 'Referral Full Name' ?>
                                                         </label>
                                                         <input id="sponsorUsername" type="text" class="form-control" readonly="true"/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>
+                                                            <?php echo 'Referral '.$translations['M02298'][$language]; /* Phone Number */ ?>
+                                                        </label>
+                                                        <input id="sponsorPhoneNumber" type="text" class="form-control" readonly="true"/>
                                                     </div>
                                                     <div class="col-sm-12 px-0">
                                                         <div class="col-sm-12 px-0">
@@ -204,6 +210,7 @@
     
     function loadMemberDetails(data, message) {
         var memberDetails = data.member;
+        var sponsorDetails = data.sponsorInfo;
         var billInfo = data.billingInfo;
         $('#fullName').val(memberDetails['name']);
         $('#email').val(memberDetails['email']);
@@ -213,7 +220,8 @@
         $('#disabled').val(memberDetails['disabled']);
         $('#suspended').val(memberDetails['suspended']);
         $('#freezed').val(memberDetails['freezed']);
-        $('#sponsorUsername').val(memberDetails['sponsorUsername']);
+        $('#sponsorUsername').val(sponsorDetails['sponsorName']);
+        $('#sponsorPhoneNumber').val(sponsorDetails['sponsorDialCode'] + sponsorDetails['sponsorPhone']);
         $('#billingName').val(billInfo['name']);
         $('#billingAddress').val(billInfo['address']);
         $('#billingDistrict').val(billInfo['district']);

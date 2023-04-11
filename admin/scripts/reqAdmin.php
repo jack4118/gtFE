@@ -43,7 +43,7 @@
                 break;
 
             case "addAdmins":
-                
+
                 $params = array("fullName" => $_POST['fullName'],
                                 "username" => $_POST['username'],
                                 "email"    => $_POST['email'],
@@ -51,15 +51,32 @@
                                 "password" => $_POST['password'],
                                 "leaderUsername" => $_POST['leaderUsername'],
                                 "status"   => $_POST['status']
+                            );
+
+                $result = $post->curl($command, $params);
+                echo $result;
+                break;
+
+            case "addPurchaseRequest":
+            
+                $params = array("product_name"  => $_POST['product_name'],
+                                "product_id"    => $_POST['product_id'],
+                                "vendor_id"     => $_POST['vendor_id'],
+                                "quantity"      => $_POST['quantity'],
+                                "product_cost"  => $_POST['product_cost'],
+                                // "total_quantity"   => $_POST['total_quantity'],
+                                // "total_cost" => $_POST['total_cost'],
+                                // "approved_date" => $_POST['approved_date'],
+                                // "approved_by"   => $_POST['approved_by']
                                );
-                                
+
                 $result = $post->curl($command, $params);
 
                 echo $result;
                 break;
 
             case "editAdmins":
-                
+
                 $params = array("id"       => $_POST['id'],
                                 "fullName" => $_POST['fullName'],
                                 "username" => $_POST['username'],
@@ -69,7 +86,7 @@
                                 "password"   => $_POST['password'],
                                 "status"   => $_POST['status']
                                 );
-                                
+
                 $result = $post->curl($command, $params);
 
                 echo $result;
@@ -81,6 +98,27 @@
                                 "getActiveRoles" => $_POST['getActiveRoles'],
                                 "site"           => $_POST['site']
                                );
+                $result = $post->curl($command, $params);
+                
+                echo $result;
+                break;
+
+            case "getVendorList":
+
+                $params = array("searchData"     => $_POST['inputData'],
+                                "site"           => $_POST['site'],
+                                );
+                $result = $post->curl($command, $params);
+                
+                echo $result;
+                break;
+
+            case "getProductList":
+
+                $params = array("searchData"     => $_POST['inputData'],
+                                "site"           => $_POST['site'],
+                                "vendor_name"    => $_POST['vendor_name']
+                                );
                 $result = $post->curl($command, $params);
                 
                 echo $result;
@@ -1539,7 +1577,20 @@
 
                 echo $result;
                 break;
-                
+
+            case "purchaseRequestApprove":
+            
+                $params = array(
+                    "id"       => $_POST['id'],
+                    "status"   => $_POST['status']
+                );
+                                    
+                $result = $post->curl($command, $params);
+        
+                echo $result;
+                break;
+    
+
             case "getBonusProcessList":
             case "getCategoryInventory":
             case "getCategoryInventoryDetail":
@@ -1610,8 +1661,42 @@
             case "getMonthlyPerformanceDetail":
             case "getTaxPercentage":
             case "addTaxPercentage":
-            case "updateStarterpackEmailAttachment": 
-            case "removeLeader": 
+            case "updateStarterpackEmailAttachment":
+            case "removeLeader":
+            case "getPurchaseRequestList":
+            case "getPurchaseRequestDetails":
+            case "addPurchaseRequest":
+            case "purchaseRequestEdit":
+            case "getShopOwnerList":
+            case "getShopOwnerDetail":
+            case "addShopOwner":
+            case "editShopOwner":
+            case "getShopList":
+            case "getShopDetail":
+            case "addShop":
+            case "editShop":
+            case "addAttribute": 
+            case "editAttribute": 
+            case "getAttributeList": 
+            case "getAttributeDetail":
+            case "generateProductSKU":
+            case "getPackageProductList":
+            case "getShopDeviceList":
+            case "addShopDevice":
+            case "getShopDeviceDetail":
+            case "editShopDevice":
+            case "getShopWorkerList":
+            case "getPurchaseOrderList":
+            case "getPurchaseOrderDetails":
+            case "purchaseOrderEdit":
+            // case "purchaseOrderConfirm":
+            case "assignSerial":
+            case "confirmSerial":
+            case "getVendor":
+            case "getWarehouse":
+            case "approvePurchaseOrder":
+            case "getStockList":
+            case "getProduct":
 
                 foreach($_POST AS $key => $val){
                     if($key == "command") continue;

@@ -25,9 +25,9 @@ function buildTable(data, tableId, divId, thArray, btnArray, message, tableNo) {
         $('#'+divId).prev().html(`
             ${buildTableHead(thArray)}
             <div class="my-5">
-                <div class="mb-3"><img src="images/project/no-results.png" width="80px"/></div>
-                <div class="noResultTxt">${message || translations['M01004'][language]}</div>
-            </div>
+                <!-- <div class="mb-3"><img src="images/project/no-results.png" width="80px"/></div> -->
+                 <div class="noResultTxt">${message || translations['M01004'][language]}</div>
+             </div>
         `).show();
         return;
     }

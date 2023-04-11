@@ -27,9 +27,11 @@ $languages = $sys['languages'];
 
 	<meta charset="utf-8"/>
 
-	<title><?php echo $config['companyName']; ?></title>
+	<title>GoTasty | Enjoy best Malaysia Food instantly!</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link type="image/x-icon" rel="shortcut icon" href="images/project/gotasty-favicon.ico"/>
 
 	<!--begin:: Global Mandatory Vendors -->
 	<link href="vendors/general/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
@@ -93,7 +95,7 @@ $languages = $sys['languages'];
 	<!--begin::Layout Skins(used by all pages) -->
 	<!--end::Layout Skins -->
 
-	<link rel="shortcut icon" href="<?php echo $config['favicon']; ?>" />
+	<!-- <link rel="shortcut icon" href="<?php echo $config['favicon']; ?>" /> -->
 
 </head>
 <!-- end::Head -->
@@ -146,7 +148,8 @@ $languages = $sys['languages'];
             </div>
             <!-- <div class="modalLine"></div> -->
             <div class="modal-body modalBodyFont align-self-center text-center">
-                <img src="" id="modalIcon" class="modal-icon">
+                <!-- <img src="" id="modalIcon" class="modal-icon"> -->
+                <i class="fa fa-check-bell-o modal-icon"></i>
                 <div id="canvasTitle" class="mt-3 modal-title"></div>
                 <div id="canvasAlertMessage" class="mt-3 modalText"></div>
             </div>
@@ -168,7 +171,8 @@ $languages = $sys['languages'];
             </div>
             <!-- <div class="modalLine"></div> -->
             <div class="modal-body modalBodyFont align-self-center text-center">
-                <img src="/images/project/successIcon.png" class="modal-icon">
+                <!-- <img src="/images/project/successIcon.png" class="modal-icon"> -->
+                <i class="fa fa-check modal-icon"></i>
                 <div class="mt-3 modal-title">
                     <?php echo $translations['M02815'][$language]; //Shopping Cart ?>
                 </div>
@@ -197,7 +201,8 @@ $languages = $sys['languages'];
             </div>
             <!-- <div class="modalLine"></div> -->
             <div class="modal-body modalBodyFont align-self-center text-center">
-                <img src="/images/project/successIcon.png" class="modal-icon">
+                <!-- <img src="/images/project/successIcon.png" class="modal-icon"> -->
+                <i class="fa fa-check modal-icon"></i>
                 <div class="mt-3 modal-title">
                     <?php echo $translations['M02815'][$language]; //Shopping Cart ?>
                 </div>
@@ -223,7 +228,8 @@ $languages = $sys['languages'];
             </div>
             <!-- <div class="modalLine"></div> -->
             <div class="modal-body modalBodyFont align-self-center text-center">
-                <img src="/images/project/successIcon.png" class="modal-icon">
+                <!-- <img src="/images/project/successIcon.png" class="modal-icon"> -->
+                <i class="fa fa-check modal-icon"></i>
                 <div class="mt-3 modal-title">
                     <?php echo $translations['M02815'][$language]; //Shopping Cart ?>
                 </div>
@@ -279,9 +285,9 @@ $languages = $sys['languages'];
                     <a href="javascript:;" class="btn btnSocial twitter" onclick="shareTwitter('qrInput')">
                         <img class="socialMediaIcon" src="/images/project/sm2.png">
                     </a>
-                    <a href="javascript:;" class="btn btnSocial whatsapp" onclick="shareWhatsapp('qrInput')">
+                    <!-- <a href="javascript:;" class="btn btnSocial whatsapp" onclick="shareWhatsapp('qrInput')">
                         <img class="socialMediaIcon" src="/images/project/sm5.png">
-                    </a>
+                    </a> -->
                 </div>
             </div>
         </div>

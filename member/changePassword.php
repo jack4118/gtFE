@@ -1,74 +1,79 @@
-<?php include 'include/config.php'; ?>
-<?php include 'head.php'; ?>
-<?php include 'header.php'; ?>
-<input type="hidden" name="" class="hideFunction">
-<!-- begin:: Content -->
-<section class="pageContent loginPagePadding">
-	<div class="col-12 pageTitle">
-		<?php echo $translations['M00580'][$language]; // Change Password ?>
-	</div>
-	<!-- <div class="col-12 PageTitleSub" style="margin-top: 30px;">
-		PASSWORD
-	</div>
-	<div class="col-12">
-		<hr>
-	</div> -->
-	<div class="col-12 whiteBg" style="margin-top: 20px;">
-		<div class="row">
-			<div class="col-12">
-				<div class="row">
-					<div class="form-group col-lg-5 col-sm-6 col-12">
-						<label class="formLable" data-lang="M03508"><?php echo $translations['M03508'][$language]; /* Current Password */?></label>
-						<input id="currentPassword" type="password" class="form-control formDesign">
-						<span id="currentPasswordError" class="customError text-danger"></span>
-					</div>
-				</div>
-			</div>
-			<div class="col-12" style="margin-top: 20px;">
-				<div class="row">
-					<div class="form-group col-lg-5 col-sm-6 col-12">
-						<label class="formLable" data-lang="M00573"><?php echo $translations['M00573'][$language]; /* New Password */?></label>
-						<input id="newPassword" type="password" class="form-control formDesign">
-						<span id="newPasswordError" class="customError text-danger"></span>
-					</div>
-				</div>
-			</div>
-			<div class="col-12" style="margin-top: 20px;">
-				<div class="row">
-					<div class="form-group col-lg-5 col-sm-6 col-12">
-						<label class="formLable" data-lang="M03509"><?php echo $translations['M03509'][$language]; /* Retype New Password */?></label>
-						<input id="newPasswordConfirm" type="password" class="form-control formDesign">
-						<span id="newPasswordConfirmError" class="customError text-danger"></span>
-					</div>
-				</div>
-			</div>
+<?php
+include 'include/config.php';
+include 'head.php';
+include 'homepageHeader.php';
+?>
 
-			<div class="col-12" style="margin-top: 20px;">		
-					<button id="changePasswordBtn" type="button" class="btn btn-primary" data-lang="M03510"><?php echo $translations['M03510'][$language]; /* Save */?></button>	
-			</div>
-		</div>
-	</div>
+<body>
+<link href="css/homepage.css?v=<?php echo filemtime('css/homepage.css'); ?>" rel="stylesheet" type="text/css" />
+
+<!-- My Account Title -->
+<section class="section myAccountBg">
+    <div class="titleText larger bold text-white text-center text-md-left" data-lang="M03798"><?php echo $translations['M03798'][$language] /* My Account */ ?></div>
 </section>
-<!-- end:: Content -->
 
-<?php include 'footer.php'; ?>
+<!-- My Account Content -->
+<section class="section whiteBg">
+    <div class="row mb-5 mb-md-0">
+        <div class="col-lg-3 col-md-4 col-12">
+            <!-- Menu -->
+            <div class="borderAll grey normal greyBg">
+                <div class="button borderBottom grey normal px-4 py-3" id="myProfileBtn">
+                    <div><img src="images/project/profile-gray.png" width="12px" class="mr-3"><span class="bodyText smaller" data-lang="M03314"><?php echo $translations['M03314'][$language] /* My Profile */ ?></span></div>
+                </div>
+                <div class="button borderBottom grey normal px-4 py-3" id="myAddressBtn">
+                    <div><img src="images/project/home-gray.png" width="12px" class="mr-3"><span class="bodyText smaller" data-lang="M02809"><?php echo $translations['M02809'][$language] /* My Address */ ?></span></div>
+                </div>
+                <div class="button borderBottom grey normal px-4 py-3" id="paymentHistoryBtn">
+                    <div><img src="images/project/payment-gray.png" width="12px" class="mr-3"><span class="bodyText smaller" data-lang="M03799"><?php echo $translations['M03799'][$language] /* Payment History */ ?></span></div>
+                </div>
+                <div class="button px-4 py-3" id="changePasswordBtn">
+                    <div><img src="images/project/pw-filled.png" width="12px" class="mr-3"><span class="bodyText smaller lightBold text-red" data-lang="M00580"><?php echo $translations['M00580'][$language] /* Change Password */ ?></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8 col-12 pt-5 pt-md-0">
+            <!-- My Profile Details -->
+            <div class="whiteBg borderAll grey normal p-4 p-md-5">
+                <div class="bodyText larger bold mb-2" data-lang="M03314">Change Password</div>
+                <div class="borderBottom darkGrey normal myAccountBottomLine"></div>
+                <div class="form-group mt-5">
+                    <label class="mb-0 bodyText smaller" for="currentPassword" data-lang="M03649">Old Password</label>
+                    <input class="form-control" type="password" id="currentPassword">
+                </div>
+                <div class="form-group">
+                    <label class="mb-0 bodyText smaller" for="newPassword" data-lang="M00187">New Password</label>
+                    <input class="form-control" type="password" id="newPassword">
+                </div>
+				<div class="form-group">
+                    <label class="mb-0 bodyText smaller" for="newPasswordConfirm" data-lang="M00187">Confirm New Password</label>
+                    <input class="form-control" type="password" id="newPasswordConfirm">
+                </div>
+
+				<!-- Action Buttons -->
+				<div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4">
+					<button type="button" class="btn btn-primary px-4 py-3 col-12 col-lg-2 col-md-3 text-center" id="saveBtn">
+						<div class="bodyText smaller text-white" data-lang="M02756"><?php echo $translations['M02756'][$language] /* Save */ ?></div>
+					</button>
+				</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<?php include 'homepageFooter.php' ?>
 </body>
 
-<!-- end:: Page -->
+<?php include 'backToTop.php' ?>
 
-<!-- begin::Scrolltop -->
-<!-- <div id="kt_scrolltop" class="kt-scrolltop">
-<i class="fa fa-arrow-up"></i>
-</div> -->
+<?php
+include 'sharejs.php';
+$_SESSION["stopRecord"] = 1;
+?>
 
-<!-- end::Scrolltop -->    
-
-<?php include 'sharejs.php'; ?>
-
-
-
-<!-- end::Body -->
 </html>
+
 
 <script>
 
@@ -77,31 +82,48 @@ var method          = 'POST';
 var debug           = 0;
 var bypassBlocking  = 0;
 var bypassLoading   = 0;
+var fCallback       = '';
 
 $(document).ready(function() {
-	$('#changePasswordBtn').click(function() {
-    	$(".invalid-feedback").remove();
-    	$('input').removeClass('is-invalid');
+    $('#myProfileBtn').click(function() {
+        $.redirect('profile');
+    });
 
-    	var currentPassword = $('#currentPassword').val();
-    	var newPassword = $('#newPassword').val();
-    	var newPasswordConfirm = $('#newPasswordConfirm').val();
+    $('#myAddressBtn').click(function() {
+        $.redirect('myAddress');
+    });
 
-    	var formData  = {
-            command				: "memberChangePassword",
-            passwordCode		: 1,
-            currentPassword		: currentPassword,
-            newPassword			: newPassword,
-            newPasswordConfirm	: newPasswordConfirm
-        };
-            
-        fCallback = successChangePassword;
-        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    $('#paymentHistoryBtn').click(function() {
+        $.redirect('paymentListing');
+    });
+
+    $('#changePasswordBtn').click(function() {
+        $.redirect('changePassword');
+    });
+
+    $('#saveBtn').click(memberChangePassword);
+
+	$("body").keyup(function(event) {
+		if (event.keyCode == 13) {
+			$("#saveBtn").click();
+		}
 	});
 });
 
+function memberChangePassword() {
+    var formData = {
+        command     		: 'memberChangePassword',
+        passwordCode    	: '1',	// 1- password, 2 - transaction password
+        currentPassword 	: $('#currentPassword').val(),
+        newPassword     	: $('#newPassword').val(),
+        newPasswordConfirm  : $('#newPasswordConfirm').val()
+    };
+    fCallback = successChangePassword;
+    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+}
+
 function successChangePassword(data, message) {
-	showMessage("<?php echo $translations['M03511'][$language]; /* Success Change Password */ ?>", "success", "<?php echo $translations['M00228'][$language]; /* Congratulations */ ?>", "success", "changePassword");
+    showMessage('<?php echo $translations['M03802'][$language] /* Update Successful. */ ?>', 'success', 'Change Password', '', 'profile');
 }
 
 </script>
