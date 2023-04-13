@@ -215,15 +215,26 @@ function loadInvoiceDetails(data, message) {
         $('#companyAddress').html(company);
         $('#companyAddress2').html(company);
 
-        var shipping = `
-            <div class="bodyText smaller bold">${shippingAddress['fullname']}</div>
-            <div class="bodyText smaller">${shippingAddress['address']}</div>
-            <div class="bodyText smaller">${shippingAddress['postCode']} ${shippingAddress['city']}</div>
-            <div class="bodyText smaller">${shippingAddress['state']} ${shippingAddress['country']}</div>
-            <div class="bodyText smaller" data-lang="M03912"><?php echo $translations['M03912'][$language] /* Phone number */ ?>: +${billingAddress['dialingArea']}${shippingAddress['phone']}</div>
-        `;
-        $('#shippingAddress').html(shipping);
-        $('#shippingAddress2').html(shipping);
+        if(invoiceDetail.deliveryMethod == 'Pickup') {
+            var pickup = `
+                <div class="bodyText smaller bold">${invoiceDetail.deliveryMethod}</div>
+            `;
+            $('#shippingAddress').parent().find('div:first-child').html(pickup);
+            $('#shippingAddress2').parent().find('div:first-child').html(pickup);
+            $('#shippingAddress').html('');
+            $('#shippingAddress2').html('');
+        } else {
+            var shipping = `
+                <div class="bodyText smaller bold">${shippingAddress['fullname']}</div>
+                <div class="bodyText smaller">${shippingAddress['address']}</div>
+                <div class="bodyText smaller">${shippingAddress['postCode']} ${shippingAddress['city']}</div>
+                <div class="bodyText smaller">${shippingAddress['state']} ${shippingAddress['country']}</div>
+                <div class="bodyText smaller" data-lang="M03912"><?php echo $translations['M03912'][$language] /* Phone number */ ?>: +${billingAddress['dialingArea']}${shippingAddress['phone']}</div>
+            `;
+            $('#shippingAddress').html(shipping);
+            $('#shippingAddress2').html(shipping);
+        }
+        
 
         var billing = `
             <div class="bodyText smaller bold">${billingAddress['fullname']}</div>
@@ -271,19 +282,45 @@ function loadInvoiceDetails(data, message) {
         pagination(invoicePagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
         $('#' + invoiceTableId).find('tbody').after(`
-            <thead>
+            <thead id="totalGrp">
                 <tr>
-                    <th colspan="3" class="text-right">Sub Total:</th>
-                    <th>RM${numberThousand(subtotal, 2)}</th>
+                    <td colspan="3" class="text-right" data-lang="M02824"><?php echo $translations['M02824'][$language] /* Sub Total */ ?> :</td>
+                    <td>RM${numberThousand(invoiceDetail.subtotal, 2)}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-right" data-lang="M03821"><?php echo $translations['M03821'][$language] /* Taxes */ ?> :</td>
+                    <td>RM${numberThousand(invoiceDetail.paymentTax, 2)}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-right" data-lang="M03794"><?php echo $translations['M03794'][$language] /* Delivery Fee */ ?> :</td>
+                    <td>RM${numberThousand(invoiceDetail.shippingfee, 2)}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="2" class="text-right" data-lang="M00250"><?php echo $translations['M00250'][$language] /* Total */ ?> :</td>
+                    <td>RM${numberThousand(invoiceDetail.paymentAmount, 2)}</td>
                 </tr>
             </thead>
         `);
 
         $('#' + invoiceTableId).addClass('invoiceTable');
+
         $('#' + invoiceTableId).find('thead tr, tbody tr').each(function () {
             $(this).find('th:eq(1), td:eq(1)').css('text-align', "right");
             $(this).find('th:eq(2), td:eq(2)').css('text-align', "right");
             $(this).find('th:eq(3), td:eq(3)').css('text-align', "right");
+        });
+
+        $('#' + invoiceTableId).find('thead#totalGrp').each(function () {
+            $(this).find('tr:eq(0)').css('border-bottom', "none");
+            $(this).find('tr:eq(1)').css('border-bottom', "none");
+            $(this).find('tr:eq(2)').css('border-bottom', "none");
+
+            $(this).find('tr:eq(0)').css('border-top', "1px solid #E9EBF2");
+            $(this).find('tr:last-child td:eq(1)').css('border-top', "2px solid #E9EBF2");
+            $(this).find('tr:last-child td:eq(1)').css('border-bottom', "2px solid #E9EBF2");
+            $(this).find('tr:last-child td:eq(2)').css('border-top', "2px solid #E9EBF2");
+            $(this).find('tr:last-child td:eq(2)').css('border-bottom', "2px solid #E9EBF2");
         });
 
         var table = $('#basicwizardInvoice').html();

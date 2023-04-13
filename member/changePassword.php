@@ -35,18 +35,18 @@ include 'homepageHeader.php';
         <div class="col-lg-9 col-md-8 col-12 pt-5 pt-md-0">
             <!-- My Profile Details -->
             <div class="whiteBg borderAll grey normal p-4 p-md-5">
-                <div class="bodyText larger bold mb-2" data-lang="M03314">Change Password</div>
+                <div class="bodyText larger bold mb-2" data-lang="M00580"><?php echo $translations['M00580'][$language] /* Change Password */ ?></div>
                 <div class="borderBottom darkGrey normal myAccountBottomLine"></div>
                 <div class="form-group mt-5">
-                    <label class="mb-0 bodyText smaller" for="currentPassword" data-lang="M03649">Old Password</label>
+                    <label class="mb-0 bodyText smaller" for="currentPassword" data-lang="M00572"><?php echo $translations['M00572'][$language] /* Old Password */ ?></label>
                     <input class="form-control" type="password" id="currentPassword">
                 </div>
                 <div class="form-group">
-                    <label class="mb-0 bodyText smaller" for="newPassword" data-lang="M00187">New Password</label>
+                    <label class="mb-0 bodyText smaller" for="newPassword" data-lang="M00573"><?php echo $translations['M00573'][$language] /* New Password */ ?></label>
                     <input class="form-control" type="password" id="newPassword">
                 </div>
 				<div class="form-group">
-                    <label class="mb-0 bodyText smaller" for="newPasswordConfirm" data-lang="M00187">Confirm New Password</label>
+                    <label class="mb-0 bodyText smaller" for="newPasswordConfirm" data-lang="M03592"><?php echo $translations['M03592'][$language] /* Confirm New Password */ ?></label>
                     <input class="form-control" type="password" id="newPasswordConfirm">
                 </div>
 
@@ -123,7 +123,7 @@ function memberChangePassword() {
 }
 
 function successChangePassword(data, message) {
-    showMessage('<?php echo $translations['M03802'][$language] /* Update Successful. */ ?>', 'success', 'Change Password', '', 'profile');
+    showMessage('<?php echo $translations['M03802'][$language] /* Update Successful. */ ?>', 'success', '<?php echo $translations['M00580'][$language] /* Change Password */ ?>', '', 'profile');
 }
 
 </script>

@@ -318,6 +318,7 @@ session_start();
 
 
                 var buildView = `
+                    <a data-toggle="tooltip" title="" onclick="editDetails(${v['id']})" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit"><i class="fa fa-edit"></i></a>
                     <a data-toggle="tooltip" title="" onclick="viewDetails(${v['id']}, '${v['status']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="View"><i class="fa fa-eye"></i></a>
                 `;
 
@@ -381,6 +382,10 @@ session_start();
 
     function viewDetails(id, status) {
         $.redirect("purchaseOrderDetail.php", {id: id, status: status})
+    }
+
+    function editDetails(id) {
+        $.redirect('editSaleOrder.php', { id: id });
     }
 
     function issueDO(id) {

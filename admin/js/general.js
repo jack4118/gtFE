@@ -18,14 +18,15 @@
 function showCanvas() {
     $('body').css({'cursor' : 'wait'});
     $("button, a").addClass('unclickable');
-    // $('#canvasLoader').removeClass('hide');
+    $('#canvasLoader').removeClass('hide');
 }
 
 function hideCanvas() {
     $('body').css({'cursor' : 'default'});
-    setTimeout(function() {
-        $("button, a").removeClass('unclickable');
-    }, 1000);
+     setTimeout(function() {
+         $("#canvasLoader").addClass('hide');
+         $("button, a").removeClass('unclickable');
+     }, 1000);
 }
 
 /**
@@ -94,7 +95,7 @@ function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoad
     var ajaxBlocking = 0;
     var flag =0;
     if(!bypassLoading)
-        // showCanvas();
+        showCanvas();
 
 
     setTimeout(function(){

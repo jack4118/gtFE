@@ -2490,7 +2490,7 @@ a.text-underline:focus {
 }
 
 .orderSummaryImg {
-    min-width: 100px;
+    width: 100px;
     height: 80px;
     object-fit: cover;
 }

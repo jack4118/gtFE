@@ -350,9 +350,11 @@ function displayCountryList(list) {
 		var html = '';
 		html += `<option value="" data-lang="M02737"><?php echo $translations['M02737'][$language] /* Select Country */ ?></option>`;
 		$.each(list, function(k, v) {
-			html += `
-				<option value="${v['id']}">${v['name']}</option>
-			`;
+            if(v['name'] == 'Malaysia') {
+                html += `
+                    <option value="${v['id']}" selected>${v['name']}</option>
+                `;
+            }
 		});
 
 		$('#country').html(html);
@@ -370,8 +372,8 @@ function displayStateList(list) {
 			`;
 		});
 
-        if(shippingCountryChanged) $('#state2').html(html);
-		else $('#state').html(html);
+        $('#state').html(html);
+        $('#state2').html(html);
 	}
 }
 
@@ -572,14 +574,10 @@ function addNewPayment() {
 function successAddNewPayment(data, message) {
     if(data) {
         $.redirect('confirmOrder', {
-            // txnAmount: data.payment_amount,
-            // purchaseId: data.purchase_id,
-            // saleId: data.saleDetail_id,
-            // txnTime: data.getTxnTime
-            txnAmount: '<?php echo $_POST['txnAmount'] ?>',
-            purchaseId: '<?php echo $_POST['purchaseId'] ?>',
-            saleId: '<?php echo $_POST['saleId'] ?>',
-            txnTime: '<?php echo $_POST['txnTime'] ?>'
+            txnAmount: data.payment_amount,
+            purchaseId: data.purchase_id,
+            saleId: data.saleDetail_id,
+            txnTime: data.getTxnTime
         });
     }
 }

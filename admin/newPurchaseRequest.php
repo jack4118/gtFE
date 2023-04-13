@@ -47,110 +47,6 @@
                             <h4 class="header-title m-t-0 m-b-30">
                                 Purchase Request
                             </h4>
-                            <div class="row hide">
-                                <div class="col-md-6">
-                                    <form role="form" id="newPurchaseRequest" data-parsley-validate novalidate>
-                                        <div id="basicwizard" class=" pull-in">
-                                            <div class="tab-content b-0 m-b-0 p-t-0">
-                                            <div class="form-group">
-                                                    <label for="">
-                                                        <!-- <?php echo $translations['A01661'][$language]; /* Vendor */ ?> -->
-                                                        Vendor
-                                                    </label></br>
-                                                    <!-- <input id="vendor_name" type="text" class="form-control"  required/> -->
-                                                    <select id="vendor-dropdown" class="form-control">
-                                                        <option value="">Select a vendor</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="">
-                                                        <?php echo $translations['A01661'][$language]; /* Product Name */ ?>
-                                                    </label>
-                                                    <!-- <input id="product_name" type="text" class="form-control"  required/> -->
-                                                    <select id="product_name" class="form-control">
-                                                        <option value="">Select a product</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="">
-                                                        <?php echo $translations['A01662'][$language]; /* Quantity */ ?>
-                                                    </label>
-                                                    <input id="quantity" type="text" class="form-control"  required/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="">
-                                                        <?php echo $translations['A01663'][$language]; /* Cost */ ?>
-                                                    </label>
-                                                    <input id="product_cost" type="text" class="form-control"  required/>
-                                                </div>
-
-                                                <!-- <div class="form-group">
-                                                    <label for="">
-                                                        <?php echo $translations['A01657'][$language]; /* Total Quantity */ ?>
-                                                    </label>
-                                                    <input id="total_quantity" type="text" class="form-control"/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">
-                                                        <?php echo $translations['A01658'][$language]; /* Total Cost */ ?>
-                                                    </label>
-                                                    <input id="total_cost" type="text" class="form-control"/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">
-                                                        <?php echo $translations['A01660'][$language]; /* Approved Date */ ?>
-                                                    </label>
-                                                    <input id="approved_date" type="text" class="form-control"/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">
-                                                        <?php echo $translations['A01659'][$language]; /* Approved By */ ?>
-                                                    </label>
-                                                    <input id="approved_by" type="text" class="form-control"/>
-                                                </div> -->
-
-                                                <!-- <div class="form-group">
-                                                    <label class="control-label">
-                                                        <?php echo $translations['A01659'][$language]; /* Created at */ ?>
-                                                    </label>
-                                                    <input id="created_at" type="text" class="form-control"/>
-                                                </div> -->
-
-                                                 <!-- <div class="form-group">
-                                                    <label class="control-label">
-                                                        <?php echo $translations['A00104'][$language]; /* Disabled */ ?>
-                                                    </label>
-                                                    <div id="status" class="m-b-20">
-                                                        <div class="radio radio-info radio-inline">
-                                                            <input type="radio" id="inlineRadio1" value="0" name="radioInline" checked="checked"/>
-                                                            <label for="inlineRadio1">
-                                                                <?php echo $translations['A00057'][$language]; /* No */ ?>
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio radio-inline">
-                                                            <input type="radio" id="inlineRadio2" value="1" name="radioInline"/>
-                                                            <label for="inlineRadio2">
-                                                                <?php echo $translations['A00056'][$language]; /* Yes */ ?>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-
-
-
-
-
-
-
-
-
-
 
                             <div class="form-group">
                                 <div class="row mx-0">
@@ -158,14 +54,14 @@
                                         <label>
                                             Buying Date
                                         </label>
-                                        <input id="buyingnDate" class="form-control" dataName="buyingDate" dataType="singleDate">
+                                        <input id="buyingDate" class="form-control" dataName="buyingDate" dataType="singleDate" required>
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>
                                             Vendor
                                         </label>
-                                        <select id="vendor-dropdown" class="form-control">
+                                        <select id="vendor-dropdown" class="form-control" required>
                                             <option value="">Select a vendor</option>
                                         </select>
                                     </div>
@@ -178,26 +74,11 @@
                                                 <div class="col-md-12">
                                                     <div class="popupMemoImageWrapper default">
                                                         <span class="dtxt">Default</span>
-                                                        <!-- <input type="hidden" id="storeFileData1">
-                                                        <input type="hidden" id="storeFileName1">
-                                                        <input type="hidden" id="storeFileSize1">
-                                                        <input type="hidden" id="storeFileType1">
-                                                        <input type="hidden" id="storeFileFlag1">
-                                                        <input type="file" id="fileUpload1" class="hide" accept="image/jpeg, image/png, image/gif, image/bmp, image/tiff" onchange="displayFileName('1', this)">
-                                                        <div>
-                                                            <a href="javascript:;" onclick="$('#fileUpload1').click()" class="btn btn-primary btnUpload">Upload</a>
-                                                            <span id="fileName1" class="fileName">No File Uploaded</span>
-                                                            <a id="viewImg1" href="javascript:;" class="btn" style="display: none;padding:6px;" onclick="showImg('1')">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
-                                                            <a id="deleteImg1" href="javascript:;" class="btn" style="display:none;padding:6px;" onclick="deleteImg('1')">
-                                                                <i class="fa fa-times"></i>
-                                                            </a>
-                                                        </div> -->
+                                                        
                                                         <div class="row" id="pr1">
                                                             <div class="col-md-3">
                                                                 <label>1. Product</label>
-                                                                <select id="productSelect1" class="form-control productSelect"></select>
+                                                                <select id="productSelect1" class="form-control productSelect" required></select>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <label>Quantity</label>
@@ -205,11 +86,11 @@
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <label>Cost</label>
-                                                                <input id="cost1" type="number" value="0.00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" required/>
+                                                                <input id="cost1" type="number" value="0.00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control costInput" required readonly/>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <label>Total Amount</label>
-                                                                <input id="total1" type="text" value="0.00" class="form-control" readonly/>
+                                                                <input id="total1" type="number" value="0.00" class="form-control totalInput" readonly/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -228,13 +109,13 @@
                                 <div class="row">
                                     <div class="col-md-6" style="margin-top: 30px;">
                                         <label>Subtotal</label>
-                                        <input id="subtotal" class="form-control" value="0.00" readonly>
+                                        <input id="subtotal" class="form-control" value="0.00" type="number" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6" style="margin-top: 30px;">
-                                        <label>Remark</label>
-                                        <textarea id="remark" class="form-control" rows="4"></textarea>
+                                        <label>Remarks</label>
+                                        <textarea id="remarks" class="form-control" rows="4"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -286,40 +167,57 @@
     var fCallback;
 
     $(document).ready(function() { 
+        setTodayDatePicker();
+
+        $(".productSelect").change(function () {
+        // var cost_id = this.value - 1;
+            var select_id = this.id;
+            var product_cost = $('option:selected', this).attr('datacost');
+            var costID = "#cost" + select_id.substring(13);
+            $(costID).val(product_cost);
+            $(".quantityInput").keyup();
+            $('.totalInput').trigger('change');
+
+            countSubtotal();
+        });
 
         vendorList();
 
         $('#vendor_name').change(function() {
-		// var vendor_name = $('#vendor_name').text();
-        var selectedOption = $('#vendor_name option:selected');
-        var optionText = $.trim(selectedOption.text());
-        productDetails();
-	    });
+            var selectedOption = $('#vendor_name option:selected');
+            var optionText = $.trim(selectedOption.text());
+            productDetails();
+            countSubtotal();
+        });
 
         $('#add').click(function() {
-            var validate = $('#newPurchaseRequest').parsley().validate();
-            if(validate) {
-                showCanvas();
-                var product_name = $('select#product_name option:selected').text();
-                var product_id = $('select#product_name option:selected').val();
-                var vendor_id = $('#vendor-dropdown').val();
-                var quantity = $('#quantity').val();
-                var product_cost    = $('#product_cost').val();
-                // console.log(vendor_id);
+            var productSet= [];
 
-                var formData = {
-                    command  : "addPurchaseRequest",
-                    product_name : product_name,
-                    product_id   : product_id,
-                    vendor_id : vendor_id,
-                    quantity : quantity,
-                    product_cost    : product_cost,
+            $.each(totalLoop, function (k, v) {
+                var id = $("#productSelect" + v).val();
+                var name = $('option:selected', "#productSelect"+v).text();
+                var cost = $('#cost' + v).val();
+                var quantity = $('#quantity' + v).val();
+                var perProduct = {
+                    id :id,
+                    name:name,
+                    cost :cost,
+                    quantity: quantity,
+                }
+                 productSet.push(perProduct);
+            }) 
 
-                };
-                var fCallback = sendNew;
+            var formData = {
+                command  : "addPurchaseRequest",
+                vendor_id : $("#vendor-dropdown").val(),
+                buying_date : $("#buyingDate").val(),
+                product_list : productSet,
+                remarks : $("#remarks").val(),
 
-                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-            }
+            };
+            var fCallback = sendNew;
+
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
         });
 
         var formData = {
@@ -333,25 +231,81 @@
         };
         fCallback = productListOpt
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-
-        $(".quantityInput").keyup(function () { console.log("ok");
-            this.value|=0;
-
-            var quantity_id = this.id;
-            var totalID = "#total" + quantity_id.substring(8);
-            var quantity = $('#' + quantity_id).val();
-            var product_cost_id = '#cost' + quantity_id.substring(8); 
-            var product_cost = $(product_cost_id).val(); 
-
-
-            console.log("totalID: " + totalID);
-            console.log("product_cost: " + product_cost);
-            console.log("quantity: " + quantity);
-
-            $(totalID).val(numberThousand(product_cost * quantity,2));
-        })
-
     });
+
+    function setTodayDatePicker() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd;
+        } 
+        if(mm<10){
+            mm='0'+mm;
+        }
+        var today = yyyy+'-'+mm+'-'+dd;
+        
+        $('#buyingDate').daterangepicker({
+            singleDatePicker: true,
+            timePicker: false,
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
+        var dateToday = $('#buyingDate').val(today);
+
+        $('#timeFrom').timepicker({
+            defaultTime : '',
+            showSeconds: true
+        });
+        $('#timeTo').timepicker({
+            defaultTime : '',
+            showSeconds: true
+        });
+
+        return dateToTimestamp(today);
+    }
+
+    $(".quantityInput").keyup(function () {
+        this.value|=0;
+
+        var quantity_id = this.id;
+        var totalID = "#total" + quantity_id.substring(8);
+        var quantity = $('#' + quantity_id).val();
+        var product_cost_id = '#cost' + quantity_id.substring(8); 
+        var product_cost = $(product_cost_id).val(); 
+
+        $(totalID).val((product_cost * quantity).toFixed(2));
+        $('.totalInput').trigger('change');
+        countSubtotal();
+    })
+
+    $(".costInput").keyup(function () {
+        // this.value|=0;
+
+        var cost_id = this.id;
+        var totalID = "#total" + cost_id.substring(4);
+        var quantity_id = "#quantity" + cost_id.substring(4);
+        var quantity = $(quantity_id).val();
+        var product_cost_id = '#cost' + cost_id.substring(4); 
+        var product_cost = $(product_cost_id).val(); 
+
+        $(totalID).val((product_cost * quantity,2).toFixed(2));
+        $('.totalInput').trigger('change');
+        countSubtotal();
+    })
+
+    // $("#productSelect2").change(function () {
+    //     var select_id = this.id; 
+    //     var product_cost = $('option:selected', this).attr('datacost');
+    //     var costID = "#cost" + select_id.substring(13);
+    //     $(costID).val(product_cost);
+
+    //     $(".quantityInput").keyup();
+    //     $('.totalInput').trigger('change');
+    //     countSubtotal();
+    // });
     
     function loadFormDropdown(data, message) {
         roleData = data.roleList;
@@ -359,9 +313,6 @@
         $.each(roleData, function(key) {
             $('#roleID').append('<option value="' + roleData[key]['id'] + '">' + roleData[key]['name'] + '</option>');
         });
-
-
-
     }
 
     function vendorList(vendorName)
@@ -391,7 +342,7 @@
     if (data) 
     {
         var vendorName = '';
-		vendorName += `<option value="" data-lang="M02737">Please select vendor</option>`;
+        vendorName += `<option value="" data-lang="M02737">Please select vendor</option>`;
         $.each(data, function(k, v) {
             vendorName += `
                 <option value="${v['id']}">${v['name']}</option>
@@ -399,6 +350,7 @@
         });
 
         $('#vendor_name').html(vendorName);
+        // $('#vendor-dropdown').html(vendorName);
     }
 }
 
@@ -419,15 +371,13 @@
 
     
     function sendNew(data, message) {
-        showMessage('Purchase Request Has Been Created Successfully', 'success', 'Success Create Purchase Request', 'user-plus', 'purchaseRequest.php');
+        showMessage('Purchase Request Has Been Created Successfully', 'success', 'Success Create Purchase Request', 'check', 'purchaseRequest.php');
     }
 
     function loadFormDropdownVendor(data, message) {
         vendorData = data.getVendorDetail;
-
         $.each(vendorData, function(key, val) {
             var vName = val['name'];
-            // console.log(vName);
             $('#vendor-dropdown').append($('<option>', {
                 value: val['id'],
                 text: vName
@@ -436,43 +386,41 @@
     }
 
     function loadFormDropdownProduct(data, message) {
-        // productData = data.getProductDetail;
-
         $.each(productData, function(key, val) {
             var pName = val['name'];
-            // console.log(pName);
             $('#product_name').append($('<option>', {
                 value: val['id'],
                 text: pName
             }));
         });
     }
+    var wrapperLength = $(".popupMemoImageWrapper").length + 1;
+    var totalLoop =[1];
 
     function addRow(){
-        var wrapperLength = $(".popupMemoImageWrapper").length + 1;
-
+        
         var wrapper = `
             <div class="col-md-12">
                 <div class="popupMemoImageWrapper">
-                    <a href="javascript:;" class="closeBtn" onclick="closeDiv(this)">&times;</a>
+                    <a href="javascript:;" class="closeBtn" onclick="closeDiv(this,${(wrapperLength)})">&times;</a>
                     <div class="row" id="pr${(wrapperLength)}">
                         <div class="col-md-3">
                             <label>${(wrapperLength)}. Product</label>
-                            <select id="productSelect${(wrapperLength)}" class="form-control productSelect">
-                                  ${html}                                
+                            <select id="productSelect${(wrapperLength)}" onchange="loopSelect(${(wrapperLength)});" class="form-control productSelect" required>
+                                                                 
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label>Quantity</label>
-                            <input id="quantity" type="number" oninput="this.value|=0" class="form-control" required/>
+                            <input id="quantity${(wrapperLength)}" type="number" oninput="loopQuantity(${(wrapperLength)})" class="form-control quantityInput" value="0" placeholder="0" required/>
                         </div>
                         <div class="col-md-3">
                             <label>Cost</label>
-                            <input id="cost" type="number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" required/>
+                            <input id="cost${(wrapperLength)}" type="number" value="0.00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control costInput" value="0.00" required readonly/>
                         </div>
                         <div class="col-md-3">
                             <label>Total Amount</label>
-                            <input id="total" type="number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" readonly/>
+                            <input id="total${(wrapperLength)}" type="number" value="0.00" class="form-control totalInput" readonly/>
                         </div>
                     </div>
                 </div>
@@ -480,192 +428,83 @@
         `;
 
         $("#appendImage").append(wrapper);
+        $("#productSelect"+wrapperLength).html(html);
+        totalLoop.push(wrapperLength);
+        wrapperLength++;
     }
 
-    function closeDiv(n) {
-        var lang = $(n).parent().find('.productSelect').val();
-        if(lang != "") {
-            var inArr = $.inArray(lang, selectedLang);
-            selectedLang.splice(inArr, 1)
+    function closeDiv(n,id) {
+        const index = totalLoop.indexOf(id); 
+        if (index > -1) {
+          totalLoop.splice(index, 1); 
         }
 
+        var lang = $(n).parent().find('.productSelect').val();
+
         $(n).parent().parent().remove();
+
+        countSubtotal();
+    }
+
+    function countSubtotal() {
+        var subtotal = 0;
+        $.each(totalLoop, function (k, v) {
+            var total = $("#total" + v).val();
+            subtotal = parseFloat(total) + parseFloat(subtotal);
+        })
+
+        $("#subtotal").val(subtotal.toFixed(2));
     }
     
     function productListOpt(data, message) {
         if(data.getProductDetail) {
             
             $.each(data.getProductDetail, function(i, obj) {
-                html += `<option value="${obj.id}" dataCost="${obj.cost}">${obj.name}</option>`;
+                html += `<option value="${obj.id}" datacost="${obj.cost}">${obj.name}</option>`;
             });
             
             $("#productSelect1").html(html);
         }
-
-        $(".productSelect").change(function () {
-            var cost_id = this.value - 1;
-            var select_id = this.id;
-            var product_cost = data.getProductDetail[cost_id].cost;
-            var costID = "#cost" + select_id.substring(13);
-            $(costID).val(product_cost);
-
-            $(".quantityInput").keyup();
-        });
     }
 
     function keyinQuantity() {
         var quantity = $("#quantity1").val(); 
         var total_per_row = quantity * product_cost;
-        var decimal_total_per_row = numberThousand(total_per_row,2);
+        var decimal_total_per_row = total_per_row.toFixed(2);
 
         $('#total1').val(decimal_total_per_row);
     }
 
-    function deleteImg(id) {
-        $("#fileUpload"+id).val("");
-        $("#fileName"+id).text("No File Uploaded");
-        $("#storeFileData"+id).val("");
-        $("#storeFileName"+id).val("");
-        $("#storeFileSize"+id).val("");
-        $("#storeFileType"+id).val("");
-        $("#storeFileFlag"+id).val("");
+    function loopSelect(id) {
+        var select_id = id;
+        var productSelect = "#productSelect" + select_id;
+        var product_cost = $('option:selected', productSelect).attr('datacost');
+        var costID = "#cost" + select_id;
+        $(costID).val(product_cost);
 
-        $("#viewImg"+id).hide();
-        $("#deleteImg"+id).hide();
-
-        var lang = $("#productSelect"+id).val();
-        $("#productSelect"+id).html(productListOpt());
-        $("#productSelect"+id).removeAttr('disabled');
-
-        if(lang != "") {
-            var inArr = $.inArray(lang, selectedLang);
-            selectedLang.splice(inArr, 1)
-        }
+        $("#quantityInput" + id).keyup(id);
+        $("#totalInput" + id).trigger('change');
+        countSubtotal();
+        loopQuantity(id);
     }
 
-    function displayFileName(id, n) {
-        var dFileName = $("#fileName"+id);
+    function loopQuantity(id) { 
+        this.value|=0;
 
-        if (n.files && n.files[0]) {
-            var filesize = n.files[0].size;
-            if(filesize >  3000000){
-                alert("Maximun upload size 3 MB");
-                return;
-            }
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                dFileName.text(n.files[0]["name"]);
+        var quantity_id = id;
+        var totalID = "#total" + quantity_id;
+        var quantity = $('#quantity' + quantity_id).val();
+        var product_cost_id = '#cost' + quantity_id; 
+        var product_cost = $(product_cost_id).val(); 
 
-                $("#storeFileData"+id).val(reader["result"]);
-                $("#storeFileName"+id).val(n.files[0]["name"]);
-                $("#storeFileSize"+id).val(n.files[0]["size"]);
-                $("#storeFileType"+id).val(n.files[0]["type"]);
-                $("#storeFileFlag"+id).val('1');
-
-                $("#viewImg"+id).css('display', 'inline-block');
-                $("#deleteImg"+id).css('display', 'inline-block');
-            };
-
-            reader.readAsDataURL(n.files[0]);
-        }
+        $(totalID).val((product_cost * quantity).toFixed(2));
+        $("#totalInput" + id).trigger('change');
+        countSubtotal();
     }
 
-    function showImg(n) {
-        $("#modalImg").attr('src', $("#storeFileData"+n).val());
-        $("#showImage").modal();
-    }
-
-    function submitCallback(data, message) {
-        if(data){
-            $('#modalProcessing').modal('show');
-            $.each(data, function (lang, val) {
-                var reqData2 = new FormData();
-
-                if(val.imgName){
-                    // $('[name=storeVideoName]').val(reqData[lang]['image']);
-                    var imagefiles = reqData[lang]['imgData'];//$('#uploadVideo')[0].files[0];
-                    var block = imagefiles.split(";");
-                    // Get the content type of the image
-                    var contentType = block[0].split(":")[1];// In this case "image/gif"
-                    // get the real base64 content of the file
-                    var realData = block[1].split(",")[1];// In this case "R0lGODlhPQBEAPeoAJosM...."
-
-                    // // Convert it to a blob to upload
-                    var blob = b64toBlob(realData, contentType);
-                    // $('[name=videoName]').val(data.company_video_name);
-                    
-                    reqData2.append('imageData', blob);
-                    reqData2.append('image', val['imgName']);
-                }
-
-                $.ajax({
-                    url: 'scripts/reqUploadCDN.php',
-                    type: 'post',
-                    data: reqData2,
-                    contentType: false,
-                    processData: false,
-                    async: false,
-                    success: function(data){
-                        // console.log(data);
-                        // return;
-                        // var json = JSON.parse(data);
-                        // console.log(data);
-                        // if (json.status == 'ok') {
-                        //     uploadVideoSuccess();
-                        // }
-                    },
-                });
-            });
-
-            $('#modalProcessing').modal('hide');
-
-            uploadVideoSuccess();
-        }
-    }
-
-    function b64toBlob(b64Data, contentType, sliceSize) {
-        contentType = contentType || '';
-        sliceSize = sliceSize || 512;
-
-        var byteCharacters = atob(b64Data);
-        var byteArrays = [];
-
-        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-            var byteNumbers = new Array(slice.length);
-            for (var i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-
-            var byteArray = new Uint8Array(byteNumbers);
-
-            byteArrays.push(byteArray);
-        }
-
-      var blob = new Blob(byteArrays, {type: contentType});
-      return blob;
-    }
-
-    function detectDuplicate(n) {
-        var thisSelected = $(n).val();
-        var inArr = $.inArray(thisSelected, selectedLang);
-
-        if(inArr >= 0) {
-            $(n).val("");
-            alert("This language is selected.");
-        }else {
-            selectedLang.push(thisSelected);
-            $(n).attr('disabled', 'disabled');
-        }
-    }
-
-    $('#buyingDate').datepicker({
-        // language: language,
-        format: 'dd/mm/yyyy',
-        orientation: 'auto',
-        autoclose: true
-    });
+    $(".quantityInput").keyup(function() {
+        countSubtotal();
+    })
 </script>
 </body>
 </html>

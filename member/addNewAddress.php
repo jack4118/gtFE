@@ -197,11 +197,12 @@ function loadStateList(data, message) {
 function displayCountryList(list) {
 	if(list) {
 		var html = '';
-		html += `<option value="" data-lang="M02737"><?php echo $translations['M02737'][$language] /* Select Country */ ?></option>`;
 		$.each(list, function(k, v) {
-			html += `
-				<option value="${v['id']}">${v['name']}</option>
-			`;
+            if(v['name'] == 'Malaysia') {
+                html += `
+                    <option value="${v['id']}" selected>${v['name']}</option>
+                `;
+            }
 		});
 
 		$('#countryID').html(html);
