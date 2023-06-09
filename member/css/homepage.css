@@ -66,10 +66,10 @@
     display: inline;
 }*/
 
-.showDropdown.open {
+/* .showDropdown.open {
     border-bottom: 2px solid #27a9e0;
     margin-bottom: -2px;
-}
+} */
 
 /*.dropdown {
     position: relative;
@@ -629,7 +629,7 @@
 
 /* Footer */
 .homepage_footer {
-    padding: 0;
+    padding: 0 8%;
     background-color: #1c2232;
     flex: 1;
 }
@@ -2147,12 +2147,12 @@ blockquote:after {
 .homepageBg1 {
     background-image: url('../images/project/homepage-banner.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: left;
     background-repeat: no-repeat;
 }
 
 .homepageBg2 {
-    background-image: url('../images/project/what-we-sell-banner.jpg');
+    background-image: url('../images/project/what-we-sell-banner-2.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -2773,5 +2773,11 @@ blockquote:after {
 
     .paddingTopTenMobile {
         padding-top: 10px;
+    }
+}
+
+@media (max-width: 575px) {
+    .homepageBgGrp1 {
+        padding: 0;
     }
 }

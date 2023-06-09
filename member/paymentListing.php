@@ -35,7 +35,7 @@ include 'homepageHeader.php';
         <div class="col-lg-9 col-md-8 col-12 pt-5 pt-md-0">
             <!-- Payment History -->
             <div class="whiteBg borderAll grey normal p-4 p-md-5">
-                <div class="bodyText larger bold mb-2" data-lang="M03314">Order History</div>
+                <div class="bodyText larger bold mb-2" data-lang="M03799"><?php echo $translations['M03799'][$language] /* Order History */ ?></div>
                 <div class="borderBottom darkGrey normal myAccountBottomLine"></div>
                 <form class="mt-4">
                     <div id="basicwizard" class="pull-in col-12 px-0">
@@ -77,6 +77,8 @@ var bypassBlocking  = 0;
 var bypassLoading   = 0;
 var pageNumber      = 1;
 var fCallback       = '';
+var viewQuotationBtn = "";
+var viewDoBtn = "";
 
 var divId    = 'portfolioDiv';
 var tableId  = 'portfolioTable';
@@ -85,11 +87,12 @@ var btnArray = {};
 
 var thArray  = Array (
     '',
-    'Order ID',
-    'Order Date',
-    'Amount',
-    'Status',
-    // 'Invoice',
+    '<span data-lang="M00903"><?php echo $translations['M00903'][$language] /* Order ID */ ?></span>',
+    '<span data-lang="M04019"><?php echo $translations['M04019'][$language] /* Payment Date */ ?></span>',
+    '<span data-lang="M01795"><?php echo $translations['M01795'][$language] /* Amount */ ?></span>',
+    '<span data-lang="M02103"><?php echo $translations['M02103'][$language] /* Status */ ?></span>',
+    '<span data-lang="M04020"><?php echo $translations['M04020'][$language] /* Invoice */ ?></span>',
+    '<span data-lang="M04021"><?php echo $translations['M04021'][$language] /* Delivery Order */ ?></span>',
 );
 
 $(document).ready(function() {
@@ -131,7 +134,8 @@ function loadDefaultListing(data, message) {
 	if(list){
 		var newList = [];
 		$.each(list, function(k, v) {
-            var viewBtn = '';
+            var viewQuotationBtn = '';
+            var viewDoBtn = '';
 			var statusHtml = ``;
 			var color = "";
 			switch(v['status']){
@@ -151,12 +155,22 @@ function loadDefaultListing(data, message) {
             }
 			statusHtml = `<span style="color:${color}">${v['status']}</span>`
 
-            if(v['status'] == 'Paid') {
-                viewBtn = `
-                    <a href="javascript:;" class="m-t-5 m-r-10 btn btn-icon waves-effect waves-light btn-primary green p-0" id="invoice${v['id']}" onclick="viewInvoice('${v['id']}')">
-                        <i class="fa fa-eye"></i>
-                    </a> 
-                `;
+            if(v['status'] == 'Paid' || v['status'] == 'Packed' || v['status'] == 'Out of Delivery' || v['status'] == 'Delivered') {
+                viewQuotationBtn = `
+                    <a id="" type="" class="btn btn-icon waves-effect waves-light btn-primary green" onclick="viewQuotation(${v['id']}, )">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </a>`;
+            }else{
+                viewQuotationBtn='&ndash;';
+            }
+
+            if(v['status'] == 'Packed' || v['status'] == 'Out of Delivery' || v['status'] == 'Delivered') {
+                viewDoBtn = `
+                    <a id="" type="" class="btn btn-icon waves-effect waves-light btn-primary green" onclick="viewDo(${v['id']})">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </a>`;
+            }else{
+                viewDoBtn='&ndash;';
             }
             
 			var rebuildData = {
@@ -165,7 +179,8 @@ function loadDefaultListing(data, message) {
 				payment_date  	: v['payment_date'],
 				purchase_amount : 'RM ' + numberThousand(v['purchase_amount'],2),
 				status  		: statusHtml,
-				viewBtn         : viewBtn
+                viewQuotationBtn: viewQuotationBtn,
+                viewDoBtn: viewDoBtn
 			};
 			newList.push(rebuildData);
 
@@ -175,8 +190,12 @@ function loadDefaultListing(data, message) {
     buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
     pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
+    $('#' + tableId).find('tbody tr').each(function () {
+        $(this).find('td:eq(5)').css('text-align', "center");
+        $(this).find('td:eq(6)').css('text-align', "center");
+    })
+
     $('#'+tableId+' th').css('text-transform', "uppercase");
-    $('#'+tableId+' tbody').css('font-weight', '500');
 
     $('#'+tableId).DataTable({
         "paging":   false,
@@ -202,12 +221,17 @@ function loadDefaultListing(data, message) {
             { responsivePriority: 2, targets: 2 },
             { responsivePriority: 3, targets: 3 },
             // { responsivePriority: 4, targets: 4 },
+            // { responsivePriority: 5, targets: 5 },
         ]
     });
 }
 
-function viewInvoice(id) {
-    $.redirect('viewInvoice', { id: id });
+function viewQuotation(id) {
+    $.redirect('viewInvoice', { id: id, viewType: "quotation" });
+}
+
+function viewDo(id) {
+    $.redirect('viewInvoice', { id: id, viewType: "deliveryOrder" });
 }
 
 </script>

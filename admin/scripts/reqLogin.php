@@ -21,7 +21,7 @@
         switch ($command) {   //switch function for command//
             case 'adminLogin':
 
-            if($_SESSION['captcha'] == strtoupper($_POST['captcha'])) {
+            // if($_SESSION['captcha'] == strtoupper($_POST['captcha'])) {
                 $params = array("username" => $_POST['username'],
                     "password" => $_POST['password']
                 );
@@ -123,12 +123,12 @@
                 $_SESSION['menuPath'] = $menuPath;
                 $myJson = json_encode($result);
                 echo $myJson;
-            }
-            else {
-                $myJson = array('status' => 'error', 'code' => 1, 'statusMsg' => 'Incorrect security code.', 'data' => "");
-                $myJson = json_encode($myJson);
-                echo $myJson;
-            }
+            // }
+            // else {
+            //     $myJson = array('status' => 'error', 'code' => 1, 'statusMsg' => 'Incorrect security code.', 'data' => "");
+            //     $myJson = json_encode($myJson);
+            //     echo $myJson;
+            // }
 
             break;
 

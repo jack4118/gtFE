@@ -157,6 +157,56 @@
                 
                 break;
 
+            case "getPromoCodeListing":
+
+                $params = array("pageNumber"    => $_POST['pageNumber'],
+                                "onloaded"      => $_POST['onloaded'],
+                                "searchData"     => $_POST['searchData'],
+                                "usernameSearchType" => $_POST["usernameSearchType"]
+                    );
+                
+                $result = $post->curl($command, $params);
+
+                echo $result;
+                
+                break;
+
+            case "deletePromoCode":
+
+                $params = array("pageNumber"    => $_POST['pageNumber'],
+                                "promoCodeID"      => $_POST['promoCodeID'],
+                    );
+                
+                $result = $post->curl($command, $params);
+
+                echo $result;
+                
+                break;
+
+            case "addPromoCode":
+
+                $params = array("code"    => $_POST['code'],
+                                "type"      => $_POST['type'],
+                    );
+                
+                $result = $post->curl($command, $params);
+
+                echo $result;
+                
+                break;
+
+            case "updatePromoCodeStatus":
+
+                $params = array("promoCodeID"    => $_POST['codeID'],
+                                "status"      => $_POST['status'],
+                    );
+                
+                $result = $post->curl($command, $params);
+
+                echo $result;
+                
+                break;
+
             case "getCommunityBonusReport":
                 
                 $params = array("pageNumber" => $_POST['pageNumber'],

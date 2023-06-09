@@ -41,40 +41,9 @@
                                             <div id="searchMsg" class="text-center alert" style="display: none;"></div>
                                             <form id="searchForm" role="form">
                                               <div class="col-sm-12 px-0">
-
-                                                <div class="col-sm-4 form-group">
-                                                    <label class="control-label">
-                                                        <?php echo $translations['A00112'][$language]; /* Created At */?>
-                                                    </label>
-                                                    <div class="input-group input-daterange">
-                                                        <input type="text" class="form-control" dataName="createdAt" dataType="dateRange">
-                                                        <span class="input-group-addon">
-                                                            <?php echo $translations['A00139'][$language]; /* to */?>
-                                                        </span>
-                                                        <input type="text" class="form-control" dataName="createdAt" dataType="dateRange">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-4 form-group" style="display: none;">
-                                                    <label class="control-label" for="" data-th="">
-                                                        <?php echo $translations['A00301'][$language]; /* Type */?>
-                                                    </label>
-                                                    <select id="type" class="form-control" dataName="type" dataType="select">
-                                                        <!-- <option value="">
-                                                            <?php echo $translations['A00055'][$language]; /* All */?>
-                                                        </option> -->
-                                                        <option value="package">
-                                                            <?php echo $translations['A00203'][$language]; /* Package */?>
-                                                        </option>
-                                                        <option value="product">
-                                                            <?php echo $translations['A00828'][$language]; /* Product */?>
-                                                        </option>
-                                                    </select>
-                                                </div>
-
                                                 <div class="col-sm-4 form-group">
                                                     <label class="control-label" for="" data-th="">
-                                                        Name
+                                                        Category Name
                                                     </label>
                                                     <input id="name" type="text" class="form-control" dataName="name" dataType="text">
                                                 </div>
@@ -94,6 +63,13 @@
                                                             <?php echo $translations['A00373'][$language]; /* Inactive */?>
                                                         </option>
                                                     </select>
+                                                </div>
+
+                                                <div class="col-sm-4 form-group">
+                                                    <label class="control-label" for="" data-th="">
+                                                        Parent Category Name
+                                                    </label>
+                                                    <input id="parent_category" type="text" class="form-control" dataName="parent_category" dataType="text">
                                                 </div>
                                             </div>
                                             </form>
@@ -127,6 +103,7 @@
                                     <div id="basicwizard" class="pull-in" style="display: none">
                                         <div class="tab-content b-0 m-b-0 p-t-0">
                                             <div id="alertMsg" class="text-center alert" style="display: none;"></div>
+                                            <input class="typeRadio" id="product" type="radio" value="product" name="typeRadio" checked/>
                                             <!-- <div>
                                                 <div class="cateTab">
                                                     <div class="cateItem cateItem2">
@@ -175,9 +152,9 @@
         var pagerId  = 'pagerAnnouncementList';
         var btnArray = {};
         var thArray  = Array (
-            "Created At",
-            "Name",
-            // "Type",
+            // "Created At",
+            "Category Name",
+            "Parent Category",
             "Status",
             "Edit"
         );
@@ -254,16 +231,16 @@
                 var selected = $('.typeRadio:checked').val();
                 var catType = selected.charAt(0).toUpperCase() + selected.slice(1);
                 var thArray  = Array (
-                    "Created At",
-                    "Name",
-                    "Type",
+                    // "Created At",
+                    "Category Name",
+                    "Parent Category",
                     "Status"
                 );
 
                 var key = Array(
-                    'createdAt',
+                    // 'createdAt',
                     'display',
-                    'type',
+                    'parent_category',
                     'statusDisplay'
                 );
 
@@ -290,7 +267,7 @@
                 command     : "getCategoryInventory",
                 pageNumber  : pageNumber,
                 searchData  : searchData,
-            };
+            }; console.log(formData)
 
             if(!fCallback)
                 fCallback = loadDefaultListing;
@@ -321,13 +298,13 @@
                 $.each(list, function(k, v) {
 
                     var buildBtn = `
-                        <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="m-t-5 m-r-10 btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
+                        <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="m-t-5 btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
                     `;
 
                     var rebuildData = {
-                        created_at : v['createdAt'],
+                        // created_at : v['createdAt'],
                         display : v['name'],
-                        // type : v['type'],
+                        parentCategory : v['parent_category'],
                         statusDisplay : v['statusDisplay'],
                         buildBtn : buildBtn
                     };
@@ -339,7 +316,13 @@
             buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
             pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
+            $('#' + tableId).find('thead tr').each(function () {
+                $(this).find('th:nth-child(2)').css('text-align', "center");
+                $(this).find('th:last').css('text-align', "center");
+            });
+
             $('#' + tableId).find('tbody tr').each(function () {
+                $(this).find('td:nth-child(2)').css('text-align', "center");
                 $(this).find('td:last').css('text-align', "center");
             });
         }

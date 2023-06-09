@@ -59,6 +59,9 @@
 <script src="js/performanceMonitoring.js?v=<?php echo filemtime('js/performanceMonitoring.js'); ?>"  type="text/javascript"></script>
 <!--end:: Global Optional Vendors -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+
 
 <script src="js/aos.js" type="text/javascript"></script>
 
@@ -79,6 +82,9 @@
     var password = document.getElementById("passwordInput");
     var eyeOpened = document.getElementById("eyeOpen");
     var eyeClosed = document.getElementById("eyeClose");
+    var pageName = "<?php echo basename($_SERVER['PHP_SELF']);?>";
+    var userId = '<?php echo $_SESSION['userID'] ?>';
+
     $(document).ready(function() {
       var url             = 'scripts/reqLogin.php';
       var method          = 'POST';
@@ -435,6 +441,8 @@
           changeLanguage($(this).val());
         });
 
+        if(pageName != 'wishlist.php' && userId) getNumberOfWishlistItems();
+
         <?php
         $sessionTimeOut = isset($_SESSION['sessionTimeOut'])?$_SESSION['sessionTimeOut']:time();
         $sessionExpireTime = isset($_SESSION['sessionExpireTime'])?$_SESSION['sessionExpireTime']:0;
@@ -443,8 +451,6 @@
 
         window.ajaxEnabled = true;
 
-        var pageName = "<?php echo basename($_SERVER['PHP_SELF']);?>";
-
         <?php
         $sessionID = isset($_SESSION["sessionID"])?:'';
         ?>
@@ -452,9 +458,16 @@
         var sessionID = "<?php echo $sessionID;?>";
 
         if(sessionID == '') {
-          if((pageName == 'homepage.php') || (pageName == 'accessDenied.php') || (pageName == 'publicRegistration.php') || (pageName == 'publicRegistrationConfirmation.php') || (pageName == 'publicRegistrationSuccess.php') || (pageName == 'resetPassword.php') || (pageName == 'resetPasswordVerification.php') || (pageName == 'resetPasswordSuccess.php') || (pageName == 'landingPage.php') || (pageName == 'productListing.php') || (pageName == 'companyProfile.php') || (pageName == 'memberBenefits.php') || (pageName == 'productPortfolio.php') || (pageName == 'contactUs.php') || (pageName == 'productDetail.php') || (pageName == 'shoppingCart.php' || pageName == 'termsAndConditions.php' || pageName == 'viewInvoiceApp.php') || (pageName == 'payment.php') || (pageName == 'confirmOrder.php') || (pageName == 'checkoutAddress.php') || (pageName == 'reviewOrder.php'))
+          if((pageName == 'homepage.php') || (pageName == 'accessDenied.php') || (pageName == 'publicRegistration.php') || (pageName == 'publicRegistrationConfirmation.php') || (pageName == 'publicRegistrationSuccess.php') || (pageName == 'resetPassword.php') || (pageName == 'resetPasswordVerification.php') || (pageName == 'resetPasswordSuccess.php') || (pageName == 'landingPage.php') || (pageName == 'productListing.php') || (pageName == 'companyProfile.php') || (pageName == 'memberBenefits.php') || (pageName == 'productPortfolio.php') || (pageName == 'contactUs.php') || (pageName == 'productDetail.php') || (pageName == 'shoppingCart.php' || pageName == 'termsAndConditions.php' || pageName == 'viewInvoiceApp.php') || (pageName == 'payment.php') || (pageName == 'confirmOrder.php') || (pageName == 'checkoutAddress.php') || (pageName == 'reviewOrder.php') || (pageName == 'foodMenu.php') || (pageName == 'career.php')|| (pageName == 'foodDetails.php') || (pageName == 'careerDetail.php') || (pageName == 'viewInvoice.php') || (pageName == 'viewReceipt.php') || (pageName == 'wishlist.php'))
             return true;
         }  
+
+        if(sessionID == '') {
+          // No access token, thus don't allow to call backend
+          window.ajaxEnabled = false;
+          showMessage('You don’t have permission to access. Please try again later.', 'error', 'Access Denied', '', 'homepage.php');
+          return true;
+        }
 
           /*if(sessionID == '') {
             // No access token, thus don't allow to call backend
@@ -1215,6 +1228,162 @@ function deliveryModal(data,message) {
   $(".modal-header").css("padding","0px 20px");
   $(".modal-body").css("padding-top","0px");
   $(".modal-footer").css("padding-bottom","20px");
+}
+
+function getNumberOfWishlistItems() {
+  var formData  = {
+      command : "getWishList",
+  };
+
+  showCanvas();
+  $.ajax({
+      type     : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+      url      : 'scripts/reqDefault.php', // the url where we want to POST
+      data     : formData, // our data object
+      dataType : 'text', // what type of data do we expect back from the server
+      encode   : true
+  })
+  .done(function(data) {
+      hideCanvas();
+      var obj = JSON.parse(data);
+      if(obj.status == "ok") {
+        loadNumberOfWishlistItems(obj.data, obj.statusMsg);
+      }
+      else {
+        if(obj.statusMsg != '')
+        {
+            if(obj.data != null && obj.data.field)
+                showCustomErrorField(obj.data.field, obj.statusMsg);
+            else
+                errorHandler(obj.code, obj.statusMsg);
+        }
+      }
+  });
+}
+
+function loadNumberOfWishlistItems(data, message) {
+  var html = '';
+
+  html += `
+      <img src="images/project/love-icon.png" width="20px">
+      <div class="numOfWislistItems">0</div>
+  `;
+
+  $('.wishlistIcon').html(html);
+
+  var numberOfWishlistItems = data.length;
+  if(numberOfWishlistItems > 0) $('.numOfWislistItems').html(numberOfWishlistItems);
+}
+
+function getWishlist() {
+    var formData = {
+        command         : 'getWishList',
+    };
+    var fCallback = loadWishlist;
+    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+}
+
+function loadWishlist(data, message) {
+    var list = data;
+
+    var numberHtml = '';
+
+    numberHtml += `
+        <img src="images/project/love-icon.png" width="20px">
+        <div class="numOfWislistItems">0</div>
+    `;
+
+    $('.wishlistIcon').html(numberHtml);
+
+    if(list && list.length > 0) {
+        var numberOfWishlistItems = list.length;
+        if(numberOfWishlistItems > 0) $('.numOfWislistItems').html(numberOfWishlistItems);
+
+        var html = '';
+        $.each(list, function(k, v) {
+            html += `
+                <div class="borderAll grey normal p-4 mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-1 text-center">
+                            <a href="javascript:;" onclick="showRemoveConfirmationModal(${v['id']})"><img src="images/project/delete-icon2.png" alt=""></a>
+                        </div>
+                        <div class="col-9 d-flex align-items-center">
+                            <div>
+                                <img class="wishlistImg" src="${v['url']}">
+                            </div>
+                            <div class="ml-4">
+                                <div class="bodyText smaller lightBold">
+                                    ${v['name']}
+                                </div>
+                                <div class="bodyText smaller">${v['sale_price']}</div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button type="button" class="btn btn-primary grey w-100 px-4 py-3 wishlistOutOfStockBtn" id="wishlistOutOfStockBtn${v['id']}">
+                                <div class="bodyText smaller text-white" data-lang="M03005"><?php echo $translations['M03005'][$language] /*Out of Stock */ ?></div>
+                            </button>
+                            <button type="button" class="btn btn-primary w-100 px-4 py-3 wishlistAddToCartBtn" id="wishlistAddToCartBtn${v['id']}">
+                                <div class="bodyText smaller text-white" data-lang="M03878"><?php echo $translations['M03878'][$language] /* Add To Cart */ ?></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `
+        });
+
+        $('#wishlist').html(html);
+    } else {
+        var html = `
+            <div class="borderAll grey normal p-4">
+                    <div class="row align-items-center">
+                        <div class="col-12 text-center">
+                            <div class="bodyText smaller lightBold" data-lang="M03803"><?php echo $translations['M03803'][$language] /* No records found */ ?></div>
+                        </div>
+                    </div>
+                </div>
+        `;
+
+        $('#wishlist').html(html);
+    }
+}
+
+function addItemToWishlist(id) {
+  var formData = {
+    command         : 'addWishList',
+    product_id      : id ? id : selectedId,
+    action          : 'add'
+  };
+  var fCallback = successAddItemToWishlist;
+  ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+}
+
+function successAddItemToWishlist(data, message) {
+  var redirect = '';
+
+  if(pageName == 'foodDetails.php') getNumberOfWishlistItems();
+  else if(pageName == 'wishlist.php') redirect = 'wishlist';
+
+  showMessage(message, 'success', '<?php echo $translations['M02544'][$language] /* Success */ ?>', 'success', redirect);
+  
+}
+
+function showRemoveConfirmationModal(id) {
+  selectedId = id;
+  $('#removeConfirmationModal').modal();
+}
+
+function removeItemFromWishlist() {
+  var formData = {
+      command         : 'addWishList',
+      product_id      : selectedId,
+      action          : 'remove'
+  };
+  var fCallback = successRemoveItemFromWishlist;
+  ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+}
+
+function successRemoveItemFromWishlist(data, message) {
+  showMessage(message, 'success', '<?php echo $translations['M02544'][$language] /* Success */ ?>', 'success', 'wishlist');
 }
 
 </script>

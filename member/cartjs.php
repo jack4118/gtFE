@@ -10,6 +10,7 @@ var userId = '<?php echo $_SESSION['userID'] ?>';
 var sessionID = '<?php echo $_SESSION['sessionID'] ?>' || ""
 var isLoggedIn = false;
 var pageName = "<?php echo basename($_SERVER['PHP_SELF']);?>";
+var inputTimer;
 
 $(document).ready(function() {
 
@@ -567,6 +568,10 @@ function getCart() {
     return JSON.parse(localStorage.getItem('cartList'));
 }
 
+function getOldCart() {
+    return JSON.parse(localStorage.getItem('oldCartList'));
+}
+
 function clearCart() {
     localStorage.removeItem('cartList');
 }
@@ -609,24 +614,69 @@ function getTotal(cartList) {
 }
 
 function getShoppingCart(summary) {
-    if(!userId) {
-        if(summary) loadSummaryCart();
-        else loadShoppingCart();
-    } else {
+
+    if(summary && summary == 1) {
+
+        let token;
+
+        if($.cookie('oldToken')) {
+            token = $.cookie('oldToken')
+        }else {
+            token = $.cookie('bkend_token')
+        }
+        
+
         var formData  = {
-            command: 'getShoppingCart'
+            command: 'getSOShoppingCart',
+            bkend_token : token
         };
 
-        var fCallback = '';
-        if(summary) fCallback = loadSummaryCart;
-        else fCallback = loadShoppingCart;
+        if(!userId) {formData['step'] = 1}
+
+        var fCallback = loadSummaryCart;
 
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
+    }else {
+        if(!userId) {
+            if(summary && summary == 1) loadSummaryCart();
+            else loadShoppingCart();
+        } else {
+            var formData  = {
+                // command: 'getShoppingCart' -- deprecated
+                command: 'getSOShoppingCart', 
+            };
+            if($.cookie('bkend_token')) {
+                formData['bkend_token'] = $.cookie('bkend_token')
+            }
+
+            var fCallback = '';
+            if(summary && summary == 1) fCallback = loadSummaryCart;
+            else fCallback = loadShoppingCart;
+
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        }
     }
+
+    // if(!userId) {
+    //     if(summary) loadSummaryCart();
+    //     else loadShoppingCart();
+    // } else {
+    //     var formData  = {
+    //         command: 'getShoppingCart'
+    //     };
+
+    //     var fCallback = '';
+    //     if(summary) fCallback = loadSummaryCart;
+    //     else fCallback = loadShoppingCart;
+
+    //     ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    // }
 }
 
 function loadShoppingCart(data, message) {
     var points;
+    var userPointAmount;
     var subTotal;
     var taxes;
     var deliveryFee;
@@ -636,6 +686,7 @@ function loadShoppingCart(data, message) {
     if(data) {
         cartList = data.cartList;
         points = data.Point;
+        userPointAmount = data.userPointAmount;
         subTotal = data.subTotal;
         taxes = data.Taxes;
         deliveryFee = data.deliveryFee;
@@ -685,6 +736,7 @@ function loadShoppingCart(data, message) {
                 </tr>
             `;
         });
+
     } else {
         html += `
             <tr>
@@ -696,23 +748,29 @@ function loadShoppingCart(data, message) {
     }
 
     $('#cartList').html(html);
-        
+
     $('#totalPoints').html(numberThousand(points, 0));
-    $('#pointsAmount').html(numberThousand(points, 0));
-    $('#redeemedAmount').html('-RM' + numberThousand(redeemAmount, 2));
+    $('#pointsAmount').html('RM' + numberThousand(userPointAmount, 2));
     $('#subtotal').html('RM' + numberThousand(subTotal, 2));
     $('#taxes').html('RM' + numberThousand(taxes, 2));
 
-    if(deliveryFee != "0" || deliveryFee != 0) $('#deliveryFee').html('RM' + numberThousand(deliveryFee, 2));
-    else $('#deliveryFee').html('<?php echo $translations['M00061'][$language] /* Free */ ?>');
+    if(userId && cartList && cartList.length > 0) {
+        var redeemAmount = $('#pointsToUse').val();
+        cartTotalAmountCalculation(redeemAmount);
+    } else {
+        if(redeemAmount) $('#redeemedAmount').html('-RM' + numberThousand(redeemAmount, 2));
+        if(deliveryFee != "0" || deliveryFee != 0) $('#deliveryFee').html('RM' + numberThousand(deliveryFee, 2));
+        else $('#deliveryFee').html('<?php echo $translations['M00061'][$language] /* Free */ ?>');
 
-    $('#totalSalePrice').html('RM' + numberThousand(totalSalePrice, 2));
+        $('#totalSalePrice').html('RM' + numberThousand(totalSalePrice, 2));
+    }
 
     loadNumberOfCartItems(data, message);
 }
 
 function loadSummaryCart(data, message) {
     var points;
+    var userPointAmount;
     var subTotal;
     var taxes;
     var deliveryFee;
@@ -723,6 +781,7 @@ function loadSummaryCart(data, message) {
     if(data && data.cartList && data.cartList.length > 0) {
         cartList = data.cartList;
         points = data.Point;
+        userPointAmount = data.userPointAmount;
         subTotal = data.subTotal;
         taxes = data.Taxes;
         deliveryFee = data.deliveryFee;
@@ -779,7 +838,7 @@ function loadSummaryCart(data, message) {
             </tr>
             <tr>
                 <td colspan="2" class="pl-4"><div class="bodyText smaller" data-lang="M03818"><?php echo $translations['M03818'][$language] /* Your points amount */ ?>:</div></td>
-                <td class="pr-4 text-right"><div class="bodyText smaller lightBold">${numberThousand(points, 0)}</div></td>
+                <td class="pr-4 text-right"><div class="bodyText smaller lightBold">RM${numberThousand(userPointAmount, 2)}</div></td>
             </tr>
         `;
 
@@ -787,7 +846,7 @@ function loadSummaryCart(data, message) {
         html += `
             <tr>
                 <td colspan="2" class="pl-4"><div class="bodyText smaller" data-lang="M03819"><?php echo $translations['M03819'][$language] /* Points to use/redeem */ ?>:</div></td>
-                <td class="pr-4 text-right"><input type="text" id="pointsToUse" class="form-control2 text-right bodyText smaller lightBold" style="width: 70px; height: auto;" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" value="${pointsToUse}"></td>
+                <td class="pr-4 text-right"><input type="text" id="pointsToUse" class="form-control2 text-right bodyText smaller lightBold" style="width: 70px; height: auto;" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" value="${pointsToUse}" onkeyup="pointsToUseChanged()"></td>
             </tr>
         `;
     }
@@ -804,7 +863,7 @@ function loadSummaryCart(data, message) {
         html += `
             <tr>
                 <td colspan="2" class="pl-4"><div class="bodyText smaller" data-lang="M03820"><?php echo $translations['M03820'][$language] /* Redeemed Amount */ ?>:</div></td>
-                <td class="pr-4 text-right"><div class="bodyText smaller lightBold text-red">-RM${numberThousand(redeemAmount, 2)}</div></td>
+                <td class="pr-4 text-right"><div class="bodyText smaller lightBold text-red" id="redeemedAmount">-RM${numberThousand(redeemAmount, 2)}</div></td>
             </tr>
         `;
     <?php } ?>
@@ -887,7 +946,7 @@ function loadSummaryCart(data, message) {
     html += `
         <tr>
             <td colspan="2" class="pl-4 pb-4"><div class="bodyText larger lightBold" data-lang="M00250"><?php echo $translations['M00250'][$language] /* Total */ ?>:</div></td>
-            <td class="pr-4 pb-4 text-right"><span class="bodyText larger lightBold">RM</span><span class="bodyText larger lightBold" id="totalPrice">${numberThousand(totalSalePrice, 2)}</span></td>
+            <td class="pr-4 pb-4 text-right"><span class="bodyText larger lightBold" id="totalSalePrice">RM${numberThousand(totalSalePrice, 2)}</span></td>
         </tr>
     `;
 
@@ -895,6 +954,13 @@ function loadSummaryCart(data, message) {
 
     if(pageName == 'confirmOrder.php') {
         cartLoaded = true;
+    }
+
+    if(userId) {
+        var redeemAmount;
+        if($.cookie('redeemAmount')) redeemAmount = $.cookie('redeemAmount');
+        else redeemAmount = $('#pointsToUse').val();
+        cartTotalAmountCalculation(redeemAmount);
     }
 
     loadNumberOfCartItems(data, message);
@@ -910,7 +976,23 @@ function incItem(productId, quantity, stockCount, productTemplate) {
 
     if(!userId) {
         updateQuantity(productId, newQuantity, productTemplate);
-        getShoppingCart();
+
+        var formData  = {
+            command             : 'addShoppingCart',
+            packageID           : productId,
+            quantity            : newQuantity,
+            type                : "inc",
+            product_template    : productTemplate,
+            step                : 1 // to differentiate between guest or registered user for BE
+
+        }; 
+
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
+        var fCallback = getShoppingCart;
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
     } else {
         var formData  = {
             command             : 'addShoppingCart',
@@ -919,6 +1001,9 @@ function incItem(productId, quantity, stockCount, productTemplate) {
             type                : 'inc',
             product_template    : productTemplate
         };
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
         var fCallback = getShoppingCart;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     }
@@ -934,7 +1019,19 @@ function decItem(productId, quantity, stockCount, productTemplate) {
 
     if(!userId) {
         updateQuantity(productId, newQuantity, productTemplate);
-        getShoppingCart();
+        var formData  = {
+            command             : 'addShoppingCart',
+            packageID           : productId,
+            quantity            : newQuantity,
+            type                : 'dec',
+            product_template    : productTemplate,
+            step                : 1
+        };
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
+        var fCallback = getShoppingCart;
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     } else {
         var formData  = {
             command             : 'addShoppingCart',
@@ -943,6 +1040,9 @@ function decItem(productId, quantity, stockCount, productTemplate) {
             type                : 'dec',
             product_template    : productTemplate
         };
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
         var fCallback = getShoppingCart;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     }
@@ -965,7 +1065,19 @@ function numItem(productId, stockCount, productTemplate) {
 
     if(!userId) {
         updateQuantity(productId, quantity, productTemplate);
-        getShoppingCart();
+        var formData  = {
+            command             : 'addShoppingCart',
+            packageID           : productId,
+            quantity            : newQuantity,
+            type                : 'num',
+            product_template    : productTemplate,
+            step                : 1
+        };
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
+        var fCallback = getShoppingCart;
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     } else {
         var formData  = {
             command     : 'addShoppingCart',
@@ -974,6 +1086,9 @@ function numItem(productId, stockCount, productTemplate) {
             type        : 'num',
             product_template    : productTemplate
         };
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
         var fCallback = getShoppingCart;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     }
@@ -1004,20 +1119,32 @@ function removeItem(productId, productTemplate) {
     } else {
         var newCartList = cartList.filter((item) => (item.productID).toString() != (productId).toString() || item.product_attribute_value_id != productTemplate);
         saveCart(newCartList);
-        console.log('')
     }
 }
 
 function removeShoppingCart() {
     if(!userId) {
         removeItem(removedProductId, removedProductTemplate);
-        getShoppingCart();
+        var formData  = {
+            command             : 'removeShoppingCart',
+            packageID           : removedProductId,
+            product_template    : removedProductTemplate,
+            step                : 1
+        };
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
+        var fCallback = getShoppingCart;
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     } else {
         var formData  = {
             command             : 'removeShoppingCart',
             packageID           : removedProductId,
-            product_template    : removedProductTemplate
+            product_template    : removedProductTemplate,
         };
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
         var fCallback = getShoppingCart;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     }
@@ -1028,8 +1155,12 @@ function getNumberOfCartItems() {
         loadNumberOfCartItems();
     } else {
         var formData  = {
-            command   : 'getShoppingCart',
+            // command   : 'getShoppingCart', -- deprecated api 
+            command: 'getSOShoppingCart', 
         };
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
         var fCallback = loadNumberOfCartItems;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     }
@@ -1054,6 +1185,78 @@ function loadNumberOfCartItems(data, message) {
     if(cartList) {
         $.each(cartList, function(k, v) { numberOfCartItems += parseInt(v['quantity']); });
         $('.numOfCartItems').html(numberOfCartItems);
+    }
+}
+
+function pointsToUseChanged() {
+    clearTimeout(inputTimer);
+
+    inputTimer = setTimeout(function() {
+        var redeemAmount = $('#pointsToUse').val();
+        $.cookie('redeemAmount', redeemAmount);
+        cartTotalAmountCalculation(redeemAmount);
+    }, 500);    
+}
+
+function cartTotalAmountCalculation(redeemAmount) { 
+    var deliveryMethod = "";
+
+    if('<?php echo $_POST['deliveryMethodOpt'] ?>' == "Pickup") {
+        deliveryMethod = "Pickup";
+    } else {
+        deliveryMethod = "delivery";
+    }
+
+    var formData  = { 
+        command             : 'CartTotalAmountCalculation',
+        deliveryMethod      : deliveryMethod,
+    };
+
+    if($.cookie('redeemAmount')) formData['redeemAmount'] = $.cookie('redeemAmount');
+    if(deliveryMethod) formData['deliveryMethod'] = deliveryMethod;
+
+    if($.cookie('bkend_token')) {
+        formData['bkend_token'] = $.cookie('bkend_token')
+    } else if($.cookie('oldToken')) {
+        formData['bkend_token'] = $.cookie('oldToken')
+    }
+
+    showCanvas();
+
+    $.ajax({
+        type     : method,
+        url      : url,
+        data     : formData,
+    })
+    .done(function(data) {
+        var obj = JSON.parse(data);
+        hideCanvas();
+        if(obj.status == "ok") {
+            loadCartTotal(obj.data, obj.statusMsg, obj);
+        }
+        else {
+            if(obj.statusMsg != '') {
+                if(obj.data != null && obj.data.field)
+                    showCustomErrorField(obj.data.field, obj.statusMsg);
+                else
+                    errorHandler(obj.code, obj.statusMsg);
+            }
+
+            // Reset if insufficient point
+            $('#pointsToUse').val('');
+            $('#redeemedAmount').html('-RM0.00');
+        }
+    });
+
+    // var fCallback = loadCartTotal;
+    // ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+}
+
+function loadCartTotal(data, message) {
+    if(data) {
+        $('#redeemedAmount').html('-RM' + numberThousand(data.redeemAmount, 2));
+        $('#deliveryFee').html('RM' + numberThousand(data.shippingFee, 2));
+        $('#totalSalePrice').html('RM' + numberThousand(data.cartTotal, 2));
     }
 }
 

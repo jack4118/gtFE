@@ -76,12 +76,12 @@
                                                     </label>
                                                     <input id="password" type="password" class="form-control"/>
                                                 </div>
-                                                <div class="form-group">
+                                                <!--<div class="form-group">
                                                     <label class="control-label">
                                                         <?php echo $translations['A01109'][$language]; /* Leader Username */ ?>
                                                     </label>
                                                     <input id="leaderUsername" type="text" class="form-control"/>
-                                                </div>
+                                                </div>-->
                                                 <div class="form-group">
                                                     <label class="control-label">
                                                         <?php echo $translations['A00121'][$language]; /* Admin Role */ ?>
@@ -174,7 +174,7 @@
                 var email    = $('#email').val();
                 var roleID   = $('#roleID').find('option:selected').val();
                 var password = $('#password').val();
-                var leaderUsername = $("#leaderUsername").val();
+                //var leaderUsername = $("#leaderUsername").val();
                 var status   = $('#status').find('input[type=radio]:checked').val();
                 
                 var formData = {
@@ -184,7 +184,7 @@
                     email    : email,
                     roleID   : roleID,
                     password : password,
-                    leaderUsername : leaderUsername,
+                    //leaderUsername : leaderUsername,
                     status   : status
                 };
                 var fCallback = sendNew;

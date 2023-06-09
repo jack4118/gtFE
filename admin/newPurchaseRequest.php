@@ -49,30 +49,60 @@
                             </h4>
 
                             <div class="form-group">
-                                <div class="row mx-0">
-                                    <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-6 mb-15">
                                         <label>
                                             Buying Date
                                         </label>
                                         <input id="buyingDate" class="form-control" dataName="buyingDate" dataType="singleDate" required>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6 mb-15">
                                         <label>
                                             Vendor
                                         </label>
-                                        <select id="vendor-dropdown" class="form-control" required>
+                                        <select id="vendorDropdown" class="form-control" required>
                                             <option value="">Select a vendor</option>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-15">
+                                        <label>
+                                            Warehouse
+                                        </label>
+                                        <select id="warehouseDropdown" class="form-control" required>
+                                            <option value="">Select a warehouse</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-15" id="appendBranch">
+
+                                    </div>
+                                    <!-- <div class="col-md-4">
+                                        <label>
+                                            Branch Name
+                                        </label>
+                                        <select id="branchNameDropdown" class="form-control" required>
+                                            <option value="">Select a branch</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>
+                                            Branch Address
+                                        </label>
+                                        <select id="branchAddressDropdown" class="form-control" required>
+                                            <option value="">Select the address</option>
+                                        </select>
+                                    </div> -->
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
-                                            <div id="appendImage">
-                                                <div class="col-md-12">
-                                                    <div class="popupMemoImageWrapper default">
+                                            <div id="appendProduct">
+                                                <!-- <div class="col-md-12">
+                                                    <div class="addProductWrapper default noData" style="display: none;"></div>
+                                                    <div class="addProductWrapper default">
                                                         <span class="dtxt">Default</span>
                                                         
                                                         <div class="row" id="pr1">
@@ -94,10 +124,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="col-md-4">
-                                                <div class="addLanguageImage" onclick="addRow()">
+                                                <div class="addProduct" onclick="addRow()">
                                                     <b><i class="fa fa-plus-circle"></i></b>
                                                     <span>Add Product</span>
                                                 </div>
@@ -163,14 +193,20 @@
     var product_list      = null;
     var selectedLang    =  [];
     var html = `<option value="">Select Product</option>`;
+    var wrapperLength = 2;
+    var subtotal = 0;
         
     var fCallback;
 
     $(document).ready(function() { 
         setTodayDatePicker();
 
+        $(".addProductWrapper").css("display", "none");
+        $(".addProductWrapper.noData").css("display", "none");
+        $(".addProduct").css("display", "none");
+        $("#remarks").attr("disabled", "true");
+
         $(".productSelect").change(function () {
-        // var cost_id = this.value - 1;
             var select_id = this.id;
             var product_cost = $('option:selected', this).attr('datacost');
             var costID = "#cost" + select_id.substring(13);
@@ -183,33 +219,50 @@
 
         vendorList();
 
-        $('#vendor_name').change(function() {
-            var selectedOption = $('#vendor_name option:selected');
-            var optionText = $.trim(selectedOption.text());
-            productDetails();
-            countSubtotal();
-        });
+        $('#vendorDropdown').change(function() {
+            if($('#vendorDropdown option:selected').val() != 0) {
+                productDetails();
+            }
+            $('#subtotal').val("0.00");
+            wrapperLength = 2;
+        })
+
+        $('#branchNameDropdown').change(function() {
+            var selectedBranch = $('#branchNameDropdown option:selected');
+            console.log(selectedBranch);
+            var branchNameID = $.trim(selectedBranch.val());
+            $('#branchAddressDropdown').val($branchNameID);
+        })
 
         $('#add').click(function() {
             var productSet= [];
 
-            $.each(totalLoop, function (k, v) {
-                var id = $("#productSelect" + v).val();
-                var name = $('option:selected', "#productSelect"+v).text();
-                var cost = $('#cost' + v).val();
-                var quantity = $('#quantity' + v).val();
-                var perProduct = {
-                    id :id,
-                    name:name,
-                    cost :cost,
-                    quantity: quantity,
+            // $.each(totalLoop, function (k, v) {
+            for(var v = 1; v < $(".addProductWrapper").length + 1; v++) {
+                if($('#total' + v).val() != "0") {
+                    var id = $("#productSelect" + v).val();
+                    var name = $('option:selected', "#productSelect"+v).text();
+                    var cost = $('#cost' + v).val();
+                    var quantity = $('#quantity' + v).val();
+
+                    var perProduct = {
+                        id :id,
+                        name:name,
+                        cost :cost,
+                        quantity: quantity,
+                    }
+                    productSet.push(perProduct);
                 }
-                 productSet.push(perProduct);
-            }) 
+            }
+            // }) 
 
             var formData = {
                 command  : "addPurchaseRequest",
-                vendor_id : $("#vendor-dropdown").val(),
+                vendor_id : $("#vendorDropdown").val(),
+                branchName_id : $("#branchNameDropdown").val(),
+                branchAddress_id : $("#branchAddressDropdown").val(),
+                vendor_address_id : $("#branchAddressDropdown").val(),
+                warehouse_id : $("#warehouseDropdown").val(),
                 buying_date : $("#buyingDate").val(),
                 product_list : productSet,
                 remarks : $("#remarks").val(),
@@ -226,11 +279,18 @@
         fCallback = loadFormDropdownVendor
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
+        //temporarily dropdown for warehouse as auto-detection still not implemented
         var formData = {
-            command        : "getProduct",
+            command        : "getWarehouse",
         };
-        fCallback = productListOpt
+        fCallback = loadFormDropdownWarehouse
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
+        // var formData = {
+        //     command        : "getProduct",
+        // };
+        // fCallback = productListOpt
+        // ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     });
 
     function setTodayDatePicker() {
@@ -295,17 +355,6 @@
         $('.totalInput').trigger('change');
         countSubtotal();
     })
-
-    // $("#productSelect2").change(function () {
-    //     var select_id = this.id; 
-    //     var product_cost = $('option:selected', this).attr('datacost');
-    //     var costID = "#cost" + select_id.substring(13);
-    //     $(costID).val(product_cost);
-
-    //     $(".quantityInput").keyup();
-    //     $('.totalInput').trigger('change');
-    //     countSubtotal();
-    // });
     
     function loadFormDropdown(data, message) {
         roleData = data.roleList;
@@ -315,8 +364,7 @@
         });
     }
 
-    function vendorList(vendorName)
-    {
+    function vendorList(vendorName) {
         var formData = {
             command        : "getVendorList",
         };
@@ -325,50 +373,53 @@
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     }
 
-    function productDetails()
-    {
-        var selectedOption = $('#vendor_name option:selected');
+    function changeBranch() {
+        var selectedBranch = $('#branchNameDropdown option:selected');
+        var selectedID = $.trim(selectedBranch.text());
+        console.log("hfsj");
+        console.log($selectedID);
+        $('#branchAddressDropdown').val($selectedID);
+    }
+
+    function productDetails() {
+        var selectedOption = $('#vendorDropdown option:selected');
         var vendorName = $.trim(selectedOption.text());
         var formData = {
             command        : "getProductList",
             vendor_name    : vendorName,
         };
-        fCallback = displayProductList;
+        fCallback = productListOpt;
 
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     }
 
     function displayVendorList(data, message) {
-    if (data) 
-    {
-        var vendorName = '';
-        vendorName += `<option value="" data-lang="M02737">Please select vendor</option>`;
-        $.each(data, function(k, v) {
-            vendorName += `
-                <option value="${v['id']}">${v['name']}</option>
-            `;
-        });
+        if (data) {
+            var vendorName = '';
+            vendorName += `<option value="" data-lang="M02737">Please select vendor</option>`;
+            $.each(data, function(k, v) {
+                vendorName += `
+                    <option value="${v['id']}">${v['name']}</option>
+                `;
+            });
 
-        $('#vendor_name').html(vendorName);
-        // $('#vendor-dropdown').html(vendorName);
+            $('#vendor_name').html(vendorName);
+            // $('#vendorDropdown').html(vendorName);
+        }
     }
-}
 
     function displayProductList(data, message) {
-    if (data) 
-    {
-        var productName = '';
-        $.each(data, function(k, v) {
-            productName += `
-                <option value="${v['id']}">${v['name']}</option>
-            `;
-        });
+        if (data && data.length > 0) {
+            var productName = '';
+            $.each(data, function(k, v) {
+                productName += `
+                    <option value="${v['id']}">${v['name']}</option>
+                `;
+            });
 
-        $('#product_name').html(productName);
+            $('#product_name').html(productName);
+        } 
     }
-}
-
-
     
     function sendNew(data, message) {
         showMessage('Purchase Request Has Been Created Successfully', 'success', 'Success Create Purchase Request', 'check', 'purchaseRequest.php');
@@ -378,7 +429,32 @@
         vendorData = data.getVendorDetail;
         $.each(vendorData, function(key, val) {
             var vName = val['name'];
-            $('#vendor-dropdown').append($('<option>', {
+            $('#vendorDropdown').append($('<option>', {
+                value: val['id'],
+                text: vName
+            }));
+        });
+        vendorAddressData = data.getVendorAddressDetail;
+        $.each(vendorAddressData, function(key, val) {
+            var branchName = val['branch_name'];
+            $('#branchNameDropdown').append($('<option>', {
+                value: val['id'],
+                text: branchName
+            }));
+            var branchAddress = val['address'];
+            $('#branchAddressDropdown').append($('<option>', {
+                value: val['id'],
+                text: branchAddress
+            }));
+        });
+    }
+
+    //temporarily dropdown for warehouse as auto-detection still not implemented
+    function loadFormDropdownWarehouse(data, message) {
+        warehouseData = data;
+        $.each(warehouseData, function(key, val) {
+            var vName = val['warehouse_location'];
+            $('#warehouseDropdown').append($('<option>', {
                 value: val['id'],
                 text: vName
             }));
@@ -394,23 +470,22 @@
             }));
         });
     }
-    var wrapperLength = $(".popupMemoImageWrapper").length + 1;
-    var totalLoop =[1];
 
     function addRow(){
+        var totalLoop =[1];
         
         var wrapper = `
             <div class="col-md-12">
-                <div class="popupMemoImageWrapper">
+                <div class="addProductWrapper kkkk">
                     <a href="javascript:;" class="closeBtn" onclick="closeDiv(this,${(wrapperLength)})">&times;</a>
                     <div class="row" id="pr${(wrapperLength)}">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label>${(wrapperLength)}. Product</label>
                             <select id="productSelect${(wrapperLength)}" onchange="loopSelect(${(wrapperLength)});" class="form-control productSelect" required>
                                                                  
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label>Quantity</label>
                             <input id="quantity${(wrapperLength)}" type="number" oninput="loopQuantity(${(wrapperLength)})" class="form-control quantityInput" value="0" placeholder="0" required/>
                         </div>
@@ -427,13 +502,15 @@
             </div>
         `;
 
-        $("#appendImage").append(wrapper);
+        $("#appendProduct").append(wrapper);
         $("#productSelect"+wrapperLength).html(html);
         totalLoop.push(wrapperLength);
         wrapperLength++;
     }
 
     function closeDiv(n,id) {
+        var totalLoop =[1];
+
         const index = totalLoop.indexOf(id); 
         if (index > -1) {
           totalLoop.splice(index, 1); 
@@ -441,30 +518,145 @@
 
         var lang = $(n).parent().find('.productSelect').val();
 
-        $(n).parent().parent().remove();
+        // $(n).parent().parent().remove();
+        $(n).parent().parent().hide();
+
+        $("#total" + id).val("0");
 
         countSubtotal();
     }
 
     function countSubtotal() {
         var subtotal = 0;
-        $.each(totalLoop, function (k, v) {
-            var total = $("#total" + v).val();
-            subtotal = parseFloat(total) + parseFloat(subtotal);
-        })
+        for(var i = 1; i < $(".totalInput").length + 1; i++) {  
+            var total = $("#total" + i).val();
+            subtotal += parseFloat(total);
+        }
+
+        // $.each(totalLoop, function (k, v) {
+        //     var total = $("#total" + v).val();
+        //     subtotal = parseFloat(total) + parseFloat(subtotal);
+        // })
 
         $("#subtotal").val(subtotal.toFixed(2));
     }
     
     function productListOpt(data, message) {
-        if(data.getProductDetail) {
+        if(data) {
+            $("#appendBranch").empty();
+            $("#appendProduct").empty();
+        
+            var branchHTML2 = 
+                `<div class="col-md-4">
+                    <label>
+                        Branch Name
+                    </label>
+                    <select id="branchNameDropdown" class="form-control" required>
+                        <option value="">Select a branch</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>
+                        Branch Address
+                    </label>
+                    <select id="branchAddressDropdown" class="form-control" required>
+                        <option value="">Select the address</option>
+                    </select>
+                </div>`;
+
+            var branchHTML = 
+            `   <label>
+                    Branch Address
+                </label>
+                <select id="branchAddressDropdown" class="form-control" required>
+                    <option value="">Select the address</option>
+                </select>`;
+
+            var productHTML =
+                `<div class="col-md-12">
+                                                        
+                    <div class="addProductWrapper default">
+                        <span class="dtxt">Default</span>
+                        
+                        <div class="row" id="pr1">
+                            <div class="col-md-4">
+                                <label>1. Product</label>
+                                <select id="productSelect1" class="form-control productSelect" required></select>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Quantity</label>
+                                <input id="quantity1" type="number" oninput="productListOpt()" class="form-control quantityInput" value="0" placeholder="0" required/>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Cost</label>
+                                <input id="cost1" type="number" value="0.00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control costInput" required readonly/>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Total Amount</label>
+                                <input id="total1" type="number" value="0.00" class="form-control totalInput" readonly/>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        
+            $("#appendBranch").html(branchHTML);
+            $("#appendProduct").html(productHTML);
+            $(".addProductWrapper").css("display", "block");
+            $(".addProductWrapper.noData").css("display", "none");
+            $(".addProduct").css("display", "unset");
+            $("#remarks").removeAttr("disabled");
             
-            $.each(data.getProductDetail, function(i, obj) {
-                html += `<option value="${obj.id}" datacost="${obj.cost}">${obj.name}</option>`;
+            var html1 = `<option value="">Select Product</option>`;
+            $.each(data.product, function(i, obj) { 
+                html1 += `<option value="${obj.id}" datacost="${obj.cost}">${obj.name}</option>`;
+                html = html1;
             });
-            
-            $("#productSelect1").html(html);
+            $("#productSelect1").html(html1);
+
+            var html2 = `<option value="">Select a branch</option>`;
+            $.each(data.branch, function(i, obj) { 
+                html2 += `<option value="${obj.id}">${obj.branch_name}</option>`;
+            });
+            $("#branchNameDropdown").html(html2);
+
+            var html3 = `<option value="">Select the address</option>`;
+            $.each(data.branch, function(i, obj) { 
+                html3 += `<option value="${obj.id}">${obj.address}</option>`;
+            });
+            $("#branchAddressDropdown").html(html3);
+        } 
+
+        if(data.length < 1) {
+            $(".productSelect").attr("disabled","disabled");
+            $(".quantityInput").attr("disabled","disabled");
+            $(".addProduct").css("display", "none");
+            alert("This vendor have no product yet. Please choose other vendor to continue.")
         }
+
+        $(".productSelect").change(function () {
+            var select_id = this.id;
+            var product_cost = $('option:selected', this).attr('datacost');
+            var costID = "#cost" + select_id.substring(13);
+            $(costID).val(product_cost);
+            $(".quantityInput").keyup();
+            $('.totalInput').trigger('change');
+
+            countSubtotal();
+        });
+
+        $(".quantityInput").keyup(function () {
+            this.value|=0;
+
+            var quantity_id = this.id;
+            var totalID = "#total" + quantity_id.substring(8);
+            var quantity = $('#' + quantity_id).val();
+            var product_cost_id = '#cost' + quantity_id.substring(8); 
+            var product_cost = $(product_cost_id).val(); 
+
+            $(totalID).val((product_cost * quantity).toFixed(2));
+            $('.totalInput').trigger('change');
+            countSubtotal();
+        })
     }
 
     function keyinQuantity() {

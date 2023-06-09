@@ -49,9 +49,10 @@
                 echo $result;
                 break;
 
+            case "addNewMember":
             case "editMemberDetails":
                 $params = array(
-                                    "clientID"  => $_POST['memberId'],
+                                    "clientID"  => $_POST['clientID'],
                                     "name"  => $_POST['name'],
                                     "email"     => $_POST['email'],
                                     "dialingArea" => $_POST['dialingArea'],
@@ -93,10 +94,22 @@
                                     "deliveryCountryID" => $_POST['deliveryCountryID'],
                                     "deliveryEmail" => $_POST['deliveryEmail'],
                                     "deliveryDialingArea" => $_POST['deliveryDialingArea'],
-                                    "deliveryPhone" => $_POST['deliveryPhone']
+                                    "deliveryPhone" => $_POST['deliveryPhone'],
+                                    "clientID" => $_POST['clientID'],
+                                    "shipping" => $_POST['shipping'],
+
                                 );
                 $result = $post->curl($command, $params);
                 
+                echo $result;
+                break;
+
+            case "deleteShippingAddress":
+            case "deleteAddress":
+                $params = array("id"         => $_POST['id']);
+
+                $result = $post->curl($command, $params);
+
                 echo $result;
                 break;
 
@@ -628,6 +641,7 @@
 
                 break;
 
+            case "getState":
             case "reentryConfirmation":
                 $params = array(
                     "clientID" => $_POST['receiverId'],
@@ -638,6 +652,18 @@
                 $result = $post->curl($command, $params);
                 echo $result;
 
+                break;
+
+            case "addNewMember":
+            case "deleteShippingAddress":
+
+                foreach($_POST AS $key => $val){
+                    if($key == "command") continue;
+                    $params[$key] = $val;
+                }
+                $result = $post->curl($command, $params);
+
+                echo $result;
                 break;
         }
     }

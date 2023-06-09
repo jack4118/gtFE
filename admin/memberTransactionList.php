@@ -267,7 +267,7 @@ else
         function loadMemberDetail(data, message) {
             console.log(data);
             if (data.balance) {
-                $('#balance').text(data.balance);
+                $('#balance').text(data.balance.data);
             } else {
                 $('#balance').text(0);
             }

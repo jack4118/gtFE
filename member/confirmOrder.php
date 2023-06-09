@@ -143,7 +143,7 @@ var settingIsLoaded         = false;
 var checkSumIsLoaded        = false;
 var cartLoaded              = false;
 
-var saleId                  = '<?php echo $_POST['saleId'] ?>';
+var saleId                  = '<?php echo $_POST['purchaseId'] ?>';
 var fpx_msgType;
 var fpx_msgToken;
 var fpx_sellerExId;
@@ -171,7 +171,7 @@ $(document).ready(function() {
     // Load summary cart
     getShoppingCart(1);
     checkOutCalculation();
-
+    
     $('#backBtn').click(function() {
         $.redirect('checkoutAddress');
     });
@@ -218,7 +218,7 @@ function loadDeliveryMethod(data, message) {
                         <input class="radio-control mr-3" type="radio" id="delivery" name="deliveryMethod" value="delivery" checked onchange="checkOutCalculation()">
                         <div class="d-flex justify-content-between w-100">
                             <div class="bodyText smaller lightBold">${v['name']}</div>
-                            <div class="bodyText smaller lightBold text-green text-uppercase" id="deliveryCharges">RM${numberThousand(v['fees'], 2)}</div>
+                            <div class="bodyText smaller lightBold text-green text-uppercase" id="deliveryCharges">RM${numberThousand(v['deliveryFees'], 2)}</div>
                         </div>
                     </label>
                 `;
@@ -258,6 +258,9 @@ function loadPaymentMethod(data, message) {
                                 <select id="bankLists" class="bodyText smaller lightBold form-control2 col-12">
                                     <option value="" data-lang="M03442"><?php echo $translations['M03442'][$language] /* Select Bank */ ?></option>
                                 </select>
+                            </div>
+                            <div class="col-12">
+                                <p id="bankPassError" style="text-align: left;display:none;margin-top: 10px;"><img src="images/alertIcon.png" width="20px"><span id="bankPassErrorText" style="margin-left: 15px;">&nbsp;</span></p>
                             </div>
                         </div>
                     </label>
@@ -325,25 +328,40 @@ function loadBankLists(data, message) {
 }
 
 function updateSaleOrder() {
+    $('#bankPassError').hide();
+
+    // Checkpoint
+    if(!$('#ManualBankTransfer').is(':checked') && !$('#QRCode').is(':checked')) {
+        if ($('#bankLists').val() === '') {
+            $('#bankPassError').show();
+            $('#bankPassErrorText').text("Please Choose Bank Type");
+            return false;
+        }
+    }
+
     var formData = {
         command     	: 'updateSaleOrder',
         saleID          : saleId,
         paymentMethod   : $('input[name=paymentMethod]:checked').val(),
         paymentDelivery : $('input[name=deliveryMethod]:checked').val(),
-        total_price     : $('#totalPrice').html(),
+        total_price     : $('#totalSalePrice').html().replace('RM', ''),
+        bkend_token     : $.cookie('oldToken')
     };
 	var fCallback = proceedToPayment;
     ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 }
 
 function proceedToPayment(data, message) {
+    var deliveryMethodOpt = $('input[name=deliveryMethod]:checked').val();
+
     if($('#ManualBankTransfer').is(':checked')) {
         $.redirect('payment', { 
             manualBankTransfer: true,
             txnAmount: '<?php echo $_POST['txnAmount'] ?>',
             purchaseId: '<?php echo $_POST['purchaseId'] ?>',
             saleId: '<?php echo $_POST['saleId'] ?>',
-            txnTime: '<?php echo $_POST['txnTime'] ?>'
+            txnTime: '<?php echo $_POST['txnTime'] ?>',
+            deliveryMethodOpt: deliveryMethodOpt,
         });
     } else if($('#QRCode').is(':checked')) {
         $.redirect('payment', { 
@@ -351,7 +369,8 @@ function proceedToPayment(data, message) {
             txnAmount: '<?php echo $_POST['txnAmount'] ?>',
             purchaseId: '<?php echo $_POST['purchaseId'] ?>',
             saleId: '<?php echo $_POST['saleId'] ?>',
-            txnTime: '<?php echo $_POST['txnTime'] ?>'
+            txnTime: '<?php echo $_POST['txnTime'] ?>',
+            deliveryMethodOpt: deliveryMethodOpt,
         });
     } else {
         // FPX payment
@@ -450,6 +469,8 @@ function redirectToFPX() {
 }
 
 function checkOutCalculation() {
+    $('#bankPassError').hide();
+
     if(!cartLoaded) {
         setTimeout(function() {
             checkOutCalculation();
@@ -461,23 +482,28 @@ function checkOutCalculation() {
         }
 
         var formData = {
-            command     	    : 'CheckOutCalculation',
+            command     	    : 'CartTotalAmountCalculation',
             userID              : clientId,
-            deliveryMethod      : $('input[name=deliveryMethod]:checked').val()
+            deliveryMethod      : $('input[name=deliveryMethod]:checked').val(),
+            bkend_token         : $.cookie('oldToken')
         };
+
+        if($.cookie('redeemAmount')) formData['redeemAmount'] = $.cookie('redeemAmount');
+
         var fCallback = loadCheckoutCalculation;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0); 
     }
 }
 
 function loadCheckoutCalculation(data, message) {
-    var shippingFee = data.shippingFee;
-    var totalPrice = data.cartTotal;
+    if(data) {
+        fpx_txnAmount = data.cartTotal;
 
-    fpx_txnAmount = totalPrice;
-
-    $('#deliveryFee').html('RM' + numberThousand(shippingFee, 2));
-    $('#totalPrice').html(numberThousand(totalPrice, 2));
+        $('#redeemedAmount').html('-RM' + numberThousand(data.redeemAmount, 2));
+        $('#deliveryCharges').html('RM' + numberThousand(data.deliveryFee, 2));
+        $('#deliveryFee').html('RM' + numberThousand(data.shippingFee, 2));
+        $('#totalSalePrice').html('RM' + numberThousand(data.cartTotal, 2));
+    }
 }
 
 </script>

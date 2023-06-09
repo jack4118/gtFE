@@ -668,6 +668,7 @@ else {
               'sponsorId' => $_POST['sponsorId'],
               'fullName' => $_POST['fullName'],
               'username' => $_POST['username'],
+              'step' => $_POST['step'],
               'loginBy' => "phone",
               'id' => ""
             ); 
@@ -832,10 +833,34 @@ else {
         case 'getState':
         case 'memberChangePassword':
         case "getOwnMonthlyPerformanceReport":  
-        case "getProductDetails":
         case 'getPurchaseHistory':
+        case 'guestAddShoppingCart':
+        case 'getShoppingCart':
+        case 'getWishList':
+        case 'addWishList':
         
             $params = array ("clientID" => $userID);
+
+            foreach($_POST AS $key => $val){
+                if($key == "command") continue;
+                $params[$key] = $val;
+            }
+            $result = $post->curl($command, $params);
+            $result = json_decode($result, true);
+            if ($result['sessionData']['newSessionID']) {
+                $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
+                $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
+            } 
+            if ($result["code"] == 5 || $result["code"] == 3){
+                setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
+            }
+            $result = json_encode($result);
+                
+
+            echo $result;
+            break;
+        
+        case 'getSOShoppingCart':
 
             foreach($_POST AS $key => $val){
                 if($key == "command") continue;
@@ -883,6 +908,7 @@ else {
         case 'updateSaleOrder':
         case 'uploadReceipt':
         case 'getDeliveryMethod':
+        case 'updateStatusOnCheckout':
             
             $params = array();
 
@@ -917,6 +943,7 @@ else {
               'type' => $_POST['type'],
               'sponsorId' => $_POST['sponsorId'],
               'fullName' => $_POST['fullName'],
+              'step' => $_POST['step'],
               'username' => $_POST['username'],
               'loginBy' => "phone",
               'id' => ""
@@ -963,7 +990,29 @@ else {
 
         case 'getProductDetails':
             $params = array(
-              'productInvId' => $_POST['productInvId']
+              'productInvId' => $_POST['productInvId'],
+              'language'     => $_POST['language']
+            );
+
+            $result = $post->curl($command, $params);
+
+            $result = json_decode($result, true);
+            if ($result['sessionData']['newSessionID']) {
+                $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
+                $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
+            } 
+            if ($result["code"] == 5 || $result["code"] == 3){
+                setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
+            }
+            $result = json_encode($result);
+
+            echo $result;
+
+            break;
+
+        case 'getProductDetailsBySN':
+            $params = array(
+              'serial_number' => $_POST['serial_number']
             );
 
             $result = $post->curl($command, $params);
@@ -1001,6 +1050,7 @@ else {
             break;
         
         case 'CheckOutCalculation':
+        case 'CartTotalAmountCalculation':
             $params = array ("userID" => $userID);
 
             foreach($_POST AS $key => $val){

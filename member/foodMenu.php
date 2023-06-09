@@ -16,7 +16,7 @@ include 'head.php';
 
             <div class="row">
                 <div class="col-12">
-                    <img src="images/project/menu-banner.jpg" class="img-fluid mb-5">
+                    <img src="images/project/food-menu-img.jpg" class="img-fluid mb-4 foodMenu-img">
                 </div>
 
                 <!-- <div class="col-12">
@@ -42,7 +42,7 @@ include 'head.php';
                     </ul>
                 </div>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-6 text-left text-md-right">
                 <div class="well well-sm">
                     <font style="font-size: 14px;" data-lang="M03890"><?php echo $translations['M03890'][$language]; //Sort by ?>:</font>
                     <div class="btn-group">
@@ -53,7 +53,7 @@ include 'head.php';
                             <i class="fa fa-th-list"></i>
                         </a>
 
-                        <input id="searchInput" type="text" class="form-control" placeholder="Search" dataType="text" dataName="name">
+                        <input id="searchInput" type="text" class="form-control" placeholder="<?php echo $translations['M00052'][$language] /* Search */ ?>" dataType="text" dataName="name">
                         <a href="javascript:void(0)" id="searchBtn" class="btn btn-default btn-sm d-none d-md-block" style="background-image: linear-gradient(to bottom, #f37067, #c82f26);">
                             <i class="fa fa-search" style="color: #fff !important;"></i>
                         </a>
@@ -66,17 +66,7 @@ include 'head.php';
             <div class="col-md-4 col-lg-3 categories-filter ">
                 <h5 data-lang="M03874"><?php echo $translations['M03874'][$language]; //Categories ?></h5>
                 <hr class="grey-line">
-                <ul id="category">
-                    <!-- <li class="active" data-lang="M03875"><?php echo $translations['M03875'][$language]; //All Products ?></li>
-                    <li data-lang="M03891"><?php echo $translations['M03891'][$language]; //Items On Sale?></li>
-                    <li data-lang="M03892"><?php echo $translations['M03892'][$language]; //Rice ?></li>
-                    <li data-lang="M03893"><?php echo $translations['M03893'][$language]; //Snacks ?></li>
-                    <li data-lang="M03894"><?php echo $translations['M03894'][$language]; //Sweet Delicacies/Kuih Muih ?></li>
-                    <li data-lang="M03895"><?php echo $translations['M03895'][$language]; //Side Dishes ?></li>
-                    <li data-lang="M03896"><?php echo $translations['M03896'][$language]; //Penang Specialties ?></li>
-                    <li data-lang="M03897"><?php echo $translations['M03897'][$language]; //FOC Delivery Packages ?></li>
-                    <li data-lang="M03898"><?php echo $translations['M03898'][$language]; //Beverages ?></li> -->
-                </ul>
+                <ul id="category"></ul>
             </div>
             <div class="col-md-8 col-lg-9">
                 <div id="products" class="row jp-list-group">
@@ -137,7 +127,7 @@ var slideIndex = 1;
 var pageNumber = 1
 var memoURL = "<?php echo $config['tempMediaUrl']; ?>";
 var liname ="";
-
+var language = "<?php echo $language; ?>";
 
 $(document).ready(function(){
     $('#list').click(function(event){event.preventDefault();$('#products .item').addClass('list-group-item');$('#products .item').removeClass('grid-group-item');});
@@ -160,7 +150,8 @@ $(document).ready(function(){
     /** Food Category */
     var formData  = {
         command     : "getCategoryInventoryMember",
-        pageNumber  : 1
+        pageNumber  : 1,
+        language    : language
     };
     var fCallback = loadDefaultListing; 
     ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
@@ -179,6 +170,7 @@ function pagingCallBack(pageNumber, fCallback){
         command     : "getCategoryInventoryMember",
         pageNumber  : pageNumber,
         searchData  : searchData,
+        language    : language,
     }; 
 
     if(!fCallback)
@@ -187,6 +179,7 @@ function pagingCallBack(pageNumber, fCallback){
 }
 
 function loadDefaultListing (data,message) { 
+    
     if(data.productInventory && data.productInventory.length > 0) {
         var foodMenuHTML = '';
     
@@ -236,14 +229,71 @@ function loadDefaultListing (data,message) {
         if (!liname){
             var foodCategoryHTML = '';
             $.each(data.categoryList, function(l, m) {
-                foodCategoryHTML +=  `
-                    <li class="${m['name']}" id="${m['name']}" name="${m['name']}" dataName="type" dataType="select">${m['name']}</li>
-                `;
-        });
-        $("#category").html(foodCategoryHTML);
-        }
+                // foodCategoryHTML +=  `                    
+                //     <li class="${m['name']}" id="${m['name']}" name="${m['name']}" dataName="type" dataType="select">
+                //         ${m['name']}
+                // `;
 
-        
+                foodCategoryHTML += `
+                    <div id="accordion">
+                        <div class="card food-category">`;
+
+                if(m['subCategory'] != null) {
+                    foodCategoryHTML += `
+                            <li>
+                                <div class="card-header" id="heading${l}" data-toggle="collapse" data-target="#collapse${l}" aria-expanded="true">
+                                    ${m['name']}
+                                    <span class="accicon"><i class="fas fa-angle-down"></i></span>
+                                </div>
+                                <div id="collapse${l}" class="collapse">
+                                    <div class="card-body">
+                                        <ul>`;
+
+                    $.each(m.subCategory, function(m, n) {
+                        foodCategoryHTML +=  `
+                                        <li class="${n['name']}" id="${n['name']}" name="${n['name']}" dataName="type" dataType="select">
+                                            ${n['name']}
+                                        </li>
+                                    `;
+                    });
+
+                    foodCategoryHTML += `
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </div>
+                    </div>
+                    `;
+                } else {
+                    foodCategoryHTML += `
+                        <li class="${m['name']}" id="${m['name']}" name="${m['name']}" dataName="type" dataType="select">
+                            ${m['name']}
+                        </li>
+                    `;
+                }
+
+                // if(m['subCategory'] != null) {
+                //     foodCategoryHTML +=  `
+                //         <ul class="subCat">
+                //     `;
+
+                //     $.each(m.subCategory, function(m, n) {
+                //         foodCategoryHTML +=  `
+                //             <li class="${n['name']}" id="${n['name']}" name="${n['name']}" dataName="type" dataType="select">${n['name']}</li>
+                //         `;
+                //     });
+
+                //     foodCategoryHTML +=  `
+                //             </ul>
+                //         </li>
+                //     `;
+                // }
+
+            });
+
+            $("#category").html(foodCategoryHTML);
+        }        
     }
 }
 
@@ -263,7 +313,6 @@ document.addEventListener('click',(e) => {
 
         if (elementClass !== '') {
             $(e.target).addClass("active");
-            // console.log(elementClass);
             $('#breadcrumbCategory').text(elementClass);
 
             var clientID = '<?php echo  $_SESSION["userID"]  ?>';
@@ -271,8 +320,6 @@ document.addEventListener('click',(e) => {
 
             // var foodList = data.productInventory;
             pagingCallBack(pageNumber, dataValue)
-
-            // return console.log(elementClass);
 
             // var formData  = {
             //     // command     : "getProductListMember",
@@ -296,8 +343,8 @@ function pagingCallBack(pageNumber, fCallback) {
             command: "getCategoryInventoryMember",
             searchData: $("#searchInput").val(),
             categories  :   liname,
+            language    : language,
         };
-        console.log(formData);
 
         fCallback = loadDefaultListing;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);

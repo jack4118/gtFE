@@ -146,15 +146,16 @@ function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoad
                         if (typeof(fCallback) == 'function')
                             fCallback(obj.data, obj.statusMsg, obj);
                     }
-                    else {
-                        if(val.command == 'purchasePackageVerification' && val.step == 1) { 
-                            return noStarterKitError(obj)
-                            // handleCheckoutError(obj.data.field)
-                        }
+                    else {                        
                         if (obj.data != null && obj.data.field) {
                             showCustomErrorField(obj.data.field, obj.statusMsg);
                         } else {
                             errorHandler(obj.code, obj.statusMsg);
+                        }
+
+                        if(val.command == 'purchasePackageVerification' && val.step == 1) { 
+                            return noStarterKitError(obj)
+                            // handleCheckoutError(obj.data.field)
                         }
                     }
                 }

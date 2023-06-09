@@ -44,66 +44,62 @@
                                                 <div class="row">
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            <?php echo $translations['A00112'][$language]; /* Created At */?>
+                                                            SKU Code
                                                         </label>
-                                                        <div class="input-group input-daterange">
-                                                            <input type="text" class="form-control" dataName="createdAt" dataType="dateRange">
-                                                            <span class="input-group-addon">
-                                                                <?php echo $translations['A00139'][$language]; /* to */?>
-                                                            </span>
-                                                            <input type="text" class="form-control" dataName="createdAt" dataType="dateRange">
-                                                        </div>
+                                                        <input type="text" class="form-control" dataName="code" dataType="text">
                                                     </div>
 
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            <?php echo $translations['A00377'][$language]; /* Updated At */?>
+                                                            Package Name
                                                         </label>
-                                                        <div class="input-group input-daterange">
-                                                            <input type="text" class="form-control" dataName="updatedAt" dataType="dateRange">
-                                                            <span class="input-group-addon">
-                                                                <?php echo $translations['A00139'][$language]; /* to */?>
-                                                            </span>
-                                                            <input type="text" class="form-control" dataName="updatedAt" dataType="dateRange">
-                                                        </div>
+                                                        <input type="text" class="form-control" dataName="productName" dataType="text">
                                                     </div>
 
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label" for="" data-th="">
-                                                            Package Name
+                                                             Publish Status
                                                         </label>
-                                                        <input type="text" class="form-control" dataName="productName" dataType="text">
+                                                        <select class="form-control" dataName="isPublish" dataType="select">
+                                                            <option value="">
+                                                                <?php echo $translations['A00055'][$language]; /* All */?>
+                                                            </option>
+                                                            <option value="yes" selected>
+                                                                Yes
+                                                            </option>
+                                                            <option value="no">
+                                                                No
+                                                            </option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-sm-12 px-0">
                                                 <div class="row">
+
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            Category
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="category" dataType="text">
+                                                    </div>
+                                                    
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label" for="" data-th="">
-                                                            <?php echo $translations['A00318'][$language]; /* Status */?>
+                                                             Archive Status
                                                         </label>
-                                                        <select class="form-control" dataName="status" dataType="select">
+                                                        <select class="form-control" dataName="isArchive" dataType="select">
                                                             <option value="">
                                                                 <?php echo $translations['A00055'][$language]; /* All */?>
                                                             </option>
-                                                            <option value="Active">
-                                                                <?php echo $translations['A00372'][$language]; /* Active */?>
+                                                            <option value="yes">
+                                                                Yes
                                                             </option>
-                                                            <option value="Inactive">
-                                                                <?php echo $translations['A00373'][$language]; /* Inactive */?>
-                                                            </option>
-                                                            <option value="Sold Out">
-                                                                Sold Out
+                                                            <option value="no" selected>
+                                                                No
                                                             </option>
                                                         </select>
-                                                    </div>
-
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label" for="" data-th="">
-                                                            <?php echo $translations['A00245'][$language]; /* Code */?>
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="code" dataType="text">
                                                     </div>
                                                 </div>
                                             </div>
@@ -168,24 +164,14 @@
         var pagerId  = 'pagerAnnouncementList';
         var btnArray = {};
         var thArray  = Array (
-            "Created Date",
-            "Active Date",
-            "Package Code",
+            "SKU Code",
             "Package Name",
-            "Total Weights",
-            // "Description",
-            "Retail Price",
-            "Promotion Price",
-            "Member Price",
-            // "Category",
-            // "Stock Balance",
-            // "Total Sold",
-            "PV",
-            "Status",
-            "Updated Date",
-            "Done By",
-            "Edit",
-            "Adjust"
+            "Category",
+            "Sale Price",
+            "Mystery Food Quantity",
+            "Publish Status",
+            // "Archive Status",
+            "",
         );
             
         // Initialize the arguments for ajaxSend function
@@ -248,42 +234,15 @@
             $('#exportBtn').click(function () {
                 var searchId = 'searchForm';
                 var searchData = buildSearchDataByType(searchId);
-                var thArray  = Array (
-                    "Created Date",
-                    "Active Date",
-                    "Package Code",
-                    "Package Name",
-                    "Total Weights",
-                    // "Description",
-                    "Retail Price",
-                    "Promotion Price",
-                    "Member Price",
-                    // "Category",
-                    // "Stock Balance",
-                    // "Total Sold",
-                    "PV",
-                    "Status",
-                    "Updated Date",
-                    "Done By"
-                );
 
                 var key = Array(
-                    'createdAt',
-                    'activeDate',
-                    'code',
+                    'skuCode',
                     'name',
-                    'weight',
-                    // 'description',
-                    'retailPrice',
-                    'promoPrice',
-                    'memberPrice',
-                    // 'categoryDisplay',
-                    // 'totalBalance',
-                    // 'totalSold',
-                    'pvPrice',
-                    'statusDisplay',
-                    'updatedAt',
-                    'updaterName'
+                    'categ_list',
+                    'salePrice',
+                    'mysteryFoodQuantity',
+                    'publishStatus',
+                    // 'archiveStatus'
                 );
 
                 var formData = {
@@ -329,47 +288,28 @@
             var list = data.packageList;
             if(list) {
                 var newList = [];
-                // var j = 0;
-
                 $.each(list, function(k, v) {
-
-                    var buildBtn = `
-                        <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
+                    var editBtn = `
+                        <a data-toggle="tooltip" title="" onclick="editPackage('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
                     `;
-
-                    // var adjustBtn = `-`;
-                    // if (v['isAdjustable'] == 1) {
-                    var adjustBtn = `
-                        <a data-toggle="tooltip" title="" onclick="adjustRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Adjust" aria-describedby="tooltip645115"><i class="fa fa-wrench"></i></a>
-                    `;
-                    if(v['adjustRestricted'] == 1){
-                        adjustBtn = "-";
-                    }
-                    // } else {
-                    //     adjustBtn = `-`;
-                    // }
 
                     var rebuildData = {
-                        createdAt       : v['createdAt'],
-                        activeDate      : v['activeDate'],
-                        code            : v['code'],
-                        name            : v['name'],
-                        totalWeights    : numberThousand(v['weight'], 2),
+                        // created_at      : v['created_at'],
+                        // name            : v['name'],
                         // description     : v['description'],
-                        retailPrice     : numberThousand(v['retailPrice'], 2),
-                        promoPrice      : v['promoPrice']!="-"?numberThousand(v['promoPrice'], 2):v['promoPrice'],
-                        memberPrice     : numberThousand(v['memberPrice'], 2),
-                        // categoryDisplay : v['categoryDisplay'],
-                        // totalBalance    : numberThousand(v['totalBalance'], 0),
-                        // totalSold       : numberThousand(v['totalSold'], 0),
-                        pvPrice         : numberThousand(v['pvPrice'], 2),
-                        statusDisplay   : v['statusDisplay'],
-                        updatedAt       : v['updatedAt'],
-                        updaterName     : v['updaterName'],
-                        buildBtn        : buildBtn,
-                        adjustBtn       : adjustBtn
+                        // sale_price      : addCommas(v['sale_price']),
+
+                        skuCode                : v['skuCode'],
+                        name                   : v['name'],
+                        category                : v['categoryDisplay'],
+                        salePrice              : addCommas(v['salePrice']),
+                        mysteryFoodQuantity   : v['mysteryFoodQuantity'],
+                        publishStatus          : v['publishStatus'],
+
+                        // archiveStatus          : v['archiveStatus'],
+                        editBtn                 : editBtn,
                     };
-                    // ++j;
+
                     newList.push(rebuildData);
                 });
             }
@@ -378,25 +318,13 @@
             pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
             $('#' + tableId).find('thead tr, tbody tr').each(function () {
-                $(this).find('th:last-child, td:last-child').css('text-align', "center");
-                $(this).find('th:eq(-2), td:eq(-2)').css('text-align', "center");
-                $(this).find('th:eq(4), td:eq(4)').css('text-align', "right");
-                $(this).find('th:eq(5), td:eq(5)').css('text-align', "right");
-                $(this).find('th:eq(6), td:eq(6)').css('text-align', "right");
-                $(this).find('th:eq(7), td:eq(7)').css('text-align', "right");
-                $(this).find('th:eq(8), td:eq(8)').css('text-align', "right");
-                // $(this).find('th:eq(9), td:eq(9)').css('text-align', "right");
+                $(this).find('td:eq(3)').css('text-align', "right");
+                $(this).find('th:eq(4), td:eq(4)').css('text-align', "center");
             });
         }
 
-        function editRecord(id) {
+        function editPackage(packageID) {
             $.redirect('editPackageDetails.php', {
-                id : id
-            });
-        }
-
-        function adjustRecord(packageID) {
-            $.redirect('packageAdjustment.php', {
                 packageID : packageID
             });
         }

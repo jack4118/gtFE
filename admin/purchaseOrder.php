@@ -308,7 +308,6 @@ session_start();
     });
 
     function loadDefaultListing(data, message) {
-        console.log(data);
         data ? $("#exportBtn").show() : $("#exportBtn").hide();
         $('#basicwizard').show();
         
@@ -318,7 +317,7 @@ session_start();
 
 
                 var buildView = `
-                    <a data-toggle="tooltip" title="" onclick="editDetails(${v['id']})" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    <a data-toggle="tooltip" title="" id="edit${k}" onclick="tableBtnClick(this.id)" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit"><i class="fa fa-edit"></i></a>
                     <a data-toggle="tooltip" title="" onclick="viewDetails(${v['id']}, '${v['status']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="View"><i class="fa fa-eye"></i></a>
                 `;
 
@@ -364,28 +363,16 @@ session_start();
         pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
         $('#'+tableId).find('thead tr').each(function(){
-            $(this).find('th:eq(6)').css('text-transform', "capitalize");
-            $(this).find('th:eq(8)').css('text-align', "center");
-            $(this).find('th:eq(9)').css('text-align', "center");
-            $(this).find('th:eq(10)').css('text-align', "center");
+            $(this).find('th:eq(2)').css('max-width', "250px");
         });
 
         $('#'+tableId).find('tbody tr').each(function(){
-            $(this).find('td:eq(6)').css('text-transform', "capitalize");
-            $(this).find('td:eq(8)').css('text-align', "center");
-            $(this).find('td:eq(9)').css('text-align', "center");
-            $(this).find('td:eq(10)').css('text-align', "center");
-        });
-
-        
+            $(this).find('td:eq(2)').css('max-width', "250px");
+        });        
     }
 
     function viewDetails(id, status) {
         $.redirect("purchaseOrderDetail.php", {id: id, status: status})
-    }
-
-    function editDetails(id) {
-        $.redirect('editSaleOrder.php', { id: id });
     }
 
     function issueDO(id) {
@@ -405,10 +392,12 @@ session_start();
         var tableRow = $('#'+btnId).parent('td').parent('tr');
         var tableId  = $('#'+btnId).closest('table');
 
-        if (btnName == 'view') {
-            var invoiceId = tableRow.attr('data-th');
-            $.redirect("viewInvoice.php",{invoiceId: invoiceId});
-        }
+        var status = tableRow.find('td:eq(6)').text();
+        var id = tableRow.find('td:eq(1)').text();
+        var delivery_method = tableRow.find('td:eq(5)').text();
+        var payment_method = tableRow.find('td:eq(4)').text();
+
+        $.redirect("editSaleOrder.php",{id: id, status: status, payment_method: payment_method, delivery_method: delivery_method});
     }
 
     // function viewDetails(invoiceID) {

@@ -32,40 +32,6 @@
             <div class="content">
                 <div class="container">
                     <div class="row">
-                        <!-- <div class="col-lg-3 col-md-3 visible-xs visible-sm">
-                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                <div class="panel panel-default bx-shadow-none">
-                                    <div class="panel-heading" role="tab" id="headingOne">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="collapse">
-                                                <?php echo $translations['A00280'][$language]; /* Menu */ ?>
-                                            </a>
-                                        </h4>
-                                    </div>
-
-                                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                                        <div class="panel-body">
-                                            <div class="m-b-rem1 menuActive active">
-                                                <a>
-                                                    <?php echo $translations['A00281'][$language]; /* Edit Profile */ ?>
-                                                </a>
-                                            </div>
-                                            <div class="m-b-rem1 menuActive">
-                                                <a>
-                                                    <?php echo $translations['A00282'][$language]; /* Password Maintain */ ?>
-                                                </a>
-                                            </div>
-                                            <div class="m-b-rem1 menuActive">
-                                                <a>
-                                                    <?php echo $translations['A00283'][$language]; /* Referral Diagram */ ?>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-
                         <?php 
                             if( $detect->isMobile() ) {
                                 include 'editMemberSideBarXs.php';
@@ -142,14 +108,12 @@
                                                             </span>
                                                         </label>
                                                         <input id="name" type="text" class="form-control">
+                                                        <input id="clientIdInput" type="text" class="form-control hide">
                                                         <span id="nameError" class="customError text-danger"></span>
                                                     </div>
                                                     <div class="col-sm-6 form-group">
                                                         <label class="control-label" for="" data-th="username">
                                                             <?php echo $translations['A00195'][$language]; /* Email Address */ ?>
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
                                                         </label>
                                                         <input id="email" type="text" class="form-control">
                                                         <span id="emailError" class="customError text-danger"></span>
@@ -165,100 +129,12 @@
                                                             </span>
                                                         </label>
                                                         <div id="phoneDiv" class="row justify-content-between mx-0 form-control beforeLoginForm" style="display: flex; height: auto; line-height: normal; padding: 0; margin: 0;">
-                                                            <select id="dialingArea" class="form-control" style="border: none; max-width: 90px;"></select>
-                                                            <input type="text" id="phone" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" style="border: none;">
+                                                            <!-- <select id="dialingArea" class="form-control" style="border: none; max-width: 90px;"></select> -->
+                                                            <input type="text" id="phone" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" style="border: none;" disabled>
                                                         </div>
                                                         <span id="phoneError" class="customError text-danger"></span>
                                                     </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="identityType">
-                                                            Identity Type
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <select id="identityType" class="form-control">
-                                                            <option value="nric">KTP</option>
-                                                            <option value="passport">Passport</option>
-                                                        </select>
-                                                        <span id="identityTypeError" class="customError text-danger"></span>
-                                                    </div>
                                                 </div>
-
-                                                <div class="col-sm-12">
-                                                    <div id="identityNumberDiv" class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="identityNumber">
-                                                            ID Number (KTP)
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input id="identityNumber" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
-                                                        <span id="identityNumberError" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div id="passportDiv" class="col-sm-6 form-group" style="display: none;">
-                                                        <label class="control-label" for="" data-th="passport">
-                                                            Passport Number
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input id="passport" type="text" class="form-control">
-                                                        <span id="identityNumberError" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="dob">
-                                                            DOB
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input type="text" id="dob" class="form-control">
-                                                        <span id="dobError" class="customError text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-6 form-group">
-                                                        <div class="col-sm-12 px-0">
-                                                            <label class="control-label" for="" data-th="#">
-                                                                <?php echo $translations['A01441'][$language]; /* Gender */ ?>
-                                                                <span class="text-danger">
-                                                                    *
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-sm-6 px-0">
-                                                            <input class="genderRadio" id="Male" type="radio" value="male" name="genderRadio" />
-                                                            <label for="Male">
-                                                                Male
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-sm-6 px-0">
-                                                            <input class="genderRadio" id="Female" type="radio" value="female" name="genderRadio" />
-                                                            <label for="Female">
-                                                                Female
-                                                            </label>
-                                                        </div>
-                                                        <span id="genderError" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            <?php echo $translations['A00153'][$language]; /* Country */ ?> 
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <select id="countryID" class="form-control">
-                                                        </select>
-                                                        <span id="countryIDError" class="customError text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <input type="hidden" id="state">
-                                                <input type="hidden" id="city">
-                                                <input type="hidden" id="district">
-                                                <input type="hidden" id="subDistrict">
 
                                                 <div class="col-sm-12">
                                                     <div class="col-sm-12">
@@ -266,126 +142,39 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- DownLine Listing -->
                                                 <div class="col-sm-12">
-                                                    <div class="col-sm-12 form-group">
+                                                    <div class="col-sm-12">
                                                         <label class="control-label" style="font-size: 1.2em;">
-                                                            Additional Info
+                                                            DownLine Listing
                                                         </label>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Status
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <select id="martialStatus" class="form-control beforeLoginForm">
-                                                            <option value="">--- Select Martial Status ---</option>
-                                                            <option value="single">Single</option>
-                                                            <option value="married">Married</option>
-                                                            <option value="widowed">Widowed</option>
-                                                            <option value="divorced">Divorced</option>
-                                                            <option value="separated">Separated</option>
-                                                        </select>
-                                                        <span id="martialStatusError" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Numbers of Child
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input type="text" id="childNumber" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
-                                                        <span id="childNumberError" class="customError text-danger" error="error"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-6 form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12">
                                                         <div class="row">
-                                                            <div class="col-sm-12 form-group">
-                                                                <label class="control-label" for="" data-th="#">
-                                                                    Child Age
-                                                                    <span class="text-danger">
-                                                                        *
-                                                                    </span>
-                                                                </label>
-                                                                <select id="childAge" class="form-control"></select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-12 form-group">
-                                                                <div id="childAgeList" style="margin-top: 10px; border: 1px solid #ddd; height: 150px; overflow: scroll;">
+                                                            <div id="appendDownLine">
+                                                                <div class="col-md-12">
+                                                                    <div class="addDownLine default">                                                                        
+                                                                        <div class="row" id="">
+                                                                            <div class="col-md-6">
+                                                                                <label>1. Name</label>
+                                                                                <input id="downLineName1" class="form-control" disabled/>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label>Contact</label>
+                                                                                <input id="downLinePhone1" class="form-control" disabled/>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label>Status</label>
+                                                                                <input id="downLineStatus1" class="form-control" disabled/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <span id="childAgeError" class="customError text-danger"></span>
-                                                    </div>
-
-                                                    <div class="col-sm-6 form-group">
-                                                        <div class="row">
-                                                            <div class="col-sm-12 form-group">
-                                                                <label class="control-label" for="" data-th="#">
-                                                                    NPWP Number
-                                                                    <span class="text-danger">
-                                                                        *
-                                                                    </span>
-                                                                </label>
-                                                                <input type="text" id="taxNumber" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
-                                                                <span id="taxNumberError" class="customError text-danger" error="error"></span>
-                                                            </div>
-                                                            <div class="col-sm-12 form-group">
-                                                                <label class="control-label" for="" data-th="#">
-                                                                    Member ID
-                                                                    <span class="text-danger">
-                                                                        *
-                                                                    </span>
-                                                                </label>
-                                                                <input type="text" id="memberID" class="form-control" disabled>
-                                                            </div>
-                                                            <div class="col-sm-12 form-group">
-                                                                <label class="control-label" for="" data-th="#">
-                                                                    SponsorID
-                                                                    <span class="text-danger">
-                                                                        *
-                                                                    </span>
-                                                                </label>
-                                                                <input type="text" id="sponsorID" class="form-control" disabled>
-                                                            </div>
-                                                            <div class="col-sm-12 form-group">
-                                                                <label class="control-label" for="" data-th="#">
-                                                                    Account Status
-                                                                    <span class="text-danger">
-                                                                        *
-                                                                    </span>
-                                                                </label>
-                                                                <select id="status" class="form-control">
-                                                                    <option value="active">
-                                                                        Active
-                                                                    </option>
-                                                                    <option value="inactive" disabled hidden>
-                                                                        Inactive
-                                                                    </option>
-                                                                    <option value="disabled" disabled hidden>
-                                                                        Disabled
-                                                                    </option>
-                                                                    <option value="suspended">
-                                                                        Suspended
-                                                                    </option>
-                                                                    <option value="freezed" disabled hidden>
-                                                                        Freezed
-                                                                    </option>
-                                                                    <option value="terminated">
-                                                                        Terminated
-                                                                    </option>
-                                                                </select>
-                                                                <span id="statusError" class="customError text-danger"></span>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -396,206 +185,65 @@
                                                 </div>
 
                                                 <div class="col-sm-12">
-                                                    <div class="col-sm-12 form-group">
-                                                        <label class="control-label" style="font-size: 1.2em;">
-                                                            Bank Info
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Bank Name
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <select id="normalbankID" class="form-control"></select>
-                                                        <!-- <select id="normalbankID" class="form-control"></select> -->
-                                                        <span id="bankIDError" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Bank Branch
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input type="text" id="branch" class="form-control">
-                                                        <span id="bankBranchError" class="customError text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Bank City
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input type="text" id="bankCity" class="form-control">
-                                                        <span id="bankCityError" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Account Holder's Name
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input type="text" id="accountHolder" class="form-control">
-                                                        <span id="bankAccHolderError" class="customError text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Bank Account Number
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input type="text" id="accountNo" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
-                                                        <span id="bankAccError" class="customError text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-12">
                                                     <div class="col-sm-12">
-                                                        <hr style="color: #aaa">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-12 form-group">
-                                                        <label class="control-label" style="font-size: 1.2em;">
-                                                            Billing Address
-                                                        </label>
-                                                    </div>
-
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Name
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input type="text" id="billingName" class="form-control">
-                                                        <span id="fullnameErrorBilling" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Address
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input type="text" id="billingAddress" class="form-control">
-                                                        <span id="addressErrorBilling" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            District
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <select id="billingDistrict" class="form-control"></select>
-                                                        <span id="streetNameErrorBilling" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Sub District
-                                                            <!-- <span class="text-danger">
-                                                                *
-                                                            </span> -->
-                                                        </label>
-                                                        <select id="billingSubDistrict" class="form-control"></select>
-                                                        <span id="subDistrictErrorBilling" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            City
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <select id="billingCity" class="form-control"></select>
-                                                        <span id="cityErrorBilling" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Postal Code
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <select id="billingPostalCode" class="form-control"></select>
-                                                        <span id="postalCodeErrorBilling" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            State
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <select id="billingState" class="form-control"></select>
-                                                        <span id="billingStateError" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Country
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <select id="billingCountryID" class="form-control"></select>
-                                                        <span id="billingCountryIDError" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Email
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <input type="text" id="billingEmail" class="form-control">
-                                                        <span id="emailErrorBilling" class="customError text-danger"></span>
-                                                    </div>
-                                                    <div class="col-sm-6 form-group">
-                                                        <label class="control-label" for="" data-th="#">
-                                                            Contact No
-                                                            <span class="text-danger">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <div id="phoneBilling" class="row justify-content-between mx-0 form-control beforeLoginForm" style="display: flex; height: auto; line-height: normal; padding: 0; margin: 0;">
-                                                            <select id="billingDialingArea" class="form-control" style="border: none; max-width: 90px;"></select>
-                                                            <input type="text" id="billingPhone" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" style="border: none;">
-                                                        </div>
-                                                        <span id="phoneErrorBilling" class="customError text-danger"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-12">
-                                                        <hr style="color: #aaa;">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-12 form-group">
                                                         <label class="control-label" style="font-size: 1.2em;">
                                                             Delivery Address
                                                         </label>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div id="appendAddress">
+                                                                <div class="col-md-12">
+                                                                    <div class="addProductWrapper default">
+                                                                        <span class="dtxt">Default</span>
+                                                                        
+                                                                        <div class="row" id="address1">
+                                                                            <input id="addressId1" class="form-control hide" required/>
+
+                                                                            <div class="col-md-6">
+                                                                                <label>1. Name</label>
+                                                                                <input id="name1" class="form-control" required/>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label>Contact</label>
+                                                                                <input id="contact1" class="form-control" required/>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label>Street Number</label>
+                                                                                <input id="street1" class="form-control" required/>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label>City</label>
+                                                                                <input id="city1" class="form-control" required/>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label>Postcode</label>
+                                                                                <input id="postcode1" class="form-control" required/>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label>State</label>
+                                                                                <input id="state1" class="form-control hide" required/>
+
+                                                                                <select id="stateSelect1" class="form-control stateSelect" required></select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <div class="addProduct" onclick="addRow()">
+                                                                    <b><i class="fa fa-plus-circle"></i></b>
+                                                                    <span>Add Address</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- <div class="col-sm-12">
                                                     <div class="col-sm-6 form-group">
                                                         <label class="control-label" for="" data-th="#">
                                                             Name
@@ -696,7 +344,8 @@
                                                         </div>
                                                         <span id="phoneErrorDelivery" class="customError text-danger"></span>
                                                     </div>
-                                                </div>
+                                                </div> -->
+
                                                 <div class="col-sm-12 m-t-rem1">
                                                     <div class="col-xs-12 col-sm-12">
                                                         <a id="updateBtn" type="button" class="btn btn-primary waves-effect w-md waves-light" onclick="">
@@ -744,9 +393,22 @@
         var saveJsonData;
         var bankList;
         var firstCountry;
+        var name ="";
+        // var member_id = "";
+        var memberId = "<?php echo $_POST['id']; ?>";
+        var k ="";
 
-        $(document).ready(function() {
-            var memberId = "<?php echo $_POST['id']; ?>";
+        var wrapperLength = 2;
+        var wrapperLengthDownLine = 2;
+
+        var html = `<option value="">Select State</option>`;
+        var totalLoop =[1];
+        var totalLoopDownLine =[1];
+
+
+
+        $(document).ready(function() { 
+            
             // if id empty return back member.php             
             if(!memberId) {
                 var message  = '<?php echo $translations['A00178'][$language]; /* Client does not exist */ ?>';
@@ -761,13 +423,13 @@
             var fCallback = loadDefaultData;
             ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
-            $('#dob').datepicker({
-                singleDatePicker: true,
-                timePicker: false,
-                locale: {
-                    format: 'DD/MM/YYYY'
-                }
-            });
+            // $('#dob').datepicker({
+            //     singleDatePicker: true,
+            //     timePicker: false,
+            //     locale: {
+            //         format: 'DD/MM/YYYY'
+            //     }
+            // });
 
             $('#identityType').change(function() {
                 var identityType = $('#identityType option:selected').val();
@@ -806,11 +468,12 @@
                 var identityType = $('#identityType option:selected').val();
                 var identityNumber = $('#identityNumber').val();
                 var passport = $('#passport').val();
-                var dob = dateToTimestamp($('#dob').val());
-                var gender = $('.genderRadio:checked').val();
+                // var dob = dateToTimestamp($('#dob').val());
+                // var gender = $('.genderRadio:checked').val();
                 var martialStatus = $('#martialStatus option:selected').val();
-                var childNumber = $('#childNumber').val();
-                var childAge = [];
+                // var childNumber = $('#childNumber').val();
+                // var childAge = [];
+
                 $('.ageTag').each(function(index, value) {
                     childAge.push($(this).attr('name'));
                 });
@@ -843,21 +506,45 @@
                 var deliveryEmail = $('#deliveryEmail').val();
                 var deliveryDialingArea = $('#deliveryDialingArea option:selected').val();
                 var deliveryPhone = $('#deliveryPhone').val();
+
+                var shipping = [];
+
+                for(var v = 1; v < $(".addProductWrapper").length + 1; v++) {
+                    var address = $('#street' + v).val();
+                    var post_code = $('#postcode' + v).val();
+                    var city = $('#city' + v).val();
+                    var name = $('#name').val();
+                    var contact = $('#contact' + v).val();
+                    var stateName = $('option:selected', "#stateSelect"+v).text();;
+
+                    var perShipping = {
+                        address:  address,
+                        post_code: post_code,
+                        city: city,
+                        address_type: "shipping",
+                        countryName: "Malaysia",
+                        stateName: stateName,
+                        name: name,
+                        phone: contact,
+                    }
+
+                    shipping.push(perShipping);
+                }
                 
                 var formData = {
                                     command             : "editMemberDetails",
-                                    memberId            : memberId,
+                                    clientID            : $("#clientIdInput").val(),
                                     name                : name,
                                     email               : email,
                                     dialingArea         : dialingArea,
                                     phone               : phone,
                                     countryID           : countryID,
                                     identityType        : identityType,
-                                    dob                 : dob,
-                                    gender              : gender,
-                                    martialStatus       : martialStatus,
-                                    childNumber         : childNumber,
-                                    childAge            : childAge,
+                                    // dob                 : dob,
+                                    // gender              : gender,
+                                    // martialStatus       : martialStatus,
+                                    // childNumber         : childNumber,
+                                    // childAge            : childAge,
                                     taxNumber           : taxNumber,
                                     status              : status,
                                     bankID              : bankID,
@@ -886,7 +573,8 @@
                                     deliveryCountryID   : deliveryCountryID,
                                     deliveryEmail       : deliveryEmail,
                                     deliveryDialingArea : deliveryDialingArea,
-                                    deliveryPhone       : deliveryPhone
+                                    deliveryPhone       : deliveryPhone,
+                                    shipping            : shipping
                                 };
                 identityType=="nric" ? formData['identityNumber']=identityNumber : formData['passport']=passport;
                 var fCallback = submitCallback;
@@ -937,21 +625,36 @@
             $('#memberCreditsTransaction').click(function() {
                 $.redirect('memberCreditsTransaction.php', {id : "<?php echo $_POST['id']; ?>"});
             });
+            $('#memberAccountBalance').click(function() {
+                $.redirect('accountBalance.php?type=bonusDef' , {
+                                                                    id       : "<?php echo $_POST['id']; ?>",
+                                                                    fullName : member_id,
+                                                                    username : name,
+                });
+            });
             $('#loginToMember').click(function(){
                 var url = "scripts/reqAdmin.php";
                 var formData  = {
                     command : "getMemberLoginDetail",
-                    memberId : "<?php echo $_POST['id']; ?>"
+                    id : "<?php echo $_POST['id']; ?>"
                 };
                 var fCallback = loginToMember;
                 ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
             });
+
+            var formData = {
+                command        : "getState",
+                countryId       : ""
+            };
+            fCallback = stateOpt;
+
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
         });
 
         function loadDefaultData(data, message) {
             // Ready empty drop down
             $('#countryID').append('<option value="" name="">--- Select Country ---</option>');
-            $('#childAge').append('<option value="">--- Select Age---</option>');
+            // $('#childAge').append('<option value="">--- Select Age---</option>');
             $('#billingCountryID').append('<option value="" name="">--- Select Country ---</option>');
             $('#billingState').append('<option value="" data-code="" style="display: block;">--- Select State ---</option>');
             $('#deliveryCountryID').append('<option value="" name="">--- Select Country ---</option>');
@@ -959,12 +662,17 @@
             $('#normalbankID').append('<option value="" name="" style="display: block;">--- Select Bank ---</option>');
             var countryList = data.countryList;
             var member = data.member;
-            var dobArr = member['dob'].split('-');
+            var clientId = data.memberDetails.id;
+
+            $("#clientIdInput").val(clientId);
+            // var dobArr = member['dob'].split('-');
             $('#name').val(member['fullname']);
             $('#email').val(member['email']);
             $('#phone').val(member['phoneNumber']);
-            $('#dob').val(dobArr[2]+'/'+dobArr[1]+'/'+dobArr[0]);
-            $('.genderRadio[id='+member['gender']+']').prop('checked', true);
+            // $('#dob').val(dobArr[2]+'/'+dobArr[1]+'/'+dobArr[0]);
+            // $('.genderRadio[id='+member['gender']+']').prop('checked', true);
+            member_id = data.member.member_id;
+            name = data.member.name;
 
             var memberDetails = data.member;
             if(memberDetails['active'] == 1){
@@ -991,23 +699,23 @@
             $('#passport').val(credentials['passport']);
 
             var additionalInfo = data.additionalInfo;
-            $('#martialStatus option[value='+additionalInfo['martialStatus']+']').prop('selected', true);
-            $('#childNumber').val(additionalInfo['childNumber']);
-            $('#taxNumber').val(additionalInfo['taxNumber']);
+            // $('#martialStatus option[value='+additionalInfo['martialStatus']+']').prop('selected', true);
+            // $('#childNumber').val(additionalInfo['childNumber']);
+            // $('#taxNumber').val(additionalInfo['taxNumber']);
             $('#memberID').val(additionalInfo['memberID']);
             $('#sponsorID').val(additionalInfo['sponsorID']);
 
-            var childAgeOption = additionalInfo['childAgeOption'];
-            $.each(childAgeOption, function(k, v) {
-                $('#childAge').append(`<option value="${k}">${v['display']}</option>`);
-            });
-            if(additionalInfo['childAge'] && additionalInfo['childAge']!="-") {
-                $.each(additionalInfo['childAge'].split('#'), function(k, v) {
-                    $('#childAgeList').append(`
-                        <div class="ageTag" name="${v}">${childAgeOption[v]['display']} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
-                    `);
-                });
-            }
+            // var childAgeOption = additionalInfo['childAgeOption'];
+            // $.each(childAgeOption, function(k, v) {
+            //     $('#childAge').append(`<option value="${k}">${v['display']}</option>`);
+            // });
+            // if(additionalInfo['childAge'] && additionalInfo['childAge']!="-") {
+            //     $.each(additionalInfo['childAge'].split('#'), function(k, v) {
+            //         $('#childAgeList').append(`
+            //             <div class="ageTag" name="${v}">${childAgeOption[v]['display']} <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i></div>
+            //         `);
+            //     });
+            // }
 
             var billingInfo = data.billingInfo;
             var deliveryInfo = data.deliveryInfo;
@@ -1263,6 +971,43 @@
 
                 $("#username").val(data.memberDetails.username);
             }
+
+
+            shippingAddress = data.shippingAddress;
+            $.each(shippingAddress, function (k, v) { 
+                var newK = k + 1;
+                if(k != 0) 
+                    addRow(shippingAddress);
+
+                $("#contact" + newK).val(v['phone']);
+                $("#name" + newK).val(v['name']);
+                $("#street" + newK).val(v['address']);
+                $("#postcode" + newK).val(v['post_code']);
+                $("#city" + newK).val(v['city']);
+                $("#state" + newK).val(v['state_id']);
+                $("#addressId" + newK).val(v['id']);
+            })
+
+            if(data.downLineList){
+                var downLineListing = data.downLineList;
+                $.each(downLineListing, function (j, v1) { 
+                    var newD = j + 1;
+                    if(j != 0) 
+                        addRowDownLine(downLineListing);
+
+                    $("#downLineName" + newD).val(v1['name']);
+                    $("#downLinePhone" + newD).val(v1['phone']);
+                    $("#downLineStatus" + newD).val(v1['status']);
+                    
+                })
+            }else if(!data.downLineList){
+                var newD = 1;
+
+                $("#downLineName" + newD).val('-');
+                $("#downLinePhone" + newD).val('-');
+                $("#downLineStatus" + newD).val('-');
+            }
+            
         }
 
         function filterData(nextSelectID, id, idVariable, nextAdd, value, display) {
@@ -1288,9 +1033,9 @@
             o.textContent = o.getAttribute('display') + ' (' + o.getAttribute('data-code') + ')';
           });
         }
+
         function blur() {
           [].forEach.call(this.options, function(o) {
-            // console.log(o);
             o.textContent = o.getAttribute('data-code');
           });
         }
@@ -1315,8 +1060,7 @@
             $('#deliveryDialingArea').blur();
         });
 
-        function loginToMember(data, message){
-
+        function loginToMember(data){
             var form = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
                 action: data.url
             }).appendTo(document.body);
@@ -1331,6 +1075,17 @@
                 value: data.username
             }).appendTo(form);
 
+            $('<input type="hidden" />').attr({
+                name: 'adminID',
+                value: data.adminID
+            }).appendTo(form);
+
+            $('<input type="hidden" />').attr({
+                name: 'adminSession',
+                value: data.adminSession
+            }).appendTo(form);
+
+
             form.submit();
 
             form.remove();
@@ -1338,6 +1093,150 @@
 
         function submitCallback(data, message) {
             showMessage('<?php echo $translations['A00501'][$language]; /* Successful updated member details. */ ?>', 'success', '<?php echo $translations['A00291'][$language]; /* Edit Member Details */ ?>', 'edit', ['editMember.php', {id : "<?php echo $_POST['id']; ?>"}]);
+        }
+
+        function addRow(data){
+            var wrapper = `
+                <div class="col-md-12">
+                    <div class="addProductWrapper">
+                        <a href="javascript:;" class="closeBtn" onclick="closeDiv(this,${(wrapperLength)})" id="closeBtn${(wrapperLength)}">&times;</a>
+                        <div class="row" id="address${(wrapperLength)}">
+
+                            <input id="addressId${(wrapperLength)}" class="form-control hide" required/>
+
+                            <div class="col-md-6">
+                                <label>${(wrapperLength)}. Name</label>
+                                <input id="name${(wrapperLength)}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Contact</label>
+                                <input id="contact${(wrapperLength)}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Street Number</label>
+                                <input id="street${(wrapperLength)}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>City</label>
+                                <input id="city${(wrapperLength)}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Postcode</label>
+                                <input id="postcode${(wrapperLength)}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>State</label>
+                                <input id="state${(wrapperLength)}" class="form-control hide" required/>
+                                <select id="stateSelect${(wrapperLength)}" class="form-control stateSelect" required></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            $("#appendAddress").append(wrapper);
+            $("#stateSelect"+wrapperLength).html(html);
+
+            totalLoop.push(wrapperLength);
+            wrapperLength++;
+        }
+
+        function addRowDownLine(data){
+            var wrapperDownLine = `
+                <div class="col-md-12 mt-3">
+                    <div class="addDownLine">
+                        <div class="row" id="address${(wrapperLengthDownLine)}">
+                            <div class="col-md-6">
+                                <label>${(wrapperLengthDownLine)}. Name</label>
+                                <input id="downLineName${(wrapperLengthDownLine)}" class="form-control" disabled/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Contact</label>
+                                <input id="downLinePhone${(wrapperLengthDownLine)}" class="form-control" disabled/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Status</label>
+                                <input id="downLineStatus${(wrapperLengthDownLine)}" class="form-control" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            $("#appendDownLine").append(wrapperDownLine);
+
+            totalLoopDownLine.push(wrapperLengthDownLine);
+            wrapperLengthDownLine++;
+        }
+
+        function closeDiv(n,id) {
+            var totalLoop =[1];
+
+            const index = totalLoop.indexOf(id); 
+
+            $("#action" + id).val('delete');
+            // $("#id" + id).val('');
+
+            if (index > -1) {
+              totalLoop.splice(index, 1); 
+            }
+
+            var lang = $(n).parent().find('.productSelect').val();
+
+            // $(n).parent().parent().remove();
+            $(n).parent().css("background-color", "rgba(255, 0, 0, 0.3)");
+            $("#closeBtn" + id).css("display","none");
+            $("#name" + id).attr("disabled", true);
+            $("#name" + id).val("");
+            $("#contact" + id).attr("disabled", true);
+            $("#contact" + id).val("");
+            $("#street" + id).attr("disabled", true);
+            $("#street" + id).val("");
+            $("#city" + id).attr("disabled", true);
+            $("#city" + id).val("");
+            $("#postcode" + id).attr("disabled", true);
+            $("#postcode" + id).val("");
+            $("#stateSelect" + id).attr("disabled", true);
+
+            var formData = {
+                'command': 'deleteShippingAddress',
+                'id': $("#addressId" + id).val()
+            };
+            fCallback = successDelete;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        }
+
+        function successDelete(data, message) {
+            showMessage('Successful deleted address', 'success', 'Delete Address', 'edit', ['editMember.php', {id: memberId}]);
+        }
+
+        function stateOpt(data, message) {
+            if(data.state) {
+                $.each(data.state, function(i, obj) {
+                    html += `<option value="${obj.id}">${obj.name}</option>`;
+                });
+
+                $(".stateSelect").html(html);
+            }
+
+            loadSelect();
+        }
+
+        function loadSelect() {
+            var formData = {
+                'command': 'getMemberDetails',
+                'memberId': memberId
+            };
+            fCallback = selectPR;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        }
+
+        function selectPR(data, message) {
+            $.each(data.shippingAddress, function (m, v) {
+                var newM = m + 1;
+
+                $("#stateSelect" + newM).val(v['state_id']);
+            });
         }
     </script>
 </body>

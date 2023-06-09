@@ -54,6 +54,10 @@
 /*Canvas loader in head.php*/
 
 /*Canvas message in head.php*/
+#newPromoCode .modal-header,
+#editPromoCode .modal-header,
+#newPromoCode .modal-footer,
+#editPromoCode .modal-footer,
 #canvasMessage .modal-header,
 #canvasMessage .modal-body,
 #canvasMessage .modal-footer {
@@ -65,6 +69,8 @@
     padding-bottom: 45px;
 }
 
+#newPromoCode .modal-title i,
+#editPromoCode .modal-title i,
 #canvasMessage .modal-title i {
     display: block;
     padding-top: 25px;
@@ -864,14 +870,17 @@ html input[disabled] {
   margin-top: 10px;
 }
 
-.popupMemoImageWrapper {
+.popupMemoImageWrapper,
+.addProductWrapper {
   border: 1px solid #1ca011;
   margin-top: 15px;
   padding: 15px;
   position: relative;
+  border-radius: 3px;
 }
 
-.popupMemoImageWrapper.default .dtxt {
+.popupMemoImageWrapper.default .dtxt,
+.addProductWrapper.default .dtxt {
     position: absolute;
     right: 10px;
     transform: translateY(-100%);
@@ -881,9 +890,12 @@ html input[disabled] {
     border: 1px solid #1ca011;
 }
 
-.popupMemoImageWrapper.default {
+.popupMemoImageWrapper.default,
+.addProductWrapper.default {
   background-color: #f3fff2;
 }
+
+
 
 .fileName {
   white-space: nowrap;
@@ -906,7 +918,29 @@ html input[disabled] {
 }
 
 .productBoxes.default .dtxt,
-.popupMemoImageWrapper.default .dtxt {
+.popupMemoImageWrapper.default .dtxt,
+.addProductWrapper.default .dtxt {
+    position: absolute;
+    right: 10px;
+    transform: translateY(-100%);
+    background-color: #f3fff2;
+    display: block;
+    padding: 2px 8px;
+    border: 1px solid #1ca011;
+    border-radius: 3px;
+}
+/*  */
+.popupMemoImageWrapper,
+.addDownLine {
+  border: 1px solid #1ca011;
+  margin-top: 15px;
+  padding: 15px;
+  position: relative;
+  border-radius: 3px;
+}
+
+.popupMemoImageWrapper.default .dtxt,
+.addDownLine.default .dtxt {
     position: absolute;
     right: 10px;
     transform: translateY(-100%);
@@ -916,7 +950,12 @@ html input[disabled] {
     border: 1px solid #1ca011;
 }
 
-.addLanguageImage, .addProductImage {
+.popupMemoImageWrapper.default,
+.addDownLine.default {
+  background-color: #f3fff2;
+}
+
+.addLanguageImage, .addProductImage, .addProduct {
     display: flex;
     height: 120px;
     border: 1px solid #cfcfcf;
@@ -929,7 +968,7 @@ html input[disabled] {
     margin-top: 15px;
 }
 
-.addLanguageImage b, .addProductImage b {
+.addLanguageImage b, .addProductImage b, .addProduct b {
     display: block;
     width: 50px;
     height: 50px;
@@ -940,7 +979,7 @@ html input[disabled] {
     color: #cfcfcf;
 }
 
-.addLanguageImage span, .addProductImage span {
+.addLanguageImage span, .addProductImage span, .addProduct span {
   display: block;
   text-align: center;
 }
@@ -1017,7 +1056,7 @@ html input[disabled] {
   height: 25px;
   align-items: center;
   justify-content: center;
-  background-color: #8B0000;
+  background-color: red;
   color: #fff;
   position: absolute;
   right: 0;
@@ -1577,3 +1616,110 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+.col-auto {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#receiptImg {
+  width: 100%;
+  object-fit: contain;
+}
+
+#appendAddress .row .col-md-6 {
+    margin-bottom: 15px;
+}
+#phoneDiv .input-group {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    width: 100%;
+}
+#phoneDiv .input-group-prepend {
+    margin-right: -1px;
+    display: flex;
+}
+#phoneDiv .input-group-text {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    margin-bottom: 0;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e9ecef;
+}
+#phoneDiv .input-group>.input-group-prepend>.input-group-text {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+#phoneDiv .input-group>.form-control:not(:first-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+#phoneDiv .input-group>.form-control {
+    position: relative;
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    width: 1%;
+    margin-bottom: 0;
+}
+
+.mb-15 {
+    margin-bottom: 15px;
+}
+
+/* START Edit Purchase Order - Print Stickers */
+#printarea {
+  display: none;
+  font-size: 9px;
+}
+
+.printSticker {
+  padding: 9px;
+  text-align: center;
+}
+
+@media print {
+  @page {
+      size: 75mm 105mm;
+      margin: 0;
+  }
+
+  #wrapper {
+      display: none;
+  }
+
+  #printarea {
+      display: block;
+  }
+
+  .printSticker {
+      page-break-after: always;
+      padding-top: 25mm;
+  }
+
+  .printSticker .productNameEN {
+      padding-bottom: 10px;
+  }
+
+  .printSticker .qrCode {
+      padding: 10px 0;
+  }
+
+  .printSticker .bigText {
+      font-size: 10px;
+  }
+
+  .printSticker .smallText {
+      font-size: 8px;
+  }
+}
+/* END Edit Purchase Order - Print Stickers */

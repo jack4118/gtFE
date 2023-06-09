@@ -75,6 +75,9 @@
 <script src="js/FileSaver.js"></script>
 <script src="js/tableexport.js"></script>
 
+<!-- QR Code -->
+<script src="js/jquery.qrcode.js" type="text/javascript"></script>
+
 <script>
         // Date Picker
 //            jQuery('#datepicker').datepicker();

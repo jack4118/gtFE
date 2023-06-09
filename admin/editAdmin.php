@@ -86,12 +86,12 @@
                                                 </label>
                                                 <input id="newPassword" type="password" class="form-control"  />
                                             </div>
-                                            <div class="form-group">
+                                            <!--<div class="form-group">
                                                     <label class="control-label">
                                                         <?php echo $translations['A01109'][$language]; /* Leader Username */ ?>
                                                     </label>
                                                     <input id="leaderUsername" type="text" class="form-control"/>
-                                                </div>
+                                                </div>-->
                                             <div class="form-group">
                                                 <label for="">
                                                     <?php echo $translations['A00104'][$language]; /* Disabled */ ?>
@@ -190,7 +190,7 @@
                 var id       = $('input#id').val();
                 var fullName = $('input#name').val();
                 var username = $('input#username').val();
-                var leaderUsername = $('input#leaderUsername').val();
+                //var leaderUsername = $('input#leaderUsername').val();
                 var email    = $('input#email').val();
                 var password = $('input#newPassword').val();
                 var roleID   = $('#roleID option:selected').val();
@@ -201,7 +201,7 @@
                     'id'         : id,
                     'fullName'   : fullName,
                     'username'   : username,
-                    'leaderUsername'   : leaderUsername,
+                    //'leaderUsername'   : leaderUsername,
                     'email'      : email,
                     'roleID'     : roleID,
                     'password'   : password,

@@ -9,7 +9,7 @@ include 'head.php';
 <?php include 'homepageHeader.php';?>
 
 <!-- Section 1 -->
-<section class="section">
+<section class="section homepageBgGrp1">
     <div class="homepageBg1 p-5">
         <div class="row m-0 p-0 p-lg-5 flex-column">
             <div class="col-lg-6 col-md-8 col-12">
@@ -44,7 +44,7 @@ include 'head.php';
     </div>
     <div class="row m-0 d-block d-md-none">
         <div class="col-12 px-0">
-            <img src="images/project/what-we-sell.jpg" class="whatWeSellImg">
+            <img src="images/project/what-we-sell2.jpg" class="whatWeSellImg">
         </div>
         <div class="col-12 p-5 redBg">
             <div class="titleText smaller bold text-white pb-3" data-lang="M03769"><?php echo $translations['M03769'][$language] /* What We Sell? */ ?></div>
@@ -58,7 +58,7 @@ include 'head.php';
 <!-- Section 3 -->
 <section class="section whiteBg">
     <div class="titleText smaller bold text-center" data-lang="M03773"><?php echo $translations['M03773'][$language] /* Our Services */ ?></div>
-    <div class="row my-5">
+    <div class="row mt-3 mb-5">
         <div class="col-md-3 col-sm-6 col-12 mb-5 mb-md-0">
             <div class="row">
                 <div class="col-12">
@@ -72,7 +72,7 @@ include 'head.php';
         <div class="col-md-3 col-sm-6 col-12 mb-5 mb-md-0">
             <div class="row">
                 <div class="col-12">
-                    <img src="images/project/service2.jpg" class="ourServicesImg">
+                    <img src="images/project/service2-2.jpg" class="ourServicesImg">
                 </div>
                 <div class="col-12">
                     <div class="pt-4"><span class="bodyText smaller bold" data-lang="M03776"><?php echo $translations['M03776'][$language] /* Implement latest food packaging technology. */ ?> </span><span class="bodyText smaller" data-lang="M03777"><?php echo $translations['M03777'][$language] /* Vacuum pack and blast freezing to maintain food taste and quality. */ ?></span></div>
@@ -108,11 +108,11 @@ include 'head.php';
         <div class="col-md-5 col-12 px-0">
             <div class="row m-0">
                 <div class="col-md-12 px-0 borderAll grey light">
-                    <div class="mapouter borderAll grey light"><div class="gmap_canvas"><iframe width="100%" height="100%" id="gmap_canvas" src="https://maps.google.com/maps?q=Southgate Commercial Centre, Jalan Dua, Chan Sow Lin, Kuala Lumpur, Federal Territory of Kuala Lumpur&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://2yu.co">2yu</a><br><style>.mapouter{position:relative;text-align:right;height:100%;width:100%;}</style><a href="https://embedgooglemap.2yu.co/">html embed google map</a><style>.gmap_canvas {overflow:hidden;background:none!important;height:100%;width:100%;}</style></div></div>
+                    <div class="mapouter borderAll grey light"><div class="gmap_canvas"><iframe width="100%" height="100%" id="gmap_canvas" src="https://maps.google.com/maps?q=31-G, Jalan Damai Raya 6, Alam Damai, 56000 Kuala Lumpur&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://2yu.co">2yu</a><br><style>.mapouter{position:relative;text-align:right;height:100%;width:100%;}</style><a href="https://embedgooglemap.2yu.co/">html embed google map</a><style>.gmap_canvas {overflow:hidden;background:none!important;height:100%;width:100%;}</style></div></div>
                 </div>
                 <div class="col-md-12 px-5 p-4 borderAll grey light d-flex flex-column justify-content-center">
                     <div class="bodyText smaller bold" data-lang="M03782"><?php echo $translations['M03782'][$language] /* Kuala Lumpur (Head Quater) */ ?></div>
-                    <div class="bodyText smaller mt-3">C-01-05, Southgate Commercial Centre, Jalan Dua, Chan Sow Lin, 55200 Kuala Lumpur</div>
+                    <div class="bodyText smaller mt-1">31-G, Jalan Damai Raya 6, Alam Damai, <br> 56000 Kuala Lumpur</div>
                 </div>
             </div>
             <div class="row m-0">
@@ -121,7 +121,7 @@ include 'head.php';
                 </div>
                 <div class="col-md-12 px-5 p-4 borderAll grey light d-flex flex-column justify-content-center">
                     <div class="bodyText smaller bold" data-lang="M03783"><?php echo $translations['M03783'][$language] /* Georgetown, Penang */ ?></div>
-                    <div class="bodyText smaller mt-3">66-G, Skyline City, Lintang Sungai Pinang, 10150, Jelutong, Penang</div>
+                    <div class="bodyText smaller mt-1">66-G, Skyline City, Lintang Sungai Pinang, <br> 10150 Jelutong, Penang</div>
                 </div>
             </div>
         </div>

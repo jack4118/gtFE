@@ -77,7 +77,7 @@ include 'homepageHeader.php';
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div class="bodyText smaller" data-lang="M03819"><?php echo $translations['M03819'][$language] /* Points to use/redeem */ ?>:</div>
-                                <input type="text" id="pointsToUse" class="form-control2 text-right bodyText smaller lightBold" style="width: 70px; height: auto;" oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
+                                <input type="text" id="pointsToUse" class="form-control2 text-right bodyText smaller lightBold" style="width: 70px; height: auto;" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" onkeyup="pointsToUseChanged(event)">
                             </div>
                         </div>
                     </div>
@@ -203,7 +203,9 @@ var removedProductId        = null;
 var removedProductTemplate  = null;
 var cartList                = [];
 
-$(document).ready(function() {    
+$(document).ready(function() {
+    removeCookie('redeemAmount');
+
     getShoppingCart();
 
     $('#applyPromo').click(function() {
@@ -220,16 +222,45 @@ $(document).ready(function() {
         $.redirect('foodMenu');
     });
     
-    $('#checkoutBtn').click(function() {
-        var pointsToUse = $('#pointsToUse').val();
-        $.redirect('checkoutAddress', { pointsToUse: pointsToUse });
-    });
+    $('#checkoutBtn').click(checkoutBtnClicked);
 });
 
 function showRemoveConfirmationModal(productId, productTemplate) {
     $('#removeConfirmationModal').modal();
     removedProductId = productId;
     removedProductTemplate = productTemplate;
+}
+
+function checkoutBtnClicked() {
+    
+
+        localStorage.setItem('oldCartList',localStorage.getItem('cartList'))
+        localStorage.removeItem('cartList');
+
+    // if(!userId) {
+    //     redirectToCheckoutAddress();
+    // } else {
+
+        let token = $.cookie('bkend_token')
+
+        $.cookie('oldToken',$.cookie('bkend_token'),{expires:10000})
+
+        removeCookie('bkend_token')
+
+        var formData = {
+            command         : 'updateStatusOnCheckout',
+            pointsToUse     : $('#pointsToUse').val(),
+            bkend_token     : token
+        };
+        var fCallback = redirectToCheckoutAddress;
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    // }
+}
+
+function redirectToCheckoutAddress(data, message) {
+    var pointsToUse = '';
+    if(data) pointsToUse = data.pointsToUse;
+    $.redirect('checkoutAddress', { pointsToUse: pointsToUse });
 }
 
 </script>

@@ -77,7 +77,8 @@ function showMessage(message, status, title, favicon, url, canvasBtnArray) {
 *
 **/
 
-function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoading, importFlag, btnID, btnDisplay) {
+function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoading, importFlag, btnID, btnDisplay, vidID = null) {
+
     if(!window.ajaxEnabled)
         return false;
     method = method || "POST";
@@ -111,6 +112,7 @@ function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoad
     
     if(ajaxBlocking === 0 || bypassBlocking){//prevent spam click
         ajaxBlocking = 1;
+
         $.ajax({
             url: url,
             type: method,
@@ -136,13 +138,41 @@ function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoad
                
                     if (obj.status == 'ok') {
                         if (typeof(fCallback) == 'function')
-                            fCallback(obj.data, obj.statusMsg, obj);
+                            if(vidID != null)
+                                fCallback(obj.data, vidID);
+                            else
+                                fCallback(obj.data, obj.statusMsg, obj);
                     }
                     else {
                         if(obj.data != null && obj.data.field)
                             showCustomErrorField(obj.data.field, obj.statusMsg);
-                        else
+                        else {
+                            // if(obj.data.Earlier_Stock_List && obj.data.Earlier_Stock_List.length > 0) {
+                            //     obj.statusMsg += "<br/><br/>Earlier stock list:<br/>";
+                            //     obj.statusMsg += "Serial Number &nbsp; || &nbsp; Product ID &nbsp; || &nbsp; Expiry Date <br/>";
+
+                            //     $.each(obj.data.Earlier_Stock_List, function(k, v) {
+                            //         obj.statusMsg += v['serial_number'] + " &nbsp; || &nbsp; " + v['product_id'] + " &nbsp; || &nbsp; " + v['expiration_date'] + "<br/>";
+                            //     })
+                            // }
+
+                            // if(obj.data.Issue_Stock && obj.data.Issue_Stock.length > 0) {
+                            //     obj.statusMsg += "<br/><br/>Issue stock: <br/>";
+
+                            //     $.each(obj.data.Issue_Stock, function(k, v) {
+                            //         obj.statusMsg += v['serial_number'] + "<br/>";
+                            //     })
+                            // }
+
+                            // if(obj.data.notMatchList && obj.data.notMatchList.length > 0) {
+                            //     obj.statusMsg += "<br/><br/>Not match stock: <br/>";
+
+                            //     $.each(obj.data.notMatchList, function(k, v) {
+                            //         obj.statusMsg += v + "<br/>"; // modified here
+                            //     });
+                            // }
                             errorHandler(obj.code, obj.statusMsg);
+                        }
 
                         processButton(btnID,false,btnDisplay);
                     }

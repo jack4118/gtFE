@@ -57,17 +57,29 @@
                 echo $result;
                 break;
 
+            case "purchaseRequestEdit":
+            
+                $params = array("purchase_product_list"  => $_POST['purchase_product_list'],
+                                "buying_date"      => $_POST['buying_date'],
+                                "remarks"  => $_POST['remarks'],
+                                "id" => $_POST['id'],
+                                "vendor_id" => $_POST['vendor_id'],
+                                "vendor_address_id" => $_POST['vendor_address_id'],
+                               );
+
+                $result = $post->curl($command, $params);
+
+                echo $result;
+                break;
+
             case "addPurchaseRequest":
             
-                $params = array("product_name"  => $_POST['product_name'],
-                                "product_id"    => $_POST['product_id'],
+                $params = array("product_list"  => $_POST['product_list'],
                                 "vendor_id"     => $_POST['vendor_id'],
-                                "quantity"      => $_POST['quantity'],
-                                "product_cost"  => $_POST['product_cost'],
-                                // "total_quantity"   => $_POST['total_quantity'],
-                                // "total_cost" => $_POST['total_cost'],
-                                // "approved_date" => $_POST['approved_date'],
-                                // "approved_by"   => $_POST['approved_by']
+                                "buying_date"      => $_POST['buying_date'],
+				                "warehouse_id"	=> $_POST["warehouse_id"],
+                                "vendor_address_id"  => $_POST["vendor_address_id"],
+                                "remarks"  => $_POST['remarks'],
                                );
 
                 $result = $post->curl($command, $params);
@@ -744,7 +756,8 @@
                 $params = array(
                                     "clientID"           => $_POST['clientID'],
                                     "passwordType"       => $_POST['passwordType'],
-                                    "newPassword"        => $_POST['newPassword']
+                                    "newPassword"        => $_POST['newPassword'],
+                                    "confirmNewPassword" => $_POST['confirmNewPassword']
                                 );
                 $result = $post->curl($command, $params);
                 
@@ -799,7 +812,9 @@
             case "getMemberLoginDetail":
 
                 $params = array(
-                    "memberId"          => $_POST['memberId'],
+                    "id"          => $_POST['id'],
+                    "adminID"          => $userId,
+                    "adminSession"          => $sessionID,
                     // "loginToMemberURL"  => $config['loginToMemberURL'],
                 );
 
@@ -1595,7 +1610,12 @@
             case "getCategoryInventory":
             case "getCategoryInventoryDetail":
             case "addCategoryInventory":
+            case "getCategoryList":
             case "editCategoryInventory":
+            case "getCookingSuggestion":
+            case "getCookingSuggestionDetail":
+            case "addCookingSuggestion":
+            case "editCookingSuggestion":
             case "getDeliveryCharges":
             case "getDeliveryChargesListing":
             case "updateDeliveryCharges":
@@ -1627,6 +1647,8 @@
             case "getSupplierDetail":
             case "addSupplier":
             case "editSupplier":
+            case "getStockExpirationDate":
+            case "getStockMovement":
             case "getActiveSupplier":
             case "getAddressList":
             case "getPVPListing":
@@ -1666,7 +1688,7 @@
             case "getPurchaseRequestList":
             case "getPurchaseRequestDetails":
             case "addPurchaseRequest":
-            case "purchaseRequestEdit":
+            // case "purchaseRequestEdit":
             case "getShopOwnerList":
             case "getShopOwnerDetail":
             case "addShopOwner":
@@ -1692,10 +1714,13 @@
             // case "purchaseOrderConfirm":
             case "assignSerial":
             case "confirmSerial":
+            case "getVideoURL":
             case "getVendor":
             case "getWarehouse":
+            case "updateStatusOnTracking":
             case "approvePurchaseOrder":
             case "getStockList":
+            case "cancelledPurchaseRequest":
             case "getProduct":
 
                 foreach($_POST AS $key => $val){
@@ -1704,6 +1729,75 @@
                 }
                 $result = $post->curl($command, $params);
 
+                echo $result;
+                break;
+
+            case "updateStatusOnPacking":            
+                $params = array(
+                    "sale_id"       => $_POST['sale_id'],
+                    "serial"   => $_POST['serial'],
+                    "step"   => $_POST['step'],
+                );
+                                    
+                $result = $post->curl($command, $params);
+        
+                echo $result;
+                break;
+
+
+            case "addPackageInventory":
+                $params = array(
+                    "invPackageName"    => $_POST['invPackageName'],
+                    "package"           => $_POST['package'],
+                    "packageDesc"       => $_POST['packageDesc'],
+                    "productType"       => $_POST['productType'],
+                    "description"       => $_POST['description'],
+                    "skuCode"           => $_POST['skuCode'],
+                    "expired_day"       => $_POST['expired_day'],
+                    "salePrice"         => $_POST['salePrice'],
+                    "vendorId"          => $_POST['vendorId'],
+                    "category"          => $_POST['category'],
+                    "uploadImage"       => $_POST['uploadImage'],
+                    "packageProduct"    => $_POST['packageProduct'],
+                    "isArchive"         => $_POST['isArchive'],
+                    "cookingSuggestionName"       => $_POST['cookingSuggestionName'],
+                    "cookingSuggestionUrl"    => $_POST['cookingSuggestionUrl'],
+                    "cookingSuggestionRemark"         => $_POST['cookingSuggestionRemark'],
+                    "remarkArray"         => $_POST['remarkArray'],
+                );
+                                    
+                $result = $post->curl($command, $params);
+        
+                echo $result;
+                break;
+                
+            case "editPackageInventory":
+                $params = array(
+                    "packageInvId"       => $_POST['packageInvId'],
+                    "invPackageName"       => $_POST['invPackageName'],
+                    "productType"       => $_POST['productType'],
+                    "description"       => $_POST['description'],
+                    "skuCode"       => $_POST['skuCode'],
+                    "expired_day"       => $_POST['expired_day'],
+                    "salePrice"       => $_POST['salePrice'],
+                    "vendorId"       => $_POST['vendorId'],
+                    "category"       => $_POST['category'],
+                    "uploadImage"       => $_POST['uploadImage'],
+                    "packageProduct"       => $_POST['packageProduct'],
+                    "isArchive"       => $_POST['isArchive'],
+                    "isPublish"       => $_POST['isPublish'],
+                    "package"       => $_POST['package'],
+                    "packageDesc"       => $_POST['packageDesc'],
+                    "cookingSuggestionName"       => $_POST['cookingSuggestionName'],
+                    "cookingSuggestionUrl"       => $_POST['cookingSuggestionUrl'],
+                    "cookingSuggestionRemark"       => $_POST['cookingSuggestionRemark'],
+                    "cookingFullInstruction"       => $_POST['cookingFullInstruction'],
+                    "invTranslationList"       => $_POST['invTranslationList'],
+                    "remarkArray"       => $_POST['remarkArray'],
+                );
+                                    
+                $result = $post->curl($command, $params);
+        
                 echo $result;
                 break;
 

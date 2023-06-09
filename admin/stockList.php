@@ -128,13 +128,17 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var pagerId  = 'listingPager';
     var btnArray = {};
     var thArray  = Array(
-        '<?php echo $translations['A01702'][$language]; /* ID */ ?>',
+        '<?php echo $translations['A01702'][$language]; /* SKU code */ ?>',
         '<?php echo $translations['A01695'][$language]; /* Product Name */ ?>',
-        '<?php echo $translations['A01696'][$language]; /* On Hand */ ?>',
+        '<?php echo $translations['A01696'][$language]; /* Quantity On Hand */ ?>',
+        '<?php echo $translations['A01736'][$language]; /* Lock Quantity */ ?>',
+        '<?php echo $translations['A01737'][$language]; /* Available Quantity */ ?>',
+        'Forecast Quantity',
+
         // '<?php echo $translations['A01697'][$language]; /* Total Purchased */ ?>',
         // '<?php echo $translations['A01698'][$language]; /* Total Sold */ ?>',
-        '<?php echo $translations['A01703'][$language]; /* Vendor Name */ ?>',
-        '<?php echo $translations['A01700'][$language]; /* Expiration Date */ ?>'
+        // '<?php echo $translations['A01703'][$language]; /* Vendor Name */ ?>',
+        // '<?php echo $translations['A01700'][$language]; /* Expiration Date */ ?>'
     );
     var searchId = 'searchForm';
 
@@ -191,6 +195,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
     /* getStockList callback (Stock Listing) */
     function loadDefaultListing(data, message) {
+        // console.log(data);
         var tableNo;
         if (data.stockList != "" && data.stockList.length > 0) {
             var newList = []
@@ -203,8 +208,13 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                     barcode         : v['barcode'],
                     name            : v['name'],
                     on_hand         : v['on_hand'],
-                    vendor          : v['vendor'],
-                    expiration_date : v['expiration_date'],
+                    lock_amt        : v['lock_amt'],
+                    available_amt   : v['available_amt'],
+                    forecast_amt    : v['forecast_amt'],
+
+                    // below is unuse in the future
+                    // vendor          : v['vendor'],
+                    // expiration_date : v['expiration_date'],
                     viewBtn         : viewBtn
                 };
                 newList.push(rebuildData);

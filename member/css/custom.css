@@ -781,7 +781,7 @@ a.dbSmallLink:hover {
 }
 
 .btn.btn-primary {
-    background: linear-gradient(to bottom, #ec655d, #d03a31);
+    background: linear-gradient(to bottom, #F6746C, #C72D24);
     color: #fff;
 }
 
@@ -831,7 +831,7 @@ a.dbSmallLink:hover {
 .show>.btn.btn-primary, 
 .btn.btnThemeModal:hover,
 .btn-primary:not(:disabled):not(.disabled):active{
-    background: linear-gradient(to bottom, #ec655d, #d03a31);
+    background: linear-gradient(to bottom, #F6746C, #C72D24);
     color: #fff;
 }
 
@@ -2268,6 +2268,7 @@ h5, h2, h4 {
 
 .titleText.larger {
     font-size: 37px;
+    line-height: 1.2;
 }
 
 .titleText.smaller {
@@ -2283,7 +2284,7 @@ h5, h2, h4 {
 }
 
 .borderBottom.white.light {
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid #d1d1d1;
 }
 
 .borderTop.grey.light {
@@ -2490,7 +2491,7 @@ a.text-underline:focus {
 }
 
 .orderSummaryImg {
-    width: 100px;
+    min-width: 100px;
     height: 80px;
     object-fit: cover;
 }
@@ -2686,12 +2687,13 @@ input:checked + .slider:before {
     position: relative;
 }
 
-.numOfCartItems {
+.numOfCartItems,
+.numOfWislistItems {
     position: absolute;
     font-size: 13px;
     border-radius: 3px;
     padding: 1px 4px;
-    background-color: #d03a31;
+    background-color: #C72D24;
     color: #fff;
     height: 18px;
     top: -5px;
@@ -2721,7 +2723,7 @@ input:checked + .slider:before {
         margin-bottom: 15px;
     }
     section.loginPage .kt-container .login-signup-card .col-md-6 {
-        padding: 0 30px !important;
+        /* padding: 0 30px !important; */
     }
 
     section.loginPage.forgot-password .kt-container .login-signup-card .col-12 {
@@ -2735,7 +2737,7 @@ input:checked + .slider:before {
     }
     section.loginPage .kt-container .login-signup-card .col-md-6:first-child,
     section.loginPage .kt-container .login-signup-card.forgot-password .col-12 {
-        margin-bottom: 40px !important;
+        /* margin-bottom: 40px !important; */
     }
     .categories-filter {
         padding-right: 15px !important;
@@ -2754,6 +2756,10 @@ input:checked + .slider:before {
     .red-notice,
     .red-border-notice {
         width: 321px !important;
+    }
+
+    #cookingSuggestion .red-border-notice {
+        width: 100% !important;
     }
 }
 /* Ipad View */
@@ -2791,11 +2797,12 @@ input:checked + .slider:before {
 .jp-page-banner {
     background-size: cover;
     background-repeat: no-repeat;
-    padding: 42px 30px;
+    padding-top: 42px;
+    padding-bottom: 42px;
 }
 .jp-page-banner h1 {
     font-size: 42px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 47px;
 }
 .jp-page-banner .col-sm-6 {
@@ -2814,8 +2821,8 @@ input:checked + .slider:before {
     background-image: url('../images/project/signup-banner.png');
 }
 .jp-page-banner .img-fluid {
-    max-height: 40px;
-    margin-left: 5px;
+    max-height: 35px;
+    margin-left: 10px;
     margin-bottom: 10px;
 }
 .login-signup-card {
@@ -2834,11 +2841,11 @@ section.loginPage .kt-container {
 section.loginPage.forgot-password .kt-container .login-signup-card {
     padding: 0;
 }
-section.loginPage .kt-container .login-signup-card {
+section.loginPage .login-signup-card {
     padding: 45px 0; 
     background-color: #fff;
 }
-section.loginPage .kt-container .login-signup-card .col-md-6 {
+section.loginPage .login-signup-card .col-md-6 {
     padding: 0 70px;
 }
 
@@ -2848,17 +2855,18 @@ section.loginPage.forgot-password .kt-container .login-signup-card .col-12 {
 .login-signup-card .col-md-6:first-child {
     border-right: solid 2px #ddd;
 }
+
 .button-red,
 .button-red:focus,
 .button-red:hover,
 .button-red:active {
-    background-image: linear-gradient(to bottom, #f37067, #c82f26);
+    background-image: linear-gradient(to bottom, #F6746C, #C72D24);
     color: #fff;
     width: 100%;
     border-radius: 0px;
 }
 .button-fix-width {
-    width: 200px !important;
+    width: 150px !important;
 }
 .button-fix-width-2 {
     width: 120px !important;
@@ -2958,7 +2966,7 @@ select.beforeLoginForm:focus-visible {
 .item.grid-group-item img.list-group-image {
     /* aspect-ratio: 16/9; */
     width: 100%;
-    height: 150px;
+    height: 200px;
     object-fit: cover;
     /* height: unset !important; */
 }
@@ -3047,9 +3055,13 @@ select.beforeLoginForm:focus-visible {
 .categories-filter ul {
     padding-inline-start: 0px;
 }
+.categories-filter li li.active,
 .categories-filter li.active {
     color: #f06b63;
     font-weight: bold;
+}
+.categories-filter li.active li {
+    font-weight: 300;
 }
 .categories-filter li {
     list-style-type: none;
@@ -3058,9 +3070,10 @@ select.beforeLoginForm:focus-visible {
     font-size: 17px;
     color: #333;
     cursor: pointer;
+    padding-left: 15px;
 }
 .categories-filter {
-    padding-right: 5em;
+    padding-right: 4em;
 }
 .jp-list-group .thumbnail .caption p.lead .price-slash {
     text-decoration: line-through;
@@ -3096,7 +3109,7 @@ select.beforeLoginForm:focus-visible {
     align-items: center;
 }
 p.list-group-item-text {
-    height: 55px;
+    height: 70px;
     overflow: initial;
    text-overflow: ellipsis;
 /*   display: contents;*/
@@ -3156,7 +3169,7 @@ p.list-group-item-text {
 .food-detail-add-minus input {
 /*    height: 34px;*/
     line-height: 25px;
-    width: 130px;
+    width: 90px;
     padding: 7px 10px;
     font-size: 23px;
     border: 2px solid #ddd;
@@ -3225,12 +3238,12 @@ p.list-group-item-text {
 .food-detail-description-tab .nav-tabs li:has(a.active) {
     border-top: solid 3px #ec4a41;
 }
-.food-detail-description-tab .tab-content iframe,
+/*.food-detail-description-tab .tab-content iframe,*/
 .food-detail-description-tab .tab-content img {
     margin-top: 25px;
 }
 .food-detail-description-tab .tab-content {
-    padding-top: 20px;
+/*    padding-top: 20px;*/
     padding-bottom: 20px;
 }
 .food-detail-description-tab .tab-content .tab-pane {
@@ -3259,7 +3272,7 @@ table.rating tr td:first-child {
 }
 table.rating tr td:first-child,
 table.rating tr td:last-child {
-    width: 55px;
+    width: 60px;
 }
 table.rating tr td:nth-child(2) {
     width: calc(100% - 200px);
@@ -3474,4 +3487,303 @@ ul.lSPager.lSGallery li img {
 
 .mobileSidebar{
     width: 50%;
+}
+#orderHistoryPrint .invoiceTable thead tr th,
+#orderHistoryPrint2 .invoiceTable thead tr th {
+    background-color: #fff !important;
+    border: 2px solid #000;
+    border-left: 2px solid #000 !important;
+    border-right: 2px solid #000 !important;
+}
+#orderHistoryPrint .invoiceTable thead tr th:first-child,
+#orderHistoryPrint2 .invoiceTable thead tr th:first-child {
+    border-left: 2px solid #000 !important;
+    border-right: unset !important;
+}
+#orderHistoryPrint .invoiceTable thead tr th:last-child,
+#orderHistoryPrint2 .invoiceTable thead tr th:last-child {
+    border-right: 2px solid #000 !important;
+    border-left: unset !important;
+}
+#orderHistoryPrint .invoiceTable tbody,
+#orderHistoryPrint2 .invoiceTable tbody {
+    border: 2px solid #000;
+}
+#orderHistoryPrint .invoiceTable tbody tr,
+#orderHistoryPrint2 .invoiceTable tbody tr {
+    height: 45px;
+}
+#orderHistoryPrint .invoiceTable tbody tr,
+#orderHistoryPrint .invoiceTable tbody td,
+#orderHistoryPrint2 .invoiceTable tbody tr,
+#orderHistoryPrint2 .invoiceTable tbody td {
+    border-bottom: unset !important;
+}
+#orderHistoryPrint .invoiceTable.table td:first-child,
+#orderHistoryPrint2 .invoiceTable.table td:first-child {
+    border-left: 0px solid #000 !important;
+}
+#orderHistoryPrint .invoiceTable.table td:last-child,
+#orderHistoryPrint2 .invoiceTable.table td:last-child {
+    border-right: 0px solid #000 !important;
+    background-color: #ddd !important;
+}
+#orderHistoryPrint .invoiceTable.table td,
+#orderHistoryPrint2 .invoiceTable.table td {
+    border-left: solid 2px #000 !important;
+    border-right: solid 2px #000 !important;
+}
+#orderHistoryPrint .invoiceTable.table td,
+#orderHistoryPrint .invoiceTable.table th,
+#orderHistoryPrint2 .invoiceTable.table td,
+#orderHistoryPrint2 .invoiceTable.table th {
+    padding: 10px !important;
+}
+#orderHistoryPrint .invoiceTable.table #totalRow td:nth-child(2),
+#orderHistoryPrint .invoiceTable.table #totalRow td:last-child,
+#orderHistoryPrint2 .invoiceTable.table #totalRow td:nth-child(2),
+#orderHistoryPrint2 .invoiceTable.table #totalRow td:last-child {
+    background-color: #b65950!important;
+    color: #fff !important;
+}
+#orderHistoryPrint .invoiceTable.table #totalRow td:nth-child(2),
+#orderHistoryPrint2 .invoiceTable.table #totalRow td:nth-child(2) {
+    border-right: solid 0px #fff!important;
+    border-bottom: solid 2px #000!important;
+}
+#orderHistoryPrint .invoiceTable.table #totalRow td:last-child,
+#orderHistoryPrint2 .invoiceTable.table #totalRow td:last-child {
+    border-left: solid 0px #fff!important;
+    border-right: solid 2px #000!important;
+    border-bottom: solid 2px #000!important;
+}
+@media print{
+    #totalRow tr:last-child {
+        border-bottom: solid 0px #000!important;
+        -webkit-print-color-adjust:exact ;
+    }
+    #totalRow tr td:first-child {
+/*        border-left: solid 0px #000!important;*/
+        border-bottom: solid 0px #000!important;
+        -webkit-print-color-adjust:exact ;
+    }
+    #orderHistoryPrint .invoiceTable.table #totalRow td:nth-child(2),
+    #orderHistoryPrint .invoiceTable.table #totalRow td:last-child,
+    #orderHistoryPrint2 .invoiceTable.table #totalRow td:nth-child(2),
+    #orderHistoryPrint2 .invoiceTable.table #totalRow td:last-child {
+        background-color: #b65950!important;
+        color: #fff !important;
+        -webkit-print-color-adjust:exact ;
+    }
+
+    .receiptTable thead {
+        background-color: #1c2232 !important;
+    }
+
+    .receiptTable tbody tr {
+        background-color: #f8f9fa !important;
+    }
+
+    .receiptTable tbody tr,
+    .receiptTable tbody tr td {
+        border-bottom: none !important;
+    }
+
+    .receiptTable tbody tr td {
+        border-left: 1px solid #e5e5e5 !important;
+        border-right: 1px solid #e5e5e5 !important;
+    }
+
+    .receiptTable tbody tr:last-child {
+        border-top: 1px solid #e5e5e5 !important;
+        border-bottom: 1px solid #e5e5e5 !important;
+    }
+}
+
+.receiptTable thead {
+    background-color: #1c2232 !important;
+}
+
+.receiptTable tbody tr {
+    background-color: #f8f9fa !important;
+}
+
+.receiptTable tbody tr,
+.receiptTable tbody tr td {
+    border-bottom: none !important;
+}
+
+.receiptTable tbody tr td {
+    border-left: 1px solid #e5e5e5 !important;
+    border-right: 1px solid #e5e5e5 !important;
+}
+
+.receiptTable tbody tr:last-child {
+    border-top: 1px solid #e5e5e5 !important;
+    border-bottom: 1px solid #e5e5e5 !important;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+#cookingSuggestion .red-border-notice {
+    width: 275px !important;
+}
+.food-suggestion .card-header .title {
+    font-size: 17px;
+    color: #000;
+}
+.food-category li:hover {
+    background-color: #eee;
+}
+.food-category li:has(.card-header) li:hover {
+    color: #f06b63;
+    font-weight: bold;
+}
+.food-category li:has(.card-header):hover li {
+    background-color: white;
+}
+.food-category.card li:has(.card-header) .card-header {
+    padding: 0.75rem 1.25rem;
+}
+.food-category.card li:has(.card-header) li {
+    border-bottom: 0;
+    padding-left: 2rem;
+    font-size: 0.9em;
+}
+.food-category.card li:has(.card-header) li:last-child {
+    border-bottom: 0;
+}
+.food-category.card li:has(.card-header) {
+    padding: 0;
+}
+.food-category.card .card-body {
+    padding: 0;
+}
+.food-category.card {
+    border: 0;
+}
+.food-category .card-header {
+    padding: 0;
+    background-color: unset;
+    border-bottom: 0;
+}
+.food-category .card-header .accicon,
+.food-suggestion .card-header .accicon {
+    float: right;
+    font-size: 20px;  
+    width: 1.2em;
+}
+.food-suggestion .card-header {
+    cursor: pointer;
+    border: solid 2px #d3d3d3;
+    border-bottom: solid 2px #d3d3d3 !important;
+    background-color: #fff;
+    border: solid 2px #d3d3d3 ;
+    padding: 10px 20px !important;
+}
+.food-suggestion.card {
+    border: 1px solid #ddd;
+}
+.food-suggestion:last-child .card-body {
+    border-bottom: 2px solid #d3d3d3;
+}
+.food-suggestion .card-body {
+    border: 2px solid #d3d3d3;
+    border-bottom: 0;
+    border-top: 0;
+    background-color: #f9f9f9;
+    padding: 30px 20px !important;
+}
+.food-suggestion .card-body p {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+}
+.food-suggestion .card-header:not(.collapsed) .rotate-icon {
+    transform: rotate(180deg);
+}
+ul.subCat li:last-child {
+    border-bottom: 0;
+    padding-bottom: unset;
+}
+ul.subCat li {
+    margin-left: 15px;
+    border-bottom: solid 2px rgba(224,224,224,0.5);
+}
+
+.lSPager.lSGallery {
+    margin-bottom: 25px !important;
+}
+#lightSlider {
+    height: unset !important;
+}
+#lightSlider li {
+    align-items: center !important;
+    display: flex !important;
+    aspect-ratio: 4 / 3;
+}
+.lSSlideOuter .lSPager.lSGallery img {
+    object-fit: cover !important;
+}
+.about-this-food {
+    background-color: #f7f7f7;
+    padding: 20px 25px;
+    border-radius: 3px;
+}
+.about-this-food h3 {
+    margin-bottom: 20px;
+}
+.about-this-food .row .col-md-6 {
+    margin-bottom: 5px;
+}
+@media (min-width: 768px) {
+    .about-this-food .row .col-md-6:nth-child(even) {
+        text-align: right;
+    }
+}
+.jp-list-group.item {
+    padding: 15px;
+}
+
+@media (max-width: 767px) {
+    .loginPage {
+        background-color: #fff;
+        padding: 0;
+    }
+
+    .login-signup-card.row {
+        box-shadow: none;
+        margin-top: 0;
+    }
+
+    .login-signup-card .col-md-6:first-child {
+        border-right: none;
+        border-bottom: solid 2px #ddd;
+    }
+}
+
+.foodMenu-img {
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #ddd;
+}
+
+.wishlistImg {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+}
+
+.wishlistOutOfStockBtn,
+.wishlistAddToCartBtn {
+    display: none;
+}
+
+.wishlistIcon {
+    position: relative;
+}
+
+#foodDetailsBtns #addCartBtn,
+#foodDetailsBtns #addWishlistBtn {
+    display: none;
 }

@@ -79,6 +79,7 @@
         <link href="plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
         <script src="js/modernizr.min.js"></script>
+        <script src="https://cdn.tiny.cloud/1/97otdbrcpih9una5so0f70myly5czyxdjrhlvdmwm1reccxp/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
 <div id="canvasLoader" class="hide">

@@ -209,16 +209,18 @@
         var pagerId  = 'pagerMemberDetailsList';
         var btnArray = {};
         var thArray  = Array('<?php echo $translations['A00564'][$language]; /* Transaction Date */ ?>',
+                            //  '<?php echo $translations['A00566'][$language]; /* To/From */ ?>',
+                            //  '<?php echo $translations['A00567'][$language]; /* Credit In */ ?>',
+                            //  '<?php echo $translations['A00568'][$language]; /* Credit Out */ ?>',
+                             'Loyalty Point',
                              '<?php echo $translations['A00565'][$language]; /* Transaction Type */ ?>',
-                             '<?php echo $translations['A00566'][$language]; /* To/From */ ?>',
-                             '<?php echo $translations['A00567'][$language]; /* Credit In */ ?>',
-                             '<?php echo $translations['A00568'][$language]; /* Credit Out */ ?>',
-                             '<?php echo $translations['A00207'][$language]; /* Balance */ ?>',
-                             '<?php echo $translations['A00147'][$language]; /* Done By */ ?>',
+                            //  '<?php echo $translations['A00147'][$language]; /* Done By */ ?>',
                              '<?php echo $translations['A00571'][$language]; /* Remark */ ?>'
                             );
 
         var memberId = "<?php echo $_POST['id']; ?>";
+        var member_id = "<?php echo $_POST['id']; ?>";
+
 
         $(document).ready(function() {
             // if id empty return back admin.php             
@@ -277,19 +279,25 @@
             $('#memberCreditsTransaction').click(function() {
                 $.redirect('memberCreditsTransaction.php', {id : "<?php echo $_POST['id']; ?>"});
             });
+            $('#memberAccountBalance').click(function() {
+                $.redirect('accountBalance.php?type=bonusDef' , {
+                                                                    id       : "<?php echo $_POST['id']; ?>",
+                                                                    fullName : member_id,
+                                                                    username : name,
+                });
+            });
             $('#loginToMember').click(function(){
                 var url = "scripts/reqAdmin.php";
                 var formData  = {
                     command : "getMemberLoginDetail",
-                    memberId : "<?php echo $_POST['id']; ?>"
+                    id : "<?php echo $_POST['id']; ?>"
                 };
                 var fCallback = loginToMember;
                 ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
             });
         });
 
-        function loginToMember(data, message){
-
+        function loginToMember(data){
             var form = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
                 action: data.url
             }).appendTo(document.body);
@@ -304,25 +312,33 @@
                 value: data.username
             }).appendTo(form);
 
-            form.submit();
+            $('<input type="hidden" />').attr({
+                name: 'adminID',
+                value: data.adminID
+            }).appendTo(form);
 
+            $('<input type="hidden" />').attr({
+                name: 'adminSession',
+                value: data.adminSession
+            }).appendTo(form);
+
+            form.submit();
             form.remove();
         }
 
         function loadDefaultData(data, message) {
             var tableNo;
-            console.log(data.transactionList);
             if(data.transactionList){
                 var newList = [];
                 $.each(data.transactionList, function(k, v) {
                     var rebuildData = {
                         created_at  : v['created_at'],
-                        subject     : v['subject'],
-                        to_from     : v['to_from'],
-                        credit_in   : v['credit_in'],
-                        credit_out  : v['credit_out'],
+                        // to_from     : v['to_from'],
+                        // credit_in   : v['credit_in'],
+                        // credit_out  : v['credit_out'],
                         balance     : v['balance'],
-                        creator_id  : v['creator_id'],
+                        subject     : v['subject'],
+                        // creator_id  : v['creator_id'],
                         remark      : v['remark'],
                     };
                     newList.push(rebuildData);

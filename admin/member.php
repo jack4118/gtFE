@@ -32,12 +32,12 @@ $countryList = $_SESSION['countryList'];
 
                                             <div class="col-xs-12">
                                                 <div class="row">
-                                                    <div class="col-sm-4 form-group">
+                                                    <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             <?php echo $translations['A00148'][$language]; /* Member ID */ ?>
                                                         </label>
                                                         <input type="text" class="form-control" dataName="memberID" dataType="text">
-                                                    </div>
+                                                    </div> -->
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             <?php echo $translations['A00117'][$language]; /* Full Name */ ?>
@@ -50,6 +50,16 @@ $countryList = $_SESSION['countryList'];
                                                             <label for="nameLike"><?php echo $translations['A01348'][$language]; /* Like */ ?></label>
                                                         </span>
                                                         <input type="text" class="form-control name" dataName="name" dataType="text">
+                                                    </div>
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            Phone
+                                                        </label>
+                                                        <span class="pull-right">
+                                                            <input id="like" type="radio" name="phoneType" class="phoneType" value="like" style="margin-left: 15px;" checked> 
+                                                            <label for="like"><?php echo $translations['A01348'][$language]; /* Like */ ?></label>
+                                                        </span>
+                                                        <input type="text" class="form-control" dataName="phone" dataType="text">
                                                     </div>
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
@@ -69,7 +79,7 @@ $countryList = $_SESSION['countryList'];
 
                                             <div class="col-xs-12">
                                                 <div class="row">
-                                                    <div class="col-sm-4 form-group">
+                                                    <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             <?php echo $translations['A00153'][$language]; /* Country */ ?>
                                                         </label>
@@ -84,20 +94,20 @@ $countryList = $_SESSION['countryList'];
                                                             }
                                                             ?>
                                                         </select>
-                                                    </div>
-                                                    <div class="col-sm-4 form-group">
+                                                    </div> -->
+                                                    <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             Sponsor ID
                                                         </label>
                                                         <input type="text" class="form-control" dataName="sponsor" dataType="text">
-                                                    </div>
+                                                    </div> -->
                                                     <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             Main Leader ID
                                                         </label>
                                                         <input type="text" class="form-control" dataName="mainLeaderUsername" dataType="text">
                                                     </div> -->
-                                                    <div class="col-sm-4 form-group">
+                                                    <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             Rank
                                                         </label>
@@ -106,7 +116,7 @@ $countryList = $_SESSION['countryList'];
                                                             <?php foreach($_SESSION["rankList"] as $value){ ?>
                                                                 <option value="<?php echo $value['id']; ?>"><?php echo $value['display']; ?></option>
                                                             <?php } ?>
-                                                        </select>
+                                                        </select> -->
                                                         <!-- <label class="control-label">
                                                             <?php echo $translations['A00984'][$language]; /* Rank */ ?>   
                                                         </label>
@@ -127,8 +137,8 @@ $countryList = $_SESSION['countryList'];
                                                                 Fiz director
                                                             </option>
                                                         </select> -->
-                                                    </div>
-                                                    <div class="col-sm-4 form-group">
+                                                    <!-- </div> -->
+                                                    <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             <?php echo $translations['A00318'][$language]; /* Status */ ?>   
                                                         </label>
@@ -138,24 +148,51 @@ $countryList = $_SESSION['countryList'];
                                                                 </option>
                                                                 <option value="active">
                                                                     Active
-                                                                </option>
+                                                                </option> -->
                                                                 <!-- <option value="inactive" disabled hidden>
                                                                     Inactive
                                                                 </option> -->
                                                                 <!-- <option value="disabled">
                                                                     Disable
                                                                 </option> -->
-                                                                <option value="suspended">
+                                                                <!-- <option value="suspended">
                                                                     Suspended
-                                                                </option>
+                                                                </option> -->
                                                                 <!-- <option value="freezed">
                                                                     Freezed
                                                                 </option> -->
-                                                                <option value="terminated">
+                                                                <!-- <option value="terminated">
                                                                     Terminated
                                                                 </option>
                                                         </select>
+                                                    </div> -->
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            Client Type
+                                                        </label>
+                                                        <select class="form-control" dataName="clientType" dataType="clientType">
+                                                                <option value="">
+                                                                    <?php echo $translations['A00055'][$language]; /* All */ ?>
+                                                                </option>
+                                                                <option value="Client">
+                                                                    Client
+                                                                </option>
+                                                                <option value="Guest">
+                                                                    Guest
+                                                                </option>
+                                                        </select>
                                                     </div>
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            Last Purchase Date
+                                                        </label>
+                                                        <span class="pull-right">
+                                                            <input id="like" type="radio" name="date" class="date" value="like" style="margin-left: 15px;"checked > 
+                                                            <label for="like"><?php echo $translations['A01348'][$language]; /* Like */ ?></label>
+                                                        </span>
+                                                        <input type="date" class="form-control" dataName="date" dataType="text">
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
 <!-- 
@@ -182,6 +219,9 @@ $countryList = $_SESSION['countryList'];
 
                 <div class="row">
                     <div class="col-lg-12">
+                        <button id="addMemberBtn" class="btn btn-primary waves-effect waves-light m-b-rem1">
+                            Add Member
+                        </button>
                         <a id="seeAllBtn" onclick="seeAll()" class="btn btn-primary waves-effect waves-light m-b-rem1" style="display: none">See All</a>
                         <a id="exportBtn" onclick="exportBtn()" class="btn btn-primary waves-effect waves-light m-b-rem1" style="display: none"><?php echo $translations['A01352'][$language]; /*Export to xlsx*/ ?></a>
                         <form>
@@ -223,16 +263,20 @@ $countryList = $_SESSION['countryList'];
     var btnArray = {};
     var thArray  = Array(
         '',
-        '<?php echo $translations['A00148'][$language]; /* Member ID */ ?>',
-        '<?php echo $translations['A00103'][$language]; /* Email */ ?>',
+        // '<?php echo $translations['A00148'][$language]; /* Member ID */ ?>',
         '<?php echo $translations['A00117'][$language]; /* Full Name */ ?>',
-        '<?php echo $translations['A00318'][$language]; /* Status */ ?>',
-        'Sponsor ID',
-        '<?php echo $translations['A00153'][$language]; /* Country */ ?>',
-        'Rank',
-        '<?php echo $translations['A00113'][$language]; /* Last Login */ ?>',
-        '<?php echo $translations['A01350'][$language]; /* Last Login IP Address */ ?>',
-        '<?php echo $translations['A00112'][$language]; /* Created At */ ?>'
+        'Mobile Number',
+        'Email Address',
+        'Loyalty Point',
+        'Account Type (Guest | Customer)',
+        // '<?php echo $translations['A00318'][$language]; /* Status */ ?>',
+        'Last Purchase Date',
+        // 'Sponsor ID',
+        // '<?php echo $translations['A00153'][$language]; /* Country */ ?>',
+        // 'Rank',
+        // '<?php echo $translations['A00113'][$language]; /* Last Login */ ?>',
+        // '<?php echo $translations['A01350'][$language]; /* Last Login IP Address */ ?>',
+        // '<?php echo $translations['A00112'][$language]; /* Created At */ ?>'
     );
 
 
@@ -256,11 +300,26 @@ $countryList = $_SESSION['countryList'];
         });
 
         $('#searchBtn').click(function() {
+            
             var getDataType = $("input[name=emailType]:checked").val();
             $('.email').attr('dataType', getDataType);
             var getNameType = $("input[name=nameType]:checked").val();
             $('.name').attr('dataType', getNameType);
             pagingCallBack(pageNumber, loadSearch);
+            var getPhoneType = $("input[name=phoneType]:checked").val();
+            $('.phone').attr('dataType', getNameType);
+            pagingCallBack(pageNumber, loadSearch);
+            var getClientType = $("select[dataName='clientType']").val();
+            $('.clientType').attr('dataType', getClientType);
+            pagingCallBack(pageNumber, loadSearch);
+            var getLastPurchaseDate = $("input[name=date]:checked").val();
+            $('.date').attr('dataType', getClientType);
+            pagingCallBack(pageNumber, loadSearch);
+
+        });
+
+        $('#addMemberBtn').click(function() {
+            $.redirect("addMember.php");
         });
     });
 
@@ -308,6 +367,7 @@ $countryList = $_SESSION['countryList'];
     }
 
     function loadDefaultListing(data, message) {
+        console.log(data);
         $('#basicwizard').show();
         if (data) {
             $('#exportBtn').show(); 
@@ -341,16 +401,25 @@ $countryList = $_SESSION['countryList'];
 
                 var rebuildData = {
                     editBtn : editBtn,
-                    memberID : v['memberID'],
-                    email : v['email'],
+                    // memberID : v['memberID'],
                     name : v['name'],
-                    status : v['status'],
-                    sponsorUsername : v['sponsorUsername'],
-                    country : v['country'],
-                    rank : v['rank'],
-                    lastLogin : v['lastLogin'],
-                    lastLoginIp : v['lastLoginIp'],
-                    createdAt : v['createdAt']
+                    phone : v['phone'],
+                    email : v['email'],
+                    point : v['balance_to_point'],
+                    type : v['type'],
+                    // status : v['status'],
+                    LastPurchaseDate : v['LastPurchaseDate'],
+
+
+
+
+                    // status : v['status'],
+                    // sponsorUsername : v['sponsorUsername'],
+                    // country : v['country'],
+                    // rank : v['rank'],
+                    // lastLogin : v['lastLogin'],
+                    // lastLoginIp : v['lastLoginIp'],
+                    // createdAt : v['createdAt']
                 };
 
                 newList.push(rebuildData);

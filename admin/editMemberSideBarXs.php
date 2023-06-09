@@ -17,7 +17,7 @@
                     <div class="m-b-rem1 menuActive">
                         <a id="memberPasswordMaintain"><?php echo $translations['A00282'][$language]; /* Password Maintain */?></a>
                     </div>
-                    <div class="m-b-rem1 menuActive">
+                    <!-- <div class="m-b-rem1 menuActive">
                         <a id="sponsorTree"><?php echo $translations['A01052'][$language]; /* Referral Diagram */?></a>
                     </div>
                     <div class="m-b-rem1 menuActive">
@@ -28,25 +28,25 @@
                     </div>
                     <div class="m-b-rem1 menuActive">
                         <a id="rankMaintain">Rank Maintain</a>
-                    </div>
+                    </div> -->
                     <!-- <div class="m-b-rem1 menuActive">
                         <a id="portfolioList"><?php echo $translations['A01054'][$language]; /* Portfolio Listing */?></a>
                     </div> -->
-                    <div class="m-b-rem1 menuActive">
+                    <!-- <div class="m-b-rem1 menuActive">
                         <a id="activityLogsListing"><?php echo $translations['A01055'][$language]; /* Activity Log Listing*/?></a>
-                    </div>
+                    </div> -->
                     <div class="m-b-rem1 menuActive">
                         <a id="memberCreditsTransaction"><?php echo $translations['A01056'][$language]; /*Credit Transaction Listing*/?></a>
                     </div>
                     <!-- <div class="m-b-rem1 menuActive">
                         <a>Ledger Balance</a>
                     </div> -->
-                    <div class="m-b-rem1 menuActive">
+                    <!-- <div class="m-b-rem1 menuActive">
                         <a id="changeSponsor">Change Sponsor</a>
                     </div>
                     <div class="m-b-rem1 menuActive">
                         <a id="changePlacement">Change Placement</a>
-                    </div>
+                    </div> -->
                     <div class="m-b-rem1 menuActive">
                         <a id="loginToMember"><?php echo $translations['A01058'][$language]; /*Login Member*/?></a>
                     </div>

@@ -17,7 +17,7 @@ include 'head.php';
             <div id="breadcrumbs">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="homepage" data-lang="M03873"><?php echo $translations['M03873'][$language]; //Home ?></a></li>
-                    <li class="breadcrumb-item" data-lang="M03874"><?php echo $translations['M03874'][$language]; //Categories ?></li>
+                    <li class="breadcrumb-item" data-lang="M03874"><a href="foodMenu" data-lang="M03873"><?php echo $translations['M03874'][$language]; //Categories ?></a></li>
                     <!-- <li class="breadcrumb-item" data-lang="M03875"><?php echo $translations['M03875'][$language]; //All Products ?></li> -->
                     <li class="breadcrumb-item"><span id="foodBreadcrumb"></span></li>
                 </ul>
@@ -25,8 +25,8 @@ include 'head.php';
         </div>
     </div>
 
-    <div class="row mb-4">
-        <div class="col-md-4" id="sliderDiv">
+    <div class="row mb-5">
+        <div class="col-md-5" id="sliderDiv">
             <!-- <ul id="lightSlider"> -->
                 <!-- <li data-thumb="images/project/product2.jpg"> <img src="images/project/product2.jpg" /> </li>
                 <li data-thumb="images/project/product3.jpg"> <img src="images/project/product3.jpg" /> </li>
@@ -50,9 +50,9 @@ include 'head.php';
                         <span class="plus">+</span>
                     </div>
 
-                    <div class="col pr-0">
+                    <div class="col pr-0" id="foodDetailsBtns">
                         <button class="btn button-red" id="addCartBtn" data-lang="M03878"><?php echo $translations['M03878'][$language]; //Add To Cart ?></button>
-
+                        <button class="btn button-red" id="addWishlistBtn" onclick="beforeAddToWishlist()" data-lang="M04030"><img src="images/project/wws2.png" width="15px" class="mr-2"><?php echo $translations['M04030'][$language]; //Add To Wishlist ?></button>
                         <input id="localimageinput" class="hide">
                     </div>
                 </div>
@@ -65,9 +65,9 @@ include 'head.php';
                 </div>
             </div>
 
-            <div class="red-border-notice mb-3" data-lang="M03877">
+            <!-- <div class="red-border-notice mb-3" data-lang="M03877">
                 <i class="fa fa-clock mr-2"></i> <?php echo $translations['M03877'][$language]; //Cooking Time ?>: <span id="cookingTime"></span>
-            </div>
+            </div> -->
 
             <div class="food-detail-div-fix-width">
                 <div class="row">
@@ -101,8 +101,6 @@ include 'head.php';
                     <div id="cookingSuggestion_text"></div>
                     <div id="fullInstruction_text" class="mt-4"></div>
                     <div id="fullInstruction2_text" class="mt-4"></div>
-
-                    <div id="cookVideo"></div>
                 </div>
 
                 <!-- <div id="fullInstruction" class="tab-pane fade">
@@ -117,7 +115,7 @@ include 'head.php';
         </div>
     </div>
 
-    <div class="row">
+    <div class="row hide">
         <div class="col-12 mb-3">
             <h1 class="mb-4" data-lang="M03882"><?php echo $translations['M03882'][$language]; //Customer Reviews ?></h1>
 
@@ -207,7 +205,7 @@ include 'head.php';
     </div>
 </section>
 
-<section class="section section-review">
+<section class="section section-review hide">
     <!-- Loop start -->
     <div class="row review-row">
         <div class="col-md-3 col-lg-2">
@@ -262,13 +260,16 @@ var bypassLoading   = 0;
 var fCallback       = "";
 var slideIndex      = 1;
 var radiodata       = [];
+var language = "<?php echo $language; ?>";
 
 var id = "<?php echo $_POST['id']?>";
+var foodDetailsUpdateWishlist = true;
 
 $(document).ready(function(){ 
     var formData  = {
         command     : "getProductDetails",
-        productInvId  : id
+        productInvId  : id,
+        language      : language
     };
     var fCallback = loadDefaultListing; 
     ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
@@ -293,6 +294,12 @@ $(document).ready(function(){
 function loadDefaultListing (data,message,session) {
     var foodList = data.productInventory;
 
+    if(data.stockQuantity && data.stockQuantity > 0) {
+        $('#addCartBtn').show();
+    } else {
+        $('#addWishlistBtn').show();
+    }
+
     $('#foodBreadcrumb').text(foodList[0].name);
     $('#foodTitle').text(foodList[0].name);
     $('#foodCost').text(numberThousand(foodList[0].salePrice,2));
@@ -301,8 +308,11 @@ function loadDefaultListing (data,message,session) {
     $('#fullInstruction2_text').html(foodList[0].fullInstruction2);
     $('#fullInstruction_text').html(foodList[0].fullInstruction);
     $('#packageID').val(foodList[0].id);
-    var localimage = foodList[0].media[0].url;
-    $('#localimageinput').val(localimage);
+    if(data.productInventory[0].media){
+        var localimage = foodList[0].media[0].url;
+        $('#localimageinput').val(localimage);
+    }
+    var cookingSuggestHTML = "";
     
     if(data.attribute) {
         var foodAttributeHTML = '';
@@ -365,24 +375,72 @@ function loadDefaultListing (data,message,session) {
         });
     }
 
-    if(data.productInventory) {
-        var videoHTML = '';
+    //if(data.productInventory) {
+    //    var videoHTML = '';
     
-        $.each(data.productInventory, function(m, n) { 
-            if(n['video'] && n['video'].length > 0) { 
-                $.each(n['video'], function(m2, n2) {
-                    videoHTML +=  `                        
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/${n2['url']}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    `;
-                });
-            }
-        });
+    //    $.each(data.productInventory, function(m, n) { 
+    //        if(n['video'] && n['video'].length > 0) { 
+    //            $.each(n['video'], function(m2, n2) {
+    //                videoHTML +=  `                        
+    //                    <iframe width="560" height="315" src="https://www.youtube.com/embed/${n2['url']}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    //                `;
+    //            });
+    //        }
+    //    });
 
-        $('#cookVideo').html(videoHTML);
-        $('#cookingSuggestion_text').html(foodList[0].cookingSuggestion);
+    //    $('#cookVideo').html(videoHTML);
+    //    $('#cookingSuggestion_text').html(foodList[0].cookingSuggestion);
+    //}
+
+    //new cooking suggestion API
+    if(data.cookingDetail){
+        cookingSuggestHTML +=  `<div class="accordion" id="accordionExample">`;
+
+        for (var i = 0; i < data.cookingDetail.length; i++) {
+            var suggestionName = data.cookingDetail[i].name;
+            var description = data.cookingDetail[i].description;
+            var suggestionRemark = data.cookingDetail[i].remark;
+            var suggestionUrl = data.cookingDetail[i].url;
+            var suggestionCookingTime = data.cookingDetail[i].cooking_time;
+
+            cookingSuggestHTML +=  `
+                <div class="card food-suggestion">
+                    <div class="card-header" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true">     
+                        <span class="title" style="font-size: 18px; font-weight: 500;" data-lang="M03938">
+                            <font style="color: #ec4a41;"><?php echo $translations['M03938'][$language]; //Cooking Method ?>: </font>${suggestionName}
+                        </span>
+                        <span class="accicon"><i class="fas fa-angle-down"></i></span>
+                    </div>
+                    <div id="collapse${i}" class="collapse">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p>
+                                        <i class="fa fa-clock"></i> <?php echo $translations['M03877'][$language]; //Cooking Time ?>: ${suggestionCookingTime} minutes
+                                    </p>
+                                    <div id="description" class="description-height">${description}</div>
+                                    
+                                    <div id="suggestionRemark" class="mt-3 suggestionRemark" data-lang="M00448">
+                                        <b>${suggestionRemark}</b>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div id="cookVideo"><iframe width="560" height="315" src=${suggestionUrl} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        cookingSuggestHTML +=  `</div>`;
+
+        $("#cookingSuggestion").html(cookingSuggestHTML);
     }
 }
-
+var localStorageCart;
 $('#addCartBtn').click(function(data) {
     var product_template =[];
     var product_template_name =[];
@@ -402,7 +460,7 @@ $('#addCartBtn').click(function(data) {
 
     if(!clientID) {
         var total = $('#foodCost').text() * quantity;
-        var localStorageCart =
+        localStorageCart =
         {
             packageID   : parseInt(packageID),
             productID   : parseInt(packageID),
@@ -418,12 +476,30 @@ $('#addCartBtn').click(function(data) {
             img: localimage,
         }
 
-        newcart(localStorageCart);
-        successAddCart();
+
+        var formData  = {
+            // command             : "guestAddShoppingCart", ## old api 
+            command             : 'addShoppingCart',
+            // clientID            : clientID,
+            packageID           : packageID,
+            quantity            : quantity,
+            type                : "add",
+            product_template    : product_template_string,
+            step                : 1 // to differentiate between guest or registered user for BE
+
+        }; 
+
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
+
+        var fCallback = successAddCart;
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
         // $.redirect('reviewOrder');
 
     } else { 
+        
         var formData  = {
             command     : "addShoppingCart",
             clientID    : clientID,
@@ -433,14 +509,24 @@ $('#addCartBtn').click(function(data) {
             product_template    : product_template_string
         }; 
 
+        if($.cookie('bkend_token')) {
+            formData['bkend_token'] = $.cookie('bkend_token')
+        }
+
         var fCallback = successAddCart;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     }
-
-    getNumberOfCartItems();
 })
 
-function successAddCart () {
-    showMessage('Successfully added to Cart', 'success', 'Success', '', '');
+function successAddCart (data,message) {
+    newcart(localStorageCart);
+    $.cookie('bkend_token', data['bkend_token'],{expires:10000})
+    showMessage('<span data-lang="M03397"><?php echo $translations['M03397'][$language] /* Successfully added to cart. */ ?></span>', 'success', '<span data-lang="M02544"><?php echo $translations['M02544'][$language] /* Success */ ?>', '', '');
+    getNumberOfCartItems();
 }
+
+function beforeAddToWishlist() {
+    addItemToWishlist(id);
+}
+
 </script>

@@ -146,10 +146,16 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var pagerId  = 'listingPager';
     var btnArray = {};
     var thArray  = Array(
-        '<?php echo $translations['A00106'][$language]; /* ID */ ?>',
-        '<?php echo $translations['A01696'][$language]; /* On Hand */ ?>',
-        '<?php echo $translations['A01700'][$language]; /* Expiration Date */ ?>',
-        '<?php echo $translations['A01699'][$language]; /* Stock In Date */ ?>'
+        '<?php echo $translations['A01702'][$language]; /* SKU code */ ?>',
+        // '<?php echo $translations['A01739'][$language]; /* Warehouse */ ?>',
+        'Branch',
+        '<?php echo $translations['A01738'][$language]; /* Best Before Date */ ?>',
+        'Quantity',
+
+        // '<?php echo $translations['A00106'][$language]; /* ID */ ?>',
+        // '<?php echo $translations['A01696'][$language]; /* On Hand */ ?>',
+        // '<?php echo $translations['A01700'][$language]; /* Expiration Date */ ?>',
+        // '<?php echo $translations['A01699'][$language]; /* Stock In Date */ ?>'
     );
     var searchId = 'searchForm';
 
@@ -224,10 +230,13 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                 `;
 
                 var rebuildData = {
-                    po_id               : v['po_id'],
-                    on_hand             : v['on_hand'],
-                    expiration_date     : v['expiration_date'],
-                    stock_in_datetime   : v['stock_in_datetime'],
+                    // po_id               : v['po_id'],
+                    barcode             : v['barcode'],
+                    warehouse           : v['warehouse'],
+                    best_before         : v['expiration_date'],
+                    on_hand             : v['on_handL2'],
+                    // expiration_date     : v['expiration_date'],
+                    // stock_in_datetime   : v['stock_in_datetime'],
                     viewBtn             : viewBtn
                 };
                 newList.push(rebuildData);
@@ -256,7 +265,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     }
 
     function viewSerial(poId, productName, vendorName, code) {
-        $.redirect("stockSerialList.php", {poId : poId, productName : productName, vendorName : vendorName, code : code});
+        $.redirect("stockSerialList.php", {poId : poId, productId   : productId, productName : productName, vendorName : vendorName, code : code});
     }
 
 </script>

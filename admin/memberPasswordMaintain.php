@@ -158,12 +158,12 @@
                                                                 <?php echo $translations['A00504'][$language]; /* Login Password */ ?>
                                                             </label>
                                                         </div>
-                                                        <div class="radio radio-inline">
+                                                        <!-- <div class="radio radio-inline">
                                                             <input type="radio" id="tPassword" name="password" value="2">
                                                             <label for="tPassword">
                                                                 <?php echo $translations['A00186'][$language]; /* Transaction Password */ ?>
                                                             </label>
-                                                        </div><br>
+                                                        </div><br> -->
                                                         <span id="passwordTypeError" class="customError text-danger"></span>
                                                     </div>
                                                 </div>
@@ -176,6 +176,17 @@
                                                         <input id="newPassword" type="password" class="form-control" required="true">
                                                         <span id="newPasswordError" class="customError text-danger"></span>
                                                         <span id="newTPasswordError" class="customError text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-sm-12">
+                                                    <div class="col-sm-6 form-group">
+                                                        <label class="control-label" for="" data-th="#">
+                                                            Confirm Password
+                                                        </label>
+                                                        <input id="confirmNewPassword" type="password" class="form-control" required="true">
+                                                        <span id="newConfirmPasswordError" class="customError text-danger"></span>
+                                                        <span id="newConfirmTPasswordError" class="customError text-danger"></span>
                                                     </div>
                                                 </div>
 
@@ -216,6 +227,8 @@
         var debug          = 0;
         var bypassBlocking = 0;
         var bypassLoading  = 0;
+        var member_id  = "<?php echo $_POST['id']; ?>";
+
 
         $(document).ready(function() {
             var memberId  = "<?php echo $_POST['id']; ?>";
@@ -235,15 +248,16 @@
 
             $('#submit').click(function() {
                 $('.customError').text('');
-                
                 var passwordType       = $('input[name=password]:checked').val();
                 var newPassword        = $('#newPassword').val();
-                
+                var confirmNewPassword = $('#confirmNewPassword').val();
+
                 var formData = {
                                     command            : "changeMemberPassword",
                                     clientID           : memberId,
                                     passwordType       : passwordType,
-                                    newPassword        : newPassword
+                                    newPassword        : newPassword,
+                                    confirmNewPassword : confirmNewPassword,
                                 };
                 var fCallback = submitCallback;
                 ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
@@ -288,6 +302,13 @@
             $('#memberCreditsTransaction').click(function() {
                 $.redirect('memberCreditsTransaction.php', {id : "<?php echo $_POST['id']; ?>"});
             });
+            $('#memberAccountBalance').click(function() {
+                $.redirect('accountBalance.php?type=bonusDef' , {
+                                                                    id       : "<?php echo $_POST['id']; ?>",
+                                                                    fullName : member_id,
+                                                                    username : name,
+                });
+            });
             $('#loginToMember').click(function(){
                 var url = "scripts/reqAdmin.php";
                 var formData  = {
@@ -310,8 +331,7 @@
             }
         }
 
-        function loginToMember(data, message){
-
+        function loginToMember(data){
             var form = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
                 action: data.url
             }).appendTo(document.body);
@@ -326,8 +346,17 @@
                 value: data.username
             }).appendTo(form);
 
-            form.submit();
+            $('<input type="hidden" />').attr({
+                name: 'adminID',
+                value: data.adminID
+            }).appendTo(form);
 
+            $('<input type="hidden" />').attr({
+                name: 'adminSession',
+                value: data.adminSession
+            }).appendTo(form);
+
+            form.submit();
             form.remove();
         }
 

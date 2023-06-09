@@ -11,15 +11,15 @@ include 'head.php';
 
 <section class="section whiteBg errorPage">
     <div class="row">
-        <div class="offset-md-1 col-md-5">
+        <div class="col-md-6 text-right">
             <img src="images/project/erroe-404.png" class="img-fluid">
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5 offset-md-1">
             <div class="errorPageTextDiv">
-                <h3>UH OH...</h3>
+                <h3 data-lang="M03917"><?php echo $translations['M03917'][$language] /* UH OH... */ ?></h3>
                 <p>
-                    Your Food Is Entering The Freezer. <br/>
-                    Visit Our Frosted Food <a href="foodMenu">Here</a>
+                    <span data-lang="M03918"><?php echo $translations['M03918'][$language] /* Your Food Is Entering The Freezer. */ ?></span> <br/>
+                    <span data-lang="M03919"><?php echo $translations['M03919'][$language] /* Visit Our Frosted Food */ ?></span> <a href="foodMenu" data-lang="M03920"><?php echo $translations['M03920'][$language] /* Here */ ?></a>
                 </p>
             </div>
         </div>        

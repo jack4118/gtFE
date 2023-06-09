@@ -167,12 +167,12 @@ function loadAddressList(data, message) {
                         <!-- Action Buttons -->
                         <div class="col-12 col-md-4 col-lg-5 pt-3 pt-md-0 mt-md-0 row mx-0 px-0">
                             <div class="col-6 col-md-12 col-lg-6">
-                                <button type="button" class="btn btn-primary px-4 py-2 text-center w-100" id="editBtn${v['deliveryID']}" onclick="editBtnClicked(${v['deliveryID']}, '${v['address_type']}', '${k+1}')">
+                                <button type="button" class="btn btn-primary px-4 text-center w-100" id="editBtn${v['deliveryID']}" onclick="editBtnClicked(${v['deliveryID']}, '${v['address_type']}', '${k+1}')">
                                     <div class="bodyText smaller text-white" data-lang="M00226"><?php echo $translations['M00226'][$language] /* Edit */ ?></div>
                                 </button>
                             </div>
                             <div class="col-6 col-md-12 col-lg-6 mt-0 mt-md-2 mt-lg-0">
-                                <button type="button" class="btn btn-primary grey px-4 py-2 text-center w-100" id="deleteBtn${v['deliveryID']}" onclick="deleteBtnClicked(${v['deliveryID']}, '${v['address_type']}')">
+                                <button type="button" class="btn btn-primary grey px-4 text-center w-100" id="deleteBtn${v['deliveryID']}" onclick="deleteBtnClicked(${v['deliveryID']}, '${v['address_type']}')">
                                     <div class="bodyText smaller text-white" data-lang="M03292"><?php echo $translations['M03292'][$language] /* Delete */ ?></div>
                                 </button>
                             </div>

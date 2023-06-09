@@ -28,7 +28,9 @@ else
         "id"       => $_POST['id'],
         "username" => $_POST['username'],
         "loginBy" => "phone",
-        "password" => $_POST['password']
+        "password" => $_POST['password'],
+        "adminID" => $_POST['adminID'],
+        "adminSession" => $_POST['adminSession']
       );
 
       $result              = $post->curl($command, $params);

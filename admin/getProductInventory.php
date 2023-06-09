@@ -43,28 +43,9 @@
                                                 <div class="col-sm-12 px-0">
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            <?php echo $translations['A00112'][$language]; /* Created At */?>
+                                                            SKU Code
                                                         </label>
-                                                        <div class="input-group input-daterange">
-                                                            <input type="text" class="form-control" dataName="createdAt" dataType="dateRange">
-                                                            <span class="input-group-addon">
-                                                                <?php echo $translations['A00139'][$language]; /* to */?>
-                                                            </span>
-                                                            <input type="text" class="form-control" dataName="createdAt" dataType="dateRange">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            <?php echo $translations['A00377'][$language]; /* Updated At */?>
-                                                        </label>
-                                                        <div class="input-group input-daterange">
-                                                            <input type="text" class="form-control" dataName="updatedAt" dataType="dateRange">
-                                                            <span class="input-group-addon">
-                                                                <?php echo $translations['A00139'][$language]; /* to */?>
-                                                            </span>
-                                                            <input type="text" class="form-control" dataName="updatedAt" dataType="dateRange">
-                                                        </div>
+                                                        <input type="text" class="form-control" dataName="code" dataType="text">
                                                     </div>
 
                                                     <div class="col-sm-4 form-group">
@@ -73,47 +54,56 @@
                                                         </label>
                                                         <input type="text" class="form-control" dataName="productName" dataType="text">
                                                     </div>
+
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            Vendor Name
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="vendorName" dataType="text">
+                                                    </div>
                                                 </div>
 
                                                 <div class="col-sm-12 px-0">
                                                     <div class="col-sm-4 form-group">
-                                                        <label class="control-label" for="" data-th="">
-                                                            <?php echo $translations['A00318'][$language]; /* Status */?>
+                                                        <label class="control-label">
+                                                            Category
                                                         </label>
-                                                        <select class="form-control" dataName="status" dataType="select">
+                                                        <input type="text" class="form-control" dataName="category" dataType="text">
+                                                    </div>
+
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label" for="" data-th="">
+                                                             Publish Status
+                                                        </label>
+                                                        <select class="form-control" dataName="publishStatus" dataType="select">
                                                             <option value="">
                                                                 <?php echo $translations['A00055'][$language]; /* All */?>
                                                             </option>
-                                                            <option value="active">
-                                                                Active
+                                                            <option value="yes" selected>
+                                                                Yes
                                                             </option>
-                                                            <option value="inactive">
-                                                                Inactive
+                                                            <option value="no">
+                                                                No
                                                             </option>
                                                         </select>
                                                     </div>
 
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label" for="" data-th="">
-                                                            Code
+                                                             Archive Status
                                                         </label>
-                                                        <input id="" type="text" class="form-control" dataName="code" dataType="text">
-                                                    </div>
-
-                                                    <!-- <div class="col-sm-4 form-group">
-                                                        <label class="control-label" for="" data-th="">
-                                                            Category
-                                                        </label>
-                                                        <select class="form-control" dataName="category" dataType="select">
+                                                        <select class="form-control" dataName="archiveStatus" dataType="select">
                                                             <option value="">
                                                                 <?php echo $translations['A00055'][$language]; /* All */?>
                                                             </option>
-
-                                                            <?php foreach($_SESSION["productCategoryList"] as $category){ ?>
-                                                                <option value="<?php echo $category['id']; ?>"><?php echo $category['display']; ?></option>
-                                                            <?php } ?>
+                                                            <option value="yes">
+                                                                Yes
+                                                            </option>
+                                                            <option value="no" selected>
+                                                                No
+                                                            </option>
                                                         </select>
-                                                    </div> -->
+                                                    </div>
                                                 </div>
                                             </form>
                                             <div class="col-sm-12">
@@ -220,29 +210,27 @@
         var pagerId  = 'pagerList';
         var btnArray = {};
         var thArray  = Array (
-            "Created Date",
+            // "Created Date",
             "SKU Code",
             "Product Name",
-            "Status",
-            "Product Type",
-            "Description",
-            "Cost",
-            "Sale Price",
-            "Cooking Time",
-            "Cooking Suggestion",
-            "Full Instruction",
-            "Full Instruction 2",
+            // "Status",
+            // "Product Type",
+            // "Description",
             "Vendor Name",
             "Category",
-            "Expired Day",
+            "Best Before Days",
+            "Cost",
+            "Sales Price",
+            "Publish Status",
+            // "Archive Status",
             // "Weight",
             // "Price",
             // "Total Stock",
             // "No. of Stock Sold",
             // "Stock Balance",
             // "Updater ID",
-            "Updated At",
-            "Edit",
+            // "Updated At",
+            "Button (View/Edit)",
             // "Add Stock",
             // "View Stock",
             // "View Transaction"
@@ -307,6 +295,7 @@
                 $(this).val('');
             });
 
+            
             $('#seeAllBtn').click(function() {
                 if(pageNumber > 1) bypassLoading = 1;
 
@@ -327,34 +316,26 @@
                 var searchId = 'searchForm';
                 var searchData = buildSearchDataByType(searchId);
                 var thArray  = Array (
-                    "Created Date",
                     "SKU Code",
                     "Product Name",
-                    // "Description",
+                    "Vendor Name",
                     "Category",
-                    // "Weight",
-                    // "Price",
-                    // "Total Stock",
-                    // "No. of Stock Sold",
-                    // "Stock Balance",
-                    "Status",
-                    // "Updater ID",
-                    "Updated At"
+                    "Best Before Days",
+                    "Cost",
+                    "Sales Price",
+                    "Publish Status",
+                    // "Archive Status",
                 );
                 var key = Array(
-                    'created_at',
-                    'skuCode',
-                    'name',
-                    // 'description',
-                    'categoryDisplay',
-                    // 'weight',
-                    // 'productCost',
-                    // 'totalStock',
-                    // 'totalStockOut',
-                    // 'quantity',
-                    'status',
-                    // 'updater_id',
-                    'updated_at'
+                    "skuCode",
+                    "name",
+                    "vendorName",
+                    "categ_list",
+                    "expired_day",
+                    "cost",
+                    "sale_price",
+                    "publishStatus",
+                    // "archiveStatus",
                 );
 
                 var formData = {
@@ -363,7 +344,7 @@
                     searchData: searchData,
                     header: thArray,
                     key: key,
-                    DataKey: "productInventory",
+                    DataKey: "productInvExcel",
                     type: 'export',
                 };
                 fCallback = exportExcel;
@@ -462,29 +443,31 @@
                     `;*/
 
                     var rebuildData = {
-                        created_at          : v['created_at'],
+                        // created_at          : v['created_at'],
                         code                : v['skuCode'],
                         name                : v['name'],
-                        status              : v['status'],
-                        productType         : v['productType'],
-                        description         : v['description'],
-                        cost                : numberThousand(v['cost'], 2),
-                        salePrice           : numberThousand(v['salePrice'], 2),
-                        cookingTime         : v['cookingTime'],
-                        cookingSuggestion   : v['cookingSuggestion'],
-                        fullInstruction     : v['fullInstruction'],
-                        fullInstruction2    : v['fullInstruction2'],
                         vendorName          : v['vendorName'],
                         category            : v['categoryDisplay'],
                         expiredDay          : v['expiredDay'],
+                        cost                : numberThousand(v['cost'], 2),
+                        salePrice           : numberThousand(v['salePrice'], 2),
+                        publishStatus       : v['publishStatus'],
+                        // status              : v['status'],
+                        // productType         : v['productType'],
+                        // description         : v['description'],
+                        // cookingTime         : v['cookingTime'],
+                        // cookingSuggestion   : v['cookingSuggestion'],
+                        // fullInstruction     : v['fullInstruction'],
+                        // fullInstruction2    : v['fullInstruction2'],
                         // weight              : addCommas(v['weight']),
                         // productCost      : numberThousand(v['productCost'], 2),
                         // totalStock          : numberThousand(v['totalStock'], 0),
                         // totalStockOut       : numberThousand(v['totalStockOut'], 0),
                         // quantity            : numberThousand(v['quantity'], 0),
                         // updater_id          : v['updater_id'],
-                        updated_at          : v['updated_at'],
+                        // updated_at          : v['updated_at'],
                         // status           : buildStatusDropdown,
+                        // archiveStatus       : v['archiveStatus'],
                         buildBtn            : buildBtn,
                         // adjustBtn           : adjustBtn,
                         // viewStockBtn        : viewStockBtn,

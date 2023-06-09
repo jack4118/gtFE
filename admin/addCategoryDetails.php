@@ -42,7 +42,7 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="col-xs-12 cateblock">
+                                    <div class="col-xs-12">
                                         <div class="row">
                                             <div class="col-sm-5 col-xs-12">
                                                 <div class="row">
@@ -52,19 +52,36 @@
                                                         <span id="nameError" class="errorSpan text-danger"></span>
                                                     </div> -->
 
-                                                    <div class="col-xs-12" style="margin-top: 20px">
-                                                        <label class="show m-b-10 contentPageTitle">Category Name</label>
+                                                    <div class="col-xs-12 mb-15" style="margin-top: 20px">
+                                                        <label>Category Name (English) <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" id="categoryName" required>
+                                                        <input type="text" class="form-control hide" id="categoryLang">
 
-                                                        <div id="loadLangName"></div>
-                                                    <span id="nameError" class="errorSpan text-danger"></span>
+                                                        <!-- <div id="loadLangName"></div> -->
+                                                        <span id="nameError" class="errorSpan text-danger"></span>
+                                                    </div>
+                                                    <div class="col-xs-12 mb-15" style="margin-top: 20px">
+                                                        <label>Category Name (Chinese)</label>
+                                                        <input type="text" class="form-control" id="categoryNameChinese">
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-xs-12" style="margin-top: 20px;">
+                                            <div class="col-sm-5 col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-xs-12" style="margin-top: 20px">
+                                                        <div class="form-group">
+                                                            <label>Parent Category Name</label>
+                                                            
+                                                            <select id="parentCategorySelect" class="form-control" required></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- <div class="col-xs-12" style="margin-top: 20px;">
                                                 <label>Status</label>
                                                 <div id="status" class="m-b-20">
-                                                    <!-- <div class="radio radio-info radio-inline"> -->
                                                     <div class="radio radio-inline">
                                                         <input class="statusRadio" id="active" type="radio" value="Active" name="statusRadio" checked />
                                                         <label for="active">
@@ -78,7 +95,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="col-xs-12" style="margin-bottom: 20px;">
                                                 <div id="submitBtn" class="btn btn-primary waves-effect waves-light">
@@ -100,46 +117,6 @@
         </div>
     </div>
 
-    <!-- <div class="modal fade" id="showImage" role="dialog">
-        <div class="modal-dialog modal-xs" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">
-                    </h4>
-                </div>
-                <div class="modal-body">
-                    <img id="modalImg" width="100%" src="">
-                    <video id="modalVideo" width="400" controls>
-                      <source src="" type="">
-                    </video>
-                </div>
-                <div class="modal-footer">
-                    <button id="canvasCloseBtn" type="button" class="btn btn-primary waves-effect waves-light" data-dismiss="modal"><?php echo $translations['A00742'][$language]; /* Close */ ?></button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-   
-    <!-- <div class="modal fade" id="modalProcessing" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="padding-left: 17px; padding-right: 25px;" aria-modal="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span id="canvasTitle" class="modal-title"><?php echo "Processing"; //Processing ?></span>
-                </div>
-                <div class="modalLine"></div>
-                <div class="modal-body modalBodyFont">
-                    <div id="canvasAlertMessage"><?php echo "Uploading file..."; //Uploading file... ?></div>
-                </div>
-                <div class="modal-footer">
-
-                </div>
-            </div>
-        </div>
-    </div> -->
     <!-- jQuery  -->
     <script>var resizefunc = [];</script>
     <?php include("shareJs.php"); ?>
@@ -151,62 +128,52 @@
         var debug           = 0;
         var bypassBlocking  = 0;
         var bypassLoading   = 0;
-        // var language        = "<?php echo $language; ?>";
-        // var selectedLang = [];
         var nameLanguages;
-        // var descrLanguages;
-        // var buildOption;
-        // var addImgCount = 0;
-        // var addImgIDNum = 0;
-        // var dataURL = "<?php echo $config['tempMediaUrl']; ?>product/";
 
         $(document).ready(function() {
 
             var formData  = {
-                command: 'getCategoryInventoryDetail'
+                command: 'getCategoryInventory'
             };
+
             fCallback = loadDefaultListing;
             ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
-            $('#submitBtn').click(function() {
-                $('[id$="Error"]').text("");
-                
-                var type = $(".typeRadio:checked").val();
-                var status = $(".statusRadio:checked").val();
+            $('#submitBtn').click(function() {                
+                // var type = $(".typeRadio:checked").val();
+                // var status = $(".statusRadio:checked").val();
                 var category = [];
                 // var name = $("#name").val();
                 // var nameTagArr = [];
 
-                $.each($(".langInp"), function(k, v){
-                    var lang = $(v).attr('data-lang');
-                    var name = $(v).val();
+                // $.each($(".langInp"), function(k, v){
+                    // var lang = $(v).attr('data-lang');
+                    // var name = $(v).val();
 
                     var buildName = {
-                        name        : name,
-                        language    : lang
+                        name        : $("#categoryName").val(),
+                        language    : language,
+                        // language    : lang,
+                    };
+
+                    var buildNameChinese = {
+                        name        : $("#categoryNameChinese").val(),
+                        language    : 'chinese',
+                        // language    : lang,
                     };
 
                     category.push(buildName);
-                });
-
-                /*$('.nameTag').each(function (index, value) {
-                    // nameTagArr.push(value.id);
-
-                    var username = $(this).attr("data-username");
-
-                    // var details = {
-                    //     username: username
-                    // };
-
-                    nameTagArr.push(username);
-                });*/
+                    category.push(buildNameChinese);
+                // });
 
                 var formData  = {
                     command     : 'addCategoryInventory',
+                    // name        : $("#categoryName").val(),
+                    // language    : 'English',
+                    status      : 'Active',
+                    parent_id   : $('option:selected', "#parentCategorySelect").val(),
                     category    : category,
-                    // type        : type,
-                    status      : status,
-                    categoryInvId   : 1
+                    // cateNameChinese        : $("#categoryNameChinese").val(),
                 };
 
                 fCallback = submitCallback;
@@ -218,33 +185,35 @@
             });
         });
 
-        /*$(document).on("click",".nameTagBlock",function() {
-            $(this).remove();
-        });*/
-
         function loadDefaultListing(data, message) {
-            var langHtml = "";
+            var html = `<option value="0">No Parent</option>`;
 
-            $.each(data.languageList, function(k,v){
-                langHtml += `
-                    <div class="form-group">
-                        <label>${v['languageDisplay']}</label>
-                        <input type="text" class="form-control langInp" name="" data-lang="${v['languageType']}">
-                        <span id="name${v['languageType']}Error" class="errorSpan text-danger"></span>
-                    </div>
+            $.each(data.parentCategoryList, function(k,v){
+                html += `
+                    <option value="${v['id']}">${v['name']}</option>
                 `;
             });
 
-            $("#loadLangName").html(langHtml);
+            $("#parentCategorySelect").html(html);
+
+            // $.each(data.languageList, function(k,v){
+
+            //     var getArr = (data.nameTranslationList).filter((item) => item.language == v['languageType'])[0];
+
+            //     langHtml += `
+            //         <div class="form-group">
+            //             <label>${v['languageDisplay']}</label>
+            //             <input type="text" class="form-control langInp" name="categoryName" data-lang="${v['languageType']}" value="${getArr.content}">
+            //         </div>
+            //     `;
+            // });
+
+            // $("#loadLangName").html(langHtml);
         }
 
         function submitCallback(data, message) {
             showMessage(message, 'success', 'Congratulations', 'plus', 'getCategoryList.php');
         }
-
-        /*function uploadVideoSuccess() {
-            showMessage('Upload Success', 'success', 'Congratulations!', 'upload', 'getProductCategory.php');
-        }*/
 
     </script>
 </body>

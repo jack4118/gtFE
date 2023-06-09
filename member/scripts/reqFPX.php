@@ -415,7 +415,7 @@
 
             case "addNewPayment":
                 $params = array (
-                    'userID' => $userID,
+                    'userID' => $userId,
                     'purchase_amount' => $_POST['purchase_amount'],
                     'package_id' => $_POST['package_id'],
                     // 'payment_method' => $_POST['payment_method'],
@@ -426,6 +426,8 @@
                     'shipping_fee' => $_POST['shipping_fee'],
                     'billing_address' => $_POST['billing_address'],
                     'shipping_address' => $_POST['shipping_address'],
+                    'bkend_token' => $_POST['bkend_token']
+
                     // 'hashData' => $_POST['hashData'],
                 );
                 $result = $post->curl($command, $params);

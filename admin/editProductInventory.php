@@ -47,10 +47,17 @@ $_SESSION['lastVisited'] = $thisPage;
                                     <div class="col-xs-12">
                                         <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
-                                                <label>Product Name</label>
+                                                <label>Product Name (English)</label>
                                                 <input id="invProductName" type="text" class="form-control">
-                                                <span id="invProductNameError" class="errorSpan text-danger"></span>
+                                                <span id="invProductNameErrorEnglish" class="errorSpan text-danger"></span>
                                                 <span id="nameError" class="errorSpan text-danger"></span>
+                                            </div>
+
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Product Name (Chinese)</label>
+                                                <input id="invProductNameChinese" type="text" class="form-control">
+                                                <span id="invProductNameErrorChinese" class="errorSpan text-danger"></span>
+                                                <span id="nameErrorChinese" class="errorSpan text-danger"></span>
                                             </div>
                                         </div>
 
@@ -63,20 +70,21 @@ $_SESSION['lastVisited'] = $thisPage;
                                             </div>
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>SKU Code</label>
-                                                <input id="skuCode" type="text" class="form-control">
+                                                <input id="skuCode" type="text" class="form-control" readonly>
                                                 <span id="skuCodeError" class="errorSpan text-danger"></span>
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px;">
-                                                <label>Product Type</label>
-                                                <select id="productType" class="form-control" dataName="productType" dataType="text">
-                                                </select>
-                                                <span id="productTypeError" class="errorSpan text-danger"></span>
-                                            </div>
+                                            <!-- <div class="col-sm-6 col-xs-12" style="margin-top: 20px;"> -->
+                                                <input id="productType" type="text" class="form-control" value = 'Product' readonly>
+                                                <!-- <label>Product Type</label> -->
+                                                <!-- <select id="productType" class="form-control" dataName="productType" dataType="text"> -->
+                                                <!-- </select> -->
+                                                <!-- <span id="productTypeError" class="errorSpan text-danger"></span> -->
+                                            <!-- </div> -->
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
-                                                <label>Expired Day</label>
+                                                <label>Best Before Days</label>
                                                 <input id="expiredDay" type="number" class="form-control">
                                                 <span id="expiredDayError" class="errorSpan text-danger"></span>
                                             </div>
@@ -104,25 +112,29 @@ $_SESSION['lastVisited'] = $thisPage;
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>Sale Price</label>
                                                 <input id="salePrice" type="number" class="form-control">
-                                                <span id="costSuggest" class="errorSpan"></span>
-                                                <span id="salePriceError" class="errorSpan text-danger"></span>
+                                                <div><span id="costSuggest" class=""></span></div>
+                                                <div><span id="salePriceError" class="errorSpan text-danger"></span></div>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
-                                                <label>Description</label>
+                                                <label>Description(English)</label>
                                                 <textarea id="description" class="form-control" rows="4" cols="50"></textarea>
                                                 <span id="descriptionError" class="errorSpan text-danger"></span>
                                             </div>
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Description(Chinese)</label>
+                                                <textarea id="descriptionChinese" class="form-control" rows="4" cols="50"></textarea>
+                                            </div>
+                                            <!-- <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>Cooking Time</label>
                                                 <textarea id="cookingTime" class="form-control" rows="4" cols="50"></textarea>
                                                 <span id="cookingTimeError" class="errorSpan text-danger"></span>
-                                            </div>
+                                            </div> -->
                                         </div>
 
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>Cooking Suggestion</label>
                                                 <textarea id="cookingSuggestion" class="form-control" rows="4" cols="50"></textarea>
@@ -153,7 +165,25 @@ $_SESSION['lastVisited'] = $thisPage;
                                                 <input id="video2" type="text" class="form-control">
                                                 <span id="video2Error" class="errorSpan text-danger"></span>
                                             </div>
+                                        </div> -->
+
+                                        <!-- New Cooking Suggestion plugin -->
+                                        <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
+                                            <label>Cooking Suggestions</label>
                                         </div>
+
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div id="buildCookingSuggest"></div>
+                                                <div class="col-md-4 addCookingSuggestBtn" style="display: none;">
+                                                    <div class="addLanguageImage" onclick="addCookingSuggest()">
+                                                        <b><i class="fa fa-plus-circle"></i></b>
+                                                        <span>Add Another Cooking Suggestion</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- New Cooking Suggestion plugin end here -->
 
                                         <div class="row">
                                             <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
@@ -182,32 +212,44 @@ $_SESSION['lastVisited'] = $thisPage;
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-6 col-xs-12">
-                                        <div class="row">
-                                            <div class="col-xs-12" style="margin-top: 20px;">
-                                                <label>Status</label>
-                                                <div id="status" class="m-b-20">
-                                                    <!-- <div class="radio radio-info radio-inline"> -->
-                                                    <div class="radio radio-inline">
-                                                        <input id="active" type="radio" value="Active" name="statusRadio" checked="checked"/>
-                                                        <label for="active">
-                                                            <?php echo $translations['A00372'][$language]; /* Active */?>
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio radio-inline">
-                                                        <input id="inActive" type="radio" value="Inactive" name="statusRadio"/>
-                                                        <label for="inActive">
-                                                            <?php echo $translations['A00373'][$language]; /* Inactive */?>
-                                                        </label>
-                                                    </div>
-                                                </div>
+                                    <div class="col-xs-12" style="margin-top: 20px;">
+                                        <label>Publish Status</label>
+                                        <div id="status" class="m-b-20">
+                                            <div class="radio radio-inline">
+                                                <input id="active" type="radio" value="1" name="publishStatus" checked="checked"/>
+                                                <label for="active">
+                                                    <?php echo $translations['A00056'][$language]; /* Yes */?>
+                                                </label>
+                                            </div>
+                                            <div class="radio radio-inline">
+                                                <input id="inActive" type="radio" value="0" name="publishStatus"/>
+                                                <label for="inActive">
+                                                    <?php echo $translations['A00057'][$language]; /* No */?>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12" style="margin-top: 20px;">
+                                        <label>Archive Status</label>
+                                        <div id="status" class="m-b-20">
+                                            <div class="radio radio-inline">
+                                                <input id="activeArhive" type="radio" value="1" name="arhiveStatus" checked="checked"/>
+                                                <label for="activeArhive">
+                                                    <?php echo $translations['A00056'][$language]; /* Yes */?>
+                                                </label>
+                                            </div>
+                                            <div class="radio radio-inline">
+                                                <input id="inActiveArhive" type="radio" value="0" name="arhiveStatus"/>
+                                                <label for="inActiveArhive">
+                                                    <?php echo $translations['A00057'][$language]; /* No */?>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-xs-12" style="margin-top: 20px;">
                                         <div class="row">
-                                            <div class="col-xs-12" style="border: 1px solid #ff9804; background-color: #fff0db; padding: 10px;">
+                                            <div class="col-xs-12" style="border: 1px solid #ff9804; background-color: #fff0db; padding: 10px;display:none;">
                                                 <div class="row" onclick="toggleAttributeBox()">
                                                     <div class="col-xs-12">
                                                         <input type="checkbox" id="isVariant" onclick="toggleAttributeBox()" style="margin: 0;"><label for="isVariant" onclick="toggleAttributeBox()" style="margin: 0;">Variant</label>
@@ -352,6 +394,9 @@ $_SESSION['lastVisited'] = $thisPage;
         var buildOption;
         var buildOptionLength = 0;
         // var buildCountry;
+        var addCSCount = 1;
+        var cTNum = 1;
+        var totalLoop = [1];
         var addLangCount = 0;
         var addImgCount = 0;
         var addImgIDNum = 0;
@@ -375,8 +420,36 @@ $_SESSION['lastVisited'] = $thisPage;
         var videoId = [];
         var varFlag = 0;
         var imageId = [];
+        var cookingSuggestionName = [];
+        var cookingSuggestionUrl = [];
+        var cookingFullInstruction = [];
+        var cookingSuggestionRemark = [];
+        var cookingSuggest = [];
+        var invTranslationList = [];
+
+        var expiredDayInput = document.getElementById('expiredDay');
+        var expiredDayError = document.getElementById('expiredDayError');
+
+        expiredDayInput.addEventListener('input', function() {
+            var inputValue = expiredDayInput.value;
+
+            // Remove any non-numeric characters from the input value
+            var numericValue = inputValue.replace(/\D/g, '');
+
+            // Update the input value with the numeric-only value
+            expiredDayInput.value = numericValue;
+
+            // Display an error message if the input value is not numeric
+            if (inputValue !== numericValue) {
+                expiredDayError.textContent = 'Please enter a numeric value';
+            } else {
+                expiredDayError.textContent = '';
+            }
+        });
 
         $(document).ready(function() {
+            // hide product type
+            document.getElementById("productType").style.display = "none";
 
             var formData  = {
                 command: 'getProductInventoryDetails',
@@ -387,14 +460,19 @@ $_SESSION['lastVisited'] = $thisPage;
             ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
             $('#cost').on('change', function() {
-                if($(this).val() == '') {
-                    $('#costSuggest').hide();
-                } else {
-                    var cost = $(this).val();
-                    var sale_price = (cost * (100 + discountPercentage)) / 100;
+                var cost = $('#cost').val();
 
-                    $('#costSuggest').text('Suggested sale price is RM ' + numberThousand(sale_price, 2));
+                if(cost){
+                    if($(this).val() == '') {
+                        $('#costSuggest').hide();
+                    } else {
+                        var cost = $(this).val();
+                        var sale_price = (cost * (100 + discountPercentage)) / 100;
+
+                        $('#costSuggest').text('Suggested sale price is RM ' + numberThousand(sale_price, 2));
+                    }
                 }
+
             });
 
             $('#category').change(function(){
@@ -562,24 +640,94 @@ $_SESSION['lastVisited'] = $thisPage;
             }
 
             $('#submitBtn').click(function() {
+                $('.errorSpan').text('');
+                $('#nameErrorEnglish').text('');
+
 
                 $('[id$="Error"]').text("");
 
                 // var imgSizeFlag = true;
                 // var videoSizeFlag = true;
 
+                var productNameArr = [];
+
+                var productNameEnglish = document.getElementById("invProductName").value;
+                var productNameChinese = document.getElementById("invProductNameChinese").value;
+
+                var englishObj = {
+                language: "english",
+                name: productNameEnglish
+                };
+
+                var chineseObj = {
+                language: "chinese",
+                name: productNameChinese
+                };
+
+                productNameArr.push(englishObj);
+                productNameArr.push(chineseObj);
+
+                // var description = $('#description').val();
+
+                var descriptionArr = [];
+
+                var descEnglish = document.getElementById("description").value;
+                var descChinese = document.getElementById("descriptionChinese").value;
+
+                var englishObjDesc = {
+                    language: "english",
+                    name: descEnglish
+                };
+
+                var chineseObjDesc = {
+                    language: "chinese",
+                    name: descChinese
+                };
+
+                descriptionArr.push(englishObjDesc);
+                descriptionArr.push(chineseObjDesc);
+
+
+
+                var remarkArr = [];
+                var remarkArray = [];
+                for (var j = 0; j < cTNum; j++) {
+                    var remarkEnglishElement = document.getElementById("cookingRemark" + (j + 1));
+                    var remarkChineseElement = document.getElementById("cookingRemarkChinese" + (j + 1));
+
+                    if (remarkEnglishElement && remarkChineseElement) {
+                        var remarkEnglish = remarkEnglishElement.value;
+                        var remarkChinese = remarkChineseElement.value;
+
+                        var englishRemark = {
+                            language: "english",
+                            name: remarkEnglish
+                        };
+
+                        var chineseRemark = {
+                            language: "chinese",
+                            name: remarkChinese
+                        };
+
+                        var remarkObj = [englishRemark, chineseRemark];
+                        remarkArray.push(remarkObj);
+                    }
+                }
+
                 var invProductName = $("#invProductName").val();
                 var code = $("#skuCode").val();
-                var status = $("input[name=statusRadio]:checked").val()
+                // var status = $("input[name=statusRadio]:checked").val()
+                var publishStatus = $("input[name=publishStatus]:checked").val();
+                var archiveStatus = $("input[name=arhiveStatus]:checked").val();
                 var productType = $("#productType").val();
                 var expiredDay = $('#expiredDay').val();
                 var description = $('#description').val();
                 var cost = $('#cost').val();
                 var salePrice = $('#salePrice').val();
                 var cookingTime = $('#cookingTime').val();
-                var cookingSuggestion = $('#cookingSuggestion').val();
-                var fullInstruction = $('#fullInstruction').val();
-                var fullInstruction2 = $('#fullInstruction2').val();
+                // var cookingSuggestion = $('#cookingSuggestion').val();
+                // var fullInstruction = $('#fullInstruction').val();
+                // var fullInstruction2 = $('#fullInstruction2').val();
                 var vendorId = $('#vendorName option:selected').val();
                 var video = $('#video1').val();
                 var video2 = $('#video2').val();
@@ -651,27 +799,49 @@ $_SESSION['lastVisited'] = $thisPage;
                 //     }
                 // });
 
-                // nameLanguages = [];
-                // $(".productNameInput").each(function(){
-                //     var getlanguageType = $(this).attr("languageType");
-                //     var getValue = $(this).val();
-                //     buildNameLanguages = {
-                //         languageType : getlanguageType,
-                //         content : getValue
-                //     };
-                //     nameLanguages.push(buildNameLanguages);
-                // });
+                cookingSuggestionName = [];
+                $(".cookingSuggestInput").each(function(){
+                    // var getCookingSuggest = $(this).attr("name");
+                    var getValue = $(this).val();
+                    buildCookingSuggestName = {
+                        // cookingSuggest : getCookingSuggest,
+                        content : getValue
+                    };
+                    cookingSuggestionName.push(buildCookingSuggestName);
+                });
 
-                // descrLanguages = [];
-                // $(".descInput").each(function(){
-                //     var getlanguageType = $(this).attr("languageType");
-                //     var getValue = $(this).val();
-                //     buildDescrLanguages = {
-                //         languageType : getlanguageType,
-                //         content : getValue
-                //     };
-                //     descrLanguages.push(buildDescrLanguages);
-                // });
+                cookingSuggestionUrl = [];
+                $(".urlInput").each(function(){
+                    // var getlanguageType = $(this).attr("urlInput");
+                    var getValue = $(this).val();
+                    buildCookingSuggestUrl = {
+                        // languageType : getlanguageType,
+                        content : getValue
+                    };
+                    cookingSuggestionUrl.push(buildCookingSuggestUrl);
+                });
+
+                cookingFullInstruction = [];
+                $(".fullInstuctionInput").each(function(){
+                    // var getlanguageType = $(this).attr("urlInput");
+                    var getValue = $(this).val();
+                    buildCookingFullInstruction = {
+                        // languageType : getlanguageType,
+                        content : getValue
+                    };
+                    cookingFullInstruction.push(buildCookingFullInstruction);
+                });
+
+                cookingSuggestionRemark = [];
+                $(".urlRemark").each(function(){
+                    // var getlanguageType = $(this).attr("urlInput");
+                    var getValue = $(this).val();
+                    buildCookingSuggestRemark = {
+                        // languageType : getlanguageType,
+                        content : getValue
+                    };
+                    cookingSuggestionRemark.push(buildCookingSuggestRemark);
+                });
 
                 uploadImage = [];
                 uploadImageData = [];
@@ -730,11 +900,11 @@ $_SESSION['lastVisited'] = $thisPage;
                     packageProduct.push(value.id);
                 });
 
-                var fullInstruc = [
-                    fullInstruction, fullInstruction2
-                ];
+                // var fullInstruc = [
+                //     fullInstruction, fullInstruction2
+                // ];
 
-                var videoList = [];
+                // var videoList = [];
 
                 if(video == '' && video2 == '') {
                     videoList = [];
@@ -743,29 +913,41 @@ $_SESSION['lastVisited'] = $thisPage;
                         video, video2
                     ];
                 }
-
+                // for (let i = 0; i < cookingSuggest.length; i++) {
+                //     const id = cookingSuggest[i].id;
+                //     cookingSuggest2.push([{id: id}, i]);
+                // }
                 var formData  = {
                     command         : 'editProductInventory', 
+                    descriptionArr    : descriptionArr,
+                    invTranslationList    : invTranslationList,
+                    remarkArray       : remarkArray,
+                    productNameArr    : productNameArr,
                     productInvId    : id,
                     invProductName  : invProductName,
                     code            : code,
-                    status          : status,
+                    // status          : status,
+                    publishStatus   : publishStatus,
+                    archiveStatus   : archiveStatus,
                     productType     : productType,
                     expired_day     : expiredDay,
                     description     : description,
                     cost            : cost,
                     salePrice       : salePrice,
                     cookingTime     : cookingTime,
-                    cookingSuggest  : cookingSuggestion,
-                    fullInstruc     : fullInstruc,
+                    // cookingSuggest  : cookingSuggestion,
+                    // fullInstruc     : fullInstruc,
                     vendorId        : vendorId,
                     category        : category,
                     videoList       : videoList,
                     videoId         : videoId,
                     uploadImage     : uploadImage,
                     imageId         : imageId,
-                    // weight          : weight,
-                    // productCost     : productCost,
+                    cookingSuggestionName   : cookingSuggestionName,
+                    cookingSuggestionUrl    : cookingSuggestionUrl,
+                    cookingSuggestionRemark : cookingSuggestionRemark,
+                    cookingFullInstruction : cookingFullInstruction,
+                    // cookingSuggest : cookingSuggest,
                     // nameLanguages   : nameLanguages,
                     // descrLanguages  : descrLanguages
                     // country         : [country],
@@ -898,32 +1080,67 @@ $_SESSION['lastVisited'] = $thisPage;
         // }
 
         function loadDefaultListing(data, message) {
-            console.log(data);
+            cookingSuggest = data.cookingDetail;
             $("#invProductName").val(data.productDetails.name);
             $("#skuCode").val(data.productDetails.skuCode);
-            $('input[name=statusRadio]').filter('[value='+data.productDetails.status+']').prop('checked', true);
+            // $('input[name=statusRadio]').filter('[value='+data.productDetails.status+']').prop('checked', true);
+            $('input[name=publishStatus]').filter('[value='+data.productDetails.is_published+']').prop('checked', true);
+            $('input[name=arhiveStatus]').filter('[value='+data.productDetails.is_archive+']').prop('checked', true);
             $("#weight").val(data.productDetails.weight);
             $('#expiredDay').val(data.productDetails.expired_day);
             $('#description').val(data.productDetails.description);
             $('#cost').val(numberThousand(data.productDetails.cost,2));
             $('#salePrice').val(numberThousand(data.productDetails.sale_price, 2));
             $('#cookingTime').val(data.productDetails.cooking_time);
-            $('#cookingSuggestion').val(data.productDetails.cooking_suggestion);
-            $('#fullInstruction').val(data.productDetails.full_instruction);
-            $('#fullInstruction2').val(data.productDetails.full_instruction2);
+            $('#cookingSuggestion').val(data.productDetails.suggestionName);
+
+            var productNameEnglish = "";
+            var productNameChinese = "";
+            var descEnglish = "";
+            var descChinese = "";
+            invTranslationList = data.invTranslationList;
+
+            if(data.invTranslationList.product){
+                for (var i = 0; i < data.invTranslationList.product.length; i++) {
+                    if (data.invTranslationList.product[i].type === "name" && data.invTranslationList.product[i].language === "english") {
+                        productNameEnglish = data.invTranslationList.product[i].content;
+                    }
+                    else if (data.invTranslationList.product[i].type === "name" && data.invTranslationList.product[i].language === "chinese") {
+                        productNameChinese = data.invTranslationList.product[i].content;
+                    }
+                    else if (data.invTranslationList.product[i].type === "description" && data.invTranslationList.product[i].language === "english") {
+                        descEnglish = data.invTranslationList.product[i].content;
+                    }
+                    else if (data.invTranslationList.product[i].type === "description" && data.invTranslationList.product[i].language === "chinese") {
+                        descChinese = data.invTranslationList.product[i].content;
+                    }
+                }
+            }
+           
+
+            // $('#invProductName').val(productNameEnglish);
+            $('#invProductNameChinese').val(productNameChinese);
+            // $('#description').val(descEnglish);
+            $('#descriptionChinese').val(descChinese);
+
             discountPercentage = data.discountPercentage || 0;
 
             buildOptionLength = 0;
 
             buildOption = `
-                <option value="">Select Languages</option>
+                <option value="">Select Cooking Suggestion</option>
             `;
-            $.each(data.languageList, function(k,v) {
+            if(data.cookingSuggestList){
+                $.each(data.cookingSuggestList, function(k,v) {
                 buildOption += `
-                    <option value="${v['languageType']}">${v['languageDisplay']}</option>
+                    <option value="${v['name']}">${v['name']}</option>
                 `;
                 buildOptionLength = buildOptionLength + 1;
             });
+            }
+
+
+            // Checkpoint
 
             categoryOption = "";
             if(data.categoryList) {
@@ -950,6 +1167,20 @@ $_SESSION['lastVisited'] = $thisPage;
                     });
                 }
             }
+            
+            if(data.cookingDescription){
+                // fullInstruction
+                // $('#expiredDay').val(data.productDetails.expired_day);
+
+                if(data.cookingDescription[0]){
+                    $('#fullInstruction').val(data.cookingDescription[0]);
+                }
+                if(data.cookingDescription[1]){
+                    $('#fullInstruction2').val(data.cookingDescription[1]);
+                }
+
+            }
+
 
             var buildSupplier = "";
             if(data.supplierList) {
@@ -1034,6 +1265,7 @@ $_SESSION['lastVisited'] = $thisPage;
                 $(".attribute").html(attributeOption);
             }
 
+
             typeOption = "";
             if(data.productType) {
                 typeOption += `<option value=""> All </option>`;
@@ -1089,9 +1321,20 @@ $_SESSION['lastVisited'] = $thisPage;
             // $("#category").html(categoryOption);
             // $("#country").html(buildCountry);
             // $(".addLanguageBtn").show();
+            $(".addCookingSuggestBtn").show();
             $(".addImgBtn").show();
 
+            //new API by Marcus
+            if(data.cookingDetail){
+                addCookingSuggest(data.cookingDetail);
+            }
+            
+            // if(data.cookingDetail.suggestionName2){
+            //     var suggestionName2 = data.cookingDetail.suggestionName2;
+            //     var suggestionUrl2 = data.produccookingDetailtDetails.suggestionUrl2;
+            //     addCookingSuggest(suggestionName2,suggestionUrl2);
 
+            // }
 
             var buildLanguage = "";
             $.each(data.nameTranslationList, function(k,v){
@@ -1204,6 +1447,134 @@ $_SESSION['lastVisited'] = $thisPage;
             }
         }
 
+        //new API by Marcus
+        function addCookingSuggest(cookingDetails) {
+            var buildCooking = "";
+            if (cookingDetails){
+            for (var i = 0; i < cookingDetails.length; i++) {
+                var suggestionName = cookingDetails[i].name;
+                var suggestionUrl = cookingDetails[i].url;
+                var description = cookingDetails[i].description;
+                var cookingTime = cookingDetails[i].cooking_time;
+                var suggestionRemark = "";
+                var suggestionRemarkChinese = "";
+
+                if (cookingDetails[i].language) {
+                    for (var j = 0; j < cookingDetails[i].language.length; j++) {
+                        var language = cookingDetails[i].language[j];
+
+                        if (language.type === 'remark' && language.language === 'english') {
+                            suggestionRemark = language.content;
+                        } else 
+                        if (language.type === 'remark' && language.language === 'chinese') {
+                            suggestionRemarkChinese = language.content;
+                        }
+                    }
+                }
+
+                var buildSuggestion = `
+                <div class="col-sm-6 col-xs-12" style="margin-top: 20px;">
+                    <div class="col-xs-12 productBoxes default">
+                    <div class="row">
+                        <a href="javascript:;" class="closeBtn" onclick="closeDiv(this,${(addCSCount)})">&times;</a>
+                        <div class="col-xs-12">
+                            <label>Template Name</label>
+                            <select id="cookingTemplate${cTNum}" type="text" class="form-control cookingSuggestInput" selected="${suggestionName}" onchange="getVideoURL(${cTNum})">
+                                 ${buildOption}
+                            </select>
+                        </div>
+                        <div class="col-xs-12" style="margin-top: 10px">
+                            <label>Video Url</label>
+                            <input id="cookingURL${cTNum}" type="text" class="form-control urlInput" value="${suggestionUrl}"></input>
+                        </div>
+                        <div class="col-xs-12" style="margin-top: 10px">
+                            <label>Cooking Instruction</label>
+                            <input id="fullInstruction${cTNum}" type="text" class="form-control fullInstructionInput" value="${description}" readonly></input>
+                        </div>
+                        <div class="col-xs-12" style="margin-top: 10px">
+                            <label>Remark(English)</label>
+                            <input id="cookingRemark${cTNum}" type="text" class="form-control urlRemark" value="${suggestionRemark}"></input>
+                        </div>
+                        <div class="col-xs-12" style="margin-top: 10px">
+                            <label>Remark(Chinese)</label>
+                            <input id="cookingRemarkChinese${cTNum}" type="text" class="form-control" value="${suggestionRemarkChinese}"></input>
+                        </div>
+                        <div class="col-xs-12" style="margin-top: 10px">
+                            <label>Cooking Time</label>
+                            <input id="cookingTime${cTNum}" type="text" class="form-control urlCookingTime" value="${cookingTime}" disabled></input>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                `;
+                buildCooking += buildSuggestion;
+                $("#buildCookingSuggest").html(buildCooking);
+                cTNum++;
+            }
+            }else if (typeof cookingDetails === 'undefined'){
+                var totalLoop = [1];
+                addCSCount = addCSCount + 1;
+                var buildSuggestion = "";
+                buildSuggestion += `
+                    <div class="col-sm-6 col-xs-12" style="margin-top: 20px;">
+                        <div class="col-xs-12 productBoxes">
+                            <div class="row">
+                                <a href="javascript:;" class="closeBtn" onclick="closeDiv(this,${(addCSCount)})">&times;</a>
+                                <div class="col-xs-12">
+                                    <label>Template name</label>
+                                    <select id="cookingTemplate${cTNum}" type="text" class="form-control cookingSuggestInput" onchange="getVideoURL(${cTNum})">
+                                        ${buildOption}
+                                    <select>
+                                </div>
+                                <div class="col-xs-12" style="margin-top: 10px">
+                                    <label>Video Url</label>
+                                    <input id="cookingURL${cTNum}" type="text" class="form-control urlInput">
+                                </div>
+                                <div class="col-xs-12" style="margin-top: 10px">
+                                    <label>Cooking Instruction</label>
+                                    <input id="fullInstruction${cTNum}" type="text" class="form-control fullInstuctionInput" readonly>
+                                </div>
+                                <div class="col-xs-12" style="margin-top: 10px">
+                                    <label>Remark(English)</label>
+                                    <input id="cookingRemark${cTNum}" type="text" class="form-control urlRemark" value=""></input>
+                                </div>
+                                <div class="col-xs-12" style="margin-top: 10px">
+                                    <label>Remark(Chinese)</label>
+                                    <input id="cookingRemarkChinese${cTNum}" type="text" class="form-control" value=""></input>
+                                </div>
+                                <div class="col-xs-12" style="margin-top: 10px">
+                                    <label>Cooking Time</label>
+                                    <input id="cookingTime${cTNum}" type="text" class="form-control urlCookingTime" disabled></input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                $("#buildCookingSuggest").append(buildSuggestion);
+                totalLoop.push(cTNum);
+                cTNum++;
+            }
+
+            // select the suggestion options by default
+            var selectElements = document.getElementsByClassName("cookingSuggestInput");
+            for (var i = 0; i < selectElements.length; i++) {
+                var selectElement = selectElements[i];
+                var suggestionName = cookingDetails[i].name;
+                for (var j = 0; j < selectElement.options.length; j++) {
+                var option = selectElement.options[j];
+                if (option.value === suggestionName) {
+                    option.selected = true;
+                    break;
+                }
+                }
+            }
+        }
+
+
+
+
+
         function addLanguage() {
             addLangCount = addLangCount + 1;
             var buildLanguage = "";
@@ -1236,6 +1607,54 @@ $_SESSION['lastVisited'] = $thisPage;
 
             if (addLangCount == buildOptionLength) {
                 $(".addLanguageBtn").hide();
+            }
+        }
+
+        function getVideoURL(id){
+            var cookingTemplate = "#cookingTemplate"+id;
+            temp_id = id;
+            if(cookingTemplate){
+                var templateValue = $(cookingTemplate).val();
+            }
+            var formData = {
+                command         : 'getVideoURL',
+                templateValue  : templateValue,
+            }
+
+            fCallback = displayVideoURL;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0, "", "");            
+        }
+
+        function loadProductSKU(data, message) 
+        {
+            var skuNumber = data.productSku;
+            $('#skuCode').val(skuNumber);
+        }
+
+        function displayVideoURL(data){
+            if(data.video){
+                $('#cookingURL'+temp_id).val(data.video);
+            }
+            // if(data.remark){
+            //     $('#cookingRemark'+temp_id).val(data.remark);
+            // }
+            if(data.description){
+                $('#fullInstruction'+temp_id).val(data.description);
+            }
+            if(data.cookingTime){
+                $('#cookingTime'+temp_id).val(data.cookingTime);
+            }
+            if(!data.video){
+                $('#cookingURL'+temp_id).val('');
+            }
+            // if(!data.remark){
+            //     $('#cookingRemark'+temp_id).val('');
+            // }
+            if(!data.description){
+                $('#fullInstruction'+temp_id).val('');
+            }
+            if(!data.cookingTime){
+                $('#cookingTime'+temp_id).val('');
             }
         }
 
@@ -1277,8 +1696,8 @@ $_SESSION['lastVisited'] = $thisPage;
             var getThisInd = $('.closeBtn').index($(n));
             selectedLang.splice(getThisInd, 1);
             $(n).parent().parent().parent().remove();
-            addLangCount = addLangCount - 1;
-            $('.addLanguageBtn').show();
+            addCSCount = addCSCount - 1;
+            $('.addCookingSuggestBtn').show();
         }
 
         function closeDivImg(n) {
@@ -1443,7 +1862,6 @@ $_SESSION['lastVisited'] = $thisPage;
                      reqData2.append('folderName', 'product');
 
                      // for (var pair of reqData2.entries()) {
-                     //     console.log(pair[0]+ ', ' + pair[1]); 
                      // }
 
                          $.ajax({
@@ -1461,7 +1879,6 @@ $_SESSION['lastVisited'] = $thisPage;
                                  // }
 
                                  // var json = JSON.parse(data);
-                                 // console.log(json);
                              },
                          });
                     });
@@ -1501,11 +1918,9 @@ $_SESSION['lastVisited'] = $thisPage;
                             reqData2.append('video', val);
                             reqData2.append('folderName', 'product');
 
-                        // console.log(blob);
                      }
 
                      // for (var pair of reqData2.entries()) {
-                     //     console.log(pair[0]+ ', ' + pair[1]); 
                      // }
 
                          $.ajax({

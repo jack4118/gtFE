@@ -64,7 +64,7 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
         <div class="kt-container">
             <div class="col-12">
                 <div class="login-signup-card row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-0 pb-5 pb-md-0">
                         <h3 data-lang="M03855"><?php echo $translations['M03855'][$language]; //Sign Up ?></h3>
 
                         <div class="tab-content">
@@ -96,7 +96,7 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
                                 
                                 <div class="position-relative">
                                     <label data-lang="M03852"><?php echo $translations['M03852'][$language]; //Password ?></label>                        
-                                    <input type="password" class="form-control beforeLoginForm" id="password" placeholder="Enter Your Password">
+                                    <input type="password" class="form-control beforeLoginForm" id="password" placeholder="<?php echo $translations['M02439'][$language] /* Enter Your Password */ ?>">
                                     <!-- <div id="passwordError" class="customError text-danger" error="error"></div> -->
                                     <div class="input-group-append col-1 col-sm-1 icon-see">
                                         <span class="input-group-text captchaIcon" style="padding:unset">
@@ -107,7 +107,7 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
                                 
                                 <div class="position-relative">
                                     <label data-lang="M03861"><?php echo $translations['M03861'][$language]; //Confirm Password ?></label>                        
-                                    <input type="password" class="form-control beforeLoginForm" id="checkPassword" placeholder="Enter Your Password">
+                                    <input type="password" class="form-control beforeLoginForm" id="checkPassword" placeholder="<?php echo $translations['M02439'][$language] /* Enter Your Password */ ?>">
                                     <!-- <div id="checkPasswordError" class="customError text-danger" error="error"></div> -->
                                     <div class="input-group-append col-1 col-sm-1 icon-see">
                                         <span class="input-group-text captchaIcon" style="padding:unset">
@@ -148,7 +148,7 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
                                 <p data-lang="M03864"><?php echo $translations['M03864'][$language]; //To ensure you having a good experience with our platform, we would like to know your name. Please help to fill in your name in order to complete registration. Once you complete register, you may start shopping and get reward points for each purchase. ?></p>
 
                                 <label data-lang="M03865"><?php echo $translations['M03865'][$language]; //Full Name ?></label>                        
-                                <input type="text" class="form-control beforeLoginForm" id="fullName" placeholder="Enter Your Full Name">
+                                <input type="text" class="form-control beforeLoginForm" id="fullName" placeholder="<?php echo $translations['M02434'][$language] /* Enter your Full Name */ ?>">
                                 <div id="fullNameError" class="invalid-feedback" style="display:block;"></div>
 
                                 <div class="row mt-4">
@@ -162,7 +162,7 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
                             </div>
                         </div>                        
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 pt-5 pt-md-0">
                         <h3 data-lang="M03866"><?php echo $translations['M00108'][$language]; //Sign In ?></h3>
                         <p data-lang="M03867"><?php echo $translations['M03867'][$language]; //Sign in to your account if you already have an account with GoTasty. ?></p>
 
@@ -1154,6 +1154,11 @@ $('.signUpBtn').click(function(){
     var fullName = $('#fullName').val();
     var username = $('#dialingArea option:selected').val() + $('#phone').val();
 
+    if($('#fullName').val() == "")
+        var step = "";
+    else
+        step = 1;
+
     var formData  = {
         command     : "publicRegistrationConfirmation",
         registerType: "free",
@@ -1165,6 +1170,7 @@ $('.signUpBtn').click(function(){
         type        : "register",
         fullName        : fullName,
         username    : username,
+        step        : step
     };
 
     if(sponsorId != '') {
@@ -1195,7 +1201,7 @@ $('.signUpBtn').click(function(){
                 if(obj.data != null && obj.data.field) {
                     hideCanvas();
                     showCustomErrorField(obj.data.field, obj.statusMsg);
-                }else if(obj.statusMsg == "Please Enter Username") {
+                }else if(obj.statusMsg == "<?php echo $translations['M01964'][$language] /* Please Enter Username */ ?>") {
                     hideCanvas();
                     $('#fullName').addClass('is-invalid');
                     $('#fullNameError').html('<?php echo $translations['M01963'][$language] /* Please Enter Full Name */ ?>');
@@ -1235,6 +1241,8 @@ $('.signUpBtn').click(function(){
                 hideCanvas();
                 if(obj.status == "ok") {
                     clearCart();
+                    removeCookie('oldToken')
+                    removeCookie('redeemAmount');
                     window.location.href = "homepage";
                 }
             })

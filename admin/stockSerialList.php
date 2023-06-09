@@ -146,11 +146,15 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var pagerId  = 'listingPager';
     var btnArray = {};
     var thArray  = Array(
-        '<?php echo $translations['A00106'][$language]; /* ID */ ?>',
+        '<?php echo $translations['A01702'][$language]; /* SKU code */ ?>',
         '<?php echo $translations['A01695'][$language]; /* Product Name */ ?>',
         '<?php echo $translations['A01701'][$language]; /* Serial Number */ ?>',
-        '<?php echo $translations['A01700'][$language]; /* Expiration Date */ ?>',
-        '<?php echo $translations['A01699'][$language]; /* Stock In Date */ ?>'
+        '<?php echo $translations['A01738'][$language]; /* Best Before Date */ ?>',
+        '<?php echo $translations['A01705'][$language]; /* Status */ ?>',
+
+        // '<?php echo $translations['A00106'][$language]; /* ID */ ?>',
+        // '<?php echo $translations['A01700'][$language]; /* Expiration Date */ ?>',
+        // '<?php echo $translations['A01699'][$language]; /* Stock In Date */ ?>'
     );
     var searchId = 'searchForm';
 
@@ -163,12 +167,12 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var formData        = "";
     var fCallback       = "";
     var poId            = '<?php echo $_POST['poId']; ?>';
+    var productId       = '<?php echo $_POST['productId']; ?>';
     var productName     = '<?php echo $_POST['productName']; ?>' != "-" ? '<?php echo $_POST['productName']; ?>' : "";
     var vendorName      = '<?php echo $_POST['vendorName']; ?>' != "-" ? '<?php echo $_POST['vendorName']; ?>' : "";
     var code            = '<?php echo $_POST['code']; ?>' != "-" ? '<?php echo $_POST['code']; ?>' : "";
 
     $(document).ready(function() {
-        console.log(productName);
         $('span#productName').html(productName);
         $('span#vendorName').html(vendorName);
         $('span#code').html(code);
@@ -207,7 +211,8 @@ $thisPage = basename($_SERVER['PHP_SELF']);
             pageNumber  : pageNumber,
             inputData   : searchData,
             layer       : 3,
-            poId        : poId
+            poId        : poId,
+            productId   : productId
         };
 
         if (!fCallback)
@@ -217,23 +222,44 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
     /* getStockList callback (Stock Listing) */
     function loadDefaultListing(data, message) {
-        var tableNo;
         console.log(data);
+        var tableNo;
         if (data.stockList != "" && data.stockList.length > 0) {
             var newList = []
             $.each(data.stockList, function(k, v) {
+
+                var buildBtn = `
+                        <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
+                    `;
+
                 var rebuildData = {
-                    id                  : v['id'],
+                    // id                  : v['id'],
+                    barcode             : v['barcode'],
                     name                : v['name'],
                     serial_number       : v['serial_number'],
-                    expiration_date     : v['expiration_date'],
-                    stock_in_datetime   : v['stock_in_datetime'],
+                    best_before         : v['expiration_date'],
+                    status              : v['status'],
+                    buildBtn            : buildBtn
+
+                    // expiration_date     : v['expiration_date'],
+                    // stock_in_datetime   : v['stock_in_datetime'],
                 };
                 newList.push(rebuildData);
             }); 
         }
         buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
         pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
+    }
+
+    function editRecord(stockID) {
+        $.redirect('editStock.php', {
+            stockID     : stockID,
+            poId        : poId,
+            productId   : productId,
+            productName : productName,
+            vendorName  : vendorName,
+            code        : code
+        });
     }
 
 

@@ -139,17 +139,21 @@ var txnAmount       = '<?php echo $_POST['txnAmount'] ?>';
 var purchaseId      = '<?php echo $_POST['purchaseId'] ?>';
 var saleId          = '<?php echo $_POST['saleId'] ?>';
 var txnTime         = '<?php echo $_POST['txnTime'] ?>';
+var deliveryMethodOpt = '<?php echo $_POST['deliveryMethodOpt'] ?>';
 
 $(document).ready(function() {
     // Check if payment method is selected
     var manualBankTransfer = '<?php echo $_POST['manualBankTransfer'] ?>';
     var qrCodePayment = '<?php echo $_POST['qrCodePayment'] ?>';
+
     if(manualBankTransfer == '' && qrCodePayment == '' || !saleId || saleId == '') {
         showMessage('<?php echo $translations['M03845'][$language] /* No payment method selected. */ ?> <br> <a class="modalText text-red text-underline" href="reviewOrder" data-lang="M03846"><?php echo $translations['M03846'][$language] /* Back To Cart */ ?></a>', 'warning', '<?php echo $translations['M02885'][$language] /* Payment Method */ ?>', 'warning', 'reviewOrder');
     }
 
     // Load summary cart
     getShoppingCart(1);
+
+    
 
     $('#uploadBtn').click(function() {
         $('#uploadReceipt').click();
@@ -196,7 +200,16 @@ function uploadReceipt() {
 
 function successPlaceOrder(data, message) {
     clearCart();
-    showMessage('<?php echo $translations['M03902'][$language] /* Order Placed Successful. */ ?>', 'success', '<?php echo $translations['M00208'][$language] /* Payment */ ?>', 'success', 'paymentListing');
+    removeCookie('oldToken')
+    localStorage.removeItem('oldCartList');
+    removeCookie('redeemAmount');
+
+    var clientId = userId;
+    if(clientId) {
+        showMessage('<?php echo $translations['M03902'][$language] /* Order Placed Successful. */ ?>', 'success', '<?php echo $translations['M00208'][$language] /* Payment */ ?>', 'success', 'paymentListing');
+    } else {
+        showMessage('<?php echo $translations['M03922'][$language] /* Thank you for placing an order at GoTasty.net. We will update the delivery date as soon as possible. */ ?>', 'success', '<?php echo $translations['M03921'][$language] /* Receipt Upload Success */ ?>', 'success', 'homepage');
+    } 
 }
 
 </script>

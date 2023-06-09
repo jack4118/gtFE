@@ -31,48 +31,91 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                         <form id="searchForm" role="form">
                                             <div class="col-xs-12">
                                                 <div class="row">
+                                                    <!-- ID Search -->
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            <?php echo $translations['A00101'][$language]; /* Name */ ?>
+                                                            <?php echo $translations['A00106'][$language]; /* ID */ ?>
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="po_id" dataType="text">
+                                                    </div>
+                                                    <!-- Buying Date Search -->
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            <?php echo $translations['A01694'][$language]; /* Buying Date */?>
+                                                        </label>
+                                                        <div class="input-group input-daterange">
+                                                            <input type="text" class="form-control" dataName="buyingDate" dataType="dateRange">
+                                                            <span class="input-group-addon">
+                                                                <?php echo $translations['A00139'][$language]; /* to */?>
+                                                            </span>
+                                                            <input type="text" class="form-control" dataName="buyingDate" dataType="dateRange">
+                                                        </div>
+                                                    </div>
+                                                    <!-- Vendor Name Search -->
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            <?php echo $translations['A01703'][$language]; /* Vendor Name */ ?>
                                                         </label>
                                                         <input type="text" class="form-control" dataName="name" dataType="text">
-                                                    </div>
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            <?php echo $translations['A00102'][$language]; /* Username */ ?>
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="username" dataType="text">
-                                                    </div>
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label" for="" data-th="email">
-                                                            <?php echo $translations['A00103'][$language]; /* Email */ ?>
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="email" dataType="text">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-xs-12">
                                                 <div class="row">
+                                                    <!-- Status Search -->
                                                     <div class="col-sm-4 form-group">
-                                                        <label class="control-label" data-th="disabled">
-                                                            <?php echo $translations['A00104'][$language]; /* Disabled */ ?>
+                                                        <label class="control-label">
+                                                            <?php echo $translations['A01705'][$language]; /* Status */ ?>
                                                         </label>
-                                                        <select class="form-control" dataName="disabled" dataType="select">
+                                                        <select class="form-control" dataName="status" dataType="select">
                                                             <option value="">
-                                                                <?php echo $translations['A00055'][$language]; /* All */ ?>
+                                                                <?php echo $translations['A00055'][$language]; /* All */?>
                                                             </option>
-                                                            <option value="1">
-                                                                <?php echo $translations['A00056'][$language]; /* Yes */ ?>
+                                                            <option value="approved">
+                                                                Approved
                                                             </option>
-                                                            <option value="0">
-                                                                <?php echo $translations['A00057'][$language]; /* No */ ?>
+                                                            <option value="save">
+                                                                Save
+                                                            </option>
+                                                            <option>
+                                                                Cancelled
                                                             </option>
                                                         </select>
+                                                    </div>
+                                                    <!-- Approved By Search -->
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            <?php echo $translations['A01659'][$language]; /* Username */ ?>
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="approvedBy" dataType="text">
+                                                    </div>
+                                                    <!-- Approved Date Search -->
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            <?php echo $translations['A01660'][$language]; /* Approved Date */?>
+                                                        </label>
+                                                        <div class="input-group input-daterange">
+                                                            <input type="text" class="form-control" dataName="approvedDate" dataType="dateRange">
+                                                            <span class="input-group-addon">
+                                                                <?php echo $translations['A00139'][$language]; /* to */?>
+                                                            </span>
+                                                            <input type="text" class="form-control" dataName="approvedDate" dataType="dateRange">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <!-- Warehouse Search -->
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            <?php echo $translations['A01739'][$language]; /* Warehouse */ ?>
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="warehouseSearch" dataType="text">
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
-
 
                                         <div class="col-xs-12 m-t-rem1">
                                             <button id="searchBtn" type="submit" class="btn btn-primary waves-effect waves-light">
@@ -132,21 +175,14 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var btnArray = {};
     var thArray  = Array(
         '<?php echo $translations['A00106'][$language]; /* ID */ ?>',
-        // '<?php echo $translations['A00102'][$language]; /* Username */ ?>',
-        'Product Name',
-        // '<?php echo $translations['A00101'][$language]; /* Name */ ?>',
-        'Total Quantity',
-        // '<?php echo $translations['A00103'][$language]; /* Email */ ?>',
-        'Total Cost',
-        // '<?php echo $translations['A00110'][$language]; /* Role Name */ ?>',
-        'Vendor',
-        // '<?php echo $translations['A00104'][$language]; /* Disabled */ ?>',
-        'Status',
-        // '<?php echo $translations['A00112'][$language]; /* Created At */ ?>',
+        'Buying Date',
+        'Vendor Name',
+        'Total Amount',
+        'Created By',
         'Approved By',
-        // '<?php echo $translations['A00113'][$language]; /* Last Login */ ?>'
-        'Approved Date',
-        // '<?php echo $translations['A00113'][$language]; /* Last Login */ ?>'
+        'Status',
+        'Remark',
+        'Warehouse',
         );
     var searchId = 'searchForm';
 
@@ -182,6 +218,18 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         $('#searchBtn').click(function() {
             pagingCallBack(pageNumber, loadSearch);
         }); 
+
+        // Initialize date picker
+        $('.input-daterange input').each(function() {
+            $(this).daterangepicker({
+                singleDatePicker: true,
+                timePicker: false,
+                locale: {
+                    format: 'DD/MM/YYYY'
+                }
+            });
+            $(this).val('');
+        });
     });
 
     function pagingCallBack(pageNumber, fCallback){
@@ -205,31 +253,37 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
         if (data != "" && prTable.length > 0) {
             var newPrTable = []
-
-            console.log(prTable);
             $.each(prTable, function(k, v) {
-                var editBtn = `
-                    <a data-toggle="tooltip" title="" id="edit${k}" onclick="tableBtnClick(this.id)" class="m-t-5 m-r-10 btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit"><i class="fa fa-edit"></i></a>
-                `;
-                var approveBtn = `
-                    <a data-toggle="tooltip" title="" id="approve${k}" onclick="tableBtnClick(this.id)" class="m-t-5 m-r-10 btn btn-icon waves-effect waves-light btn-primary" data-original-title="Approve"><i class="fa fa-check"></i></a>
-                `;
-                console.log(v['status']);
-                if(v['status'] != 'Approved') {
-                    btnList = editBtn + approveBtn;
+                if(v['approved_by'] == "-") {
+                    var editBtn = `
+                        <a data-toggle="tooltip" title="" id="edit${k}" onclick="tableBtnClick(this.id)" class="m-t-5 m-r-10 btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    `;
                 } else {
-                    btnList = '';
+                    var editBtn = `
+                        <a data-toggle="tooltip" title="" id="edit${k}" onclick="tableBtnClick(this.id)" class="m-t-5 m-r-10 btn btn-icon waves-effect waves-light btn-primary" data-original-title="View"><i class="fa fa-eye"></i></a>
+                    `;
                 }
+                // var approveBtn = `
+                //     <a data-toggle="tooltip" title="" id="approve${k}" onclick="tableBtnClick(this.id)" class="m-t-5 m-r-10 btn btn-icon waves-effect waves-light btn-primary" data-original-title="Approve"><i class="fa fa-check"></i></a>
+                // `;
+
+                // if(v['status'] != 'Approved') {
+                    // btnList = editBtn + approveBtn;
+                // } else {
+                    btnList = editBtn;
+                // }
 
                 var rebuildData = {
                     id            : v['id'],
-                    name          : v['pr_name'],
-                    quantity      : v['quantity'],
-                    cost          : v['cost'],
+                    buying_date   : v['buying_date'],
                     vendor        : v['vendor'],
-                    status        : v['status'],
+                    cost          : v['cost'],
+                    created_by    : v['Created_by'],
                     approved_by   : v['approved_by'],
-                    approved_date : v['approved_date'],
+                    status        : v['status'],
+                    // approved_date : v['approved_date'],
+                    remarks       : v['remarks'],
+                    warehosue     : v['warehouse_location'],
                     btnList       : btnList,
                 };
                 newPrTable.push(rebuildData);
@@ -247,44 +301,35 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         if (btnName == 'edit') {
             var editId = tableRow.attr('data-th');
             var role = tableRow.find('td:eq(4)').text();
-            $.redirect("editPurchaseRequest.php",{id: editId, role : role});
+            var vendor = tableRow.find('td:eq(2)').text();
+            $.redirect("editPurchaseRequest.php",{id: editId, role: role, vendor: vendor});
         }
 
         if (btnName == 'approve') {
             var editId = tableRow.attr('data-th');
-            document.getElementById('approve').onclick = updatePurchaseStatus(editId);
+            var rowId = tableRow.attr('id');
+            updatePurchaseStatus(editId, rowId);
         }
     }
 
-    function updatePurchaseStatus(id) {
-        // console.log(id);
+    function updatePurchaseStatus(editId, rowId) { 
         var formData   = {
             command     : "purchaseRequestApprove",
-            id          : id,
+            id          : editId,
             status      : 'Approved'
         };
+        
+        fCallback = loadUpdateStatus;
 
-        if(fCallback)
-            fCallback = loadUpdateStatus;
+        $("#edit" + rowId + "fa-edit").css("display", "none");
+        $("#edit" + rowId).html('<i class="fa fa-eye"></i>');
+        $("#approve" + rowId).css("display", "none");
+        
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     }
 
     function loadUpdateStatus(result, message) {
-        showMessage('Approved Successfully', 'success', 'Approved Successfully', 'user-plus', 'purchaseRequest.php');
-        // console.log(result);
-        var id = '';
-        $('#'+ tableId).find('tbody tr').each(function(){
-            id = $(this).find('td:eq(0)').text();
-            var column = $(this).find('td:eq(8)').children();
-            var editBtn = column[1].id;
-            // console.log(editBtn);
-            
-            if(result.status == "Approved" && id == result.id) {
-                // console.log('aaa');
-                $('#'.editBtn).attr('onclick', 'return false');
-            }
-        });
-
+        showMessage('Approved Successfully', 'success', 'Approved Successfully', 'check', ''); 
     }
 
     function loadSearch(data, message) {

@@ -55,6 +55,10 @@ include 'homepageHeader.php';
 						<input class="form-control" type="text" id="fullName">
 					</div>
 					<div class="form-group col-12">
+						<label class="mb-0 bodyText smaller" for="phone" data-lang="M02298"><?php echo $translations['M02298'][$language] /* Phone Number */ ?></label>
+						<input class="form-control" type="text" id="phone" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+					</div>
+					<div class="form-group col-12">
 						<label class="mb-0 bodyText smaller" for="address" data-lang="M03808"><?php echo $translations['M03808'][$language] /* Street and Number */ ?></label>
 						<input class="form-control" type="text" id="address">
 					</div>
@@ -156,7 +160,7 @@ var addressNo 					= '<?php echo $_POST['addressNo'] ?>';
 var currentStateId				= '';
 var countryStateListIsLoaded 	= false;
 
-$(document).ready(function() {
+$(document).ready(function() { console.log(addressId)
 	if(!addressId || addressId == '' || !addressType || addressType == '' || !addressNo || addressNo == '') {
 		showMessage('<?php echo $translations['M03813'][$language] /* Invalid address. */ ?>', 'warning', '<?php echo $translations['M02857'][$language] /* Edit Address */ ?>', '', 'myAddress');
 	}
@@ -312,10 +316,12 @@ function loadAddress(data, message) {
 		if(selectedAddress.type == '1') $('#isDefault').trigger('change');
 
 		$('#fullName').val(selectedAddress.name);
+		$('#phone').val(selectedAddress.phone);
 		$('#address').val(selectedAddress.address);
 		$('#cityID').val(selectedAddress.cityID);
 		$('#postCodeID').val(selectedAddress.postCodeID);
 		$('#countryID').val(selectedAddress.countryID);
+		
 		currentStateId = selectedAddress.stateID;
 
 		countryIsLoaded = true;
@@ -332,6 +338,7 @@ function editAddress() {
 		addressType 	: addressType,
 		fullName 		: $('#fullName').val(),
 		address 		: $('#address').val(),
+		phone 			: $('#phone').val(),
 		cityID 			: $('#cityID').val(),
 		postalCodeID 	: $('#postCodeID').val(),
 		stateID 		: $('#stateID').val(),
