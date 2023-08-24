@@ -9,12 +9,14 @@ include 'homepageHeader.php';
 
 <!-- My Account Title -->
 <section class="section myAccountBg">
-    <div class="titleText larger bold text-white text-center text-md-left" data-lang="M03798"><?php echo $translations['M03798'][$language] /* My Account */ ?></div>
+	<div class="kt-container row">
+		<div class="col-12 titleText larger bold text-white text-center text-md-left" data-lang="M03798"><?php echo $translations['M03798'][$language] /* My Account */ ?></div>
+	</div>
 </section>
 
 <!-- My Account Content -->
 <section class="section whiteBg">
-    <div class="row mb-5 mb-md-0">
+    <div class="kt-container row mb-5 mb-md-0">
         <div class="col-lg-3 col-md-4 col-12">
             <!-- Menu -->
             <div class="borderAll grey normal greyBg">
@@ -51,20 +53,28 @@ include 'homepageHeader.php';
 				</div>
 				<div class="row">
 					<div class="form-group col-12 mt-5">
-						<label class="mb-0 bodyText smaller" for="fullName" data-lang="M00177"><?php echo $translations['M00177'][$language] /* Full Name */ ?></label>
+						<label class="mb-0 bodyText smaller" for="fullName" data-lang="M04038"><?php echo $translations['M04038'][$language] /* Full Name / Company Name */ ?></label>
 						<input class="form-control" type="text" id="fullName">
 					</div>
 					<div class="form-group col-12">
-						<label class="mb-0 bodyText smaller" for="address" data-lang="M03808"><?php echo $translations['M03808'][$language] /* Street and Number */ ?></label>
+						<label class="mb-0 bodyText smaller" for="userPhone" data-lang="M02298"><?php echo $translations['M02298'][$language] /* Phone Number */ ?></label>
+						<input class="form-control" type="text" id="userPhone" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+					</div>
+					<div class="form-group col-12">
+						<label class="mb-0 bodyText smaller" for="address" data-lang="M04069"><?php echo $translations['M04069'][$language] /* Address Line */ ?> 1</label>
 						<input class="form-control" type="text" id="address">
 					</div>
-					<div class="form-group col-md-6 col-12">
-						<label class="mb-0 bodyText smaller" for="cityID" data-lang="M00183"><?php echo $translations['M00183'][$language] /* City */ ?></label>
-						<input class="form-control" type="text" id="cityID">
+					<div class="form-group col-12">
+						<label class="mb-0 bodyText smaller" for="address2" data-lang="M04069"><?php echo $translations['M04069'][$language] /* Address Line */ ?> 2</label>
+						<input class="form-control" type="text" id="address2">
 					</div>
 					<div class="form-group col-md-6 col-12">
-						<label class="mb-0 bodyText smaller" for="postalCodeID" data-lang="M03158"><?php echo $translations['M03158'][$language] /* Zip Code */ ?></label>
-						<input class="form-control" type="text" id="postalCodeID">
+						<label class="mb-0 bodyText smaller" for="city" data-lang="M00183"><?php echo $translations['M00183'][$language] /* City */ ?></label>
+						<input class="form-control" type="text" id="city">
+					</div>
+					<div class="form-group col-md-6 col-12">
+						<label class="mb-0 bodyText smaller" for="userZipCode" data-lang="M03158"><?php echo $translations['M03158'][$language] /* Zip Code */ ?></label>
+						<input class="form-control" type="text" id="userZipCode" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 					</div>
 					<div class="form-group col-12">
 						<label class="mb-0 bodyText smaller" for="countryID" data-lang="M02673"><?php echo $translations['M02673'][$language] /* Country */ ?></label>
@@ -112,7 +122,7 @@ var debug           = 0;
 var bypassBlocking  = 0;
 var bypassLoading   = 0;
 var fCallback       = '';
-var addressType 	= '<?php echo $_POST['addressType'] ?>';
+var addressType 	= '<?php echo $_SESSION['POST'][$postAryName]['addressType'] ?>';
 
 $(document).ready(function() {
 	if(!addressType || addressType == '') {
@@ -168,6 +178,10 @@ $(document).ready(function() {
 			$("#addBtn").click();
 		}
 	});
+
+	// $('#userPhone').focus(function() {
+	// 	$(this).val('60');
+	// })
 });
 
 function loadCountryState(countryId) {
@@ -229,9 +243,11 @@ function addAddress() {
 		addressType 	: addressType,
 		fullName 		: $('#fullName').val(),
 		address 		: $('#address').val(),
-		cityID 			: $('#cityID').val(),
-		postalCodeID 	: $('#postalCodeID').val(),
+		address2 		: $('#address2').val(),
+		cityID 			: $('#city').val(),
+		postalCodeID 	: $('#userZipCode').val(),
 		stateID 		: $('#stateID').val(),
+		phone 			: $('#userPhone').val(),
 		disabled 		: 0,
 		isDefault 		: $('#isDefault').val()
     };

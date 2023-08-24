@@ -112,9 +112,9 @@ $_SESSION["stopRecord"] = 1;
             <!-- <div class="modalLine"></div> -->
             <div class="modal-body modalBodyFont align-self-center text-center">
                 <img src="/images/project/warningIcon.png" class="img-fluid">
-                <div class="mt-3 modal-title">
+                <!-- <div class="mt-3 modal-title">
                     <?php echo $translations['M02815'][$language]; //Shopping Cart ?>
-                </div>
+                </div> -->
                 <div class="mt-3 modalText">
                     <?php echo $translations['M03395'][$language]; //Doing this action will remove the item from your cart, are you sure you want to do this? ?>
                 </div>

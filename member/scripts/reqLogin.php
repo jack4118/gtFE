@@ -4,7 +4,7 @@
 * This file is contains the script to process memberLogin.
 *
 **/
-
+include 'sessionStore.php';
 session_start();
 include($_SERVER["DOCUMENT_ROOT"]."/include/class.post.php");
 include($_SERVER["DOCUMENT_ROOT"]."/language/lang_all.php");
@@ -15,6 +15,7 @@ if($_POST['type'] == 'logout')
 {
   setcookie("sessionData", "", time() - 3600);
   session_destroy();
+  setcookie("aaafag5bc2p7hslvh9qg7v4r", "", time() - 3600);
 }
 else
 {
@@ -30,10 +31,15 @@ else
         "loginBy" => "phone",
         "password" => $_POST['password'],
         "adminID" => $_POST['adminID'],
-        "adminSession" => $_POST['adminSession']
+        "adminSession" => $_POST['adminSession'],
       );
 
+      if($_SESSION['bkend_token']) {
+        $params['bkend_token'] = $_SESSION['bkend_token'];
+      }
+
       $result              = $post->curl($command, $params);
+      $bkend_token         = $result['data']['bkend_token'];
       $userData            = $result['data']['userDetails'];
       $userID              = $userData['userID'];
       $username            = $userData['username'];
@@ -49,20 +55,23 @@ else
       $name                = $userData['name'];
       $dataweww                =$userData['sessionID '];
 
-      $_SESSION["test1"]                        =$dataweww;
-      $_SESSION["name"]                         = $name;
-      $_SESSION["userEmail"]                    = $userEmail;
-      $_SESSION["userID"]                       = $userID;
-      $_SESSION["username"]                     = $username;
-      $_SESSION["countryID"]                    = $countryID;
-      $_SESSION["sessionID"]                    = $sessionID;
-      $_SESSION["pagingCount"]                  = $pagingCount;
-      $_SESSION["sessionExpireTime"]            = $timeOutFlag;
-      $_SESSION["decimalPlaces"]                = $decimalPlaces;
-      $_SESSION["memo"]                         = $memo;
-      $_SESSION["blockedRights"]                = $blockedRights;
-      $_SESSION["bonusReport"]                  = $result['data']['bonusReport'];
-      $_SESSION["isTransactionPassword"]        = 0;
+      if($result["status"] == "ok"){
+        $_SESSION['bkend_token']                  = $bkend_token;
+        $_SESSION["test1"]                        =$dataweww;
+        $_SESSION["name"]                         = $name;
+        $_SESSION["userEmail"]                    = $userEmail;
+        $_SESSION["userID"]                       = $userID;
+        $_SESSION["username"]                     = $username;
+        $_SESSION["countryID"]                    = $countryID;
+        $_SESSION["sessionID"]                    = $sessionID;
+        $_SESSION["pagingCount"]                  = $pagingCount;
+        $_SESSION["sessionExpireTime"]            = $timeOutFlag;
+        $_SESSION["decimalPlaces"]                = $decimalPlaces;
+        $_SESSION["memo"]                         = $memo;
+        $_SESSION["blockedRights"]                = $blockedRights;
+        $_SESSION["bonusReport"]                  = $result['data']['bonusReport'];
+        $_SESSION["isTransactionPassword"]        = 0;
+      }
 
       $marcaje      = $result['data']['marcaje'];
       $marcajeTK    = $result['data']['marcajeTK'];
@@ -113,7 +122,8 @@ else
 
       $params = array(
         "clientID" => $_SESSION["userID"],
-        "language" => $_POST["language"]
+        "language" => $_POST["language"],
+        "bkend_token" => $_SESSION['bkend_token'],
       );
       $result = $post->curl($command, $params);
       $result = json_decode($result, true);

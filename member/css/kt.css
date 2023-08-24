@@ -1762,7 +1762,8 @@ table.dataTable.dtr-column>tbody>tr>td.control:before, table.dataTable.dtr-colum
 /* Responsive */
 
 @media (min-width: 320px){
-    #canvasMessage .modal-dialog {
+    #canvasMessage .modal-dialog,
+    #removeConfirmationModal .modal-dialog {
         max-width: 500px;
         margin: 100px auto;
     }

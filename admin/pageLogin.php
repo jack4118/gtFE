@@ -152,7 +152,7 @@
                     }
                     else {
                         
-                        window.location.href = "whoIsOnline.php";
+                        window.location.href = "stockList.php";
                         return true;
 
                         $.each(permissions, function(key,value){

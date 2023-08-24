@@ -118,6 +118,8 @@ else
                 $("#searchBtn").click();
             }
         });
+
+        pagingCallBack(pageNumber, loadSearch);
         
         $('#searchBtn').click(function() {
             pagingCallBack(pageNumber, loadSearch);

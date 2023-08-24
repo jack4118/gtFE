@@ -81,9 +81,15 @@ $_SESSION['lastVisited'] = $thisPage;
                                                 <input id="productType" type="text" class="form-control" value = 'Product' readonly>
                                             <!-- </div> -->
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
-                                                <label>Best Before Days</label>
+                                                <label>Best Before (Days)</label>
                                                 <input id="expiredDay" type="number" class="form-control">
                                                 <span id="expiredDayError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Delivery Method</label>
+                                                <select id="deliveryMethod" class="form-control category" dataName="deliveryMethod" dataType="text">
+                                                </select>
+                                                <span id="deliveryMethodError" class="errorSpan text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -395,6 +401,7 @@ $_SESSION['lastVisited'] = $thisPage;
         var buildOptionLength = 0;
         var packageCategoryOption;
         var categoryOption;
+        var deliveryMethodOption;
         // var buildCountry;
         var addCSCount = 1;
         var cTNum = 1;
@@ -445,6 +452,8 @@ $_SESSION['lastVisited'] = $thisPage;
         //     "Quantity"
         // );
         // var pageNumber      = 1;
+
+        var vendorId = '<?php echo $_POST['vendorId'] ?>';
 
         $(document).ready(function() {
 
@@ -750,6 +759,7 @@ $_SESSION['lastVisited'] = $thisPage;
                 var salePrice = $('#salePrice').val();
                 // var cookingTime = $('#cookingTime').val();
                 var cookingSuggestion = $('#cookingSuggestion').val();
+                var deliveryMethod = document.getElementById("deliveryMethod").value;
                 // var fullInstruction = $('#fullInstruction').val();
                 // var fullInstruction2 = $('#fullInstruction2').val();
                 var vendorId = $('#vendorName option:selected').val();
@@ -1008,6 +1018,7 @@ $_SESSION['lastVisited'] = $thisPage;
                     vendorId          : vendorId,
                     category          : category,
                     video             : video,
+                    deliveryMethod    : deliveryMethod,
                     cookingSuggestionName: cookingSuggestionName,
                     cookingSuggestionUrl : cookingSuggestionUrl,
                     cookingSuggestionRemark : cookingSuggestionRemark,
@@ -1240,6 +1251,18 @@ $_SESSION['lastVisited'] = $thisPage;
                 });
             }
 
+            deliveryMethodOption = "";
+            if(data.deliveryMethodList) {
+                deliveryMethodOption += `
+                    <option value="">Select Delivery Method</option>
+                `
+                $.each(data.deliveryMethodList, function(k,v){
+                    deliveryMethodOption += `
+                        <option value="${v['id']}">${v['name']}(RM `+numberThousand(v['price'], 2)+`)</option>
+                    `;
+                });
+            }
+
             var buildSupplier = "";
             if(data.supplierList) {
                 buildSupplier += `
@@ -1251,6 +1274,8 @@ $_SESSION['lastVisited'] = $thisPage;
                     `
                 });
                 $('#vendorName').append(buildSupplier);
+                $('#vendorName').val(vendorId);
+                $('#vendorName').trigger('change');
             }
 
             attributeOption = "";
@@ -1369,6 +1394,13 @@ $_SESSION['lastVisited'] = $thisPage;
             cTNum++;
 
             $("#category").html(categoryOption);
+            $('#category').select2({
+                dropdownAutoWidth: true,
+                templateResult: newFormatState,
+                templateSelection: newFormatState,
+            });
+            
+            $("#deliveryMethod").html(deliveryMethodOption);
             $(".attribute").html(attributeOption);
             $('#productType').html(typeOption);
             // $("#packageCategory").html(packageCategoryOption);
@@ -1481,7 +1513,9 @@ $_SESSION['lastVisited'] = $thisPage;
 
                         <div>
                             <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
-                            <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                            <span id="fileNotUploaded${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                            <!--<span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span>-->
+                            <img id="thumbnailImg${addImgIDNum}" style="width:100%;" />
                             <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="display: none; padding: 6px;" onclick="showImg('${addImgIDNum}')">
                                 <i class="fa fa-eye"></i>
                             </a>
@@ -1619,6 +1653,8 @@ $_SESSION['lastVisited'] = $thisPage;
 
             $("#viewImg"+id).hide();
             $("#deleteImg"+id).hide();
+            $("#fileNotUploaded"+id).show()
+            $("#thumbnailImg"+id).attr('src', "");
 
         }
 
@@ -1660,6 +1696,9 @@ $_SESSION['lastVisited'] = $thisPage;
                     // $("#viewImg"+id).attr('data-res', reader["result"]);
                     $("#viewImg"+id).css('display', 'inline-block');
                     $("#deleteImg"+id).css('display', 'inline-block');
+                    $("#fileNotUploaded"+id).hide()
+                    $("#thumbnailImg"+id).attr('src', $("#storeFileData"+id).val());
+
                 };
 
                 reader.readAsDataURL(n.files[0]);
@@ -1939,6 +1978,28 @@ $_SESSION['lastVisited'] = $thisPage;
             $('#isPackage').is(':checked') ? $('#packageBox').show() : $('#packageBox').hide();
             // $('.packageIco').toggleClass('fa-minus fa-plus');
         }
+
+        function newFormatState(method) {
+            if (!method.id) {
+                return method.text;
+            }
+
+            var optimage = $(method.element).attr('data-image')
+            if (!optimage) {
+                return method.text;
+            } else {
+                var $opt = $(
+                    '<span onclick="changeTokenCategory('+method.text+')"><img src="' + optimage + '" class="tokenOptionImg" /> <span style="vertical-align: middle;">' + method.text + '</span></span>'
+                );
+                return $opt;
+            }
+        };
+
+        $('#vendorName').select2({
+            dropdownAutoWidth: true,
+            templateResult: newFormatState,
+            templateSelection: newFormatState,
+        });
 
     </script>
 </body>

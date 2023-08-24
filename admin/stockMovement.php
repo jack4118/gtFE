@@ -133,8 +133,9 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
     $(document).ready(function() {
         /* Enter to toggle search button */
-        $("body").keyup(function(event) {
+        $("body").keydown(function(event) {
             if (event.keyCode == 13) {
+                event.preventDefault(); 
                 $("#searchBtn").click();
             }
         });
@@ -150,6 +151,9 @@ $thisPage = basename($_SERVER['PHP_SELF']);
             });
 
         });
+
+        pagingCallBack(pageNumber, loadSearch);
+        
         /* Toggle search function */
         $('#searchBtn').click(function() {
             pagingCallBack(pageNumber, loadSearch);
@@ -175,7 +179,6 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
     /* getStockList callback (Stock Listing) */
     function loadDefaultListing(data, message) {
-        // console.log(data);
         var tableNo;
         if (data.stockList != "" && data.stockList.length > 0) {
             var newList = []
@@ -183,11 +186,15 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                 var viewBtn = `
                     <a data-toggle="tooltip" title="" onclick="viewBatch('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="View" aria-describedby=""><i class="fa fa-list"></i></a>
                 `;
+                var stockBtn = `
+                    <a data-toggle="tooltip" title="" onclick="stockOut('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Stock Out" aria-describedby=""><i class="fa fa-plus-circle"></i></a>
+                `;
 
                 var rebuildData = {
                     name            : v['name'],
-                    quantity         : v['quantity'],
-                    viewBtn         : viewBtn
+                    quantity        : v['quantity'],
+                    viewBtn         : viewBtn,
+                    // stockBtn        : stockBtn,
                 };
                 newList.push(rebuildData);
             }); 
@@ -216,6 +223,10 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
     function viewBatch(productId, productName, vendorName, code) {
         $.redirect("stockMovementDetail.php", {productId : productId, productName : productName, vendorName : vendorName, code : code});
+    }
+
+    function stockOut(productId) {
+        $.redirect("stockTransferDetail.php", {productId : productId});
     }
 
 </script>

@@ -156,9 +156,9 @@ session_start();
                             <div class="row" style="display: flex;">
                                 <div class="col-xs-6 remarksBox">
                                     <div class="row" style="display: flex; flex-wrap: wrap;">
-                                        <div class="col-xs-12">
+                                        <!-- <div class="col-xs-12">
                                             Special Note: <span id="specialNote" style="font-weight: 600; word-break: break-all;">-</span>
-                                        </div>
+                                        </div> -->
                                         <div class="col-xs-12 m-t-8">
                                             Remarks: <span id="remark" style="font-weight: 600; word-break: break-all;">-</span>
                                         </div>
@@ -224,7 +224,7 @@ session_start();
     var btnArray = {};
     var thArray  = Array(
         "Item",
-        "Attribute",
+        // "Attribute",
         "Price",
         "Quantity",
         "Total"
@@ -267,14 +267,15 @@ session_start();
     });
 
     function loadDefaultListing(data, message) {
-        if (data.billingAddressDetail){
-            var billingAddress = data.billingAddressDetail
+        if (data.invoiceDetail){
+            var billingAddress = data.invoiceDetail
             // var subDistrict = billingAddress.subDistrict ? billingAddress.subDistrict + ", " : ""
             // var address = billingAddress.address + ", " + billingAddress.district + ", " + subDistrict + billingAddress.city + ", " + billingAddress.state + ", " + billingAddress.postCode + ", " + billingAddress.country
             var address = billingAddress.address + ", " + billingAddress.city + ", " + billingAddress.state + ", " + billingAddress.postCode + ", " + billingAddress.country
-            $("#billingFullName").html(billingAddress.fullname)
-            $("#billingAddress").html(address)
-            $("#billingPhone").html("+"+ billingAddress.dialingArea + " " + billingAddress.phone)
+            $("#billingFullName").html(billingAddress.billing_name)
+            $("#billingAddress").html(billingAddress.billing_address)
+            // $("#billingPhone").html("+"+ billingAddress.dialingArea + " " + billingAddress.phone)
+            $("#billingPhone").html("+"+ billingAddress.billing_phone)
             $("#billingEmail").html(billingAddress.email || "-")
         }else{
             $("#billingFullName").html("-")
@@ -283,7 +284,9 @@ session_start();
             $("#billingEmail").html("-")
         }
       
-        $("#memberID").html(data.clientDetail.memberID || "-")
+        if(data.clientDetail){
+            $("#memberID").html(data.clientDetail.memberID || "-")
+        }
 
         // $("#specialNote").html(data.invoiceDetail.specialNote)
         // $("#remark").html(data.invoiceDetail.remark)
@@ -301,27 +304,32 @@ session_start();
         data.showInsuranceTax == 0 ? insuranceDisplay = " " : insuranceDisplay = ` <span>Insurance Charges:</span> <span class="invoiceTotalAmount">${insuranceTax}</span>`
         $("#insuranceChargesDisplay").html(insuranceDisplay);
 
+        if(data.invoiceDetail.deliveryMethod){
+            switch (data.invoiceDetail.deliveryMethod.toLowerCase()) {
+                case 'delivery':
+                    var deliveryAddress = data.invoiceDetail
+                    // var subDistrict = deliveryAddress.subDistrict ? deliveryAddress.subDistrict + ", " : ""
+                    // var address = deliveryAddress.address + ", " + deliveryAddress.district + ", " + subDistrict + deliveryAddress.city + ", " + deliveryAddress.state + ", " + deliveryAddress.postCode + ", " + deliveryAddress.country
+                    // var address = deliveryAddress.address + ", " + deliveryAddress.city + ", " + deliveryAddress.state + ", " + deliveryAddress.postCode + ", " + deliveryAddress.country
+                    $("#deliveryFullName").html(deliveryAddress.shipping_name)
+                    $("#deliveryAddress").html(deliveryAddress.shipping_address)
+                    $("#deliveryPhone").html("+"+ deliveryAddress.shipping_phone)
+                    $("#deliveryEmail").html(deliveryAddress.email || "-")
+                    $("#deliverySection").show();
+                    $("#pickupSection").hide();
+                break;
 
-        switch (data.invoiceDetail.deliveryMethod.toLowerCase()) {
-            case 'delivery':
-                var deliveryAddress = data.deliveryAddressDetail
-                // var subDistrict = deliveryAddress.subDistrict ? deliveryAddress.subDistrict + ", " : ""
-                // var address = deliveryAddress.address + ", " + deliveryAddress.district + ", " + subDistrict + deliveryAddress.city + ", " + deliveryAddress.state + ", " + deliveryAddress.postCode + ", " + deliveryAddress.country
-                var address = deliveryAddress.address + ", " + deliveryAddress.city + ", " + deliveryAddress.state + ", " + deliveryAddress.postCode + ", " + deliveryAddress.country
-                $("#deliveryFullName").html(deliveryAddress.fullname)
-                $("#deliveryAddress").html(address)
-                $("#deliveryPhone").html("+"+ deliveryAddress.dialingArea + " " + deliveryAddress.phone)
-                $("#deliveryEmail").html(deliveryAddress.email || "-")
-                $("#deliverySection").show();
-                $("#pickupSection").hide();
-            break;
-
-            case 'pickup':
-                $("#pickupAddress").html(data.deliveryAddressDetail.pickUpAddress)
-                $("#deliverySection").hide();
-                $("#pickupSection").show();
-            break;
+                case 'pickup':
+                    if(data.deliveryAddressDetail){
+                        $("#pickupAddress").html(data.deliveryAddressDetail.pickUpAddress)
+                        $("#deliverySection").hide();
+                        $("#pickupSection").show();
+                    }
+                    
+                break;
+            }
         }
+        
 
         $("#companyAddress").html(data.companyAddress)
         $("#companyPhone").html(data.companyContact.contactNo)
@@ -331,9 +339,14 @@ session_start();
         $("#purchaseOrderNo").html(data.invoiceDetail.id)
         $("#invoiceNo").html(data.invoiceDetail.referenceNo)
         $("#trackingStatus").html(data.invoiceDetail.status)
-        $("#invoiceDate").html(data.invoiceDetail.createdAt)
+        $("#invoiceDate").html(data.invoiceDetail.orderDate)
 
-        $("#subtotal").html(numberThousand(data.invoiceDetail.subtotal, 2))
+        if(data.subtotal){
+            $("#subtotal").html(numberThousand(data.subtotal, 2))
+        }else{
+            $("#subtotal").html(numberThousand(0, 2))
+        }
+
         $("#taxPercentage").html(parseFloat(data.taxPercentage))
         $("#taxCharges").html(numberThousand(data.invoiceDetail.paymentTax, 2))
         $("#deliveryFee").html(numberThousand(data.invoiceDetail.shippingfee, 2))
@@ -365,7 +378,7 @@ session_start();
                 var rebuildData = {
                     buildPackageName,
                     // totalProductWeight: numberThousand(v['totalProductWeight'], 2),
-                    pvPrice: (v['product_attribute_name']),
+                    // pvPrice: (v['product_attribute_name']),
                     packagePrice: numberThousand(v['packagePrice'], 2),
                     packageQuantity: parseInt(v['packageQuantity']),
                     totalPackagePrice: numberThousand(v['totalPackagePrice'], 2),

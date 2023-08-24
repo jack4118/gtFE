@@ -77,7 +77,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span class="modal-title" data-lang="M00027"><?php echo $translations['M00027'][$language]; //Withdrawal Confirmation ?></span>
+                <!-- <span class="modal-title" data-lang="M00027"><?php echo $translations['M00027'][$language]; //Withdrawal Confirmation ?></span> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>

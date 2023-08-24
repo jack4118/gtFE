@@ -3,7 +3,7 @@
     $config = array(
                     
         'webserviceURL' => "gotasty-backend/webservices.php",
-	    'adminMemberWebserviceURL' => "gotasty-backend/modules/gotasty/webservices.php",
+        'adminMemberWebserviceURL' => "gotasty-backend/modules/gotasty/webservices.php",
         'companyName' => "",
         'logoURL' => "",
 

@@ -8,15 +8,14 @@ function beforeLogout() {
     };
     showMessage(message, 'warning', title, 'logout', '', canvasBtnArray);
     $('#canvasYesBtn').click(function() {
-
-        localStorage.clear();
+        window.localStorage.clear();
 
         $.ajax({
             type: 'POST',
             url: 'scripts/reqLogin.php',
             data: {type : "logout"},
             success	: function(result) {
-                window.location.href = 'homepage';
+                window.location.href = 'foodMenu'; 
             },
             error	: function(result) {
                 alert(alert);

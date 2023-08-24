@@ -9,12 +9,14 @@ include 'homepageHeader.php';
 
 <!-- My Account Title -->
 <section class="section myAccountBg">
-    <div class="titleText larger bold text-white text-center text-md-left" data-lang="M03798"><?php echo $translations['M03798'][$language] /* My Account */ ?></div>
+	<div class="kt-container row">
+		<div class="col-12 titleText larger bold text-white text-center text-md-left" data-lang="M03798"><?php echo $translations['M03798'][$language] /* My Account */ ?></div>
+	</div>
 </section>
 
 <!-- My Account Content -->
 <section class="section whiteBg">
-    <div class="row mb-5 mb-md-0">
+    <div class="kt-container row mb-5 mb-md-0">
         <div class="col-lg-3 col-md-4 col-12">
             <!-- Menu -->
             <div class="borderAll grey normal greyBg">
@@ -51,24 +53,28 @@ include 'homepageHeader.php';
 				</div>
 				<div class="row">
 					<div class="form-group col-12 mt-5">
-						<label class="mb-0 bodyText smaller" for="fullName" data-lang="M00177"><?php echo $translations['M00177'][$language] /* Full Name */ ?></label>
+						<label class="mb-0 bodyText smaller" for="fullName" data-lang="M04038"><?php echo $translations['M04038'][$language] /* Full Name / Company Name */ ?></label>
 						<input class="form-control" type="text" id="fullName">
 					</div>
 					<div class="form-group col-12">
-						<label class="mb-0 bodyText smaller" for="phone" data-lang="M02298"><?php echo $translations['M02298'][$language] /* Phone Number */ ?></label>
-						<input class="form-control" type="text" id="phone" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+						<label class="mb-0 bodyText smaller" for="userPhone" data-lang="M02298"><?php echo $translations['M02298'][$language] /* Phone Number */ ?></label>
+						<input class="form-control" type="text" id="userPhone" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 					</div>
 					<div class="form-group col-12">
-						<label class="mb-0 bodyText smaller" for="address" data-lang="M03808"><?php echo $translations['M03808'][$language] /* Street and Number */ ?></label>
+						<label class="mb-0 bodyText smaller" for="address" data-lang="M04069"><?php echo $translations['M04069'][$language] /* Address Line */ ?> 1</label>
 						<input class="form-control" type="text" id="address">
 					</div>
-					<div class="form-group col-md-6 col-12">
-						<label class="mb-0 bodyText smaller" for="cityID" data-lang="M00183"><?php echo $translations['M00183'][$language] /* City */ ?></label>
-						<input class="form-control" type="text" id="cityID">
+					<div class="form-group col-12">
+						<label class="mb-0 bodyText smaller" for="address2" data-lang="M04069"><?php echo $translations['M04069'][$language] /* Address Line */ ?> 2</label>
+						<input class="form-control" type="text" id="address2">
 					</div>
 					<div class="form-group col-md-6 col-12">
-						<label class="mb-0 bodyText smaller" for="postCodeID" data-lang="M03158"><?php echo $translations['M03158'][$language] /* Zip Code */ ?></label>
-						<input class="form-control" type="text" id="postCodeID">
+						<label class="mb-0 bodyText smaller" for="city" data-lang="M00183"><?php echo $translations['M00183'][$language] /* City */ ?></label>
+						<input class="form-control" type="text" id="city">
+					</div>
+					<div class="form-group col-md-6 col-12">
+						<label class="mb-0 bodyText smaller" for="userZipCode" data-lang="M03158"><?php echo $translations['M03158'][$language] /* Zip Code */ ?></label>
+						<input class="form-control" type="text" id="userZipCode">
 					</div>
 					<div class="form-group col-12">
 						<label class="mb-0 bodyText smaller" for="countryID" data-lang="M02673"><?php echo $translations['M02673'][$language] /* Country */ ?></label>
@@ -100,9 +106,9 @@ include 'homepageHeader.php';
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span id="canvasTitle" class="modal-title showLangCode" data-lang="M03804">
+                <!-- <span id="canvasTitle" class="modal-title showLangCode" data-lang="M03804">
                     <?php echo $translations['M03804'][$language] /* Delete Confirmation */ ?>
-                </span>
+                </span> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -153,9 +159,9 @@ var bypassBlocking  			= 0;
 var bypassLoading   			= 0;
 var fCallback       			= '';
 
-var addressId 					= '<?php echo $_POST['addressId'] ?>';
-var addressType 				= '<?php echo $_POST['addressType'] ?>';
-var addressNo 					= '<?php echo $_POST['addressNo'] ?>';
+var addressId 					= '<?php echo $_SESSION['POST'][$postAryName]['addressId'] ?>';
+var addressType 				= '<?php echo $_SESSION['POST'][$postAryName]['addressType'] ?>';
+var addressNo 					= '<?php echo $_SESSION['POST'][$postAryName]['addressNo'] ?>';
 
 var currentStateId				= '';
 var countryStateListIsLoaded 	= false;
@@ -316,10 +322,11 @@ function loadAddress(data, message) {
 		if(selectedAddress.type == '1') $('#isDefault').trigger('change');
 
 		$('#fullName').val(selectedAddress.name);
-		$('#phone').val(selectedAddress.phone);
+		$('#userPhone').val(selectedAddress.phone);
 		$('#address').val(selectedAddress.address);
-		$('#cityID').val(selectedAddress.cityID);
-		$('#postCodeID').val(selectedAddress.postCodeID);
+		$('#address2').val(selectedAddress.address_2);
+		$('#city').val(selectedAddress.cityID);
+		$('#userZipCode').val(selectedAddress.postCodeID);
 		$('#countryID').val(selectedAddress.countryID);
 		
 		currentStateId = selectedAddress.stateID;
@@ -338,9 +345,10 @@ function editAddress() {
 		addressType 	: addressType,
 		fullName 		: $('#fullName').val(),
 		address 		: $('#address').val(),
-		phone 			: $('#phone').val(),
-		cityID 			: $('#cityID').val(),
-		postalCodeID 	: $('#postCodeID').val(),
+		address2		: $('#address2').val(),
+		phone 			: $('#userPhone').val(),
+		cityID 			: $('#city').val(),
+		postalCodeID 	: $('#userZipCode').val(),
 		stateID 		: $('#stateID').val(),
 		countryID 		: $('#countryID').val(),
 		isDefault 		: $('#isDefault').val()
@@ -369,7 +377,7 @@ function deleteAddress() {
 }
 
 function successDeleteAddress(data, message) {
-	showMessage('<?php echo $translations['M03806'][$language] /* Delete Successful. */ ?>', 'success', `<?php echo $translations['M02809'][$language] /* My Address */ ?> ${addressNo}`, '', 'myAddress');
+	showMessage('<?php echo $translations['M03806'][$language] /* Delete Successful. */ ?>', 'success', `<?php echo $translations['M02809'][$language] /* My Address */ ?>`, '', 'myAddress');
 }
 
 </script>

@@ -299,7 +299,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span id="canvasTitle" class="modal-title"><?php echo $translations['M00046'][$language]; //Preview ?></span>
+                <!-- <span id="canvasTitle" class="modal-title"><?php echo $translations['M00046'][$language]; //Preview ?></span> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -325,9 +325,9 @@
             <div class="modal-body modalBodyFont align-self-center text-center">
                 <!-- <img src="/images/project/successIcon.png" class="img-fluid"> -->
                 <i class="fa fa-check"></i>
-                <div class="mt-3 modal-title">
+                <!-- <div class="mt-3 modal-title">
                     <?php echo $translations['M00268'][$language]; //Confirmation ?>
-                </div>
+                </div> -->
                 <div class="mt-3 modalText">
                     <div id="modalKYCConfirmContent"></div>
                 </div>

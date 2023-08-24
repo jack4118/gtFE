@@ -101,6 +101,12 @@
                                                             </option>
                                                         </select>
                                                     </div>
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            Vendor Name
+                                                        </label>
+                                                        <input id="vendorName" type="text" class="form-control" dataName="vendorName" dataType="text">
+                                                    </div>
                                                 </div>
                                             </div>
                                             </form>
@@ -164,6 +170,7 @@
         var pagerId  = 'pagerAnnouncementList';
         var btnArray = {};
         var thArray  = Array (
+            "Image",
             "SKU Code",
             "Package Name",
             "Category",
@@ -173,6 +180,15 @@
             // "Archive Status",
             "",
         );
+        var sortThArray = Array(
+            "",
+            "p.barcode",
+            "p.name",
+            "p.categ_id",
+            "p.sale_price",
+            "",
+            "p.is_published"
+        );
             
         // Initialize the arguments for ajaxSend function
         var url             = 'scripts/reqAdmin.php';
@@ -181,8 +197,10 @@
         var bypassBlocking  = 0;
         var bypassLoading   = 0;
         var pageNumber      = 1; 
+        var vendorName = '<?php echo $_POST['vendorName'] ?>';
 
         $(document).ready(function() {
+            $('#vendorName').val(vendorName);
 
             $("body").keyup(function(event) {
                 if (event.keyCode == 13) {
@@ -194,6 +212,8 @@
             $('#resetBtn').click(function() {
                 $("#searchForm")[0].reset();
             });
+
+            pagingCallBack(pageNumber, loadSearch);
             
             $('#searchBtn').click(function() {
                 pagingCallBack(pageNumber, loadSearch);
@@ -242,6 +262,7 @@
                     'salePrice',
                     'mysteryFoodQuantity',
                     'publishStatus',
+                    'vendorName',
                     // 'archiveStatus'
                 );
 
@@ -264,10 +285,14 @@
 
             var searchID = "searchForm";
             var searchData = buildSearchDataByType(searchID);
+            
+            var sortData = getSortData(tableId);
+
             var formData   = {
                 command     : "getPackageListing",
                 pageNumber  : pageNumber,
                 searchData  : searchData,
+                sortData    : sortData
             };
 
             if(!fCallback)
@@ -284,6 +309,12 @@
             }
 
             $('#basicwizard').show();
+
+            var sortArray = {
+                'sortThArray'   : sortThArray,
+                'sortBy'        : data['sortBy'],
+            }
+
             var tableNo;
             var list = data.packageList;
             if(list) {
@@ -298,13 +329,14 @@
                         // name            : v['name'],
                         // description     : v['description'],
                         // sale_price      : addCommas(v['sale_price']),
-
+                        productImage           : v['productImage'],
                         skuCode                : v['skuCode'],
                         name                   : v['name'],
                         category                : v['categoryDisplay'],
                         salePrice              : addCommas(v['salePrice']),
                         mysteryFoodQuantity   : v['mysteryFoodQuantity'],
                         publishStatus          : v['publishStatus'],
+                        vendorName          : v['vendorName'],
 
                         // archiveStatus          : v['archiveStatus'],
                         editBtn                 : editBtn,
@@ -314,7 +346,7 @@
                 });
             }
 
-            buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
+            buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
             pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
             $('#' + tableId).find('thead tr, tbody tr').each(function () {

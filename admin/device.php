@@ -151,6 +151,8 @@ $countryList = $_SESSION['countryList'];
             $("#searchForm")[0].reset();
         });
 
+        pagingCallBack(pageNumber, loadSearch);
+
         $('#searchBtn').click(function() {
             var getDeviceType = $("input[name=deviceType]:checked").val();
             $('#devicenameSearch').attr('dataType', getDeviceType);

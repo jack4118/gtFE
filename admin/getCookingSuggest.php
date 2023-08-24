@@ -204,6 +204,13 @@
             "Status",
             "Edit"
         );
+        var sortThArray = Array(
+            "name",
+            "cooking_time",
+            "",
+            "",
+            "status"
+        );
             
         // Initialize the arguments for ajaxSend function
         var url             = 'scripts/reqAdmin.php';
@@ -227,6 +234,8 @@
                 var selected = $('.typeRadio:checked').val();
                 $('#type option[value='+selected+']').prop('selected', true);
             });
+
+            pagingCallBack(pageNumber, loadSearch);
             
             $('#searchBtn').click(function() {
                 pagingCallBack(pageNumber, loadSearch);
@@ -313,10 +322,14 @@
 
             var searchID = "searchForm";
             var searchData = buildSearchDataByType(searchID);
+
+            var sortData = getSortData(tableId);
+
             var formData   = {
                 command     : "getCookingSuggestion",
                 pageNumber  : pageNumber,
                 searchData  : searchData,
+                sortData    : sortData
             };
 
             if(!fCallback)
@@ -340,6 +353,12 @@
 
             $('#basicwizard').show();
             $('.cateTab').show();
+
+            var sortArray = {
+                'sortThArray'   : sortThArray,
+                'sortBy'        : data['sortBy'],
+            }
+
             var tableNo;
             var list = data.suggestList;
             if(list) {
@@ -366,7 +385,7 @@
                 });
             }
 
-            buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
+            buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
             pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
             $('#' + tableId).find('tbody tr').each(function () {

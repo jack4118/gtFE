@@ -28,7 +28,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                 <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body">
                                         <div id="searchMsg" class="text-center alert" style="display: none;"></div>
-                                        <form id="searchForm" role="form">
+                                        <div id="searchForm" role="form">
                                             <div class="col-xs-12">
                                                 <div class="row">
                                                     <div class="col-sm-4 form-group">
@@ -56,8 +56,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
-
+                                        </div>
 
                                         <div class="col-xs-12 m-t-rem1">
                                             <button id="searchBtn" type="submit" class="btn btn-primary waves-effect waves-light">
@@ -104,107 +103,6 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
 </div>
 
-<div class="modal fade" id="newPromoCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">×</span>
-                </button>
-
-                <h4 class="modal-title"><i class="fa fa-3x fa-"></i><span><?php echo $translations['A01729'][$language]; /* New Promo Code */ ?></span></h4>
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <label><?php echo $translations['A01730'][$language]; /* Promo Code */ ?>:</label>
-                    <input type="text" class="form-control" id="newCode" required>
-                </div>
-
-                <div class="form-group">
-                    <label><?php echo $translations['A00819'][$language]; /* Type */ ?>:</label>
-                    <select class="form-control" id="promoCodeType">
-                        <option value="freeShipping">
-                            <?php echo $translations['A01731'][$language]; /* Free Shipping */ ?>
-                        </option>
-                        <option value="billDiscount">
-                            <?php echo $translations['A01732'][$language]; /* Bill Discount */ ?>
-                        </option>
-                        <option value="doubleReward">
-                            <?php echo $translations['A01733'][$language]; /* Double Reward */ ?>
-                        </option>
-                        <option value="comingSoon">
-                            <?php echo $translations['A01746'][$language]; /* Coming Soon */ ?>
-                        </option>
-                    </select>
-                </div>
-            </div>
-              
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $translations['A00742'][$language]; /* Close */ ?></button>
-                <button id="submitBtn" type="button" class="btn btn-primary"><?php echo $translations['A00323'][$language]; /* Submit */ ?></button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="editPromoCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">×</span>
-                </button>
-
-                <h4 class="modal-title"><i class="fa fa-3x fa-"></i><span><?php echo $translations['A01734'][$language]; /* Edit Promo Code */ ?></span></h4>
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <label><?php echo $translations['A01730'][$language]; /* Promo Code */?>:</label>
-                    <input type="text" class="form-control" id="editCode" disabled>
-                    <input type="hidden" class="form-control" id="editCodeId">
-                </div>
-
-                <div class="form-group">
-                    <label><?php echo $translations['A00819'][$language]; /* Type */ ?>:</label>
-                    <select class="form-control" id="editPromoCodeType">
-                        <option value="freeShipping">
-                            <?php echo $translations['A01731'][$language]; /* Free Shipping */ ?>
-                        </option>
-                        <option value="billDiscount">
-                            <?php echo $translations['A01732'][$language]; /* Bill Discount */ ?>
-                        </option>
-                        <option value="doubleReward">
-                            <?php echo $translations['A01733'][$language]; /* Double Reward */ ?>
-                        </option>
-                        <option value="comingSoon">
-                            <?php echo $translations['A01746'][$language]; /* Coming Soon */ ?>
-                        </option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label><?php echo $translations['A00318'][$language]; /* Status */?>:</label>
-                    <select class="form-control" id="editPromoCodeStatus">
-                        <option value="Active">
-                            <?php echo $translations['A00372'][$language]; /* Active */?>
-                        </option>
-                        <option value="Deactive">
-                            <?php echo $translations['A01728'][$language]; /* Deactive */ ?>
-                        </option>
-                    </select>
-                </div>
-            </div>
-              
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $translations['A00742'][$language]; /* Close */?></button>
-                <button id="editBtn" type="button" class="btn btn-primary"><?php echo $translations['A00323'][$language]; /* Submit */ ?></button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     var resizefunc = [];
 </script>
@@ -215,12 +113,14 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var divId    = 'listingDiv';
     var tableId  = 'listingTable';
     var pagerId  = 'listingPager';
-    var btnArray = Array('edit', 'delete');
+    var btnArray = Array('view','edit', 'delete');
     var thArray  = Array(
+        'Promo Code Name',
         '<?php echo $translations['A01734'][$language]; /* Promo Code */?>',
         '<?php echo $translations['A00819'][$language]; /* Type */ ?>',
         '<?php echo $translations['A01747'][$language]; /* Used Amount */ ?>',
         '<?php echo $translations['A01705'][$language]; /* Status */ ?>',
+        //'ID',
         );
     var searchId = 'searchForm';
 
@@ -232,9 +132,9 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var pageNumber      = 1;
     var formData        = "";
     var fCallback       = "";  
+    var saveData;
 
     $(document).ready(function() {
-
         $("body").keyup(function(event) {
             if (event.keyCode == 13) {
                 $("#searchBtn").click();
@@ -252,6 +152,8 @@ $thisPage = basename($_SERVER['PHP_SELF']);
             });
 
         });
+
+        pagingCallBack(pageNumber, loadSearch);
 
         $('#searchBtn').click(function() {
             pagingCallBack(pageNumber, loadSearch);
@@ -271,21 +173,6 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                 ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
             }
         });
-
-        $('#editBtn').click(function() {
-            if($("#editCode").val != null) {
-                $('#editPromoCode').modal('hide');
-
-                var formData   = {
-                    command     : "updatePromoCodeStatus",
-                    status    : $("#editPromoCodeStatus").find("option:selected").val(),
-                    codeID    : $("#editCodeId").val(),
-                };
-
-                fCallback = refreshListing;
-                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-            }
-        }); 
     });
 
     function refreshListing() {
@@ -314,15 +201,34 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
     function loadDefaultListing(data, message) {
         var tableNo;
-        buildTable(data.listing, tableId, divId, thArray, btnArray, message, tableNo);
+
+        saveData = data.listing;
+        if(saveData) {
+            var newList = [];
+
+            $.each(saveData, function(k, v) {
+                var rebuildData = {
+                    name               : v['name'],
+                    code               : v['code'],
+                    type               : v['type'],
+                    usedAmount         : v['usedAmount'],
+                    status             : v['status'],
+                    //promoCodeID        : v['promoCodeID']
+                };
+                newList.push(rebuildData);
+            });
+        }
+
+        buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
         pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
         $('#'+ tableId).find('thead tr').each(function(){
-            $(this).find('th').css('text-align','center');
+            $(this).find('th:eq(4)').hide();
         });
 
         $('#'+ tableId).find('tbody tr').each(function(){
-            $(this).find('td').css('text-align','center');
+            $(this).find('td:eq(4)').hide();
+            //$(this).find('td:eq(5)').css("text-align", "center");
         });
     }
 
@@ -331,12 +237,17 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         var tableRow = $('#'+btnId).parent('td').parent('tr');
         var tableId  = $('#'+btnId).closest('table');
 
+        var rowIndex = tableRow.attr("id");
+        var viewId = saveData[rowIndex]["promoCodeID"];
+        console.log("viewId = "+viewId);
+        console.log(saveData);
+
         if (btnName == 'delete') {
-            var promoCodeID = tableRow.find('td:eq(0)').text();
+            //var promoCodeID = tableRow.find('td:eq(5)').text();
 
             var formData   = {
                 command     : "deletePromoCode",
-                promoCodeID   : promoCodeID
+                promoCodeID   : viewId
             };
 
             fCallback = refreshListing;
@@ -344,12 +255,21 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         }
 
         if (btnName == 'edit') {
-            var editId = tableRow.attr('data-th');
-            var editCode = tableRow.find('td:eq(0)').text();
-            var editStatus = tableRow.find('td:eq(3)').text();
+            //var editId = tableRow.find('td:eq(5)').text();
+            //var editCode = tableRow.find('td:eq(0)').text();
+            //var editStatus = tableRow.find('td:eq(3)').text();
 
-            document.getElementById("editCode").disabled = false;
-            editPromoCode(editId, editCode, editStatus);
+            $.redirect('editPromoCode.php', {
+                promoCodeId : viewId
+            });
+        }
+
+        if (btnName == 'view') {
+            //var viewId = tableRow.find('td:eq(5)').text(); 
+
+            $.redirect('getPromoCodeUserListing.php', {
+                promoCodeId : viewId
+            });
         }
     }
 
@@ -362,15 +282,10 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     }
 
     function addPromoCode() {
-        $('#newPromoCode').modal('show');
-    }
-
-    function editPromoCode(a,b,c){
-        $("#editPromoCode").modal('show');
-
-        $("#editCodeId").val(a);
-        $("#editCode").val(b);
-        $("#editPromoCodeStatus").val(c);
+        // $('#newPromoCode').modal('show');
+        $.redirect('addPromoCode.php', {
+            // invProductID : invProductID
+        });
     }
 
 

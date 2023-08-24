@@ -12,7 +12,10 @@
     
     // Recursive function. Will keep on search for the parent of your page
     // When it stops, it will echo the breadcrumbs out
-    function buildBreadcrumbs($link, $liString, $isParent) {
+    function buildBreadcrumbs($link, $liString, $isParent, $variable) {
+
+        global $thisPage;
+        
         $queryString = '';
         if (isset($_SESSION['queryString'][$link]))
             $queryString = $_SESSION['queryString'][$link];
@@ -20,8 +23,22 @@
         //$name = $_SESSION['menuLanguage'][$link];
         $breadcrumbs = '<li class="breadcrumb-item"><a href="'.$link.$queryString.'">'.$name.'</a></li>'.$liString;
         if (isset($_SESSION['parentPage'][$link])) {
-            $breadcrumbs = '<li class="breadcrumb-item"><a href="#">'.$name.'</a></li>'.$liString;
-            buildBreadcrumbs($_SESSION['parentPage'][$link], $breadcrumbs, true);
+            if(isset($_SESSION['parentPage'][$link]) && strpos($thisPage, $link) === false ) {
+                if($variable == 1){
+                    $breadcrumbs = '<li onclick="redirectBreadcrumbs()" class="breadcrumb-item"><a href="#">'.$name.'</a></li>'.$liString;
+                }else{
+                    $breadcrumbs = '<li class="breadcrumb-item"><a href="'.$link.'">'.$name.'</a></li>'.$liString;
+                }
+
+            } else {
+                $breadcrumbs = '<li class="breadcrumb-item"><a href="#">'.$name.'</a></li>'.$liString;
+            }
+
+            if($thisPage == 'stockSerialList.php'){
+                buildBreadcrumbs($_SESSION['parentPage'][$link], $breadcrumbs, true, 1);
+            }else{
+                buildBreadcrumbs($_SESSION['parentPage'][$link], $breadcrumbs, true, 0 );
+            }
         }else{
             if($isParent){
                 echo $breadcrumbs;
@@ -114,8 +131,9 @@
                     unset($_SESSION['queryString']);
                     // if($_SERVER['QUERY_STRING'] != '')
                     //     $_SESSION['queryString'][$thisPage] = '?'.$_SERVER['QUERY_STRING'];
-                    if($thisPage != 'webServices.php')
-                        buildBreadcrumbs($thisPage, '', false); 
+                    if($thisPage != 'webServices.php'){
+                        buildBreadcrumbs($thisPage, '', false, 0); 
+                    }
                 ?>  
         </ul>
     </div>

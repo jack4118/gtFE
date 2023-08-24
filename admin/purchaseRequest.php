@@ -34,21 +34,33 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                     <!-- ID Search -->
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            <?php echo $translations['A00106'][$language]; /* ID */ ?>
+                                                            <?php echo $translations['A01777'][$language]; /* Reference Number */ ?>
                                                         </label>
-                                                        <input type="text" class="form-control" dataName="po_id" dataType="text">
+                                                        <input type="text" class="form-control" dataName="refNo" dataType="text">
                                                     </div>
                                                     <!-- Buying Date Search -->
-                                                    <div class="col-sm-4 form-group">
+                                                    <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             <?php echo $translations['A01694'][$language]; /* Buying Date */?>
                                                         </label>
                                                         <div class="input-group input-daterange">
-                                                            <input type="text" class="form-control" dataName="buyingDate" dataType="dateRange">
+                                                            <input id="buyingDateStart" type="text" class="form-control" dataName="buyingDate" dataType="dateRange">
                                                             <span class="input-group-addon">
                                                                 <?php echo $translations['A00139'][$language]; /* to */?>
                                                             </span>
-                                                            <input type="text" class="form-control" dataName="buyingDate" dataType="dateRange">
+                                                            <input id="buyingDateEnd" type="text" class="form-control" dataName="buyingDate" dataType="dateRange">
+                                                        </div>
+                                                    </div> -->
+                                                    <div id="datepicker" class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            <?php echo $translations['A01694'][$language]; /* Buying Date */?>
+                                                        </label>
+                                                        <div class="input-daterange input-group" id="datepicker-range">
+                                                            <input id="buyingDateStart" type="text" class="form-control" name="start" dataName="buyingDate" dataType="dateRange">
+                                                            <div class="input-group-addon">
+                                                                <?php echo $translations['A00139'][$language]; /* to */?>
+                                                            </div>
+                                                            <input id="buyingDateEnd" type="text" class="form-control" name="end" dataName="buyingDate" dataType="dateRange">
                                                         </div>
                                                     </div>
                                                     <!-- Vendor Name Search -->
@@ -90,7 +102,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                         <input type="text" class="form-control" dataName="approvedBy" dataType="text">
                                                     </div>
                                                     <!-- Approved Date Search -->
-                                                    <div class="col-sm-4 form-group">
+                                                    <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             <?php echo $translations['A01660'][$language]; /* Approved Date */?>
                                                         </label>
@@ -101,18 +113,24 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                             </span>
                                                             <input type="text" class="form-control" dataName="approvedDate" dataType="dateRange">
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-12">
-                                                <div class="row">
-                                                    <!-- Warehouse Search -->
+                                                    </div> -->
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             <?php echo $translations['A01739'][$language]; /* Warehouse */ ?>
                                                         </label>
                                                         <input type="text" class="form-control" dataName="warehouseSearch" dataType="text">
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <!-- Warehouse Search -->
+                                                    <!-- <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            <?php echo $translations['A01739'][$language]; /* Warehouse */ ?>
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="warehouseSearch" dataType="text">
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </form>
@@ -174,7 +192,8 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var pagerId  = 'listingPager';
     var btnArray = {};
     var thArray  = Array(
-        '<?php echo $translations['A00106'][$language]; /* ID */ ?>',
+        'ID',
+        'PR No',
         'Buying Date',
         'Vendor Name',
         'Total Amount',
@@ -184,6 +203,18 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         'Remark',
         'Warehouse',
         );
+    var sortThArray = Array(
+        "pr.id",
+        "pr.order_number",
+        "pr.buying_date",
+        "v.name",
+        "pr.total_cost",
+        "pr.Created_by",
+        "pr.approved_by",
+        "pr.status",
+        "pr.remarks",
+        "w.warehouse_location"
+    );
     var searchId = 'searchForm';
 
     var url             = 'scripts/reqAdmin.php';
@@ -215,6 +246,8 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
         });
 
+        pagingCallBack(pageNumber, loadSearch);
+
         $('#searchBtn').click(function() {
             pagingCallBack(pageNumber, loadSearch);
         }); 
@@ -225,7 +258,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                 singleDatePicker: true,
                 timePicker: false,
                 locale: {
-                    format: 'DD/MM/YYYY'
+                    format: 'YYYY-MM-DD'
                 }
             });
             $(this).val('');
@@ -236,12 +269,15 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         if(pageNumber > 1) bypassLoading = 1;
 
         var searchData = buildSearchDataByType(searchId);
+
+        var sortData = getSortData(tableId);
+
         var formData   = {
             command     : "getPurchaseRequestList",
             pageNumber  : pageNumber,
-            inputData   : searchData
+            inputData   : searchData,
+            sortData    : sortData
         };
-
         if(!fCallback)
             fCallback = loadDefaultListing;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
@@ -250,6 +286,11 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     function loadDefaultListing(data, message) {
         var tableNo;
         var prTable = data.purchaseRequestList;
+
+        var sortArray = {
+            'sortThArray'   : sortThArray,
+            'sortBy'        : data['sortBy'],
+        }
 
         if (data != "" && prTable.length > 0) {
             var newPrTable = []
@@ -275,6 +316,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
                 var rebuildData = {
                     id            : v['id'],
+                    orderNumber   : v['orderNumber'],
                     buying_date   : v['buying_date'],
                     vendor        : v['vendor'],
                     cost          : v['cost'],
@@ -289,7 +331,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                 newPrTable.push(rebuildData);
             }); 
         }
-        buildTable(newPrTable, tableId, divId, thArray, btnArray, message, tableNo);
+        buildTable(newPrTable, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
         pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
     }
 
@@ -301,7 +343,8 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         if (btnName == 'edit') {
             var editId = tableRow.attr('data-th');
             var role = tableRow.find('td:eq(4)').text();
-            var vendor = tableRow.find('td:eq(2)').text();
+            var vendor = tableRow.find('td:eq(3)').text();
+
             $.redirect("editPurchaseRequest.php",{id: editId, role: role, vendor: vendor});
         }
 
@@ -339,6 +382,24 @@ $thisPage = basename($_SERVER['PHP_SELF']);
             $('#searchMsg').removeClass('alert-success').html('').hide(); 
         }, 3000);
     }
+
+    $('#datepicker input').each(function() {
+        $(this).datepicker('clearDates');
+    });
+
+    $('#buyingDateStart').datepicker({
+        // language: language,
+        format      : 'yyyy-mm-dd',
+        orientation : 'auto',
+        autoclose   : true
+    });
+
+    $('#buyingDateEnd').datepicker({
+        // language: language,
+        format      : 'yyyy-mm-dd',
+        orientation : 'auto',
+        autoclose   : true
+    });
 
     // const statusBtn = document.getElementsByName("approve");
     // const status = document.getElementById('status');

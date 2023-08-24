@@ -72,9 +72,9 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span id="canvasTitle" class="modal-title showLangCode" data-lang="M00075">
+                <!-- <span id="canvasTitle" class="modal-title showLangCode" data-lang="M00075">
                     <?php echo $translations['M00075'][$language]; //Inactive Confirmation ?>
-                </span>
+                </span> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>

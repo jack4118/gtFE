@@ -67,7 +67,7 @@ include 'head.php';
         <div class="col-12 food-detail-description-tab">
             <ul class="nav nav-tabs">
                 <li><a class="active" data-toggle="tab" href="#description" data-lang="M03879"><?php echo $translations['M03879'][$language]; //Description ?></a></li>
-                <li><a data-toggle="tab" href="#cookingSuggestion" data-lang="M03880"><?php echo $translations['M03880'][$language]; //Cooking Suggestion ?></a></li>
+                <li><a data-toggle="tab" href="#cookingSuggestion" id="cookingSuggestion1" data-lang="M03880"><?php echo $translations['M03880'][$language]; //Cooking Suggestion ?></a></li>
                 <!-- <li><a data-toggle="tab" href="#fullInstruction" data-lang="M03881"><?php echo $translations['M03881'][$language]; //Full Instruction ?></a></li> -->
                 <!-- <li><a data-toggle="tab" href="#fullInstruction2" data-lang="M03881"><?php echo $translations['M03881'][$language]; //Full Instruction ?> 2</a></li> -->
             </ul>
@@ -119,6 +119,9 @@ var slideIndex      = 1;
 var radiodata       = [];
 
 $(document).ready(function(){ 
+
+    var current_url = window.location.href;
+
     var full_url = document.URL;
     var url_array = full_url.split('=');
     var last_segment = url_array[url_array.length-1];
@@ -126,6 +129,7 @@ $(document).ready(function(){
     var formData  = {
         command     : 'getProductDetailsBySN',
         serial_number  : last_segment,
+        page_url : current_url,
         // serial_number  : 'GT010-001-005',
     };
     var fCallback = loadDefaultListing; 
@@ -244,7 +248,7 @@ function loadDefaultListing (data,message,session) {
     //}
 
     //new cooking suggestion API
-    if(data.cookingDetail){
+    if(data.cookingDetail.length != 0){
         cookingSuggestHTML +=  `<div class="accordion" id="accordionExample">`;
 
         for (var i = 0; i < data.cookingDetail.length; i++) {
@@ -290,6 +294,10 @@ function loadDefaultListing (data,message,session) {
 
         $("#cookingSuggestion").html(cookingSuggestHTML);
     }
+    else
+    {
+        $("#cookingSuggestion1").hide();
+    }
 }
 var localStorageCart;
 $('#addCartBtn').click(function(data) {
@@ -327,7 +335,6 @@ $('#addCartBtn').click(function(data) {
             img: localimage,
         }
 
-
         var formData  = {
             // command             : "guestAddShoppingCart", ## old api 
             command             : 'addShoppingCart',
@@ -336,13 +343,9 @@ $('#addCartBtn').click(function(data) {
             quantity            : quantity,
             type                : "add",
             product_template    : product_template_string,
-            step                : 1 // to differentiate between guest or registered user for BE
-
+            step                : 1, // to differentiate between guest or registered user for BE
+            bkend_token         : bkend_token,
         }; 
-
-        if($.cookie('bkend_token')) {
-            formData['bkend_token'] = $.cookie('bkend_token')
-        }
 
         var fCallback = successAddCart;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
@@ -357,12 +360,9 @@ $('#addCartBtn').click(function(data) {
             packageID   : packageID,
             quantity    : quantity,
             type        : "add",
-            product_template    : product_template_string
+            product_template    : product_template_string,
+            bkend_token : bkend_token,
         }; 
-
-        if($.cookie('bkend_token')) {
-            formData['bkend_token'] = $.cookie('bkend_token')
-        }
 
         var fCallback = successAddCart;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
@@ -370,8 +370,8 @@ $('#addCartBtn').click(function(data) {
 })
 
 function successAddCart (data,message) {
+    bkend_token = data['bkend_token'];
     newcart(localStorageCart);
-    $.cookie('bkend_token', data['bkend_token'],{expires:10000})
     showMessage('Successfully added to Cart', 'success', 'Success', '', '');
     getNumberOfCartItems();
 }

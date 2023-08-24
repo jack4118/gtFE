@@ -33,11 +33,16 @@
                 <div class="container">
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-md-12 productList-buttonGrp">
                          <a href="purchaseRequest.php" class="btn btn-primary btn-md waves-effect waves-light m-b-20">
                             <i class="md md-add"></i>
-                            <?php echo $translations['A00115'][$language]; /* Back */ ?>
+                            Discard
                         </a>
+                        <div style="display: flex;">
+                            <div id="addProductBtn" class="btn btn-primary action-btn waves-effect waves-light m-b-20" style="display: flex; align-items: center;">
+                                Add Product
+                            </div>
+                        </div>
                     </div><!-- end col -->
                 </div>
 
@@ -62,7 +67,7 @@
                                             Vendor
                                         </label>
                                         <select id="vendorDropdown" class="form-control" required>
-                                            <option value="">Select a vendor</option>
+                                            <!-- <option value="">Select a vendor</option> -->
                                         </select>
                                     </div>
                                 </div>
@@ -198,6 +203,9 @@
         
     var fCallback;
 
+    var productId       = '<?php echo $_POST['productId'] ?>';
+    var vendorId        = '<?php echo $_POST['vendorId'] ?>';
+
     $(document).ready(function() { 
         setTodayDatePicker();
 
@@ -221,6 +229,7 @@
 
         $('#vendorDropdown').change(function() {
             if($('#vendorDropdown option:selected').val() != 0) {
+                currentTokenCategory = $('#vendorDropdown :selected').val();
                 productDetails();
             }
             $('#subtotal').val("0.00");
@@ -291,6 +300,10 @@
         // };
         // fCallback = productListOpt
         // ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
+        $('#addProductBtn').click(function() {
+            window.open('addProductInventory.php', '_blank');
+        });
     });
 
     function setTodayDatePicker() {
@@ -307,6 +320,7 @@
         var today = yyyy+'-'+mm+'-'+dd;
         
         $('#buyingDate').daterangepicker({
+            minDate: today,
             singleDatePicker: true,
             timePicker: false,
             locale: {
@@ -384,6 +398,7 @@
     function productDetails() {
         var selectedOption = $('#vendorDropdown option:selected');
         var vendorName = $.trim(selectedOption.text());
+        
         var formData = {
             command        : "getProductList",
             vendor_name    : vendorName,
@@ -433,7 +448,15 @@
                 value: val['id'],
                 text: vName
             }));
+
+            
         });
+
+        if(vendorId) {
+            $('#vendorDropdown').val(vendorId).trigger('change');
+            $('#vendorDropdown').trigger('change');
+        }
+
         vendorAddressData = data.getVendorAddressDetail;
         $.each(vendorAddressData, function(key, val) {
             var branchName = val['branch_name'];
@@ -504,6 +527,13 @@
 
         $("#appendProduct").append(wrapper);
         $("#productSelect"+wrapperLength).html(html);
+
+        $("#productSelect"+wrapperLength).select2({
+            dropdownAutoWidth: true,
+            templateResult: newFormatState,
+            templateSelection: newFormatState,
+        });
+
         totalLoop.push(wrapperLength);
         wrapperLength++;
     }
@@ -581,7 +611,7 @@
                         <div class="row" id="pr1">
                             <div class="col-md-4">
                                 <label>1. Product</label>
-                                <select id="productSelect1" class="form-control productSelect" required></select>
+                                <select id="productSelect1" onchange="loopSelect('1')" class="form-control productSelect" required></select>
                             </div>
                             <div class="col-md-2">
                                 <label>Quantity</label>
@@ -599,7 +629,7 @@
                     </div>
                 </div>`;
         
-            $("#appendBranch").html(branchHTML);
+            $("#appendBranch").html(branchHTML).show();
             $("#appendProduct").html(productHTML);
             $(".addProductWrapper").css("display", "block");
             $(".addProductWrapper.noData").css("display", "none");
@@ -612,6 +642,11 @@
                 html = html1;
             });
             $("#productSelect1").html(html1);
+
+            if(productId) {
+                $('#productSelect1').val(productId);
+                loopSelect('1');
+            }
 
             var html2 = `<option value="">Select a branch</option>`;
             $.each(data.branch, function(i, obj) { 
@@ -630,7 +665,10 @@
             $(".productSelect").attr("disabled","disabled");
             $(".quantityInput").attr("disabled","disabled");
             $(".addProduct").css("display", "none");
-            alert("This vendor have no product yet. Please choose other vendor to continue.")
+            showMessage('This vendor have no product yet. Please choose other vendor to continue.', 'warning', 'New Purchase Request', 'warning', '');
+            $('#vendorDropdown').val('');
+            $('#appendProduct').empty();
+            $('#appendBranch').hide();
         }
 
         $(".productSelect").change(function () {
@@ -657,6 +695,12 @@
             $('.totalInput').trigger('change');
             countSubtotal();
         })
+
+        $('#productSelect1').select2({
+            dropdownAutoWidth: true,
+            templateResult: newFormatState,
+            templateSelection: newFormatState,
+        });
     }
 
     function keyinQuantity() {
@@ -697,6 +741,29 @@
     $(".quantityInput").keyup(function() {
         countSubtotal();
     })
+
+
+	function newFormatState(method) {
+        if (!method.id) {
+            return method.text;
+        }
+
+        var optimage = $(method.element).attr('data-image')
+        if (!optimage) {
+            return method.text;
+        } else {
+            var $opt = $(
+                '<span onclick="changeTokenCategory('+method.text+')"><img src="' + optimage + '" class="tokenOptionImg" /> <span style="vertical-align: middle;">' + method.text + '</span></span>'
+            );
+            return $opt;
+        }
+    };
+
+	$('#vendorDropdown').select2({
+        dropdownAutoWidth: true,
+        templateResult: newFormatState,
+        templateSelection: newFormatState,
+    });
 </script>
 </body>
 </html>

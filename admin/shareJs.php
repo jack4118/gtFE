@@ -226,6 +226,16 @@
         // alert(2);
     };
 
+    // removeFirstTwoCharacters
+    function removeFirstTwoCharacters(inputString) {
+      if (inputString.substring(0, 2) === "60") {
+        return inputString.substring(2);
+      } else if (inputString.charAt(0) === "0" && !inputString.substring(1).startsWith("60")) {
+        return inputString.substring(1);
+      }
+      return inputString;
+    }
+
     function listWithdrawalUnreadMessage(data, message){
         var unread = data['kycUnreadCount'];
 

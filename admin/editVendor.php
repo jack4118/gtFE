@@ -12,9 +12,31 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         <div class="content">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-md-12 productList-buttonGrp">
                         <div id="backBtn" class="btn btn-primary waves-effect waves-light m-b-20">
                             <?php echo $translations['A00115'][$language]; /* Back */?>
+                        </div>
+                        <div style="display: flex;">
+                            <div id="productUnitOnHandBtn" class="btn btn-primary action-btn waves-effect waves-light m-b-20 m-r-10" style="display: flex; align-items: center;">
+                                <img src="images/unit-on-hand.png" alt="" height="28px" class="m-r-10">
+                                <div>
+                                    <div><span id="unitOnHand"><font id="productUnitOnHandNumber"></font></span> Unit</div>
+                                    <div>of Products</div>
+                                </div>
+                            </div>
+                            <div id="packageUnitOnHandBtn" class="btn btn-primary action-btn waves-effect waves-light m-b-20 m-r-10" style="display: flex; align-items: center;">
+                                <img src="images/unit-on-hand.png" alt="" height="28px" class="m-r-10">
+                                <div>
+                                    <div><span id="unitOnHand"><font id="packageUnitOnHandNumber"></font></span> Unit</div>
+                                    <div>of Package</div>
+                                </div>
+                            </div>
+                            <div id="addProductBtn" class="btn btn-primary action-btn waves-effect waves-light m-b-20 m-r-10" style="display: flex; align-items: center;">
+                                Add Product
+                            </div>
+                            <div id="viewPOBtn" class="btn btn-primary action-btn waves-effect waves-light m-b-20" style="display: flex; align-items: center;">
+                                View PO
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,31 +102,12 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                             <input id="internalNote" type="text" class="form-control">
                                         </div>
 
-                                        <div class="col-xs-12" style="margin-top: 20px;">
-                                            <label>Status</label>
-                                            <div id="status" class="m-b-20">
-                                                <!-- <div class="radio radio-info radio-inline"> -->
-                                                <div class="radio radio-inline">
-                                                    <input id="active" type="radio" value="Active" name="statusRadio" class="statusRadio" />
-                                                    <label for="active">
-                                                        <?php echo $translations['A00372'][$language]; /* Active */?>
-                                                    </label>
-                                                </div>
-                                                <div class="radio radio-inline">
-                                                    <input id="inActive" type="radio" value="Inactive" name="statusRadio" class="statusRadio" />
-                                                    <label for="inActive">
-                                                        <?php echo $translations['A00373'][$language]; /* Inactive */?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                         <div class="row">
                                             <div class="col-md-12">                                                
                                                 <div class="row">
                                                     <div id="appendAddress">
                                                         <div class="col-md-12">
-                                                            <div class="addProductWrapper default" style="margin-top: 0px;">
+                                                            <div class="addProductWrapper default" style="margin-top: 20px;">
                                                                 <span class="dtxt">Default</span>
                                                                 
                                                                 <div class="row" id="address1">
@@ -158,6 +161,25 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                             </div>
                                         </div>
 
+                                        <div class="col-xs-12" style="margin-top: 20px;">
+                                            <label>Status</label>
+                                            <div id="status" class="m-b-20">
+                                                <!-- <div class="radio radio-info radio-inline"> -->
+                                                <div class="radio radio-inline">
+                                                    <input id="active" type="radio" value="Active" name="statusRadio" class="statusRadio" />
+                                                    <label for="active">
+                                                        <?php echo $translations['A00372'][$language]; /* Active */?>
+                                                    </label>
+                                                </div>
+                                                <div class="radio radio-inline">
+                                                    <input id="inActive" type="radio" value="Inactive" name="statusRadio" class="statusRadio" />
+                                                    <label for="inActive">
+                                                        <?php echo $translations['A00373'][$language]; /* Inactive */?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="col-xs-12" style="margin-top: 20px;margin-bottom: 20px;">
                                             <button type="button" id="submitBtn" class="btn btn-primary waves-effect waves-light">
                                                 <?php echo $translations['A00323'][$language]; /* Submit */?>
@@ -198,6 +220,8 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     </div>
 </div>
 
+<form action="" method="post" id="redirectForm" target="_blank">
+
 <script>
 var resizefunc = [];</script>
 <?php include("shareJs.php"); ?>
@@ -218,7 +242,7 @@ var resizefunc = [];</script>
     var addressArray = [];
     var uploadImage;
     var imageId = [];
-
+    var vendorName;
 
 
     $(document).ready(function() {
@@ -349,6 +373,30 @@ var resizefunc = [];</script>
         $('#backBtn').click(function() {
             $.redirect('vendor.php');
         });
+
+        $('#productUnitOnHandBtn').click(function() {
+            $('#redirectForm').empty().html(`
+                <input type="text" name="vendorName" value="${vendorName}">
+            `).attr('action', 'getProductInventory.php').submit();
+        });
+
+        $('#packageUnitOnHandBtn').click(function() {
+            $('#redirectForm').empty().html(`
+                <input type="text" name="vendorName" value="${vendorName}">
+            `).attr('action', 'getPackageList.php').submit();
+        });
+
+        $('#addProductBtn').click(function() {
+            $('#redirectForm').empty().html(`
+                <input type="text" name="vendorId" value="${supplierID}">
+            `).attr('action', 'addProductInventory.php').submit();
+        });
+
+        $('#viewPOBtn').click(function() {
+            $('#redirectForm').empty().html(`
+                <input type="text" name="vendorName" value="${vendorName}">
+            `).attr('action', 'order.php').submit();
+        });
     });
 
     function SortByName(a, b){
@@ -426,7 +474,8 @@ var resizefunc = [];</script>
             });
         }
 
-        $('#name').val(data.name);
+        vendorName = data.name;
+        $('#name').val(vendorName);
         $('#code').val(data.code);
         // $('#address').val(data.address[0].address);
         $('#email').val(data.email);
@@ -435,6 +484,8 @@ var resizefunc = [];</script>
         $('#phone').val(data.phone);
 	$('#internalNote').val(data.note);
         $('input[name=statusRadio]').filter('[value='+data.status+']').prop('checked', true);
+        $('#productUnitOnHandNumber').text(data.productUnitOnHandNumber);
+        $('#packageUnitOnHandNumber').text(data.packageUnitOnHandNumber);
 
         if(address != null && address != '') {
             $.each(address, function(k,v) {
@@ -481,9 +532,11 @@ var resizefunc = [];</script>
                                 <input type="file" id="fileUpload${addImgIDNum}" class="hide" accept="image/jpeg, image/png, image/gif, image/bmp, image/tiff" onchange="displayFileName('${addImgIDNum}', this)">
                                 <div>
                                     <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
-                                    <span id="fileName${addImgIDNum}" class="fileName">
+                                    <span id="fileNotUploaded${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                                    <!-- <span id="fileName${addImgIDNum}" class="fileName">
                                         ${v.name}
-                                    </span>
+                                    </span> -->
+                                    <img id="thumbnailImg${addImgIDNum}" src="${v.url}" style="width:100%;" />
                                     <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="padding: 6px;" onclick="showImg('${addImgIDNum}')">
                                         <i class="fa fa-eye"></i>
                                     </a>
@@ -496,6 +549,7 @@ var resizefunc = [];</script>
                     `;
         
                     $("#buildImg").append(buildImg);
+                    $(`#fileNotUploaded${addImgIDNum}`).hide();
                 }
             });
         }
@@ -600,7 +654,8 @@ var resizefunc = [];</script>
 
         $("#viewImg"+id).hide();
         $("#deleteImg"+id).hide();
-
+        $("#fileNotUploaded"+id).show()
+        $("#thumbnailImg"+id).attr('src', "");
     }
 
     function showImg(n) {
@@ -630,7 +685,9 @@ var resizefunc = [];</script>
 
                     <div>
                         <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
-                        <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                        <span id="fileNotUploaded${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                        <!-- <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span> -->
+                        <img id="thumbnailImg${addImgIDNum}" style="width:100%;" />
                         <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="display: none; padding: 6px;" onclick="showImg('${addImgIDNum}')">
                             <i class="fa fa-eye"></i>
                         </a>
@@ -675,6 +732,8 @@ var resizefunc = [];</script>
                 // $("#viewImg"+id).attr('data-res', reader["result"]);
                 $("#viewImg"+id).css('display', 'inline-block');
                 $("#deleteImg"+id).css('display', 'inline-block');
+                $("#fileNotUploaded"+id).hide()
+                $("#thumbnailImg"+id).attr('src', $("#storeFileData"+id).val());
             };
 
             reader.readAsDataURL(n.files[0]);

@@ -52,25 +52,6 @@ $_SESSION['lastVisited'] = $thisPage;
                                                 <div class="row">
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label" for="">
-                                                           <?php echo $translations['A00148'][$language]; /* Member ID */ ?>
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="memberID" dataType="text">
-                                                    </div>
-                                                    <!-- <div class="col-sm-4 form-group">
-                                                        <label class="control-label" for="">
-                                                            <?php echo $translations['A00102'][$language]; /* Username */?>
-                                                        </label>
-                                                        <span class="pull-right">
-                                                           <input id="match" type="radio" name="usernameType" class="usernameType" value="match" checked> 
-                                                            <label for="match" style="margin-right: 15px;"><?php echo $translations['A01347'][$language]; /* Match */ ?></label>
-
-                                                            <input id="like" type="radio" name="usernameType" class="usernameType" value="like" style="margin-left: 15px;" > 
-                                                            <label for="like"><?php echo $translations['A01348'][$language]; /* Like */ ?></label>
-                                                        </span>
-                                                        <input type="text" class="form-control" dataName="username" dataType="text">
-                                                    </div> -->
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label" for="">
                                                             <?php echo $translations['A00117'][$language]; /* Full Name */ ?>
                                                         </label>
                                                         <span class="pull-right">
@@ -87,6 +68,22 @@ $_SESSION['lastVisited'] = $thisPage;
                                                             <?php echo $translations['A00103'][$language]; /*Email*/?>
                                                         </label>
                                                         <input type="text" class="form-control" dataName="email" dataType="text">
+                                                    </div>
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            <?php echo $translations['A00153'][$language]; /* Country */ ?>
+                                                        </label>
+                                                        <select class="form-control" dataName="countryID" dataType="select">
+                                                            <option value="">
+                                                                <?php echo $translations['A00055'][$language]; /* All */ ?>
+                                                            </option>
+
+                                                            <?php
+                                                            foreach ($countryList as $value => $countryRow) {
+                                                                echo "<option value='".$countryRow['id']."'>".$countryRow['display']."</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
                                                     </div>
 
                                                 </div>
@@ -108,22 +105,6 @@ $_SESSION['lastVisited'] = $thisPage;
                                                             <option value="0">
                                                                 <?php echo $translations['A00372'][$language]; /* Active */?>
                                                             </option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            <?php echo $translations['A00153'][$language]; /* Country */ ?>
-                                                        </label>
-                                                        <select class="form-control" dataName="countryID" dataType="select">
-                                                            <option value="">
-                                                                <?php echo $translations['A00055'][$language]; /* All */ ?>
-                                                            </option>
-
-                                                            <?php
-                                                            foreach ($countryList as $value => $countryRow) {
-                                                                echo "<option value='".$countryRow['id']."'>".$countryRow['display']."</option>";
-                                                            }
-                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -196,11 +177,11 @@ $_SESSION['lastVisited'] = $thisPage;
     var divId    = 'memberListDiv';
     var tableId  = 'memberListTable';
     var pagerId  = 'pagerMemberList';
-    var btnArray = Array('edit');
+    var btnArray = {};
     var thArray  = Array (
-        '<?php echo $translations['A00148'][$language]; /* Member ID */ ?>',
+        // '<?php echo $translations['A00148'][$language]; /* Member ID */ ?>',
         '<?php echo $translations['A00117'][$language]; /* Full Name */ ?>',
-        'Sponsor ID',
+        // 'Sponsor ID',
         '<?php echo $translations['A00153'][$language]; /* Country */ ?>',
         '<?php echo $translations['A00195'][$language]; /* Email Address */?>',
         '<?php echo $translations['A00318'][$language]; /* Status */?>'
@@ -252,6 +233,8 @@ $_SESSION['lastVisited'] = $thisPage;
             });
         });
 
+        pagingCallBack(pageNumber, loadSearch);
+
         $('#searchBtn').click(function() {
             var getNameType = $("input[name=nameType]:checked").val();
             $('.name').attr('dataType', getNameType);
@@ -266,7 +249,6 @@ $_SESSION['lastVisited'] = $thisPage;
     });
 
     function loadDefaultListing(data, message) {
-        console.log(data);
         $('#basicwizard').show();
         /*
             clientID: 2142460
@@ -286,16 +268,20 @@ $_SESSION['lastVisited'] = $thisPage;
         if(data.memberList){
             var newList = [];
             $.each(data.memberList, function(k,v){
-                var hiddenInput = `${v['member_id']} <input type="hidden" class="storeClientID" value="${v['clientID']}">`;
+                // var hiddenInput = `${v['member_id']} <input type="hidden" class="storeClientID" value="${v['clientID']}">`;
+                var buildBtn = `
+                    <a data-toggle="tooltip" title="" onclick="editRecord('${v['clientID']}','${v['name']}','${v['member_id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
+                `;
 
                 var rebuildData ={
-                    member_id : hiddenInput,
+                    // member_id : hiddenInput,
                     // username : v['username'],
-                    name : v['name'],
-                    sponsorUsername : v['sponsorUsername'],
-                    country : v['country'],
-                    email : v['email'],
-                    disabled : v['disabled']
+                    name        : v['name'],
+                    // sponsorUsername : v['sponsorUsername'],
+                    country     : v['country'],
+                    email       : v['email'],
+                    disabled    : v['disabled'],
+                    buildBtn    : buildBtn,
                 };
                 newList.push(rebuildData);
             });
@@ -335,25 +321,25 @@ $_SESSION['lastVisited'] = $thisPage;
         }, 3000);
     }
 
-    function tableBtnClick(btnId) {
-        var btnName  = $('#'+btnId).attr('id').replace(/\d+/g, '');
-        var tableRow = $('#'+btnId).parent('td').parent('tr');
-        var tableId  = $('#'+btnId).closest('table');
+    // function tableBtnClick(btnId) {
+    //     var btnName  = $('#'+btnId).attr('id').replace(/\d+/g, '');
+    //     var tableRow = $('#'+btnId).parent('td').parent('tr');
+    //     var tableId  = $('#'+btnId).closest('table');
 
-        if (btnName == 'edit') {
-            var editId     = tableRow.find('.storeClientID').val();
-            var username   = tableRow.find('td').eq(2).text();
-            var name       = tableRow.find('td').eq(1).text();
-            //var editUrl = 'edit.php?id='+editId;
-            //window.location = editUrl;
-            $.redirect('memberTransactionList.php?type=' + creditType, {
-                                                                            id       : editId,
-                                                                            username : username,
-                                                                            fullName : name,
-                                                                            creditName : creditName
-            });
-        }
-    }
+    //     if (btnName == 'edit') {
+    //         var editId     = tableRow.find('.storeClientID').val();
+    //         var username   = tableRow.find('td').eq(2).text();
+    //         var name       = tableRow.find('td').eq(1).text();
+    //         var editUrl = 'edit.php?id='+editId;
+    //         window.location = editUrl;
+    //         $.redirect('memberTransactionList.php?type=' + creditType, {
+    //                                                                         id       : editId,
+    //                                                                         username : username,
+    //                                                                         fullName : name,
+    //                                                                         creditName : creditName
+    //         });
+    //     }
+    // }
 
     function pagingCallBack(pageNumber, fCallback) {
         var searchId   = 'searchForm';
@@ -370,6 +356,15 @@ $_SESSION['lastVisited'] = $thisPage;
         if(!fCallback)
             fCallback = loadDefaultListing;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    }
+
+    function editRecord(id, name, memberID) {
+        $.redirect('memberTransactionList.php?type=' + creditType, {
+                                                                id          : id,
+                                                                username    : name,
+                                                                fullName    : memberID,
+                                                                creditName  : creditName
+        });
     }
 
 </script>

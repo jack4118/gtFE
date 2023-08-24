@@ -1,6 +1,9 @@
 <?php 
 session_start();
 $thisPage = basename($_SERVER['PHP_SELF']);
+//Form submission issue
+header("Cache-Control: no cache");
+session_cache_limiter("private_no_expire");
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,44 +54,73 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                 <div class="row">
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            <?php echo $translations['A00101'][$language]; /* Name */ ?>
+                                                            <?php echo $translations['A01702'][$language]; /* SKU code */ ?>
                                                         </label>
-                                                        <input type="text" class="form-control" dataName="name" dataType="text">
+                                                        <input type="text" class="form-control" dataName="skuCode" dataType="text">
                                                     </div>
-                                                    <div class="col-sm-4 form-group">
+                                                    <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            <?php echo $translations['A00102'][$language]; /* Username */ ?>
+                                                            <?php echo $translations['A01715'][$language]; /* Branch */ ?>
                                                         </label>
                                                         <input type="text" class="form-control" dataName="username" dataType="text">
-                                                    </div>
+                                                    </div> -->
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label" for="" data-th="email">
-                                                            <?php echo $translations['A00103'][$language]; /* Email */ ?>
+                                                            <?php echo $translations['A01738'][$language]; /* Best Before Date */ ?>
                                                         </label>
-                                                        <input type="text" class="form-control" dataName="email" dataType="text">
+                                                        <input type="date" class="form-control" dataName="date" dataType="text">
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-12">
-                                                <div class="row">
+                                                    <!-- <div class="col-sm-4 form-group">
+                                                        <label class="control-label" for="" data-th="email">
+                                                            <?php echo $translations['A01662'][$language]; /* Quantity */ ?>
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="quantity" dataType="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                                    </div> -->
+
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label" data-th="disabled">
-                                                            <?php echo $translations['A00104'][$language]; /* Disabled */ ?>
+                                                            <?php echo $translations['A01715'][$language]; /* Branch */ ?>
                                                         </label>
-                                                        <select class="form-control" dataName="disabled" dataType="select">
+                                                        <select class="form-control" dataName="branch" dataType="select">
                                                             <option value="">
                                                                 <?php echo $translations['A00055'][$language]; /* All */ ?>
                                                             </option>
                                                             <option value="1">
-                                                                <?php echo $translations['A00056'][$language]; /* Yes */ ?>
+                                                                KL
                                                             </option>
-                                                            <option value="0">
-                                                                <?php echo $translations['A00057'][$language]; /* No */ ?>
+                                                            <option value="2">
+                                                                PN
+                                                            </option>
+                                                            <option value="3">
+                                                                JB
                                                             </option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- <div class="col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label" data-th="disabled">
+                                                            <?php echo $translations['A01715'][$language]; /* Branch */ ?>
+                                                        </label>
+                                                        <select class="form-control" dataName="branch" dataType="select">
+                                                            <option value="">
+                                                                <?php echo $translations['A00055'][$language]; /* All */ ?>
+                                                            </option>
+                                                            <option value="1">
+                                                                KL
+                                                            </option>
+                                                            <option value="2">
+                                                                PN
+                                                            </option>
+                                                            <option value="3">
+                                                                JB
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div> -->
                                         </form>
 
 
@@ -147,10 +179,10 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var btnArray = {};
     var thArray  = Array(
         '<?php echo $translations['A01702'][$language]; /* SKU code */ ?>',
-        // '<?php echo $translations['A01739'][$language]; /* Warehouse */ ?>',
-        'Branch',
-        '<?php echo $translations['A01738'][$language]; /* Best Before Date */ ?>',
-        'Quantity',
+        '<?php echo $translations['A00597'][$language]; /* Branch */ ?>',
+        '<?php echo $translations['M00294'][$language]; /* Purchase Date */ ?>',
+        '<?php echo $translations['A01785'][$language]; /* Available Amount */ ?>',
+        '<?php echo $translations['M02246'][$language]; /* Quantity */ ?>',
 
         // '<?php echo $translations['A00106'][$language]; /* ID */ ?>',
         // '<?php echo $translations['A01696'][$language]; /* On Hand */ ?>',
@@ -158,6 +190,12 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         // '<?php echo $translations['A01699'][$language]; /* Stock In Date */ ?>'
     );
     var searchId = 'searchForm';
+
+    var sortThArray = Array(
+        "barcode",
+        "warehouse_id",
+        "stock_in_datetime"
+    );
 
     var url             = 'scripts/reqAdmin.php';
     var method          = 'POST';
@@ -168,11 +206,13 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var formData        = "";
     var fCallback       = "";
     var productId       = '<?php echo $_POST['productId']; ?>';
-    var productName     = '<?php echo $_POST['productName']; ?>' != "-" ? '<?php echo $_POST['productName']; ?>' : "";
+    var productName     = "<?php echo $_POST['productName']; ?>" != "-" ? "<?php echo $_POST['productName']; ?>" : "";
     var vendorName      = '<?php echo $_POST['vendorName']; ?>' != "-" ? '<?php echo $_POST['vendorName']; ?>' : "";
     var code            = '<?php echo $_POST['code']; ?>' != "-" ? '<?php echo $_POST['code']; ?>' : "";
 
     $(document).ready(function() {
+        productName = productName.replace("*", "'");
+
         $('span#productName').html(productName);
         $('span#vendorName').html(vendorName);
         $('span#code').html(code);
@@ -195,6 +235,9 @@ $thisPage = basename($_SERVER['PHP_SELF']);
             });
 
         });
+
+        pagingCallBack(pageNumber, loadSearch);
+        
         /* Toggle search function */
         $('#searchBtn').click(function() {
             pagingCallBack(pageNumber, loadSearch);
@@ -206,12 +249,16 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         if (pageNumber > 1) bypassLoading = 1;
         /* Search data */
         var searchData  = buildSearchDataByType(searchId);
+        
+        var sortData = getSortData(tableId);
+
         var formData    = {
             command     : "getStockList",
             pageNumber  : pageNumber,
             inputData   : searchData,
             layer       : 2,
-            productId   : productId
+            productId   : productId,
+            sortData    : sortData
         };
 
         if (!fCallback)
@@ -222,27 +269,46 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     /* getStockList callback (Stock Listing) */
     function loadDefaultListing(data, message) {
         var tableNo;
-        if (data.stockList != "" && data.stockList.length > 0) {
-            var newList = []
-            $.each(data.stockList, function(k, v) {
-                var viewBtn = `
-                    <a data-toggle="tooltip" title="" onclick="viewSerial('${v['po_id']}', '${v['name']}', '${v['vendor']}', '${v['barcode']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="View" aria-describedby=""><i class="fa fa-list"></i></a>
-                `;
 
-                var rebuildData = {
-                    // po_id               : v['po_id'],
-                    barcode             : v['barcode'],
-                    warehouse           : v['warehouse'],
-                    best_before         : v['expiration_date'],
-                    on_hand             : v['on_handL2'],
-                    // expiration_date     : v['expiration_date'],
-                    // stock_in_datetime   : v['stock_in_datetime'],
-                    viewBtn             : viewBtn
-                };
-                newList.push(rebuildData);
-            }); 
+        var sortArray = {
+            'sortThArray'   : sortThArray,
+            'sortBy'        : data['sortBy'],
         }
-        buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
+
+        if(data){
+            if (data.stockList != "" && data.stockList.length > 0) {
+                var newList = []
+                $.each(data.stockList, function(k, v) {
+
+                    let a = v['name']
+
+                    a = a.replace("'","zzz123666")
+
+                    var viewBtn = `
+                        <a data-toggle="tooltip" title="" onclick="viewSerial('${v['po_id']}', '${a}', '${v['vendor']}', '${v['barcode']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="View" aria-describedby=""><i class="fa fa-list"></i></a>
+                    `;
+
+                    var textColor = '#000';
+                    if(v['available_amount'] == 0) textColor = 'red';
+
+                    var rebuildData = {
+                        // po_id               : v['po_id'],
+                        barcode             : v['barcode'],
+                        warehouse           : v['warehouse'],
+                        stock_in_datetime   : v['stock_in_datetime'],
+                        available_amount    : v['available_amount'],
+                        on_hand             : v['on_handL2'],
+                        // expiration_date     : v['expiration_date'],
+                        // stock_in_datetime   : v['stock_in_datetime'],
+                        viewBtn             : viewBtn,
+                        textColor           : textColor,
+                    };
+                    newList.push(rebuildData);
+                }); 
+            }
+        }
+        
+        buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
         pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
         if (data.stockList) {
@@ -251,6 +317,11 @@ $thisPage = basename($_SERVER['PHP_SELF']);
             });
             $('#'+tableId).find('tbody tr').each(function() {
                 $(this).find('td:eq(1)').css('text-align', "right");
+                $(this).find('td:last-child').css('display', "none");
+
+                if($(this).find('td:last-child').text() == 'red') {
+                    $(this).find('td').css('color', $(this).find('td:last-child').text());
+                }
             });
         }
     }
@@ -265,6 +336,10 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     }
 
     function viewSerial(poId, productName, vendorName, code) {
+        if(productName.includes("zzz123666")) {
+            productName = productName.replace("zzz123666","'");
+        }
+        console.log(productName,'testing view serial')
         $.redirect("stockSerialList.php", {poId : poId, productId   : productId, productName : productName, vendorName : vendorName, code : code});
     }
 

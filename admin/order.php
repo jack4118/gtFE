@@ -37,9 +37,9 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                     <!-- ID Search -->
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            <?php echo $translations['A00106'][$language]; /* ID */ ?>
+                                                            <?php echo $translations['A01777'][$language]; /* Reference Number */ ?>
                                                         </label>
-                                                        <input type="text" class="form-control" dataName="po_id" dataType="text">
+                                                        <input type="text" class="form-control" dataName="refNo" dataType="text">
                                                     </div>
                                                     <!-- Buying Date Search -->
                                                     <div class="col-sm-4 form-group">
@@ -59,7 +59,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                         <label class="control-label">
                                                             <?php echo $translations['A01703'][$language]; /* Vendor Name */ ?>
                                                         </label>
-                                                        <input type="text" class="form-control" dataName="name" dataType="text">
+                                                        <input id="vendorName" type="text" class="form-control" dataName="name" dataType="text">
                                                     </div>
                                                 </div>
                                             </div>
@@ -96,7 +96,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                         <input type="text" class="form-control" dataName="approvedBy" dataType="text">
                                                     </div>
                                                     <!-- Approved Date Search -->
-                                                    <div class="col-sm-4 form-group">
+                                                    <!-- <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             <?php echo $translations['A01660'][$language]; /* Approved Date */?>
                                                         </label>
@@ -107,18 +107,24 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                             </span>
                                                             <input type="text" class="form-control" dataName="approvedDate" dataType="dateRange">
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-12">
-                                                <div class="row">
-                                                    <!-- Warehouse Search -->
+                                                    </div> -->
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
                                                             <?php echo $translations['A01739'][$language]; /* Warehouse */ ?>
                                                         </label>
                                                         <input type="text" class="form-control" dataName="warehouseSearch" dataType="text">
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <!-- Warehouse Search
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            <?php echo $translations['A01739'][$language]; /* Warehouse */ ?>
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="warehouseSearch" dataType="text">
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </form>
@@ -180,7 +186,8 @@ var pagerId = 'listingPager';
 // var btnArray = Array('edit', 'approve');
 var btnArray = {};
 var thArray = Array(
-    '<?php echo $translations['A00106'][$language]; /* ID */ ?>',
+    'ID',
+    'PO No',
     // '<?php echo $translations['A00102'][$language]; /* Username */ ?>',
     'Created Date',
     // '<?php echo $translations['A00101'][$language]; /* Name */ ?>',
@@ -199,6 +206,18 @@ var thArray = Array(
     'Warehouse',
     // '<?php echo $translations['A00113'][$language]; /* Last Login */ ?>'
 );
+
+var sortThArray = Array(
+    "po.id",
+    "po.order_number",
+    "po.created_at",
+    "v.name",
+    "po.total_cost",
+    "po.status",
+    "po.remarks",
+    "w.warehouse_location"
+);
+
 var searchId = 'searchForm';
 
 var url = 'scripts/reqAdmin.php';
@@ -210,7 +229,10 @@ var pageNumber = 1;
 var formData = "";
 var fCallback = "";
 
+var vendorName = '<?php echo $_POST['vendorName'] ?>';
+
     $(document).ready(function() {
+        $('#vendorName').val(vendorName);
 
         $("body").keyup(function(event) {
             if (event.keyCode == 13) {
@@ -230,6 +252,8 @@ var fCallback = "";
 
         });
 
+        pagingCallBack(pageNumber, loadSearch);
+
         $('#searchBtn').click(function() {
             pagingCallBack(pageNumber, loadSearch);
         });
@@ -240,7 +264,7 @@ var fCallback = "";
                 singleDatePicker: true,
                 timePicker: false,
                 locale: {
-                    format: 'DD/MM/YYYY'
+                    format: 'YYYY-MM-DD'
                 }
             });
             $(this).val('');
@@ -251,10 +275,14 @@ function pagingCallBack(pageNumber, fCallback) {
     if (pageNumber > 1) bypassLoading = 1;
 
     var searchData = buildSearchDataByType(searchId);
+
+    var sortData = getSortData(tableId);
+
     var formData = {
         command: "getPurchaseOrderList",
         pageNumber: pageNumber,
-        inputData: searchData
+        inputData: searchData,
+        sortData    : sortData
     };
 
     if (!fCallback)
@@ -265,6 +293,11 @@ function pagingCallBack(pageNumber, fCallback) {
 function loadDefaultListing(data, message) {
     var tableNo;
     var poTable = data.purchaseOrderList;
+
+    var sortArray = {
+        'sortThArray'   : sortThArray,
+        'sortBy'        : data['sortBy'],
+    }
 
     if (data != "" && poTable.length > 0) {
         var newPoTable = []
@@ -291,6 +324,7 @@ function loadDefaultListing(data, message) {
 
             var rebuildData = {
                 id            : v['id'],
+                order_number  : v['order_number'],
                 buying_date   : v['buying_date'],
                 vendor        : v['vendor'],
                 cost          : v['cost'],
@@ -306,7 +340,7 @@ function loadDefaultListing(data, message) {
         });
     }
 
-    buildTable(newPoTable, tableId, divId, thArray, btnArray, message, tableNo);
+    buildTable(newPoTable, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
     pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
     // $('#'+ tableId).find('tbody tr').each(function(){
@@ -321,9 +355,9 @@ function tableBtnClick(btnId) {
 
     if (btnName == 'edit') {
         var editId = tableRow.attr('data-th');
-        var status = tableRow.find('td:eq(4)').text();
-        var createdAt = tableRow.find('td:eq(8)').text();
-        var vendor = tableRow.find('td:eq(2)').text();
+        var status = tableRow.find('td:eq(5)').text();
+        var createdAt = tableRow.find('td:eq(2)').text();
+        var vendor = tableRow.find('td:eq(3)').text();
         // var newVendor = vendor.replace(/\s+/g, "");
 
         $.redirect("editPurchaseOrder.php", {

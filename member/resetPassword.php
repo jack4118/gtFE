@@ -9,22 +9,22 @@ include 'head.php';
 <body  class="kt-page--loading-enabled kt-page--loading kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header--minimize-topbar kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-page--loading loginPage" style="background-color: #f8f8f8">
     <?php include 'homepageHeader.php';?>
 
-    <section class="jp-page-banner login-signup">
-        <div class="kt-container">
-            <div class="row">
+    <section class="section jp-page-banner login-signup">
+        <div class="">
+            <div class="kt-container row">
                 <div class="col-sm-6 col-md-5 col-lg-3">
                     <h1 data-lang="M03848"><?php echo $translations['M03848'][$language]; //Enjoy Favourite Food Instantly!?> </h1>
                 </div>
                 <div class="col-sm-6 col-md-7 offset-lg-3 col-lg-6">
                     <div class="row">
                         <div class="col-12">
-                            <a href="#" target="_blank"><img src="images/project/sm1.png" class="img-fluid"></a>
-                            <a href="#" target="_blank"><img src="images/project/sm2.png" class="img-fluid"></a>
-                            <a href="#" target="_blank"><img src="images/project/sm3.png" class="img-fluid"></a>
-                            <a href="#" target="_blank"><img src="images/project/sm4.png" class="img-fluid"></a>
+                            <a href="https://www.facebook.com/gotasty.net" target="_blank"><img src="images/project/sm1.png" class="img-fluid"></a>
+                        <a href="https://www.instagram.com/gotastynet/" target="_blank"><img src="images/project/sm2.png" class="img-fluid"></a>
+                        <!-- <a href="#" target="_blank"><img src="images/project/sm3.png" class="img-fluid"></a> -->
+                        <a href="https://wa.link/9xiov2" target="_blank"><img src="images/project/sm4.png" class="img-fluid"></a>
                         </div>
                         <div class="col-12 call-us">
-                            <?php echo $translations['M03849'][$language]; //Call us at?>: <font style="font-weight: 400;">+6018-2626000</font>
+                            <?php echo $translations['M03849'][$language]; //Call us at ?>: <a href="tel:+6018-2626000"><font style="font-weight: 400;">+6018-2626000</font></a>
                         </div>
                     </div>
                 </div>
@@ -33,9 +33,9 @@ include 'head.php';
     </section>
 
     <section class="loginPage forgot-password">
-        <div class="kt-container">
-            <div class="row justify-content-center" style="margin-left: unset; margin-right: unset;">
-                <div class="col-md-6 col-lg-5 col-xl-4">
+        <div class="">
+            <div class="kt-container row justify-content-center">
+                <div class="col-md-6">
                     <div class="login-signup-card row">
                         <div class="col-12 p-5">
                             <h3 class="text-center" data-lang="M03854"><?php echo $translations['M03866'][$language]; //Forgot Password? ?></h3>
@@ -53,22 +53,22 @@ include 'head.php';
                             
                             <div class="position-relative">
                                 <label data-lang="M03859"><?php echo $translations['M03859'][$language]; //Verification Code ?></label>                        
-                                <input type="text" class="form-control beforeLoginForm" id="otp">
+                                <input type="text" class="form-control beforeLoginForm" id="otp" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                                 <div id="verificationCodeError" class="customError text-danger"></div>
                                 <div class="input-group-append col-md-6 col-7 resend-otp" style="margin-top: 0; padding: 0 !important;">
                                     <button id="resend-otp" class="btn button-green w-100" data-lang="M03860">
                                         <?php echo $translations['M03860'][$language]; //Request OTP ?>
                                     </button>
 
-                                    <span class="form__button-wrapper timer col-4" style="display: none; color: #fff; width: 95px;">
-                                        <span class=" mt-3 " style="display:block; color: #000; width: 95px;"></span>
+                                    <span class="form__button-wrapper timer w-100" style="display: none; color: #fff;">
+                                        <span class=" mt-3 " style="display:block; color: #000;"></span>
                                     </span>                 
                                 </div>
                             </div>
                             
                             <div class="position-relative">
                                 <label data-lang="M03869"><?php echo $translations['M03869'][$language]; //New Password ?></label>                        
-                                <input type="password" class="form-control beforeLoginForm" id="password" placeholder="Enter Your Password">
+                                <input type="password" class="form-control beforeLoginForm" id="password" placeholder=<?php echo $translations['M02439'][$language]; //Enter Your Password ?>>
                                 <div id="passwordError" class="customError text-danger" error="error"></div>
                                 <div class="input-group-append col-1 col-sm-1 icon-see">
                                     <span class="input-group-text captchaIcon" style="padding:unset">
@@ -79,7 +79,7 @@ include 'head.php';
                             
                             <div class="position-relative">
                                 <label data-lang="M03870"><?php echo $translations['M03870'][$language]; //Confirm New Password ?></label>                        
-                                <input type="password" class="form-control beforeLoginForm" id="checkPassword" placeholder="Enter Your Password">
+                                <input type="password" class="form-control beforeLoginForm" id="checkPassword" placeholder=<?php echo $translations['M02439'][$language]; //Enter Your Password ?>>
                                 <div id="checkPasswordError" class="customError text-danger" error="error"></div>
                                 <div class="input-group-append col-1 col-sm-1 icon-see">
                                     <span class="input-group-text captchaIcon" style="padding:unset">
@@ -239,7 +239,14 @@ include 'head.php';
 
         var dialCode = $('#dialingArea option:selected').val();;
         var number = $('#phone').val();
+
+        if (number && number.charAt(0) === '0') {
+            number = number.substr(1);
+        }        
+
+        number = removeFirstTwoCharacters(number);
         var phone = dialCode + number;
+
         // var retypePassword = $('#retypePassword').val();
 
         var formData  = {
@@ -290,10 +297,13 @@ include 'head.php';
 
         var dialCode = $('#dialingArea option:selected').val();;
         var number = $('#phone').val();
+        number = removeFirstTwoCharacters(number);
         var phone = dialCode + number;
         var retypePassword = $('#checkPassword').val();
         var password = $('#password').val();
         var verificationCode = $('#otp').val();
+
+
 
         var formData  = {
             command     : "memberResetPassword",
@@ -309,7 +319,7 @@ include 'head.php';
     });
 
     function resetCallback(data, message) {
-        showMessage(message, 'success', 'Reset Password', 'success','homepage');
+        showMessage(message, 'success', 'Reset Password', 'success','foodMenu');
     }
 
     $('#backBtn').click(function() {

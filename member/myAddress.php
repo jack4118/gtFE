@@ -9,12 +9,14 @@ include 'homepageHeader.php';
 
 <!-- My Account Title -->
 <section class="section myAccountBg">
-    <div class="titleText larger bold text-white text-center text-md-left" data-lang="M03798"><?php echo $translations['M03798'][$language] /* My Account */ ?></div>
+    <div class="kt-container row">
+        <div class="col-12 titleText larger bold text-white text-center text-md-left" data-lang="M03798"><?php echo $translations['M03798'][$language] /* My Account */ ?></div>
+    </div>
 </section>
 
 <!-- My Account Content -->
 <section class="section whiteBg">
-    <div class="row mb-5 mb-md-0">
+    <div class="kt-container row mb-5 mb-md-0">
         <div class="col-lg-3 col-md-4 col-12">
             <!-- Menu -->
             <div class="borderAll grey normal greyBg">
@@ -54,9 +56,9 @@ include 'homepageHeader.php';
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span id="canvasTitle" class="modal-title showLangCode" data-lang="M03804">
+                <!-- <span id="canvasTitle" class="modal-title showLangCode" data-lang="M03804">
                     <?php echo $translations['M03804'][$language] /* Delete Confirmation */ ?>
-                </span>
+                </span> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -110,6 +112,7 @@ var removedAddressId    = '';
 var removedAddressType  = '';
 
 $(document).ready(function() {
+    getShoppingCart();
     getAddressList();
 
     $('#myProfileBtn').click(function() {

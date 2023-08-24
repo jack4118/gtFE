@@ -4,7 +4,7 @@
      * This file is contains the functions related to Admin user.
      * Date  19/05/2018.
     **/
-    session_start();
+    include 'sessionStore.php';
 
     include ($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
     include($_SERVER["DOCUMENT_ROOT"]."/include/class.post.php");
@@ -27,39 +27,35 @@
         //validating Last Three Certificates 
         $fpxcert=array($path."fpxprod_current.cer",$path."fpxprod.cer");
         $certs=checkCertExpiry($fpxcert);
-        // echo count($certs) ;
-                $signdata = hextobin($sign);
+        $signdata = hextobin($sign);
                 
-        
-        if(count($certs)==1)
-        {
+        if(count($certs)==1){
 
-        $pkeyid =openssl_pkey_get_public($certs[0]);
-        $ret = openssl_verify($toSign, $signdata, $pkeyid);  
+            $pkeyid =openssl_pkey_get_public($certs[0]);
+            $ret = openssl_verify($toSign, $signdata, $pkeyid);  
             if($ret!=1) 
             {
-            $ErrorCode=" Your Data cannot be verified against the Signature. "." ErrorCode :[09]";
-            return "09";   
+                $ErrorCode=" Your Data cannot be verified against the Signature. "." ErrorCode :[09]";
+                return "09";   
             }
         }
         elseif(count($certs)==2)
         {
-        
-        $pkeyid =openssl_pkey_get_public($certs[0]);
-        $ret = openssl_verify($toSign, $signdata, $pkeyid);    
-        if($ret!=1)
-        {
-        
-            $pkeyid =openssl_pkey_get_public($certs[1]);
-            $ret = openssl_verify($toSign, $signdata, $pkeyid); 
-            if($ret!=1) 
+            $pkeyid =openssl_pkey_get_public($certs[0]);
+            $ret = openssl_verify($toSign, $signdata, $pkeyid);    
+            if($ret!=1)
             {
-            $ErrorCode=" Your Data cannot be verified against the Signature. "." ErrorCode :[09]";
-            return "09";    
-            }
+                $pkeyid =openssl_pkey_get_public($certs[1]);
+                $ret = openssl_verify($toSign, $signdata, $pkeyid); 
+                if($ret!=1) 
+                {
+                    $ErrorCode=" Your Data cannot be verified against the Signature. "." ErrorCode :[09]";
+                    return "09";    
+                }
             }
             
         }
+
         if($ret==1)
         {
 
@@ -77,7 +73,6 @@
         error_reporting(0);
 
         return validateCertificate(__DIR__.'/../MbbFpxKey',$sign, $toSign);
-         // return validateCertificate('/Users/zl96/Sites/',$sign, $toSign);
     }
 
     function checkCertExpiry($path)
@@ -178,6 +173,7 @@
 
     if($_POST['type'] == 'logout'){
         session_destroy();
+        setcookie("aaafag5bc2p7hslvh9qg7v4r", "", time() - 3600);
     }
     else{
         switch($command) {
@@ -193,30 +189,24 @@
 
                 $fpx_msgToken="01";
                 $fpx_msgType="BE";
-                $fpx_sellerExId="EX00016560";
+                $fpx_sellerExId=$config['fpx_sellerExId'];
                 $fpx_version="7.0";
                 /* Generating signing String */
                 $data=$fpx_msgToken."|".$fpx_msgType."|".$fpx_sellerExId."|".$fpx_version;
                 /* Reading key */
-                // $priv_key = file_get_contents('/Users/zl96/Sites/EX00010815.key');
-                // $priv_key = file_get_contents('/opt/odoo/odoo15/addons/maybank_fpx/controllers/EX00016560.key');
-                $priv_key = file_get_contents('mbb_key.key');
+                $priv_key = file_get_contents(__DIR__.$config['fpx_priv_key_filename']);
 
                 $pkeyid = openssl_get_privatekey($priv_key);
 
                 openssl_sign($data, $binary_signature, $pkeyid, OPENSSL_ALGO_SHA1);
                 $fpx_checkSum = strtoupper(bin2hex( $binary_signature ) );
-                
-                // echo json_encode(array ('status' => 'ok' ,'code' => 0, 'statusMsg' => "SDASDADA", 'data' => $priv_key)); // Please enter top up amount.
-                // break;
 
                 //extract data from the post
                 extract($_POST);
                 $fields_string="";
 
                 //set POST variables
-                // $url ='https://www.mepsfpx.com.my/FPXMain/RetrieveBankList';
-                $url ='https://uat.mepsfpx.com.my/FPXMain/RetrieveBankList';
+                $url = $config['fpx_bank_list_url'];
 
                 $fields = array(
                     'fpx_msgToken' => urlencode($fpx_msgToken),
@@ -380,11 +370,27 @@
                     "checkSum"  => $buyAccNo."|".$buyerBankBranch."|".$bankId."|".$buyerEmail."|".$buyerIban."|".$buyerId."|".$buyerName."|".$makerName."|".$msgToken."|".$msgType."|".$prodDesc."|".$sellerBankCode."|".$sellerExId."|".$sellerExOrderNo."|".$sellerId."|".$sellerOrderNo."|".date('YmdHis', strtotime($txnTime))."|".$txnAmount."|".$txnCurrency."|".$version,
                 );
 
-                $priv_key = file_get_contents('mbb_key.key');
-                // $priv_key = file_get_contents('/Users/zl96/Sites/EX00010815.key');
+
+
+                $priv_key = file_get_contents(__DIR__.$config['fpx_priv_key_filename']);
                 $pkeyid = openssl_get_privatekey($priv_key);
                 openssl_sign($params['checkSum'], $binary_signature, $pkeyid, OPENSSL_ALGO_SHA1);
                 $params['fpx_checkSum'] = strtoupper(bin2hex( $binary_signature ) );
+
+
+                ## record checksum data to webservice for debugging purposes
+                $command = "recordFpxChecksum";
+                $result = $post->curl($command, $params);
+                $result = json_decode($result, true);
+                if ($result['sessionData']['newSessionID']) {
+                    $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
+                    $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
+                } 
+                $_SESSION["consolecode"] =$result["code"];
+                if ($result["code"] == 5 || $result["code"] == 3){
+                    setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
+                }
+
 
                 $dataReturn['status'] = 'ok';
                 $dataReturn['code'] = 0;
@@ -426,7 +432,10 @@
                     'shipping_fee' => $_POST['shipping_fee'],
                     'billing_address' => $_POST['billing_address'],
                     'shipping_address' => $_POST['shipping_address'],
-                    'bkend_token' => $_POST['bkend_token']
+                    'bkend_token' => $_POST['bkend_token'],
+                    'promo_code' => $_POST['promo_code'],
+                    'is_gift' => $_POST['is_gift'],
+                    'deliveryMethod' => $_POST['deliveryMethod']
 
                     // 'hashData' => $_POST['hashData'],
                 );

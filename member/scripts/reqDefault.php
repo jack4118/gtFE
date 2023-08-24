@@ -3,8 +3,9 @@
 * @author TtwoWeb Sdn Bhd.
 * Date  29/08/2018.
 **/
-session_start();
 
+include 'sessionStore.php';
+session_start();
 include($_SERVER["DOCUMENT_ROOT"]."/language/lang_all.php");
 include($_SERVER["DOCUMENT_ROOT"]."/include/config.php");
 include($_SERVER["DOCUMENT_ROOT"]."/include/class.post.php");
@@ -19,6 +20,7 @@ $sessionID  = $_SESSION['sessionID'];
 
 if($_POST['type'] == 'logout') {
     session_destroy();
+    setcookie("aaafag5bc2p7hslvh9qg7v4r", "", time() - 3600);
 }
 else {
 
@@ -695,29 +697,101 @@ else {
             break;
 
         case "submitContactUs":
+            $params = array(
+              'clientID' => $_POST['clientID'],
+              'client_name' => $_POST['client_name'],
+              'client_email' => $_POST['client_email'],
+              'message' => $_POST['message'],
+              'phone' => $_POST['phone'],
+              'type' => $_POST['type'],              
+              'uploadImage' => $_POST['uploadImage'],              
+            );
+
+            $result = $post->curl($command, $params);
+
+            $result = json_decode($result, true);
+            if ($result['sessionData']['newSessionID']) {
+                $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
+                $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
+            } 
+            if ($result["code"] == 5 || $result["code"] == 3){
+                setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
+            }
+            $result = json_encode($result);
+
+            echo $result;
+
+            break;
+
+        case "emailContactUs":
+            // Send Email
+
             $currentPath = __DIR__;
-            
+
             include($currentPath.'/../include/config.php');
             include($currentPath.'/../include/class.phpmailer.php');
             include($currentPath.'/../include/class.smtp.php');
             include($currentPath.'/../include/class.pop3.php');
             include($currentPath.'/../include/mailer.php');
             include($currentPath.'/../include/class.general.php');
-            
+
             $mail = new PHPMailer();
             $general = new General();
-            
-            $return = $general->sendEmailsUsingSMTP("hanyaolim.thenux@gmail.com", 'Write To Us', "Name: $_POST[name]<br>Email: $_POST[email]<br>Message: $_POST[message]" , NULL);
-        
+
+            // $arrFile[] = ;
+
+            if ($_POST['type'] == "career") {
+                // $return = $general->sendemailsusingsmtp("hanyaolim.thenux@gmail.com", 'Career Application', "Name: $_POST[client_name]<br>Email: $_POST[client_email]<br>Phone: $_POST[phone]<br>$_POST[uploadImage]" , NULL);
+
+                $arrFile = array();
+                if(count($_POST['uploadImage'])>0) {
+                    $data = explode( ',', $_POST['uploadImage'][0]['imgData']);
+                    $arrFile[0]['bin'] = base64_decode($data[ 1 ]);
+                    $arrFile[0]['file'] = $_POST['uploadImage'][0]['imgName'];
+                }
+
+                // $return = $general->sendemailsusingsmtp("hanyaolim.thenux@gmail.com", 'Career Application', "Name: $_POST[client_name]<br>Email: $_POST[client_email]<br>Phone: $_POST[phone]" , NULL , $arrFile);
+                // $return2 = $general->sendemailsusingsmtp("$_POST[client_email]", 'Career Application', "We have received your application. Thanks for contacting us, we appreciate this. Our team shall get back to you at the soonest." , NULL);
+            } 
+            // else {
+                // $return = $general->sendemailsusingsmtp("hanyaolim.thenux@gmail.com", 'Write To Us', "Name: $_POST[client_name]<br>Email: $_POST[client_email]<br>Message: $_POST[message]" , NULL);
+                // $return2 = $general->sendemailsusingsmtp("$_POST[client_email]", 'Write To Us', "We have received your inquiry. Thanks for contacting us, we appreciate this. Our team shall get back to you at the soonest. <br/><br/>If you do not receive call / email from us, kindly contact us at +60182626000" , NULL);
+            // }
+
             if ($return === true) {
-            $myJson = array('status' => 'ok', 'code' => 0, 'statusMsg' => $translations['M03903'][$_SESSION['language']] /* Thank you for contacting us, our support will reply to you within 1 working day. */);
-            } else {
-                $myJson = array('status' => 'error', 'code' => 2, 'statusMsg' => $translations['M03904'][$_SESSION['language']] /* Send enquiry failed. Please try again. */, 'mailStatus' => $return);
-            }
-        
+            $myJson = array('status' => 'ok', 'code' => 0, 'statusMsg' => 'ok');
+            } 
+            // else {
+            //     $myJson = array('status' => 'error', 'code' => 2, 'statusMsg' => 'Send enquiry failed. Please try again.', 'mailStatus' => $return);
+            // }
+
             $myJson = json_encode($myJson);
             echo $myJson;
+
             break;
+
+            // $params = array(
+            //   'client_name' => $_POST['client_name'],
+            //   'client_email'     => $_POST['client_email'],
+            //   'message'     => $_POST['message'],
+            //   'type'     => $_POST['type']
+            // );
+
+            // $result = $post->curl($command, $params);
+
+            // $result = json_decode($result, true);
+            // if ($result['sessionData']['newSessionID']) {
+            //     $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
+            //     $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
+            // } 
+            // if ($result["code"] == 5 || $result["code"] == 3){
+            //     setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
+            // }
+            // $result = json_encode($result);
+
+            // echo $result;
+
+            // break;
 
         case 'getCreditData':
         case 'updateMemberUpline':
@@ -806,7 +880,6 @@ else {
         case 'getPGPMonthlySalesSummary':
         case 'getBonusAmountListing':
         case 'getShoppingCart':
-        case 'addShoppingCart':
         case 'updateShoppingCart':
         case 'removeShoppingCart':
         case "getECatalogueList":
@@ -835,9 +908,12 @@ else {
         case "getOwnMonthlyPerformanceReport":  
         case 'getPurchaseHistory':
         case 'guestAddShoppingCart':
-        case 'getShoppingCart':
+        case 'getShoppingCartQuantity':
         case 'getWishList':
+        case 'getProductFavouriteList':
         case 'addWishList':
+        case 'addProductFavouriteList':
+        case 'getSO_NO':
         
             $params = array ("clientID" => $userID);
 
@@ -847,6 +923,31 @@ else {
             }
             $result = $post->curl($command, $params);
             $result = json_decode($result, true);
+            if ($result['sessionData']['newSessionID']) {
+                $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
+                $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
+            } 
+            if ($result["code"] == 5 || $result["code"] == 3){
+                setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
+            }
+            $result = json_encode($result);
+                
+
+            echo $result;
+            break;
+        
+        case 'addShoppingCart':
+            $params = array ("clientID" => $userID);
+
+            foreach($_POST AS $key => $val){
+                if($key == "command") continue;
+                $params[$key] = $val;
+            }
+            $result = $post->curl($command, $params);
+            $result = json_decode($result, true);
+            if($result['data']['bkend_token']) {
+                $_SESSION['bkend_token'] = $result['data']['bkend_token'];
+            }
             if ($result['sessionData']['newSessionID']) {
                 $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
                 $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
@@ -910,6 +1011,11 @@ else {
         case 'getDeliveryMethod':
         case 'updateStatusOnCheckout':
             
+            ##save phone number into session, to retrieve in order status
+            if($command == "guestOwnerVerification"){
+                $_SESSION["guestPhoneNumber"] = $_POST["phone"];
+            }
+
             $params = array();
 
             foreach($_POST AS $key => $val) {
@@ -946,25 +1052,47 @@ else {
               'step' => $_POST['step'],
               'username' => $_POST['username'],
               'loginBy' => "phone",
+              'bkend_token' => $_SESSION['bkend_token'],
               'id' => ""
             ); 
             
             $result = $post->curl($command, $params);
             $result = json_decode($result, true);
-            if ($result['sessionData']['newSessionID']) {
-                $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
-                $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
-            } 
-            $_SESSION["consolecode"] =$result["code"];
-            if ($result["code"] == 5 || $result["code"] == 3){
-                setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
-            }
-            if ($result["code"] == 0) {
-                $_SESSION["username"] = $result["data"]["userDetails"]["username"];
-                $_SESSION["userID"] = $result["data"]["userDetails"]["userID"];
-                $_SESSION["sessionID"] = $result["data"]["userDetails"]["sessionID"];
-                setcookie("sessionData", json_encode($_SESSION));
-            }
+
+
+            $bkend_token         = $result['data']['bkend_token'];
+            $userData            = $result['data']['userDetails'];
+            $userID              = $userData['userID'];
+            $username            = $userData['username'];
+            $userEmail           = $userData['userEmail'];
+            $countryID           = $userData['countryID'];
+            $userRoleID          = $userData['userRoleID'];
+            $sessionID           = $userData['sessionID'];
+            $pagingCount         = $userData['pagingCount'];
+            $timeOutFlag         = $userData['timeOutFlag'];
+            $decimalPlaces       = $userData['decimalPlaces'];
+            $memo                = $userData['memo'];
+            $blockedRights       = $userData['blockedRights'];
+            $name                = $userData['name'];
+            $dataweww                =$userData['sessionID '];
+
+            if($result["status"] == "ok"){
+                $_SESSION['bkend_token']                  = $bkend_token;
+                $_SESSION["test1"]                        =$dataweww;
+                $_SESSION["name"]                         = $name;
+                $_SESSION["userEmail"]                    = $userEmail;
+                $_SESSION["userID"]                       = $userID;
+                $_SESSION["username"]                     = $username;
+                $_SESSION["countryID"]                    = $countryID;
+                $_SESSION["sessionID"]                    = $sessionID;
+                $_SESSION["pagingCount"]                  = $pagingCount;
+                $_SESSION["sessionExpireTime"]            = $timeOutFlag;
+                $_SESSION["decimalPlaces"]                = $decimalPlaces;
+                $_SESSION["memo"]                         = $memo;
+                $_SESSION["blockedRights"]                = $blockedRights;
+                $_SESSION["bonusReport"]                  = $result['data']['bonusReport'];
+                $_SESSION["isTransactionPassword"]        = 0;
+              }
             $result = json_encode($result);
 
             echo $result;
@@ -1012,7 +1140,8 @@ else {
 
         case 'getProductDetailsBySN':
             $params = array(
-              'serial_number' => $_POST['serial_number']
+              'serial_number' => $_POST['serial_number'],
+              'page_url' => $_POST['page_url'],
             );
 
             $result = $post->curl($command, $params);
@@ -1050,8 +1179,65 @@ else {
             break;
         
         case 'CheckOutCalculation':
+        case "applyPromoCode":
         case 'CartTotalAmountCalculation':
+        case 'CartTotalAmountCalculationMember':
+        case 'updateSOStatus':
+        case 'updateGuestToken':
+        case 'orderDetailCheck':
+        case 'checkStockQuantity':
             $params = array ("userID" => $userID);
+
+            foreach($_POST AS $key => $val){
+                if($key == "command") continue;
+                $params[$key] = $val;
+            }
+            $result = $post->curl($command, $params);
+            $result = json_decode($result, true);
+            if ($result['sessionData']['newSessionID']) {
+                $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
+                $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
+            } 
+            if ($result["code"] == 5 || $result["code"] == 3){
+                setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
+            }
+            $result = json_encode($result);
+                
+
+            echo $result;
+        break;
+
+        case 'addReview':
+            $params = array (
+                "clientID" => $_POST['clientID'],
+                "product_id" => $_POST['product_id'],
+                "msg" => $_POST['msg'],
+                "rating" => $_POST['rating'],
+            );
+
+            foreach($_POST AS $key => $val){
+                if($key == "command") continue;
+                $params[$key] = $val;
+            }
+            $result = $post->curl($command, $params);
+            $result = json_decode($result, true);
+            if ($result['sessionData']['newSessionID']) {
+                $_SESSION["sessionID"] = $result['sessionData']['newSessionID'];
+                $_SESSION["sessionExpireTime"] = $result['sessionData']['timeOut'];
+            } 
+            if ($result["code"] == 5 || $result["code"] == 3){
+                setcookie("marcajeData", "", time() - 3600, "/",NULL,TRUE,TRUE);
+            }
+            $result = json_encode($result);
+                
+
+            echo $result;
+            break;
+
+        case 'getReview':
+            $params = array (
+                "product_id" => $_POST['product_id'],
+            );
 
             foreach($_POST AS $key => $val){
                 if($key == "command") continue;

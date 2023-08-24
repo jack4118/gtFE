@@ -356,29 +356,56 @@ $.urlParam = function(name){
  *     DD/MM/YYYY h:mm:ss AM/PM (eg. 15/12/2017 06:00:00 PM)
  *
  */
+// function dateToTimestamp(dateValue) {
+//     var res, datePart, dateTs;
+//     var isDateTime = dateValue.split(' ');
+    
+//     if(isDateTime[0].split('/').length > 2)
+//         res = isDateTime[0].split('/');
+//     else if(isDateTime[0].split('-').length > 2)
+//         res = isDateTime[0].split('-');
+//     else
+//         return false;
+    
+//     datePart = res[1]+'/'+res[0]+'/'+res[2];
+//     if (isDateTime.length == 1) {
+//         dateTs = Date.parse(datePart)/1000;
+//     }
+//     else {
+//         datePart = datePart+' '+isDateTime[1];
+//         if(isDateTime[2])
+//             datePart = datePart+' '+isDateTime[2];
+//         dateTs = Date.parse(datePart)/1000;
+//     }
+
+
+//     return dateTs;
+// }
+
 function dateToTimestamp(dateValue) {
-    var res, datePart, dateTs;
-    var isDateTime = dateValue.split(' ');
-    
-    if(isDateTime[0].split('/').length > 2)
-        res = isDateTime[0].split('/');
-    else if(isDateTime[0].split('-').length > 2)
-        res = isDateTime[0].split('-');
-    else
-        return false;
-    
-    datePart = res[1]+'/'+res[0]+'/'+res[2];
-    if (isDateTime.length == 1) {
-        dateTs = Date.parse(datePart)/1000;
+    var dateTs = Date.parse(dateValue);
+
+    if (!isNaN(dateTs)) {
+        return dateTs / 1000; 
+    } else {
+        var res = dateValue.split(/[-/]/);
+        if (res.length === 3) {
+            dateTs = Date.parse(res[1] + '/' + res[0] + '/' + res[2]);
+            if (!isNaN(dateTs)) {
+                return dateTs / 1000; 
+            }
+        } else {
+            dateTs = Date.parse(dateValue);
+            if (!isNaN(dateTs)) {
+                return dateTs / 1000; 
+            }
+        }
     }
-    else {
-        datePart = datePart+' '+isDateTime[1];
-        if(isDateTime[2])
-            datePart = datePart+' '+isDateTime[2];
-        dateTs = Date.parse(datePart)/1000;
-    }
-    return dateTs;
+    return false; 
 }
+
+
+
 
 /*
  * Convert timestamp to date
@@ -517,7 +544,6 @@ function buildSearchDataByType(searchID) {
     
     search.find('div.form-group').each(function() {
         var formGroup = $(this);
-
         // console.log(formGroup.html());
         
         // Reset variable
@@ -550,6 +576,7 @@ function buildSearchDataByType(searchID) {
             
             dataName = inputValue.attr('dataName');
             dataType = inputValue.attr('dataType');
+
             
             if(!dataName || !dataType)
                 return true;
@@ -558,8 +585,9 @@ function buildSearchDataByType(searchID) {
                 dataValue = inputValue.find('option:selected').val();
             else
                 dataValue = inputValue.val();
-            
+
             i++;
+            
             switch(dataType) {
                 case "dateRange":
                     if(dataValue)
@@ -631,6 +659,7 @@ function buildSearchDataByType(searchID) {
         });
         if(!dataName || !dataType)
             return true;
+
         
         if((dataType == 'dateRange') && (tsFrom || tsTo))
             dataForm.push({dataName : dataName, dataType : dataType, tsFrom : tsFrom, tsTo : tsTo});

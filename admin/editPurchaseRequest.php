@@ -32,11 +32,16 @@
                 <div class="container">
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-md-12 productList-buttonGrp">
                          <a href="purchaseRequest.php" class="btn btn-primary btn-md waves-effect waves-light m-b-20">
                             <i class="md md-add"></i>
-                            <?php echo $translations['A00115'][$language]; /* Back */ ?>
+                            Discard
                         </a>
+                        <div style="display: flex;">
+                            <div id="addProductBtn" class="btn btn-primary action-btn waves-effect waves-light m-b-20" style="display: flex; align-items: center;">
+                                Add Product
+                            </div>
+                        </div>
                     </div><!-- end col -->
                 </div>
 
@@ -100,7 +105,8 @@
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label>Quantity</label>
-                                                                <input id="quantity1" type="number" oninput="productListOpt()" class="form-control quantityInput" value="0" placeholder="0" required/>
+                                                                <!-- <input id="quantity1" type="number" oninput="productListOpt()" class="form-control quantityInput" value="0" placeholder="0" required/> -->
+                                                                <input id="quantity1" type="number" class="form-control quantityInput" value="0" placeholder="0" required/>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <label>Cost</label>
@@ -156,7 +162,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 m-b-20">
+                    <div class="col-md-12 m-b-20" id="button-div">
                         <button id="edit" type="submit" class="btn btn-primary waves-effect waves-light">
                             Update Purchase Request
                         </button>
@@ -214,7 +220,7 @@
     var totalLoop =[1];
     var vendor_id_ini = "";
 
-    $(document).ready(function() { 
+    $(document).ready(function() {
         if (editId) {
             var formData = {
                 'command': 'getPurchaseRequestDetails',
@@ -237,6 +243,14 @@
             $("#createdBy").val(data.Created_by);
             $("#approvedBy").val(data.approved_by);
             $("#branchAddressText").val(data.vendor_address);
+
+            if(data.status == "Cancelled") {
+                $("#button-div").hide();
+            }
+
+            if(data.status == "Approved") {
+                $("#cancelled").hide();
+            }
 
             productList = data.productList;
 
@@ -350,10 +364,45 @@
         });
 
         $('#approve').click(function() {
+            var productSet= [];
+
+            // $.each(totalLoop, function (k, v) {
+            for(var v = 1; v < $(".addProductWrapper").length + 1; v++) {
+                var name = $('option:selected', "#productSelect"+v).text();
+                var cost = $('#cost' + v).val();
+                var quantity = $('#quantity' + v).val();
+                var product_id = $('option:selected', "#productSelect"+v).val();
+                var id = $('#id'+v).val();
+                action = $('#action'+v).val();
+
+                if($('#action'+v).val() == "add" && $('#id'+v).val() != "") {
+                    action = "";
+                }
+                if($('#action'+v).val() == "add" && $('#id'+v).val() == "") {
+                    action = "add";
+                }
+
+                var perProduct = {
+                    id : id,
+                    product_id : product_id,
+                    name:name,
+                    cost :cost,
+                    quantity: quantity,
+                    action: action,
+                }
+                productSet.push(perProduct);
+            }
+            
             var formData   = {
-                command     : "purchaseRequestApprove",
-                id          : editId,
-                status      : 'Approved'
+                command               : "purchaseRequestApprove",
+                buying_date           : $("#buyingDate").val(),
+                vendor_id             : $("#vendorDropdown").val(),
+                purchase_product_list : productSet,
+                remarks               : $("#remarks").val(),
+                warehouse_id          : $("#warehouseDropdown").val(),
+                vendor_address_id     : $("#branchAddressDropdown").val(),
+                id                    : editId,
+                status                : 'Approved'
             };
             
             fCallback = loadUpdateStatus;
@@ -390,6 +439,10 @@
             $('#subtotal').val("0.00");
             wrapperLength = 2;
         })
+
+        $('#addProductBtn').click(function() {
+            window.open('addProductInventory.php', '_blank');
+        });
     });
 
     function setTodayDatePicker() {
@@ -406,6 +459,7 @@
         var today = yyyy+'-'+mm+'-'+dd;
         
         $('#buyingDate').daterangepicker({
+            minDate: today,
             singleDatePicker: true,
             timePicker: false,
             locale: {
@@ -573,7 +627,14 @@
         $("#appendProduct").append(wrapper);
         $("#productSelect"+wrapperLength).html(html);
 
+        $('#productSelect'+wrapperLength).select2({
+            dropdownAutoWidth: true,
+            templateResult: newFormatState,
+            templateSelection: newFormatState,
+        });
+
         totalLoop.push(wrapperLength);
+
         wrapperLength++;
         // loopQuantity(id);
     }
@@ -630,6 +691,7 @@
             
             $(".productSelect").html(html);
         }
+
         loadSelect();
     }
 
@@ -682,10 +744,15 @@
     }
 
     function selectPR(data, message) {
-
         $.each(data.productList, function (index, value) {
             var productSelectID = "#productSelect" + (index + 1);
             $(productSelectID).val(value.product_id);
+
+            $(productSelectID).select2({
+                dropdownAutoWidth: true,
+                templateResult: newFormatState,
+                templateSelection: newFormatState,
+            });
         });
 
         setTimeout(function() {
@@ -706,6 +773,22 @@
     function loadCancelled(result, message) {
         showMessage('Purchase Request has been cancelled.', 'success', 'Purchase Request has been cancelled.', 'check', 'purchaseRequest.php'); 
     }
+
+    function newFormatState(method) {
+        if (!method.id) {
+            return method.text;
+        }
+
+        var optimage = $(method.element).attr('data-image')
+        if (!optimage) {
+            return method.text;
+        } else {
+            var $opt = $(
+                '<span onclick="changeTokenCategory('+method.text+')"><img src="' + optimage + '" class="tokenOptionImg" /> <span style="vertical-align: middle;">' + method.text + '</span></span>'
+            );
+            return $opt;
+        }
+    };
 </script>
 </body>
 </html>

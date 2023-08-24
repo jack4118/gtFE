@@ -188,6 +188,7 @@
     var pageNumber     = 1;
 
     $(document).ready(function() {
+        pagingCallBack(pageNumber, loadSearch);
 
         $('#searchBtn').click(function() {
             var getNameType = $("input[name=nameType]:checked").val();

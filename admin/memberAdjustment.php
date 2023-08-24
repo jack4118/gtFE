@@ -1,5 +1,8 @@
 <?php
 session_start();
+//Form submission issue
+header("Cache-Control: no cache");
+session_cache_limiter("private_no_expire");
 
 ?>
 <!DOCTYPE html>
@@ -38,12 +41,12 @@ session_start();
                                         </label>
                                         <span id="username"></span>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label>
                                             Member ID :
                                         </label>
                                         <span id="name"></span>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <label>
                                             <?php echo $translations['A00207'][$language]; /* Balance */?> :

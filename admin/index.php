@@ -7,7 +7,7 @@
             header("Location: pageLogin.php");
         }
         else {
-	    header("Location: whoIsOnline.php");
+	    header("Location: stockList.php");
             // header("Location: admin.php");
         }
     }

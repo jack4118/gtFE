@@ -185,6 +185,8 @@ $countryList = $_SESSION['countryList'];
             $("#searchForm")[0].reset();
         });
 
+        pagingCallBack(pageNumber, loadSearch);
+
         $('#searchBtn').click(function() {
             var getUsernameType = $("input[name=usernameType]:checked").val();
             $('#usernameSearch').attr('dataType', getUsernameType);
@@ -230,36 +232,39 @@ $countryList = $_SESSION['countryList'];
         // }
 
         var tableNo;
-        var workerList = data.workerList;
 
-        if (data != "" && workerList.length > 0) {
-            var newList = [];
+        if(data && data != '') {
+            var workerList = data.workerList;
 
-            $.each(workerList, function(k, v) {
-                // var editBtn = `
-                //     <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
-                // `;
+            if (workerList && workerList.length > 0) {
+                var newList = [];
 
-                var rebuildData = {
-                    // editBtn         : editBtn,
-                    id              : v['id'],
-                    username        : v['username'],
-                    name            : v['name'],
-                    phone           : v['phone'],
-                    shopName        : v['shopName'],
-                    ownername       : v['ownername'],
-                    disabled        : v['disabled'],
-                    lastLogin       : v['lastLogin'],
-                    createdAt       : v['createdAt']
-                };
-                newList.push(rebuildData);
-            });
+                $.each(workerList, function(k, v) {
+                    // var editBtn = `
+                    //     <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
+                    // `;
+
+                    var rebuildData = {
+                        // editBtn         : editBtn,
+                        id              : v['id'],
+                        username        : v['username'],
+                        name            : v['name'],
+                        phone           : v['phone'],
+                        shopName        : v['shopName'],
+                        ownername       : v['ownername'],
+                        disabled        : v['disabled'],
+                        lastLogin       : v['lastLogin'],
+                        createdAt       : v['createdAt']
+                    };
+                    newList.push(rebuildData);
+                });
+            }
         }
 
         buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
         pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
-        if (ownerList) {
+        if (workerList) {
             $.each(workerList, function(k, v) {
                 $('#'+tableId).find('tr#'+k).attr('data-id', v['id']);
             });

@@ -29,9 +29,37 @@ $_SESSION['lastVisited'] = $thisPage;
             <div class="content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-4">
-                            <div id="backBtn" class="btn btn-primary waves-effect waves-light m-b-20">
-                                <?php echo $translations['A00115'][$language]; /* Back */?>
+                        <div class="col-md-12 productList-buttonGrp">
+                            <div>
+                                <div id="backBtn" class="btn btn-primary waves-effect waves-light m-b-20">
+                                    <?php echo $translations['A00115'][$language]; /* Back */?>
+                                </div>
+                            </div>
+                            <div style="display: flex;">
+                                <div id="unitOnHandBtn" class="btn btn-primary action-btn waves-effect waves-light m-b-20 m-r-10" style="display: flex; align-items: center;">
+                                    <img src="images/unit-on-hand.png" alt="" height="28px" class="m-r-10">
+                                    <div>
+                                        <div><span id="unitOnHand">0</span> Unit</div>
+                                        <div>on hand</div>
+                                    </div>
+                                </div>
+                                <div id="inOutBtn" class="btn btn-primary action-btn waves-effect waves-light m-b-20 m-r-10" style="display: flex; align-items: center;">
+                                    <img src="images/in-out.png" alt="" height="28px" class="m-r-10">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <div class="m-r-5">
+                                            In: <br>
+                                            Out:
+                                        </div>
+                                        <div id="inOutAmt">
+                                            0 <br>
+                                            0
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="orderBtn" class="btn btn-primary action-btn waves-effect waves-light m-b-20" style="display: flex; align-items: center;">
+                                    <img src="images/order.png" alt="" height="28px" class="m-r-10">
+                                    <div>Order</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -84,9 +112,18 @@ $_SESSION['lastVisited'] = $thisPage;
                                                 <!-- <span id="productTypeError" class="errorSpan text-danger"></span> -->
                                             <!-- </div> -->
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
-                                                <label>Best Before Days</label>
+                                                <label>Best Before (Days)</label>
                                                 <input id="expiredDay" type="number" class="form-control">
                                                 <span id="expiredDayError" class="errorSpan text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Delivery Method</label>
+                                                <select id="deliveryMethod" class="form-control category" dataName="deliveryMethod" dataType="text">
+                                                </select>
+                                                <span id="deliveryMethodError" class="errorSpan text-danger"></span>
+                                                <br>
+                                                <input type="checkbox" id="foc" name="FOC">
+                                                <label for="foc">FOC</label>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -246,6 +283,23 @@ $_SESSION['lastVisited'] = $thisPage;
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-xs-12" style="margin-top: 20px;">
+                                        <label>Ignore Stock Count Status</label>
+                                        <div id="status" class="m-b-20">
+                                            <div class="radio radio-inline">
+                                                <input id="stockActive" type="radio" value="1" name="ignoreStatus" checked="checked"/>
+                                                <label for="stockActive">
+                                                    <?php echo $translations['A00056'][$language]; /* Yes */?>
+                                                </label>
+                                            </div>
+                                            <div class="radio radio-inline">
+                                                <input id="stockInActive" type="radio" value="0" name="ignoreStatus"/>
+                                                <label for="stockInActive">
+                                                    <?php echo $translations['A00057'][$language]; /* No */?>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="col-xs-12" style="margin-top: 20px;">
                                         <div class="row">
@@ -372,6 +426,10 @@ $_SESSION['lastVisited'] = $thisPage;
 	    </div>
 	</div> -->
 
+    <form action="" method="post" id="redirectForm" target="_blank">
+
+    </form>
+
     <script>var resizefunc = [];</script>
     <?php include("shareJs.php"); ?>
 
@@ -426,9 +484,14 @@ $_SESSION['lastVisited'] = $thisPage;
         var cookingSuggestionRemark = [];
         var cookingSuggest = [];
         var invTranslationList = [];
+        var deliveryMethodOption = '';
 
         var expiredDayInput = document.getElementById('expiredDay');
         var expiredDayError = document.getElementById('expiredDayError');
+
+        var productName;
+        var vendorId;
+        var skuCode;
 
         expiredDayInput.addEventListener('input', function() {
             var inputValue = expiredDayInput.value;
@@ -653,6 +716,7 @@ $_SESSION['lastVisited'] = $thisPage;
 
                 var productNameEnglish = document.getElementById("invProductName").value;
                 var productNameChinese = document.getElementById("invProductNameChinese").value;
+                var deliveryMethod = document.getElementById("deliveryMethod").value;
 
                 var englishObj = {
                 language: "english",
@@ -715,10 +779,12 @@ $_SESSION['lastVisited'] = $thisPage;
                 }
 
                 var invProductName = $("#invProductName").val();
+                var foc = $("#foc").is(":checked") ? 1 : 0;
                 var code = $("#skuCode").val();
                 // var status = $("input[name=statusRadio]:checked").val()
                 var publishStatus = $("input[name=publishStatus]:checked").val();
                 var archiveStatus = $("input[name=arhiveStatus]:checked").val();
+                var ignoreStatus = $("input[name=ignoreStatus]:checked").val();
                 var productType = $("#productType").val();
                 var expiredDay = $('#expiredDay').val();
                 var description = $('#description').val();
@@ -926,9 +992,11 @@ $_SESSION['lastVisited'] = $thisPage;
                     productInvId    : id,
                     invProductName  : invProductName,
                     code            : code,
+                    foc             : foc,
                     // status          : status,
                     publishStatus   : publishStatus,
                     archiveStatus   : archiveStatus,
+                    ignoreStatus    : ignoreStatus,
                     productType     : productType,
                     expired_day     : expiredDay,
                     description     : description,
@@ -943,6 +1011,7 @@ $_SESSION['lastVisited'] = $thisPage;
                     videoId         : videoId,
                     uploadImage     : uploadImage,
                     imageId         : imageId,
+                    deliveryMethod  : deliveryMethod,
                     cookingSuggestionName   : cookingSuggestionName,
                     cookingSuggestionUrl    : cookingSuggestionUrl,
                     cookingSuggestionRemark : cookingSuggestionRemark,
@@ -976,6 +1045,63 @@ $_SESSION['lastVisited'] = $thisPage;
 
             $('#backBtn').click(function() {
                 $.redirect('getProductInventory.php');
+            });
+
+            $('#unitOnHandBtn').click(function() {
+                // $.redirect('stockBatchList.php', {
+                //     productId   : id,
+                //     productName : productName,
+                //     vendorName  : $('#vendorName').find(`option[value=${vendorId}]`).html(),
+                //     code        : skuCode,
+                // });
+
+                var cfProductId = id;
+                var cfProductName = productName;
+                var cfVendorName = $('#vendorName').find(`option[value=${vendorId}]`).html();
+                var cfSkuCode = skuCode;
+
+                $('#redirectForm').empty().html(`
+                    <input type="text" name="productId" value="${cfProductId}">
+                    <input type="text" name="productName" value="${cfProductName}">
+                    <input type="text" name="vendorName" value="${cfVendorName}">
+                    <input type="text" name="code" value="${cfSkuCode}">
+                `).attr('action', 'stockBatchList.php').submit();
+            });
+
+            $('#inOutBtn').click(function() {
+                // $.redirect('stockMovementDetail.php', {
+                //     productId   : id,
+                //     productName : productName,
+                //     vendorName  : $('#vendorName').find(`option[value=${vendorId}]`).html(),
+                //     code        : skuCode,
+                // });
+
+                var cfProductId = id;
+                var cfProductName = productName;
+                var cfVendorName = $('#vendorName').find(`option[value=${vendorId}]`).html();
+                var cfSkuCode = skuCode;
+
+                $('#redirectForm').empty().html(`
+                    <input type="text" name="productId" value="${cfProductId}">
+                    <input type="text" name="productName" value="${cfProductName}">
+                    <input type="text" name="vendorName" value="${cfVendorName}">
+                    <input type="text" name="code" value="${cfSkuCode}">
+                `).attr('action', 'stockMovementDetail.php').submit();
+            });
+
+            $('#orderBtn').click(function() {
+                // $.redirect('newPurchaseRequest.php', {
+                //     productId           : id,
+                //     vendorId            : vendorId,
+                // });
+
+                var cfProductId = id;
+                var cfVendorId = vendorId;
+
+                $('#redirectForm').empty().html(`
+                    <input type="text" name="productId" value="${cfProductId}">
+                    <input type="text" name="vendorId" value="${cfVendorId}">
+                `).attr('action', 'newPurchaseRequest.php').submit();
             });
         });
 
@@ -1080,12 +1206,18 @@ $_SESSION['lastVisited'] = $thisPage;
         // }
 
         function loadDefaultListing(data, message) {
+            $('#unitOnHand').html(data.stockOnHand);
+            $('#inOutAmt').html(`${data.stockInOutAmt.stockInCount}<br>${data.stockInOutAmt.stockOutCount}`);
+            $("#foc").prop("checked", data.focDetail == 1);
             cookingSuggest = data.cookingDetail;
-            $("#invProductName").val(data.productDetails.name);
-            $("#skuCode").val(data.productDetails.skuCode);
+            productName = data.productDetails.name;
+            $("#invProductName").val(productName);
+            skuCode = data.productDetails.skuCode;
+            $("#skuCode").val(skuCode);
             // $('input[name=statusRadio]').filter('[value='+data.productDetails.status+']').prop('checked', true);
             $('input[name=publishStatus]').filter('[value='+data.productDetails.is_published+']').prop('checked', true);
             $('input[name=arhiveStatus]').filter('[value='+data.productDetails.is_archive+']').prop('checked', true);
+            $('input[name=ignoreStatus]').filter('[value='+data.productDetails.ignore_stock_count+']').prop('checked', true);
             $("#weight").val(data.productDetails.weight);
             $('#expiredDay').val(data.productDetails.expired_day);
             $('#description').val(data.productDetails.description);
@@ -1139,8 +1271,20 @@ $_SESSION['lastVisited'] = $thisPage;
             });
             }
 
-
-            // Checkpoint
+            deliveryMethodOption = "";
+            if(data.deliveryMethodList) {
+                deliveryMethodOption += `
+                    <option value="">Select Delivery Method</option>
+                `
+                $.each(data.deliveryMethodList, function(k,v){
+                    deliveryMethodOption += `
+                        <option value="${v['id']}">${v['name']}</option>
+                    `;
+                });
+            }
+            $("#deliveryMethod").html(deliveryMethodOption);
+            $("#deliveryMethod").val(data.productDetails.delivery_method);
+            
 
             categoryOption = "";
             if(data.categoryList) {
@@ -1167,6 +1311,11 @@ $_SESSION['lastVisited'] = $thisPage;
                     });
                 }
             }
+            $('#category').select2({
+                dropdownAutoWidth: true,
+                templateResult: newFormatState,
+                templateSelection: newFormatState,
+            });
             
             if(data.cookingDescription){
                 // fullInstruction
@@ -1194,7 +1343,14 @@ $_SESSION['lastVisited'] = $thisPage;
                 });
                 $('#vendorName').append(buildSupplier);
             }
-            $('#vendorName').val(data.productDetails.vendor_id);
+            vendorId = data.productDetails.vendor_id;
+            $('#vendorName').val(vendorId); 
+
+            $('#vendorName').select2({
+                dropdownAutoWidth: true,
+                templateResult: newFormatState,
+                templateSelection: newFormatState,
+            });
 
             if(data.attrIdList) {
                 toggleAttributeBox();
@@ -1427,9 +1583,11 @@ $_SESSION['lastVisited'] = $thisPage;
                                     <input type="file" id="fileUpload${addImgIDNum}" class="hide" accept="image/jpeg, image/png, image/gif, image/bmp, image/tiff" onchange="displayFileName('${addImgIDNum}', this)">
                                     <div>
                                         <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
-                                        <span id="fileName${addImgIDNum}" class="fileName">
+                                        <span id="fileNotUploaded${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                                        <!-- <span id="fileName${addImgIDNum}" class="fileName">
                                             ${v.name}
-                                        </span>
+                                        </span> -->
+                                        <img id="thumbnailImg${addImgIDNum}" src="${v.url}" style="width:100%;" />
                                         <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="padding: 6px;" onclick="showImg('${addImgIDNum}')">
                                             <i class="fa fa-eye"></i>
                                         </a>
@@ -1442,6 +1600,7 @@ $_SESSION['lastVisited'] = $thisPage;
                         `;
             
                         $("#buildImg").append(buildImg);
+                        $(`#fileNotUploaded${addImgIDNum}`).hide();
                     }
                 });
             }
@@ -1677,7 +1836,9 @@ $_SESSION['lastVisited'] = $thisPage;
 
                         <div>
                             <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
-                            <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                            <span id="fileNotUploaded${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                            <!-- <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span> -->
+                            <img id="thumbnailImg${addImgIDNum}" style="width:100%;" />
                             <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="display: none; padding: 6px;" onclick="showImg('${addImgIDNum}')">
                                 <i class="fa fa-eye"></i>
                             </a>
@@ -1751,7 +1912,8 @@ $_SESSION['lastVisited'] = $thisPage;
 
             $("#viewImg"+id).hide();
             $("#deleteImg"+id).hide();
-
+            $("#fileNotUploaded"+id).show()
+            $("#thumbnailImg"+id).attr('src', "");
         }
 
         function showImg(n) {
@@ -1793,6 +1955,8 @@ $_SESSION['lastVisited'] = $thisPage;
                     // $("#viewImg"+id).attr('data-res', reader["result"]);
                     $("#viewImg"+id).css('display', 'inline-block');
                     $("#deleteImg"+id).css('display', 'inline-block');
+                    $("#fileNotUploaded"+id).hide()
+                    $("#thumbnailImg"+id).attr('src', $("#storeFileData"+id).val());
                 };
 
                 reader.readAsDataURL(n.files[0]);
@@ -1976,6 +2140,34 @@ $_SESSION['lastVisited'] = $thisPage;
 		/*function uploadVideoSuccess() {
 	        showMessage("Edit Package Success.", 'success', 'Congratulations!', 'upload', 'getProductInventory.php');
 	    }*/
+
+        function newFormatState(method) {
+            if (!method.id) {
+                return method.text;
+            }
+
+            var optimage = $(method.element).attr('data-image')
+            if (!optimage) {
+                return method.text;
+            } else {
+                var $opt = $(
+                    '<span onclick="changeTokenCategory('+method.text+')"><img src="' + optimage + '" class="tokenOptionImg" /> <span style="vertical-align: middle;">' + method.text + '</span></span>'
+                );
+                return $opt;
+            }
+        };
+
+        // $('#vendorName').select2({
+        //     dropdownAutoWidth: true,
+        //     templateResult: newFormatState,
+        //     templateSelection: newFormatState,
+        // });
+
+        // $('#category').select2({
+        //     dropdownAutoWidth: true,
+        //     templateResult: newFormatState,
+        //     templateSelection: newFormatState,
+        // });
 
     </script>
 </body>

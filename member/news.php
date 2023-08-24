@@ -217,7 +217,7 @@ function loadDefaultNewsListing(data, message, obj)
 								</button>
 							</div>
 							<div class="modal-body px-5 pt-0 pb-3">
-								<span class="modal-title mb-3 newsTitle">${value["subject"]}</span>
+								<!-- <span class="modal-title mb-3 newsTitle">${value["subject"]}</span> -->
 			`;
 			if(value["base_64"] == null){
 				newsDetails += `

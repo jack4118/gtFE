@@ -318,7 +318,7 @@ $_SESSION["stopRecord"] = 1;
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span class="modal-title" data-lang="M00451"><?php echo $translations['M00451'][$language]; //Congratulations ?></span>
+                <!-- <span class="modal-title" data-lang="M00451"><?php echo $translations['M00451'][$language]; //Congratulations ?></span> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>

@@ -171,6 +171,8 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
         });
 
+        pagingCallBack(pageNumber, loadSearch);
+
         $('#searchBtn').click(function() {
             pagingCallBack(pageNumber, loadSearch);
         }); 

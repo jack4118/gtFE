@@ -59,7 +59,7 @@
                                                         <label class="control-label">
                                                             Vendor Name
                                                         </label>
-                                                        <input type="text" class="form-control" dataName="vendorName" dataType="text">
+                                                        <input id="vendorName" type="text" class="form-control" dataName="vendorName" dataType="text">
                                                     </div>
                                                 </div>
 
@@ -121,30 +121,68 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 productList-buttonGrp">
                             <!-- <div class="card-box p-b-0"> -->
-                                <div id="addProduct" class="btn btn-primary waves-effect waves-light m-b-20">
-                                    Add Product
+                                <div>
+                                    <div id="addProduct" class="btn btn-primary waves-effect waves-light m-b-20">
+                                        Add Product
+                                    </div>
+                                    <button id="exportBtn" class="btn btn-primary waves-effect waves-light m-b-20" style="display: none">
+                                        Export to xlsx
+                                    </button>
+                                    <button id="seeAllBtn" class="btn btn-primary waves-effect waves-light m-b-20" style="display: none">
+                                        See All
+                                    </button>
                                 </div>
-                                <button id="exportBtn" class="btn btn-primary waves-effect waves-light m-b-20" style="display: none">
-                                    Export to xlsx
-                                </button>
-                                <button id="seeAllBtn" class="btn btn-primary waves-effect waves-light m-b-20" style="display: none">
-                                    See All
-                                </button>
-                                <form>
-                                    <div id="basicwizard" class="pull-in" style="display: none">
-                                        <div class="tab-content b-0 m-b-0 p-t-0">
-                                            <div id="alertMsg" class="text-center alert" style="display: none;"></div>
-                                            <div id="listingDiv" class="table-responsive verticalTable"></div>
-                                            <span id="paginateText"></span>
-                                            <div class="text-center">
-                                                <ul class="pagination pagination-md" id="pagerList"></ul>
-                                            </div>
+                                <!-- <div> -->
+                                    <!-- <span class="waves-effect waves-light m-b-20" data-lang="A00663">
+                                        <?php echo $translations['A00663'][$language]; /* With selected */ ?> : 
+                                    </span> -->
+                                    <!-- <div id="selectionDiv" class="waves-effect waves-light m-b-20" style="display: inline-block; margin-left: 5px; width: 120px">
+                                        <select id="actionSelect" class="form-control" 
+                                            dataType="select"> -->
+                                            <!-- <option value="Export">
+                                                Export
+                                            </option> -->
+                                            <!-- <option value="Archive" selected>
+                                                Archive
+                                            </option>
+                                            <option value="Unarchive">
+                                                Unarchive
+                                            </option>
+                                            <option value="Publish">
+                                                Publish
+                                            </option>
+                                            <option value="Unpublish">
+                                                Unpublish
+                                            </option> -->
+                                            <!-- <option value="Delete">
+                                                Generate Pricelist Report
+                                            </option>
+                                            <option value="Delete">
+                                                Compute Price from BoM
+                                            </option> -->
+                                        <!-- </select> -->
+                                    <!-- </div> -->
+                                    <!-- <button id="updateBtn" class="btn btn-primary waves-effect waves-light m-b-20 m-l-rem1">
+                                        Update
+                                    </button> -->
+                                <!-- </div> -->
+                            <!-- </div> -->
+                        </div>
+                        <div class="col-lg-12">
+                            <form>
+                                <div id="basicwizard" class="pull-in" style="display: none">
+                                    <div class="tab-content b-0 m-b-0 p-t-0">
+                                        <div id="alertMsg" class="text-center alert" style="display: none;"></div>
+                                        <div id="listingDiv" class="table-responsive verticalTable"></div>
+                                        <span id="paginateText"></span>
+                                        <div class="text-center">
+                                            <ul class="pagination pagination-md" id="pagerList"></ul>
                                         </div>
                                     </div>
-                                </form>
-                            <!-- </div> -->
+                                </div>
+                            </form>
                         </div>
                     </div><!-- End row -->
                 </div><!-- container -->
@@ -210,6 +248,8 @@
         var pagerId  = 'pagerList';
         var btnArray = {};
         var thArray  = Array (
+            // "check",
+            "Image",
             // "Created Date",
             "SKU Code",
             "Product Name",
@@ -234,6 +274,18 @@
             // "Add Stock",
             // "View Stock",
             // "View Transaction"
+        );
+
+        var sortThArray = Array(
+            "",
+            "p.barcode",
+            "p.name",
+            "v.name",
+            "p.categ_id",
+            "p.expired_day",
+            "p.cost",
+            "p.sale_price",
+            "p.is_published"
         );
 
         //View Details Table
@@ -262,7 +314,10 @@
         // var saveProductID=[];
         var saveData = {};
 
+        var vendorName = '<?php echo $_POST['vendorName'] ?>';
+
         $(document).ready(function() {
+            $('#vendorName').val(vendorName);
 
             $("body").keyup(function(event) {
                 if (event.keyCode == 13) {
@@ -274,6 +329,8 @@
             $('#resetBtn').click(function() {
                 $("#searchForm")[0].reset();
             });
+
+            pagingCallBack(pageNumber, loadSearch);
             
             $('#searchBtn').click(function() {
                 pagingCallBack(pageNumber, loadSearch);
@@ -350,6 +407,27 @@
                 fCallback = exportExcel;
                 ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
             });
+
+            $('#updateBtn').click(function () {
+                var checkedIDs = [];
+                var checkedDetails = [];
+                $('#' + tableId).find('tbody [type=checkbox]:checked').each(function () {
+                    var checkboxID = $(this).parent('td').parent('tr').attr('data-th');
+                    checkedIDs.push(checkboxID);
+                });
+                if (checkedIDs.length === 0)
+                    showMessage('<?php echo $translations['A00613'][$language]; /* No check box selected. */ ?>', 'warning', '<?php echo $translations['A00614'][$language]; /* Update Status */ ?>', 'edit', '');
+                else {
+
+                    var formData = {
+                        command: 'updateBatchProduct',
+                        checkedIDs: checkedIDs,
+                        status: $('#actionSelect').val(),
+                    };
+                    fCallback = updateCallback;
+                    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+                }
+            });
         });
 
         function pagingCallBack(pageNumber, fCallback){
@@ -357,10 +435,14 @@
 
                 var searchID = "searchForm";
                 var searchData = buildSearchDataByType(searchID);
+
+                var sortData = getSortData(tableId);
+
                 var formData   = {
                     command     : "getProductInventory",
                     searchData  : searchData,
-                    pageNumber  : pageNumber
+                    pageNumber  : pageNumber,
+                    sortData    : sortData
                 };
                 if(!fCallback)
                     fCallback = loadDefaultListing;
@@ -390,6 +472,12 @@
             }
 
             $('#basicwizard').show();
+
+            var sortArray = {
+                'sortThArray'   : sortThArray,
+                'sortBy'        : data['sortBy'],
+            }
+
             var tableNo;
             saveData = data.productInventory;
             if(saveData) {
@@ -442,7 +530,11 @@
                         </div>
                     `;*/
 
+                    // var checkbox = "<input name ='checkbox' type ='checkbox'>";
+
                     var rebuildData = {
+                        // checkdate           : checkbox,
+                        image               : v['productImage'],
                         // created_at          : v['created_at'],
                         code                : v['skuCode'],
                         name                : v['name'],
@@ -477,8 +569,14 @@
                 });
             }
 
-            buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
+            buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
             pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
+
+            if(saveData) {
+                $.each(saveData, function(k, v) {
+                    $('#'+tableId).find('tr#'+k).attr('data-th', v['id']);
+                });      
+            }
 
             $('#' + tableId).find('tbody tr, thead tr').each(function () {
                 // $(this).find('td:last-child, th:last-child').css('text-align', "center");
@@ -593,6 +691,11 @@
                 </tr>
             `);
         }*/
+
+        function updateCallback(data, message) {
+            showMessage('<span data-lang="A00616"><?php echo $translations['A00616'][$language]; /* Successful updated status. */ ?></span>', 'success', '<span data-lang="A00617"><?php echo $translations['A00617'][$language]; /* Update Status */ ?></span>', 'edit', 'getProductInventory.php');
+        }
+
     </script>
 </body>
 </html>

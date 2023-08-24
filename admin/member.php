@@ -66,10 +66,10 @@ $countryList = $_SESSION['countryList'];
                                                             <?php echo $translations['A00103'][$language]; /* Email */ ?>
                                                         </label>
                                                         <span class="pull-right">
-                                                            <input id="match" type="radio" name="emailType" class="emailType" value="match" checked> 
-                                                            <label for="match" style="margin-right: 15px;"><?php echo $translations['A01347'][$language]; /* Match */ ?></label>
+                                                            <!-- <input id="match" type="radio" name="emailType" class="emailType" value="match" checked> 
+                                                            <label for="match" style="margin-right: 15px;"><?php echo $translations['A01347'][$language]; /* Match */ ?></label> -->
 
-                                                            <input id="like" type="radio" name="emailType" class="emailType" value="like" style="margin-left: 15px;" > 
+                                                            <input id="like" type="radio" name="emailType" class="emailType" value="like" style="margin-left: 15px;" checked> 
                                                             <label for="like"><?php echo $translations['A01348'][$language]; /* Like */ ?></label>
                                                         </span>
                                                         <input type="text" class="form-control email" dataName="email" dataType="text">
@@ -175,10 +175,10 @@ $countryList = $_SESSION['countryList'];
                                                                     <?php echo $translations['A00055'][$language]; /* All */ ?>
                                                                 </option>
                                                                 <option value="Client">
-                                                                    Client
+                                                                    <?php echo $translations['A01288'][$language]; /* Customer */ ?>
                                                                 </option>
                                                                 <option value="Guest">
-                                                                    Guest
+                                                                    <?php echo $translations['M04070'][$language]; /* Guest */ ?>
                                                                 </option>
                                                         </select>
                                                     </div>
@@ -190,17 +190,14 @@ $countryList = $_SESSION['countryList'];
                                                             <input id="like" type="radio" name="date" class="date" value="like" style="margin-left: 15px;"checked > 
                                                             <label for="like"><?php echo $translations['A01348'][$language]; /* Like */ ?></label>
                                                         </span>
-                                                        <input type="date" class="form-control" dataName="date" dataType="text">
+                                                        <!-- <input type="date" class="form-control" dataName="date" dataType="text"> -->
+                                                        <div class="" id="datepicker-range">
+                                                            <input id="dateRangeStart" type="text" class="form-control" name="date" dataName="date" dataType="dateRange">
+                                                        </div>
                                                     </div>
                                                     
                                                 </div>
                                             </div>
-<!-- 
-                                            <div class="col-xs-12">
-                                                <div class="row">
-                                                 
-                                                </div>
-                                            </div> -->
                                         </form>
                                         <div class="col-xs-12">
                                             <button id="searchBtn" class="btn btn-primary waves-effect waves-light">
@@ -279,6 +276,15 @@ $countryList = $_SESSION['countryList'];
         // '<?php echo $translations['A00112'][$language]; /* Created At */ ?>'
     );
 
+    var sortThArray = Array(
+        "",
+        "name",
+        "phone",
+        "email",
+        "",
+        "type",
+        ""
+    );
 
     var method         = 'POST';
     var debug          = 0;
@@ -298,6 +304,8 @@ $countryList = $_SESSION['countryList'];
         $('#resetBtn').click(function() {
             $("#searchForm")[0].reset();
         });
+
+        pagingCallBack(pageNumber, loadSearch);
 
         $('#searchBtn').click(function() {
             
@@ -328,28 +336,22 @@ $countryList = $_SESSION['countryList'];
         var searchData = buildSearchDataByType(searchID);
 
         var thArray = Array(
-            '<?php echo $translations['A00148'][$language]; /* Member ID */ ?>',
-            '<?php echo $translations['A00103'][$language]; /* Email */ ?>',
             '<?php echo $translations['A00117'][$language]; /* Full Name */ ?>',
-            '<?php echo $translations['A00318'][$language]; /* Status */ ?>',
-            'Sponsor ID',
-            '<?php echo $translations['A00153'][$language]; /* Country */ ?>',
-            'Rank',
-            '<?php echo $translations['A00113'][$language]; /* Last Login */ ?>',
-            '<?php echo $translations['A01350'][$language]; /* Last Login IP Address */ ?>',
+            '<?php echo $translations['A00171'][$language]; /* Mobile Number */ ?>',
+            '<?php echo $translations['A00103'][$language]; /* Email */ ?>',
+            '<?php echo $translations['M03800'][$language]; /* Loyalty Points */ ?>',
+            'Account Type',
+            'Last Purchase Date',
             '<?php echo $translations['A00112'][$language]; /* Created At */ ?>'
         );
-       
+
         var key = Array(
-            'memberID',
-            'email',
             'name',
-            'status',
-            'sponsorUsername',
-            'country',
-            'rank',
-            'lastLogin',
-            'lastLoginIp',
+            'phone',
+            'email',
+            'balance_to_point',
+            'type',
+            'LastPurchaseDate',
             'createdAt'
         );
         var formData = {
@@ -373,6 +375,11 @@ $countryList = $_SESSION['countryList'];
             $('#exportBtn').show(); 
         } else {
             $('#exportBtn').hide();
+        }
+
+        var sortArray = {
+            'sortThArray'   : sortThArray,
+            'sortBy'        : data['sortBy'],
         }
 
         var tableNo;
@@ -426,12 +433,12 @@ $countryList = $_SESSION['countryList'];
             });
         }
 
-        buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
+        buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
         pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
-        $('tr').each(function(){
-            $(':eq(14)',this).remove().insertBefore($(':eq(0)',this));
-        });
+        // $('tr').each(function(){
+        //     $(':eq(14)',this).remove().insertBefore($(':eq(0)',this));
+        // });
 
         if(memberList) {
             $.each(memberList, function(k, v) {
@@ -452,15 +459,26 @@ $countryList = $_SESSION['countryList'];
         $.redirect("editMember.php", {id : id});
     }
 
+    $('#dateRangeStart').datepicker({
+        // language: language,
+        format      : 'yyyy-mm-dd',
+        orientation : 'auto',
+        autoclose   : true
+    });
+
     function pagingCallBack(pageNumber, fCallback){
         var searchId   = 'searchForm';
         var searchData = buildSearchDataByType(searchId);
+
+        var sortData = getSortData(tableId);
+
         if(pageNumber > 1) bypassLoading = 1;
 
         var formData = {
             command   : "getMemberList",
             searchData : searchData,
-            pageNumber : pageNumber
+            pageNumber : pageNumber,
+            sortData    : sortData
         };
 
         if(!fCallback)

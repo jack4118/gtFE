@@ -185,16 +185,35 @@
 
         function loadCategory(data, message) {
             var html = `<option value="0">No Parent</option>`;
+            var parent_id = '';
+
+            $.each(data.categoryList, function(k,v){
+                if(v['id'] == id) {
+                    parent_id = v['parent_id'];
+                }
+            });
 
             $.each(data.parentCategoryList, function(k,v){
                 if(v['id'] != id) {
-                    html += `
-                        <option value="${v['id']}">${v['name']}</option>
-                    `;
+                    if(v['id'] == parent_id){
+                        html += `
+                        <option value="${v['id']}" selected>${v['name']}</option>
+                        `;
+                    }else{
+                        html += `
+                            <option value="${v['id']}">${v['name']}</option>
+                        `;
+                    }
                 }
             });
 
             $("#parentCategorySelect").html(html);
+
+            $('#parentCategorySelect').select2({
+                dropdownAutoWidth: true,
+                templateResult: newFormatState,
+                templateSelection: newFormatState,
+            });
 
             var formData  = {
                 command         : 'getCategoryInventoryDetail',
@@ -265,6 +284,22 @@
         function submitCallback(data, message) {
             showMessage(message, 'success', 'Congratulations', 'edit', 'getCategoryList.php');
         }
+
+        function newFormatState(method) {
+            if (!method.id) {
+                return method.text;
+            }
+
+            var optimage = $(method.element).attr('data-image')
+            if (!optimage) {
+                return method.text;
+            } else {
+                var $opt = $(
+                    '<span onclick="changeTokenCategory('+method.text+')"><img src="' + optimage + '" class="tokenOptionImg" /> <span style="vertical-align: middle;">' + method.text + '</span></span>'
+                );
+                return $opt;
+            }
+        };
 
     </script>
 </body>

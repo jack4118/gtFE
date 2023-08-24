@@ -197,7 +197,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title f-16" id="exampleModalLabel"><?php echo $translations['M00097'][$language]; //Upload Image ?></div>
+                <!-- <div class="modal-title f-16" id="exampleModalLabel"><?php echo $translations['M00097'][$language]; //Upload Image ?></div> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -249,7 +249,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span id="canvasTitle" class="modal-title"><?php echo $translations['M00046'][$language]; //Preview ?></span>
+                <!-- <span id="canvasTitle" class="modal-title"><?php echo $translations['M00046'][$language]; //Preview ?></span> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -271,7 +271,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span id="canvasTitle" class="modal-title"><?php echo $translations['M00148'][$language]; //Processing ?></span>
+                <!-- <span id="canvasTitle" class="modal-title"><?php echo $translations['M00148'][$language]; //Processing ?></span> -->
             </div>
             <div class="modalLine"></div>
             <div class="modal-body modalBodyFont">

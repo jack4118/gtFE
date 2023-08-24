@@ -1,10 +1,9 @@
 <?php
-    
     $config = array(
-                    
         'webserviceURL' => "gotasty-backend/modules/gotasty/webservices.php",
 		// 'webserviceURL' => 'http://backendTest.gotasty.net/modules/gotasty/webservices.php',
 	    'adminMemberWebserviceURL' => "gotasty-backend/modules/gotasty/webservices.php",
+		
         'companyName' => "",
         'logoURL' => "",
 

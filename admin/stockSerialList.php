@@ -1,6 +1,9 @@
 <?php 
 session_start();
 $thisPage = basename($_SERVER['PHP_SELF']);
+//Form submission issue
+header("Cache-Control: no cache");
+session_cache_limiter("private_no_expire");
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,21 +54,21 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                 <div class="row">
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            <?php echo $translations['A00101'][$language]; /* Name */ ?>
+                                                            <?php echo $translations['A01702'][$language]; /* SKU code */ ?>
                                                         </label>
-                                                        <input type="text" class="form-control" dataName="name" dataType="text">
+                                                        <input type="text" class="form-control" dataName="skuCode" dataType="text">
                                                     </div>
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            <?php echo $translations['A00102'][$language]; /* Username */ ?>
+                                                            <?php echo $translations['A01695'][$language]; /* Product Name */ ?>
                                                         </label>
-                                                        <input type="text" class="form-control" dataName="username" dataType="text">
+                                                        <input type="text" class="form-control" dataName="product" dataType="text">
                                                     </div>
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label" for="" data-th="email">
-                                                            <?php echo $translations['A00103'][$language]; /* Email */ ?>
+                                                            <?php echo $translations['A01701'][$language]; /* Serial Number */ ?>
                                                         </label>
-                                                        <input type="text" class="form-control" dataName="email" dataType="text">
+                                                        <input type="text" class="form-control" dataName="serialNo" dataType="text">
                                                     </div>
                                                 </div>
                                             </div>
@@ -73,19 +76,25 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                 <div class="row">
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label" data-th="disabled">
-                                                            <?php echo $translations['A00104'][$language]; /* Disabled */ ?>
+                                                            <?php echo $translations['A01705'][$language]; /* Status */ ?>
                                                         </label>
-                                                        <select class="form-control" dataName="disabled" dataType="select">
+                                                        <select class="form-control" dataName="status" dataType="select">
                                                             <option value="">
                                                                 <?php echo $translations['A00055'][$language]; /* All */ ?>
                                                             </option>
-                                                            <option value="1">
-                                                                <?php echo $translations['A00056'][$language]; /* Yes */ ?>
+                                                            <option value="Sold">
+                                                                <?php echo $translations['M03098'][$language]; /* Sold */ ?>
                                                             </option>
-                                                            <option value="0">
-                                                                <?php echo $translations['A00057'][$language]; /* No */ ?>
+                                                            <option value="Active">
+                                                                <?php echo $translations['M03654'][$language]; /* Active */ ?>
                                                             </option>
                                                         </select>
+                                                    </div>
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label" for="" data-th="email">
+                                                            <?php echo $translations['A01738'][$language]; /* Best Before Date */ ?>
+                                                        </label>
+                                                        <input type="date" class="form-control" dataName="date" dataType="text">
                                                     </div>
                                                 </div>
                                             </div>
@@ -158,6 +167,14 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     );
     var searchId = 'searchForm';
 
+    var sortThArray = Array(
+        "barcode",
+        "name",
+        "serial_number",
+        "expiration_date",
+        "status"
+    );
+
     var url             = 'scripts/reqAdmin.php';
     var method          = 'POST';
     var debug           = 0;
@@ -168,7 +185,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var fCallback       = "";
     var poId            = '<?php echo $_POST['poId']; ?>';
     var productId       = '<?php echo $_POST['productId']; ?>';
-    var productName     = '<?php echo $_POST['productName']; ?>' != "-" ? '<?php echo $_POST['productName']; ?>' : "";
+    var productName     = "<?php echo $_POST['productName']; ?>" != "-" ? "<?php echo $_POST['productName']; ?>" : "";
     var vendorName      = '<?php echo $_POST['vendorName']; ?>' != "-" ? '<?php echo $_POST['vendorName']; ?>' : "";
     var code            = '<?php echo $_POST['code']; ?>' != "-" ? '<?php echo $_POST['code']; ?>' : "";
 
@@ -195,6 +212,9 @@ $thisPage = basename($_SERVER['PHP_SELF']);
             });
 
         });
+
+        pagingCallBack(pageNumber, loadSearch);
+        
         /* Toggle search function */
         $('#searchBtn').click(function() {
             pagingCallBack(pageNumber, loadSearch);
@@ -204,6 +224,9 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     /* Call getStockList API */
     function pagingCallBack(pageNumber, fCallback) {
         if (pageNumber > 1) bypassLoading = 1;
+
+        var sortData = getSortData(tableId);
+
         /* Search data */
         var searchData  = buildSearchDataByType(searchId);
         var formData    = {
@@ -212,7 +235,8 @@ $thisPage = basename($_SERVER['PHP_SELF']);
             inputData   : searchData,
             layer       : 3,
             poId        : poId,
-            productId   : productId
+            productId   : productId,
+            sortData    : sortData
         };
 
         if (!fCallback)
@@ -222,33 +246,63 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
     /* getStockList callback (Stock Listing) */
     function loadDefaultListing(data, message) {
-        console.log(data);
+        // console.log(data);
         var tableNo;
-        if (data.stockList != "" && data.stockList.length > 0) {
-            var newList = []
-            $.each(data.stockList, function(k, v) {
 
-                var buildBtn = `
-                        <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
-                    `;
-
-                var rebuildData = {
-                    // id                  : v['id'],
-                    barcode             : v['barcode'],
-                    name                : v['name'],
-                    serial_number       : v['serial_number'],
-                    best_before         : v['expiration_date'],
-                    status              : v['status'],
-                    buildBtn            : buildBtn
-
-                    // expiration_date     : v['expiration_date'],
-                    // stock_in_datetime   : v['stock_in_datetime'],
-                };
-                newList.push(rebuildData);
-            }); 
+        var sortArray = {
+            'sortThArray'   : sortThArray,
+            'sortBy'        : data['sortBy'],
         }
-        buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
+
+        if(data){
+            if (data.stockList != "" && data.stockList.length > 0) {
+                var newList = []
+                $.each(data.stockList, function(k, v) {
+
+                    var buildBtn = `
+                            <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
+                        `;
+
+                    var textColor = '#000';
+                    if(v['status'] == 'Sold') textColor = 'red';
+                    else if(v['status'] == 'Active') textColor = 'green';
+
+                    var rebuildData = {
+                        // id                  : v['id'],
+                        barcode             : v['barcode'],
+                        name                : v['name'],
+                        serial_number       : v['serial_number'],
+                        best_before         : v['expiration_date'],
+                        status              : v['status'],
+                        buildBtn            : buildBtn,
+                        textColor           : textColor,
+
+                        // expiration_date     : v['expiration_date'],
+                        // stock_in_datetime   : v['stock_in_datetime'],
+                    };
+                    newList.push(rebuildData);
+                }); 
+            }
+        }
+        
+        buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
         pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
+
+        if (data.stockList) {
+            $('#'+tableId).find('thead tr').each(function() {
+                $(this).find('th:eq(1)').css('text-align', "right");           
+            });
+            $('#'+tableId).find('tbody tr').each(function() {
+                $(this).find('td:eq(1)').css('text-align', "right");
+                $(this).find('td:last-child').css('display', "none");
+
+                if($(this).find('td:last-child').text() == 'red') {
+                    $(this).find('td').css('color', $(this).find('td:last-child').text());
+                } else if($(this).find('td:last-child').text() == 'green') {
+                    $(this).find('td').css('color', $(this).find('td:last-child').text());
+                }
+            });
+        }
     }
 
     function editRecord(stockID) {
@@ -269,6 +323,18 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         setTimeout(function() {
             $('#searchMsg').removeClass('alert-success').html('').hide(); 
         }, 3000);
+    }
+
+    function testing(){
+        console.log('test');
+    }
+
+    function redirectBreadcrumbs() {
+
+        if(productName.includes("zzz123666")) {
+            productName = productName.replace("zzz123666","'");
+        }
+        $.redirect("stockBatchList.php", {productId : productId, productName : productName, vendorName : vendorName, code : code});
     }
 
 </script>

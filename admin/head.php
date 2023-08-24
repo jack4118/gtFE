@@ -77,6 +77,7 @@
         <link href="plugins/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
         <link href="plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
         <link href="plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+        <link href="vendors/general/select2/dist/css/select2.css" rel="stylesheet" type="text/css" />
 
         <script src="js/modernizr.min.js"></script>
         <script src="https://cdn.tiny.cloud/1/97otdbrcpih9una5so0f70myly5czyxdjrhlvdmwm1reccxp/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>

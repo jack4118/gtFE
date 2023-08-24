@@ -151,6 +151,14 @@
             "Edit"
         );
 
+        var sortThArray = Array(
+            "v.vendor_code",
+            "v.name",
+            "v.mobile",
+            "v.note",
+            "v.deleted"
+        );
+
         //View Details Table
         var divIdDetails = 'listingDivDetails';
         var tableIdDetails = 'listingTableDetails';
@@ -185,6 +193,8 @@
             $('#resetBtn').click(function() {
                 $("#searchForm")[0].reset();
             });
+
+            pagingCallBack(pageNumber, loadSearch);
             
             $('#searchBtn').click(function() {
                 pagingCallBack(pageNumber, loadSearch);
@@ -262,10 +272,14 @@
 
             var searchID = "searchForm";
             var searchData = buildSearchDataByType(searchID);
+
+            var sortData = getSortData(tableId);
+
             var formData   = {
                 command     : "getSupplierListing",
                 searchData  : searchData,
-                pageNumber  : pageNumber
+                pageNumber  : pageNumber,
+                sortData    : sortData
             };
             if(!fCallback)
                 fCallback = loadDefaultListing;
@@ -287,6 +301,11 @@
 
             $('#basicwizard').show();
             var tableNo;
+
+            var sortArray = {
+                'sortThArray'   : sortThArray,
+                'sortBy'        : data['sortBy'],
+            }
 
             if(data.supplierDetails) {
                 var newList = [];
@@ -310,7 +329,7 @@
                 });
             }
 
-            buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);
+            buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
             pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
             $('#' + tableId).find('tbody tr, thead tr').each(function () {

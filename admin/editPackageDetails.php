@@ -66,11 +66,11 @@ $_SESSION['lastVisited'] = $thisPage;
                                                 </select>
                                                 <span id="vendorIdError" class="errorSpan text-danger"></span>
                                             </div>
-                                            <!-- <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>SKU Code</label>
-                                                <input id="skuCode" type="text" class="form-control">
+                                                <input id="skuCode" type="text" class="form-control" disabled>
                                                 <span id="skuCodeError" class="errorSpan text-danger"></span>
-                                            </div> -->
+                                            </div>
                                         </div>
 
                                         <div class="row">
@@ -102,20 +102,23 @@ $_SESSION['lastVisited'] = $thisPage;
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Delivery Method</label>
+                                                <select id="deliveryMethod" class="form-control category" dataName="deliveryMethod" dataType="text">
+                                                </select>
+                                                <span id="deliveryMethodError" class="errorSpan text-danger"></span>
+                                                <input type="checkbox" id="foc" name="FOC" >
+                                                <label for="foc">FOC</label>
+                                            </div>
                                         </div>
-                                        <div class="row">
-                                            <!-- <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
-                                                <label>Cost</label>
-                                                <input id="cost" type="number" class="form-control">
-                                                <span id="costError" class="errorSpan text-danger"></span>
-                                            </div> -->
+                                        <!-- <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>Sale Price</label>
                                                 <input id="salePrice" type="number" class="form-control">
                                                 <span id="costSuggest" class="errorSpan"></span>
                                                 <span id="salePriceError" class="errorSpan text-danger"></span>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
@@ -287,10 +290,33 @@ $_SESSION['lastVisited'] = $thisPage;
                                                         <span id="mysteryError" class="errorSpan text-danger"></span>
                                                     </div>
                                                     <div class="col-xs-12">
+                                                        <div class="" style="background-color: transparent; padding: 0px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold;">
+                                                            <div style="width: calc(100% - 320px);">Product Name</div>
+                                                            <div style="display: flex; align-items: center; width: 320px;">
+                                                                <div style="width: calc(50% - 24px); text-align: center;">Quantity</div>
+                                                                <div style="width: calc(50% + 24px); text-align: center;">Price</div>
+                                                                <div style="width: calc(50% + 24px); text-align: center;">Total Cost</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
                                                         <div id="packageList" style="margin-top: 10px; border: 1px solid #ddd; height: 200px; overflow: auto; background: white;">
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-4 col-xs-12" style="margin-top: 20px">
+                                                <label>Package Cost</label>
+                                                <input id="package_cost" type="number" class="form-control" readonly>
+                                            </div>
+                                            <div class="col-sm-4"></div>
+                                            <div class="col-sm-4 col-xs-12" style="margin-top: 20px">
+                                                <label>Sale Price</label>
+                                                <input id="salePrice" type="number" class="form-control">
+                                                <span id="costSuggest" class="errorSpan" style="color: red;"></span>
+                                                <span id="salePriceError" class="errorSpan text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -326,6 +352,23 @@ $_SESSION['lastVisited'] = $thisPage;
                                                     <div class="radio radio-inline">
                                                         <input id="inActiveArhive" type="radio" value="0" name="archiveStatus"/>
                                                         <label for="inActiveArhive">
+                                                            <?php echo $translations['A00057'][$language]; /* No */?>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12" style="margin-top: 20px;">
+                                                <label>Ignore Stock Count Status</label>
+                                                <div id="status" class="m-b-20">
+                                                    <div class="radio radio-inline">
+                                                        <input id="stockActive" type="radio" value="1" name="ignoreStatus" checked="checked"/>
+                                                        <label for="stockActive">
+                                                            <?php echo $translations['A00056'][$language]; /* Yes */?>
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio radio-inline">
+                                                        <input id="stockInActive" type="radio" value="0" name="ignoreStatus"/>
+                                                        <label for="stockInActive">
                                                             <?php echo $translations['A00057'][$language]; /* No */?>
                                                         </label>
                                                     </div>
@@ -423,12 +466,26 @@ var cookingFullInstruction = [];
 var cookingSuggestionRemark = [];
 var cookingSuggest = [];
 var selectedLang = [];
+var count = [];
+var newProductList = [];
+
+var goCalc = false;
+var discountPercentage = 0;
+var sale_price_total;
+var counter = 1;
+
 
 
 
 
 $(document).ready(function() {
     getPackageDetail();
+
+    var formData  = {
+        command: 'getProductInventoryDetails'
+    };
+    fCallback = assignDiscountPercentage;
+    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
     // hide product type
     document.getElementById("productType").style.display = "none";
@@ -474,24 +531,71 @@ $(document).ready(function() {
         var packageID   = $(this).find("option:selected").val();
         var package     = $(this).find("option:selected").text();
         var input       = $(this).attr('id');
-        var quantity    = $(this).attr('data-value');
+        var quantity    = $(this).attr('data-value') || 1;
+        var sale_price  = $(this).attr('data-price');
+        var total_cost  = $(this).attr('data-cost');
 
+        let = newProductList;
+        if(sale_price==0){
+            $.each(newProductList, function(k, v) { 
+                if(v['id'] == packageID) {
+                    sale_price = v['cost'];
+                }
+            })
+        }
+        
+        
         if(packageID != "") {
-            var packDiv = `
-                <div id="${packageID}" data-select="${input}" class="packageTag includePackageTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-                    ${package}
-                    <div style="display: flex; align-items: center;">
-                        <input type="number" class="form-control" name="quantity" value="${quantity}" size="7" placeholder="Quantity" onclick="event.stopPropagation(); event.preventDefault();">
-                        <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i>
+            
+
+            if(packageID != 'mystery') {
+                    var packDiv = `
+                        <div id="${packageID}" data-select="${input}" class=" includePackageTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="width: calc(100% - 320px);">${package}</div>
+                            <div style="display: flex; align-items: center; width: 300px;">
+                                <input id="quantity${packageID}" onchange="checknumber(${packageID})" type="number" class="form-control" name="quantity" value="${quantity}" size="7" placeholder="Quantity" onclick="event.stopPropagation(); event.preventDefault();" style="margin-right: 20px;" oninput="calcTotalCost('${packageID}')">
+                                <input id="sale_price${packageID}" type="number" class="form-control" name="sale_price" value="${sale_price}" size="7" placeholder="Price" onclick="event.stopPropagation(); event.preventDefault();" style="margin-right: 20px;" oninput="calcTotalCost('${packageID}')" readonly>
+                                <input id="total_cost${packageID}" type="number" class="form-control total_cost" value="${sale_price}" name="total_cost" value="" size="7" placeholder="Cost" onclick="event.stopPropagation(); event.preventDefault();" style="cursor: not-allowed;" readonly>
+                                <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px; cursor: pointer;" onclick="deleteRecalc(${packageID})"></i>
+                            </div>
+                        </div>
+                    `;
+                }else {
+
+                    var packDiv = `
+                    <div id="${packageID+counter}" data-select="${input}" class=" includePackageTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="width: calc(100% - 320px);">${package}</div>
+                        <div style="display: flex; align-items: center; width: 300px;">
+                            <input id="quantity${packageID+counter}" onchange="checknumber(String('`+packageID+counter+`'))" type="number" class="form-control" name="quantity" value="${quantity}" size="7" placeholder="Quantity" onclick="event.stopPropagation(); event.preventDefault();" style="margin-right: 20px;" oninput="calcTotalCost('${packageID+counter}')">
+                            <input id="sale_price${packageID+counter}" type="number" class="form-control" name="sale_price" value="${sale_price}" size="7" placeholder="Price" onclick="event.stopPropagation(); event.preventDefault();" style="margin-right: 20px;" oninput="calcTotalCost('${packageID+counter}')" readonly>
+                            <input id="total_cost${packageID+counter}" type="number" class="form-control total_cost" value="${sale_price*quantity}" name="total_cost" value="" size="7" placeholder="Cost" onclick="event.stopPropagation(); event.preventDefault();" style="cursor: not-allowed;" readonly>
+                            <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px; cursor: pointer;" onclick="deleteRecalc('${packageID+counter}')"></i>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+                
+                }
+                $('#package').attr('data-price', "");
+
+                
 
             $("#packageList").append(packDiv);
 
             $(this).find("option:selected").remove();
             $(this).val('');
+
+            if(goCalc == true) {
+                calcTotalCost(packageID);
+            }
+
+            if(package == "Mystery Food") {
+                $("#sale_price" + packageID+counter).removeAttr('readonly');
+                counter++
+
+            }
         }
+        calcTotalCost(packageID)
+
     });
 
     $(document).on("click",".packageTag",function() {
@@ -525,220 +629,258 @@ $(document).ready(function() {
     });
 
     $('#submitBtn').click(function() {
-        $('[id$="Error"]').text("");
-
-        var packageInvId    = '<?php echo $_POST['packageID'] ?>';
-        var invPackageName  = $('#invPackageName').val();
-        var vendorId        = $('#vendorId').val();
-        var productType     = $('#productType').val();
-        // var expired_day     = $('#expiredDay').val();
-        
-        if ($('input[name="archiveStatus"]:checked').val() == 1)
-            var archiveRadio = "Yes";
-        else
-            var archiveRadio = "No";
-
-        if ($('input[name="publishStatus"]:checked').val() == 1)
-            var publishRadio = "Yes";
-        else
-            var publishRadio = "No";
-        
-        var category = [];
-        $('.includecategoryTag').each(function (index, value) {  
-            category.push(value.id);
-        });
-
         var salePrice       = $('#salePrice').val();
-        var description     = $('#description').val();
+        salePrice = salePrice;
+        console.log("salePrice = "+salePrice);
+        console.log("sale_price_total = "+sale_price_total);
 
-        uploadImage = [];
-        uploadImageData = [];
-        $(".popupMemoImageWrapper").each(function() { 
-            var imgData = $(this).find('[id^="storeFileData"]').val();
-            var imgName = $(this).find('[id^="storeFileName"]').val();
-            var imgType = $(this).find('[id^="storeFileType"]').val();
-            var imgFlag = $(this).find('[id^="storeFileFlag"]').val();
-            var imgSize = $(this).find('[id^="storeFileSize"]').val();
-            var imgUploadType = $(this).find('[id^="storeFileUploadType"]').val();
+        // if( parseFloat(salePrice) >= sale_price_total ){
+            $('[id$="Error"]').text("");
 
-            if(imgData != "") {
-                buildUploadImage = {
-                    imgName : imgName,
-                    imgType : imgType,
-                    imgFlag : imgFlag,
-                    imgSize : imgSize,
-                    uploadType : imgUploadType
-                };
+            var packageInvId    = '<?php echo $_POST['packageID'] ?>';
+            var invPackageName  = $('#invPackageName').val();
+            var foc             = $("#foc").is(":checked") ? 1 : 0; 
+            var vendorId        = $('#vendorId').val();
+            var productType     = $('#productType').val();
+            // var expired_day     = $('#expiredDay').val();
+            var deliveryMethod = document.getElementById("deliveryMethod").value;
+            var skuCode = document.getElementById("skuCode").value;
+            
+            if ($('input[name="archiveStatus"]:checked').val() == 1)
+                var archiveRadio = "Yes";
+            else
+                var archiveRadio = "No";
 
-                // if(parseFloat(imgSize) / 1048576 > 3) {
-                //     imgSizeFlag = false;
-                // }
-                var stringImgData = '';
+            if ($('input[name="publishStatus"]:checked').val() == 1)
+                var publishRadio = "Yes";
+            else
+                var publishRadio = "No";
 
-                if($(this).find('[id^="storeFileIsExist"]').val() == 'true') {
-                    stringImgData = '"' + $(this).find('[id^="storeFile64Bit"]').val() + '"';
-                } else {
-                    stringImgData = JSON.stringify(imgData);
+            if ($('input[name="ignoreStatus"]:checked').val() == 1)
+                var ignoreRadio = "Yes";
+            else
+                var ignoreRadio = "No";
+            
+            var category = [];
+            $('.includecategoryTag').each(function (index, value) {  
+                category.push(value.id);
+            });
+
+            var salePrice       = $('#salePrice').val();
+            var description     = $('#description').val();
+
+            uploadImage = [];
+            uploadImageData = [];
+            $(".popupMemoImageWrapper").each(function() { 
+                var imgData = $(this).find('[id^="storeFileData"]').val();
+                var imgName = $(this).find('[id^="storeFileName"]').val();
+                var imgType = $(this).find('[id^="storeFileType"]').val();
+                var imgFlag = $(this).find('[id^="storeFileFlag"]').val();
+                var imgSize = $(this).find('[id^="storeFileSize"]').val();
+                var imgUploadType = $(this).find('[id^="storeFileUploadType"]').val();
+
+                if(imgData != "") {
+                    buildUploadImage = {
+                        imgName : imgName,
+                        imgType : imgType,
+                        imgFlag : imgFlag,
+                        imgSize : imgSize,
+                        uploadType : imgUploadType
+                    };
+
+                    // if(parseFloat(imgSize) / 1048576 > 3) {
+                    //     imgSizeFlag = false;
+                    // }
+                    var stringImgData = '';
+
+                    if($(this).find('[id^="storeFileIsExist"]').val() == 'true') {
+                        stringImgData = '"' + $(this).find('[id^="storeFile64Bit"]').val() + '"';
+                    } else {
+                        stringImgData = JSON.stringify(imgData);
+                    }
+
+                    reqData = {
+                        imgName : imgName,
+                        // imgData : JSON.stringify(imgData),
+                        imgData : stringImgData,
+                        // imgType : imgType,
+                        // imgSize : imgSize,
+                        // uploadType : imgUploadType
+                    };
+                    
+                    uploadImageData.push(reqData);
+                    uploadImage.push(reqData);
                 }
-
-                reqData = {
-                    imgName : imgName,
-                    // imgData : JSON.stringify(imgData),
-                    imgData : stringImgData,
-                    // imgType : imgType,
-                    // imgSize : imgSize,
-                    // uploadType : imgUploadType
-                };
                 
-                uploadImageData.push(reqData);
-                uploadImage.push(reqData);
-            }
-        });
+            });
 
-        var packageProduct = [];
-        $('.includePackageTag').each(function (index, value) {
-            var list = {
-                product_id  : value.id,
-                quantity    : $(value).find('input[name=quantity]').val(),
-            };
+            var packageProduct = [];
+            
+            $('.includePackageTag').each(function (index, value) {
+                var valueid;
+                    var type;
+                    if(value.id.indexOf("mystery")==0){
+                        valueid = "";
+                        type =  "mystery";
 
-            if(value.id == 'mystery') {
-                list['product_id'] = '';
-                list['type'] = value.id
-            }
+                    }else{
+                        valueid= value.id;
+                        type = ""
+                    }
+                var list = {
+                    product_id  : valueid,
+                    quantity    : $(value).find('input[name=quantity]').val(),
+                    cost        : $(value).find('input[name=total_cost]').val(),
+                    type        : type
 
-            packageProduct.push(list);
-        });
-
-        var package = [];
-        var packageDesc = [];
-
-
-        var buildName = {
-            name        : $("#invPackageName").val(),
-            language    : 'english',
-            // language    : lang,
-        };
-
-        var buildNameChinese = {
-            name        : $("#invPackageNameChinese").val(),
-            language    : 'chinese',
-            // language    : lang,
-        };
-
-        var buildNameDesc = {
-            description : $("#description").val(),
-            language    : 'english',
-            // language    : lang,
-        };
-
-        var buildNameDescChinese = {
-            description : $("#descriptionChinese").val(),
-            language    : 'chinese',
-            // language    : lang,
-        };
-
-        package.push(buildName);
-        package.push(buildNameChinese);
-        packageDesc.push(buildNameDesc);
-        packageDesc.push(buildNameDescChinese);
-
-
-        var remarkArr = [];
-        var remarkArray = [];
-        for (var j = 0; j < cTNum; j++) {
-            var remarkEnglishElement = document.getElementById("cookingRemark" + (j + 1));
-            var remarkChineseElement = document.getElementById("cookingRemarkChinese" + (j + 1));
-
-            if (remarkEnglishElement && remarkChineseElement) {
-                var remarkEnglish = remarkEnglishElement.value;
-                var remarkChinese = remarkChineseElement.value;
-
-                var englishRemark = {
-                    language: "english",
-                    name: remarkEnglish
                 };
 
-                var chineseRemark = {
-                    language: "chinese",
-                    name: remarkChinese
-                };
+                // if(value.id == 'mystery') {
+                //     list['product_id'] = '';
+                //     list['type'] = value.id
+                // }
 
-                var remarkObj = [englishRemark, chineseRemark];
-                remarkArray.push(remarkObj);
+                packageProduct.push(list);
+            });
+
+            var package = [];
+            var packageDesc = [];
+
+
+            var buildName = {
+                name        : $("#invPackageName").val(),
+                language    : 'english',
+                // language    : lang,
+            };
+
+            var buildNameChinese = {
+                name        : $("#invPackageNameChinese").val(),
+                language    : 'chinese',
+                // language    : lang,
+            };
+
+            var buildNameDesc = {
+                description : $("#description").val(),
+                language    : 'english',
+                // language    : lang,
+            };
+
+            var buildNameDescChinese = {
+                description : $("#descriptionChinese").val(),
+                language    : 'chinese',
+                // language    : lang,
+            };
+
+            package.push(buildName);
+            package.push(buildNameChinese);
+            packageDesc.push(buildNameDesc);
+            packageDesc.push(buildNameDescChinese);
+
+
+            var remarkArr = [];
+            var remarkArray = [];
+            for (var j = 0; j < cTNum; j++) {
+                var remarkEnglishElement = document.getElementById("cookingRemark" + (j + 1));
+                var remarkChineseElement = document.getElementById("cookingRemarkChinese" + (j + 1));
+
+                if (remarkEnglishElement && remarkChineseElement) {
+                    var remarkEnglish = remarkEnglishElement.value;
+                    var remarkChinese = remarkChineseElement.value;
+
+                    var englishRemark = {
+                        language: "english",
+                        name: remarkEnglish
+                    };
+
+                    var chineseRemark = {
+                        language: "chinese",
+                        name: remarkChinese
+                    };
+
+                    var remarkObj = [englishRemark, chineseRemark];
+                    remarkArray.push(remarkObj);
+                }
             }
-        }
 
-        cookingSuggestionName = [];
-        $(".cookingSuggestInput").each(function(){
-            // var getCookingSuggest = $(this).attr("name");
-            var getValue = $(this).val();
-            buildCookingSuggestName = {
-                // cookingSuggest : getCookingSuggest,
-                content : getValue
-            };
-            cookingSuggestionName.push(buildCookingSuggestName);
-        });
+            cookingSuggestionName = [];
+            $(".cookingSuggestInput").each(function(){
+                // var getCookingSuggest = $(this).attr("name");
+                var getValue = $(this).val();
+                buildCookingSuggestName = {
+                    // cookingSuggest : getCookingSuggest,
+                    content : getValue
+                };
+                cookingSuggestionName.push(buildCookingSuggestName);
+            });
 
-        cookingSuggestionUrl = [];
-        $(".urlInput").each(function(){
-            // var getlanguageType = $(this).attr("urlInput");
-            var getValue = $(this).val();
-            buildCookingSuggestUrl = {
-                // languageType : getlanguageType,
-                content : getValue
-            };
-            cookingSuggestionUrl.push(buildCookingSuggestUrl);
-        });
+            cookingSuggestionUrl = [];
+            $(".urlInput").each(function(){
+                // var getlanguageType = $(this).attr("urlInput");
+                var getValue = $(this).val();
+                buildCookingSuggestUrl = {
+                    // languageType : getlanguageType,
+                    content : getValue
+                };
+                cookingSuggestionUrl.push(buildCookingSuggestUrl);
+            });
 
-        cookingFullInstruction = [];
-        $(".fullInstuctionInput").each(function(){
-            // var getlanguageType = $(this).attr("urlInput");
-            var getValue = $(this).val();
-            buildCookingFullInstruction = {
-                // languageType : getlanguageType,
-                content : getValue
-            };
-            cookingFullInstruction.push(buildCookingFullInstruction);
-        });
+            cookingFullInstruction = [];
+            $(".fullInstuctionInput").each(function(){
+                // var getlanguageType = $(this).attr("urlInput");
+                var getValue = $(this).val();
+                buildCookingFullInstruction = {
+                    // languageType : getlanguageType,
+                    content : getValue
+                };
+                cookingFullInstruction.push(buildCookingFullInstruction);
+            });
 
-        cookingSuggestionRemark = [];
-        $(".urlRemark").each(function(){
-            // var getlanguageType = $(this).attr("urlInput");
-            var getValue = $(this).val();
-            buildCookingSuggestRemark = {
-                // languageType : getlanguageType,
-                content : getValue
-            };
-            cookingSuggestionRemark.push(buildCookingSuggestRemark);
-        });
+            cookingSuggestionRemark = [];
+            $(".urlRemark").each(function(){
+                // var getlanguageType = $(this).attr("urlInput");
+                var getValue = $(this).val();
+                buildCookingSuggestRemark = {
+                    // languageType : getlanguageType,
+                    content : getValue
+                };
+                cookingSuggestionRemark.push(buildCookingSuggestRemark);
+            });
 
-        var formData  = {
-            command             : 'editPackageInventory',
-            packageInvId        : packageInvId,
-            invPackageName      : invPackageName,
-            productType         : productType,
-            // expired_day         : expired_day,
-            description         : description,
-            salePrice           : salePrice,
-            vendorId            : vendorId,
-            category            : category,
-            uploadImage         : uploadImage,
-            packageProduct      : packageProduct,
-            isPublish           : publishRadio,
-            isArchive           : archiveRadio,
-            package             : package,
-            packageDesc         : packageDesc,
-            cookingSuggestionName   : cookingSuggestionName,
-            cookingSuggestionUrl    : cookingSuggestionUrl,
-            cookingSuggestionRemark : cookingSuggestionRemark,
-            cookingFullInstruction : cookingFullInstruction,
-            invTranslationList    : invTranslationList,
-            remarkArray       : remarkArray,
-        };  
-        // createdData = formData;
-        fCallback = successEditPackageInventory;
-        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            var formData  = {
+                command             : 'editPackageInventory',
+                packageInvId        : packageInvId,
+                invPackageName      : invPackageName,
+                productType         : productType,
+                // expired_day         : expired_day,
+                description         : description,
+                salePrice           : salePrice,
+                vendorId            : vendorId,
+                category            : category,
+                uploadImage         : uploadImage,
+                packageProduct      : packageProduct,
+                isPublish           : publishRadio,
+                isArchive           : archiveRadio,
+                isIgnore            : ignoreRadio,
+                package             : package,
+                packageDesc         : packageDesc,
+                cookingSuggestionName   : cookingSuggestionName,
+                cookingSuggestionUrl    : cookingSuggestionUrl,
+                cookingSuggestionRemark : cookingSuggestionRemark,
+                cookingFullInstruction : cookingFullInstruction,
+                invTranslationList    : invTranslationList,
+                remarkArray       : remarkArray,
+                deliveryMethod    : deliveryMethod,
+                skuCode           : skuCode,
+                foc           : foc,
+            };  
+            // createdData = formData;
+            fCallback = successEditPackageInventory;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        // }
+        // else{
+        //     showMessage('sales price cannot lower than suggested price', 'warning', 'warning', 'warning', '');
+
+        // }
     });
 
     $('#backBtn').click(function() {
@@ -756,15 +898,51 @@ function getPackageDetail() {
     ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 }
 
+function assignDiscountPercentage(data, message) {
+    discountPercentage = data.discountPercentage || 0;
+}
+
+$('#package_cost').on('change', function() {
+    if($(this).val() == '') { 
+        // $('#costSuggest').hide();
+    } else {
+        var cost = $(this).val(); 
+        var sale_price = (cost * (100 + discountPercentage)) / 100;
+        sale_price_total = sale_price;
+
+        $('#costSuggest').text('Suggested sale price is RM ' + numberThousand(sale_price, 2));
+    }
+});
+
+$('#salePrice').on('change', function() {
+    var cost = parseFloat($(this).val());
+    // var sale_price = (cost * (100 + discountPercentage)) / 100;
+    var entered_price = parseFloat($('#salePrice').val());
+    var costSuggestText = $('#costSuggest').text();
+    var suggestedPrice = costSuggestText.match(/RM (\d+\.\d+)/);
+    if (entered_price < suggestedPrice[1]) 
+    {
+        showMessage("Sale Price is lower than suggested sale price.", 'warning', "Warning", '', '', '');
+    } 
+    else 
+    {
+        $('#costSuggest').removeClass('warning');
+    }
+});
+
+
 function loadPackageDetail(data, message) {
     cookingSuggest = data.cookingDetail;
     invTranslationList = data.invTranslationList;
     var archiveStatus = data.packageInfo.archiveStatus;
     var publishStatus = data.packageInfo.publishStatus;
+    var ignoreStatus = data.packageInfo.ignoreStatus;
     var packageInfo = data.packageInfo;
     var vendorList = data.supplierList;
     var packageDetails = data.packageDetails;
     var imageList = data.imageList;
+
+    $("#foc").prop("checked", data.focDetail == 1); 
 
     $.each(imageList, function(k, v) {
         var newK = k + 1;
@@ -797,6 +975,7 @@ function loadPackageDetail(data, message) {
 
     $('input[name="publishStatus"][value="'+ publishStatus + '"]').prop('checked', true);
     $('input[name="archiveStatus"][value="'+ archiveStatus + '"]').prop('checked', true);
+    $('input[name="ignoreStatus"][value="'+ ignoreStatus + '"]').prop('checked', true);
     $('#publishStatus').val(packageInfo.publishStatus);
 
     var productNameEnglish = "";
@@ -814,6 +993,21 @@ function loadPackageDetail(data, message) {
             }
         }
     }
+
+    var deliveryMethodOption = "";
+    if(data.deliveryMethodList) {
+        deliveryMethodOption += `
+            <option value="">Select Delivery Method</option>
+        `
+        $.each(data.deliveryMethodList, function(k,v){
+            deliveryMethodOption += `
+                <option value="${v['id']}">${v['name']}</option>
+            `;
+        });
+    }
+    $("#deliveryMethod").html(deliveryMethodOption);
+    $("#deliveryMethod").val(packageInfo.delivery_method);
+
 
     if(data.descrTranslationList){
         for (var i = 0; i < data.descrTranslationList.length; i++) {
@@ -834,11 +1028,28 @@ function loadPackageDetail(data, message) {
     // Package Name
     $('#invPackageName').val(packageInfo.name);
 
+    if(packageInfo.skucode){
+        $('#skuCode').val(packageInfo.skucode);
+    }
+
+
     // Vendor Name
+    // $.each(vendorList, function(k, v) {
+    //     $('#vendorId').append(`<option value="${v['id']}" data-value="${v['vendor_code']}">${v['name']}</option>`);
+    // });
+    // $('#vendorId').val(packageInfo.vendor_id);
+
     $.each(vendorList, function(k, v) {
         $('#vendorId').append(`<option value="${v['id']}" data-value="${v['vendor_code']}">${v['name']}</option>`);
+        var name = v['name'].toLowerCase();
+        if (v['id'] == packageInfo.vendor_id) {
+            $('#vendorId').val(v['id']);
+
+            $("#vendorId").trigger("change");
+        }
     });
-    $('#vendorId').val(packageInfo.vendor_id);
+
+    // $('#vendorId').val(packageInfo.vendor_id);
 
     // Expired Day
     // $('#expiredDay').val(packageInfo.expired_day);
@@ -909,19 +1120,61 @@ function loadPackageDetail(data, message) {
             var list = {
                 product_id: v['product_id'],
                 name: v['name'],
-                quantity: v['quantity']
+                quantity: v['quantity'],
+                sale_price: v['cost'],
+                cost: v['cost'],
+                datain :1
             };
 
             if (v['type'] === 'mystery') {
                 list['product_id'] = v['type'];
             }
-
             products.push(list);
+
         }
-    });
+    }); 
 
     getPackageProductList();
 }
+
+    $('#vendorName').on('change', function() {
+        var vendorId = $(this).val();
+
+        if(vendorId != '') {
+            var formData  = {
+                command  : 'generateProductSKU',
+                vendorId : vendorId,
+            };
+            fCallback = loadProductSKU;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, 1, 0);
+        }
+    });
+
+    function loadProductSKU(data, message) {
+        var skuNumber = data.productSku;
+        $('#skuCode').val(skuNumber);
+    }
+
+    $('#vendorId').on('change', function() {
+        var vendorId = $(this).val();
+
+        // if(count > 0){
+            getSkuProductCode(vendorId);
+        // }
+        // count = 1;
+
+    });
+
+    function getSkuProductCode(vendorId) {
+        if (vendorId) {
+            var formData = {
+                command: 'generateProductSKU',
+                vendorId: vendorId,
+            };
+            fCallback = loadProductSKU;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, 1, 0);
+        }
+    }
 
 function displayFileName(n) {
     var dFileName = $("#fileName");
@@ -953,6 +1206,8 @@ function displayFileName(n) {
             // $("#viewImg"+id).attr('data-res', reader["result"]);
             $("#viewImg").css('display', 'inline-block');
             $("#deleteImg").css('display', 'inline-block');
+            $("#fileNotUploaded"+id).hide()
+            $("#thumbnailImg"+id).attr('src', $("#storeFileData"+id).val()).show();
         };
 
         reader.readAsDataURL(n.files[0]);
@@ -989,6 +1244,8 @@ function displayFileName(id, n) {
             // $("#viewImg"+id).attr('data-res', reader["result"]);
             $("#viewImg"+id).css('display', 'inline-block');
             $("#deleteImg"+id).css('display', 'inline-block');
+            $("#fileNotUploaded"+id).hide()
+            $("#thumbnailImg"+id).attr('src', $("#storeFileData"+id).val()).show();
         };
 
         reader.readAsDataURL(n.files[0]);
@@ -1019,6 +1276,7 @@ function getPackageProductList() {
 
 function loadPackageProductList(data, message) {
     var productList = data.productList;
+    newProductList = data.productList
     
 
         $.each(productList, function(k, v) {
@@ -1035,23 +1293,23 @@ function loadPackageProductList(data, message) {
     // });
 
     // $('#package').attr('data-value', '');
-
     $.each(products, function(k, v) {
         var productId = v['product_id'] !== "mystery" ? v['product_id'] : 'mystery';
         var productName = v['product_id'] !== "mystery" ? v['name'] : 'Mystery Food';
 
         $('#package').val(productId);
         $('#package').attr('data-value', v['quantity']);
+        $('#package').attr('data-price', v['sale_price']);
+        $('#package').attr('data-cost', v['cost']);
+
+        goCalc = true;
         $('#package').trigger('change');
 
         if (!$(`#package option[value="${productId}"]`).length) {
             $('#package').append(`<option value="${productId}">${productName}</option>`);
         }
-
-
     });
     $('#package').attr('data-value', '');
-
 }
 
 function toggleAttributeBox() {
@@ -1086,7 +1344,9 @@ function addImage(url) {
 
                 <div>
                     <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
-                    <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                    <span id="fileNotUploaded${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                    <!-- <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span> -->
+                    <img id="thumbnailImg${addImgIDNum}" src="${url}" style="width:100%;" />
                     <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="display: none; padding: 6px;" onclick="showImg('${addImgIDNum}', '${url}')">
                         <i class="fa fa-eye"></i>
                     </a>
@@ -1096,6 +1356,8 @@ function addImage(url) {
     `;
 
     $("#buildImg").append(buildImg);
+    if(url) $(`#fileNotUploaded${addImgIDNum}`).hide();
+    else $(`#thumbnailImg${addImgIDNum}`).hide();
 
     /*if (addImgCount == 1) {
         $(".addImgBtn").hide();
@@ -1284,6 +1546,102 @@ function displayVideoURL(data){
     if(!data.cookingTime){
         $('#cookingTime'+temp_id).val('');
     }
+}
+
+function calcTotalCost(id) {
+    let a = $("#quantity"+id).val();
+    let b = $("#sale_price"+id).val();
+  
+
+    b = parseFloat(b);
+
+    let c = a * b;
+
+    $("#total_cost"+id).val(c.toFixed(2));
+
+    calcPackagePrice();
+}
+
+function deleteRecalc(total_cost) {
+    let a = $("#quantity"+total_cost).val();
+    let b = $("#sale_price"+total_cost).val();
+    var total_sum = $("#package_cost").val();
+
+    b = parseFloat(b);
+
+    let c = a * b;
+    let total = total_sum - c;
+
+    // $("#package_cost").val(); 
+    
+
+    $('.total_cost').each(function (){
+        
+
+        total_sum += parseFloat($(this).val());
+    })
+    
+    $("#package_cost").val(total.toFixed(2))
+    $("#package_cost").trigger("change");
+    $("#total_cost"+total_cost).val(total.toFixed(2));
+    $("#"+total_cost).remove();
+
+
+    
+}
+function calcPackagePrice() {
+    var total_sum = 0;
+
+    $('.total_cost').each(function (){
+        total_sum += parseFloat($(this).val());
+    })
+
+    $("#package_cost").val(total_sum.toFixed(2)); 
+    goCalc = false;
+    $("#package_cost").trigger("change");
+}
+
+function newFormatState(method) {
+    if (!method.id) {
+        return method.text;
+    }
+
+    var optimage = $(method.element).attr('data-image')
+    if (!optimage) {
+        return method.text;
+    } else {
+        var $opt = $(
+            '<span onclick="changeTokenCategory('+method.text+')"><img src="' + optimage + '" class="tokenOptionImg" /> <span style="vertical-align: middle;">' + method.text + '</span></span>'
+        );
+        return $opt;
+    }
+};
+
+$('#vendorId').select2({
+    dropdownAutoWidth: true,
+    templateResult: newFormatState,
+    templateSelection: newFormatState,
+});
+
+$('#package').select2({
+    dropdownAutoWidth: true,
+    templateResult: newFormatState,
+    templateSelection: newFormatState,
+});
+
+$('#category').select2({
+    dropdownAutoWidth: true,
+    templateResult: newFormatState,
+    templateSelection: newFormatState,
+});
+function checknumber(id){
+    let a = $("#quantity"+id).val();
+        if(a == "" || a == 0){
+            $("#quantity"+id).val(1)
+        }
+        calcTotalCost(id)
+    
+
 }
 
 </script>

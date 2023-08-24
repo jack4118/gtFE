@@ -158,11 +158,15 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <label>Contact</label>
-                                                                                <input id="contact1" class="form-control" required/>
+                                                                                <input id="contact1" class="form-control" placeholder="Format: 60123456789" required/>
                                                                             </div>
                                                                             <div class="col-md-6">
-                                                                                <label>Street Number</label>
+                                                                                <label>Address Line 1</label>
                                                                                 <input id="street1" class="form-control" required/>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label>Address line 2</label>
+                                                                                <input id="streetline1" class="form-control" required/>
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <label>City</label>
@@ -297,8 +301,8 @@
 
                                                 <div class="col-sm-12 m-t-rem1">
                                                     <div class="col-xs-12 col-sm-12">
-                                                        <a id="updateBtn" type="button" class="btn btn-primary waves-effect w-md waves-light" onclick="">
-                                                            <?php echo $translations['A00300'][$language]; /* Update */ ?>
+                                                        <a id="addBtn" type="button" class="btn btn-primary waves-effect w-md waves-light">
+                                                            <?php echo $translations['A01783'][$language]; /* Update */ ?>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -361,100 +365,6 @@
                     $('#identityNumberDiv').hide();
                     $('#passportDiv').show();
                 }
-            });
-
-            $('#updateBtn').click(function() {
-                $('.customError').text('');
-                var name  = $('#name').val();
-                var newPassword  = $('#newPassword').val();
-                var checkPassword  = $('#checkPassword').val();
-                var userType  = "Client";
-                var email     = $('#email').val();
-                var dialingArea = "60";
-                var phone     = $('#phone').val();                
-                var countryID   = $('#countryID option:selected').val();
-                var identityType = $('#identityType option:selected').val();
-                var identityNumber = $('#identityNumber').val();
-                var passport = $('#passport').val();
-                // var dob = dateToTimestamp($('#dob').val());
-                var gender = $('.genderRadio:checked').val();
-                var martialStatus = $('#martialStatus option:selected').val();
-                // var childNumber = $('#childNumber').val();
-                // var childAge = [];
-
-                $('.ageTag').each(function(index, value) {
-                    childAge.push($(this).attr('name'));
-                });
-                var taxNumber = $('#taxNumber').val();
-                var status = $('#status option:selected').val();
-                var bankID = $('#normalbankID option:selected').val();
-                var branch = $('#branch').val();
-                var bankCity = $('#bankCity').val();
-                var accountHolder = $('#accountHolder').val();
-                var accountNo = $('#accountNo').val();
-                var billingName = $('#billingName').val();
-                var billingAddress = $('#billingAddress').val();
-                var billingDistrict = $('#billingDistrict option:selected').val();
-                var billingSubDistrict = $('#billingSubDistrict option:selected').val();
-                var billingCity = $('#billingCity option:selected').val();
-                var billingPostalCode = $('#billingPostalCode option:selected').val();
-                var billingState = $('#billingState option:selected').val();
-                var billingCountryID = $('#billingCountryID option:selected').val();
-                var billingEmail = $('#billingEmail').val();
-                var billingDialingArea = $('#billingDialingArea option:selected').val();
-                var billingPhone = $('#billingPhone').val();
-                var deliveryName = $('#deliveryName').val();
-                var deliveryAddress = $('#deliveryAddress').val();
-                var deliveryDistrict = $('#deliveryDistrict option:selected').val();
-                var deliverySubDistrict = $('#deliverySubDistrict option:selected').val();
-                var deliveryCity = $('#deliveryCity option:selected').val();
-                var deliveryPostalCode = $('#deliveryPostalCode option:selected').val();
-                var deliveryState = $('#deliveryState option:selected').val();
-                var deliveryCountryID = $('#deliveryCountryID option:selected').val();
-                var deliveryEmail = $('#deliveryEmail').val();
-                var deliveryDialingArea = $('#deliveryDialingArea option:selected').val();
-                var deliveryPhone = $('#deliveryPhone').val();
-
-                var shipping = [];
-
-                for(var v = 1; v < $(".addProductWrapper").length + 1; v++) {
-                    var address = $('#street' + v).val();
-                    var post_code = $('#postcode' + v).val();
-                    var city = $('#city' + v).val();
-                    var name = $('#name' + v).val();
-                    var contact = $('#contact' + v).val();
-                    var stateName = $('option:selected', "#stateSelect"+v).text();;
-
-                    var perShipping = {
-                        address:  address,
-                        post_code: post_code,
-                        city: city,
-                        address_type: "Shipping",
-                        countryName: "Malaysia",
-                        stateName: stateName,
-                        name: name,
-                        phone: contact,
-                    }
-
-                    shipping.push(perShipping);
-                }
-                
-                var formData = {
-                                    command             : "addNewMember",
-                                    fullName            : name,
-                                    email               : email,
-                                    dialingArea         : dialingArea,
-                                    phone               : phone,
-                                    password            : newPassword,
-                                    checkPassword       : checkPassword,
-                                    phone               : phone,
-                                    countryID           : countryID,
-                                    shipping            : shipping,
-                                };
-                // identityType=="nric" ? formData['identityNumber']=identityNumber : formData['passport']=passport;  
-
-                var fCallback = submitCallback;
-                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
             });
 
             $('input#identityNumber').keypress(function( e ) {
@@ -524,6 +434,104 @@
             };
             fCallback = stateOpt;
 
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        });
+
+        $('#addBtn').click(function() {                
+            $('.customError').text('');
+            var name  = $('#name').val();
+            var newPassword  = $('#newPassword').val();
+            var checkPassword  = $('#checkPassword').val();
+            var userType  = "Client";
+            var email     = $('#email').val();
+            var dialingArea = "60";
+            var phone     = $('#phone').val();                
+            var countryID   = $('#countryID option:selected').val();
+            var identityType = $('#identityType option:selected').val();
+            var identityNumber = $('#identityNumber').val();
+            var passport = $('#passport').val();
+            // var dob = dateToTimestamp($('#dob').val());
+            var gender = $('.genderRadio:checked').val();
+            var martialStatus = $('#martialStatus option:selected').val();
+            // var childNumber = $('#childNumber').val();
+            // var childAge = [];
+
+            $('.ageTag').each(function(index, value) {
+                childAge.push($(this).attr('name'));
+            });
+            // var taxNumber = $('#taxNumber').val();
+            // var status = $('#status option:selected').val();
+            // var bankID = $('#normalbankID option:selected').val();
+            // var branch = $('#branch').val();
+            // var bankCity = $('#bankCity').val();
+            // var accountHolder = $('#accountHolder').val();
+            // var accountNo = $('#accountNo').val();
+            // var billingName = $('#billingName').val();
+            // var billingAddress = $('#billingAddress').val();
+            // var billingDistrict = $('#billingDistrict option:selected').val();
+            // var billingSubDistrict = $('#billingSubDistrict option:selected').val();
+            // var billingCity = $('#billingCity option:selected').val();
+            // var billingPostalCode = $('#billingPostalCode option:selected').val();
+            // var billingState = $('#billingState option:selected').val();
+            // var billingCountryID = $('#billingCountryID option:selected').val();
+            // var billingEmail = $('#billingEmail').val();
+            // var billingDialingArea = $('#billingDialingArea option:selected').val();
+            // var billingPhone = $('#billingPhone').val();
+            // var deliveryName = $('#deliveryName').val();
+            // var deliveryAddress = $('#deliveryAddress').val();
+            // var deliveryDistrict = $('#deliveryDistrict option:selected').val();
+            // var deliverySubDistrict = $('#deliverySubDistrict option:selected').val();
+            // var deliveryCity = $('#deliveryCity option:selected').val();
+            // var deliveryPostalCode = $('#deliveryPostalCode option:selected').val();
+            // var deliveryState = $('#deliveryState option:selected').val();
+            // var deliveryCountryID = $('#deliveryCountryID option:selected').val();
+            // var deliveryEmail = $('#deliveryEmail').val();
+            // var deliveryDialingArea = $('#deliveryDialingArea option:selected').val();
+            // var deliveryPhone = $('#deliveryPhone').val();
+
+            var shipping = [];
+
+            for(var v = 1; v < $(".addProductWrapper").length + 1; v++) {
+                var address = $('#street' + v).val();
+                var address2 = $('#streetline' + v).val();
+                var post_code = $('#postcode' + v).val();
+                var city = $('#city' + v).val();
+                var name1 = $('#name' + v).val();
+                var contact = $('#contact' + v).val();
+                contact = removeFirstTwoCharacters(contact);
+                contact = "60"+contact;
+                var stateName = $('option:selected', "#stateSelect"+v).text();;
+
+                if (address.trim() !== '') {
+                    var perShipping = {
+                        address: address,
+                        address2: address2,
+                        post_code: post_code,
+                        city: city,
+                        address_type: "Shipping",
+                        countryName: "Malaysia",
+                        stateName: stateName,
+                        name: name1,
+                        phone: contact,
+                    }
+                    shipping.push(perShipping);
+                }
+            }
+            phone = removeFirstTwoCharacters(phone);
+            var formData = {
+                                command             : "addNewMember",
+                                fullName            : name,
+                                email               : email,
+                                dialingArea         : dialingArea,
+                                phone               : phone,
+                                password            : newPassword,
+                                checkPassword       : checkPassword,
+                                userType            : 'Client',
+                                countryID           : countryID,
+                                shipping            : shipping,
+                            };
+            // identityType=="nric" ? formData['identityNumber']=identityNumber : formData['passport']=passport;  
+            var fCallback = submitCallback;
             ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
         });
 
@@ -858,6 +866,7 @@
                 $("#contact" + newK).val(v['phone']);
                 $("#name" + newK).val(v['name']);
                 $("#street" + newK).val(v['address']);
+                $("#streetline" + newK).val(v['address2']);
                 $("#postcode" + newK).val(v['post_code']);
                 $("#city" + newK).val(v['city']);
                 $("#state" + newK).val(v['state_id']);
@@ -937,7 +946,8 @@
         }
 
         function submitCallback(data, message) {
-            showMessage('<?php echo $translations['A00501'][$language]; /* Successful updated member details. */ ?>', 'success', '<?php echo $translations['A00291'][$language]; /* Edit Member Details */ ?>', 'edit', ['editMember.php', {id : "<?php echo $_POST['id']; ?>"}]);
+            // console.log("<?php echo $_POST['id']; ?>");
+            showMessage('<?php echo $translations['A00501'][$language]; /* Successful updated member details. */ ?>', 'success', '<?php echo $translations['A00291'][$language]; /* Edit Member Details */ ?>', 'edit', ['editMember.php', {id : data}]);
         }
 
         function addRow(data){
@@ -958,8 +968,12 @@
                                 <input id="contact${(wrapperLength)}" class="form-control" required/>
                             </div>
                             <div class="col-md-6">
-                                <label>Street Number</label>
+                                <label> Address Line 1</label>
                                 <input id="street${(wrapperLength)}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Address Line 2</label>
+                                <input id="streetline${(wrapperLength)}" class="form-control" required/>
                             </div>
                             <div class="col-md-6">
                                 <label>City</label>
@@ -1009,6 +1023,8 @@
             $("#contact" + id).val("");
             $("#street" + id).attr("disabled", true);
             $("#street" + id).val("");
+            $("#streetline" + id).attr("disabled", true);
+            $("#streetline" + id).val("");
             $("#city" + id).attr("disabled", true);
             $("#city" + id).val("");
             $("#postcode" + id).attr("disabled", true);

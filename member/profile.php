@@ -9,12 +9,14 @@ include 'homepageHeader.php';
 
 <!-- My Account Title -->
 <section class="section myAccountBg">
-    <div class="titleText larger bold text-white text-center text-md-left" data-lang="M03798"><?php echo $translations['M03798'][$language] /* My Account */ ?></div>
+    <div class="kt-container row">
+        <div class="col-12 titleText larger bold text-white text-center text-md-left" data-lang="M03798"><?php echo $translations['M03798'][$language] /* My Account */ ?></div>
+    </div>
 </section>
 
 <!-- My Account Content -->
 <section class="section whiteBg">
-    <div class="row mb-5 mb-md-0">
+    <div class="kt-container row mb-5 mb-md-0">
         <div class="col-lg-3 col-md-4 col-12">
             <!-- Menu -->
             <div class="borderAll grey normal greyBg">
@@ -38,8 +40,8 @@ include 'homepageHeader.php';
                 <div class="bodyText larger bold mb-2" data-lang="M03314"><?php echo $translations['M03314'][$language] /* My Profile */ ?></div>
                 <div class="borderBottom darkGrey normal myAccountBottomLine"></div>
                 <div class="form-group mt-5">
-                    <label class="mb-0 bodyText smaller" for="name" data-lang="M03649"><?php echo $translations['M03649'][$language] /* Name */ ?></label>
-                    <input class="form-control" type="text" id="name">
+                    <label class="mb-0 bodyText smaller" for="fullName" data-lang="M03649"><?php echo $translations['M03649'][$language] /* Name */ ?></label>
+                    <input class="form-control" type="text" id="fullName">
                 </div>
                 <div class="form-group">
                     <label class="mb-0 bodyText smaller" for="email" data-lang="M00187"><?php echo $translations['M00187'][$language] /* Email Address */ ?></label>
@@ -97,6 +99,8 @@ var bypassLoading   = 0;
 var fCallback       = '';
 
 $(document).ready(function() {
+    getShoppingCart();
+    
     var formData = {
         command     : 'getMemberDetails'
     };
@@ -133,7 +137,7 @@ function getMemberDetails(data, message) {
     var points = data.userPointBalance;
 
     if(myAccountDetails) {
-        $('#name').val(myAccountDetails.name);
+        $('#fullName').val(myAccountDetails.name);
         $('#email').val(myAccountDetails.email);
         $('#dailingCode').val(myAccountDetails.dial_code);
         $('#phone').val(myAccountDetails.phone);
@@ -147,11 +151,12 @@ function getMemberDetails(data, message) {
 function editMemberDetails() {
     var formData = {
         command     : 'editMemberDetails',
-        fullName    : $('#name').val(),
+        fullName    : $('#fullName').val(),
         email       : $('#email').val(),
         dialCode    : $('#dailingCode').val(),
         number      : $('#phone').val()
     };
+    // console.log(formData);
     fCallback = successEditProfile;
     ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 }

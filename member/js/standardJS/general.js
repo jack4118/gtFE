@@ -14,7 +14,7 @@
      setTimeout(function() {
          $("#canvasLoader").addClass('hide');
          $("button, a").removeClass('unclickable');
-     }, 1000);
+     }, 1500);
  }
  
 
@@ -45,6 +45,7 @@
  **/
 
 function showMessage(message, status, title, favicon, url, canvasBtnArray) {
+    var icon;
     var btnArrayIsObject = jQuery.isPlainObject(canvasBtnArray) ? 1 : 0;
 
     $('#canvasMessage').modal('toggle');
@@ -60,7 +61,24 @@ function showMessage(message, status, title, favicon, url, canvasBtnArray) {
     }
 
     $('#canvasMessage').find("#modalIcon").attr("src", src);
+
+    if(status == "success") {
+        icon = "<img src='../images/project/check.png' style='height: 70px; margin-bottom: 15px;'><br/>"
+        // title = "<img src='../images/project/check.png' style='height: 70px; margin-bottom: 15px;'><br/>" + title;
+    }
+
+    if(status == "Warning") {
+        icon = "<img src='../images/project/times.png' style='height: 70px; margin-bottom: 15px;'><br/>";
+        // title = "<img src='../images/project/times.png' style='height: 70px; margin-bottom: 15px;'><br/>" + title;
+    }
+
+    if($('#canvasMessage').hasClass('submitted')) {
+        icon = "<img src='../images/project/submitted.png' style='height: 70px; margin-bottom: 15px;'><br/>";
+        // title = "<img src='../images/project/submitted.png' style='height: 70px; margin-bottom: 15px;'><br/>" + title;
+    }
+
     $('#canvasMessage').find('#canvasTitle').html(title);
+    $('#canvasIcon').html(icon);
     $('#canvasAlertMessage').html(message);
     $('#canvasMessage .modal-footer').find('button').not('#canvasCloseBtn').remove();
     if(typeof(canvasBtnArray) != 'undefined' || !jQuery.isEmptyObject(canvasBtnArray)) {
@@ -158,8 +176,7 @@ function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoad
                             // handleCheckoutError(obj.data.field)
                         }
                     }
-                }
-               
+                } 
             },
             error: function(xhr) {
                 if(debug)
@@ -169,11 +186,69 @@ function ajaxSend(url, val, method, fCallback, debug, bypassBlocking, bypassLoad
             },
             complete: function() {
                 ajaxBlocking = 0;
-                if(!bypassLoading)
-                    hideCanvas();
+                if(!bypassLoading) {
+                    let a = $.cookie("maintainLoading")
+                    let k = $("keepLoading") ? $("keepLoading") : ""
+
+                    if(a && val.command == 'getCategoryInventoryMember' && ((val.categories && val.categories != "")||(k == ""))) {
+                        $.cookie("maintainLoading",false)
+                        $("keepLoading","")
+                        a = false
+                    }
+
+                    // console.log(k,"this is sk")
+
+                    // if(k != "") {
+                    //     if(val.command == 'getCategoryInventoryMember' && (val.categories && val.categories != "")) {
+                    //         $.cookie("maintainLoading",false)
+                    //         $("keepLoading","")
+                    //     }
+                    // }else {
+                    //     $.cookie("maintainLoading",false)
+                    //     $("keepLoading","")
+                    // }
+                    
+
+                    // console.log(a)
+
+                    //if(!a || a == "false") {
+                        hideCanvas();
+                    //}
+
+
+
+                    // console.log(val.categories,"sepcifci")
+
+                    // if(a && a == "1" && val.command == 'getCategoryInventoryMember' && (val.categories || val.categories == "") ) {
+                    //     $.cookie("keepLoading","2")
+                    // }else {
+                    //     hideCanvas();
+                    // }
+
+                    // if(a == "2" && val.command == 'getCategoryInventoryMember') {
+                    //     console.log("why came here")
+                    //     $.cookie("keepLoading","")
+                    // }
+
+
+                    // console.log(a,"jack")
+
+                    // if(a && a == "2" && val.command == "getCategoryInventoryMember" && (val.categories && val.categories != "")) {
+                    // console.log("step 3") 
+                    //     console.log(a)
+                    //     hideCanvas();
+                    //     $.cookie("keepLoading","")
+                    // }else if((!a || a == "") && val.command != "getCategoryInventoryMember") {
+                    //     console.log("step 4") 
+
+                    //     hideCanvas();
+                    // }else {
+                    // console.log("step 5") 
+                    // }
+                }
             }
         });
-    }
+    } 
 }
 
 /** 
@@ -200,7 +275,7 @@ function errorHandler(errorCode, errorMsg) {
             break;
         case 5:
             localStorage.clear();
-            window.location.href = 'homepage';
+            window.location.href = 'foodMenu';
             break;
         default:
             alert("Unknown error code and message:"+errorCode+" - "+errorMsg);
@@ -513,7 +588,6 @@ function buildSearchDataByType(searchID ,liname) {
         else if(formGroup.find('li').length){
             inputType = 'li';
         }
-        // console.log("li");
         else
             return true;
         
@@ -526,7 +600,6 @@ function buildSearchDataByType(searchID ,liname) {
         
         formGroup.find(inputType).each(function() {
             var inputValue = $(this);
-            console.log(inputValue);
             // Reset variable
             dataName = '';
             dataType = '';
@@ -669,7 +742,6 @@ function errorDisplay(type,errorMsg){
     $("#"+type).removeClass('is-invalid');
     $("#"+type).parent().find('.invalid-feedback').remove();
     
-    console.log(type); 
     if (type=="captcha") {
         $("#"+type).addClass('is-invalid');
         $("#"+type).parent().after('<div class="invalid-feedback">'+errorMsg+'</div>');

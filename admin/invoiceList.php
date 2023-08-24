@@ -234,6 +234,8 @@ session_start();
             });
         });
 
+        pagingCallBack(pageNumber, loadSearch);
+
         $('#searchInvoiceBtn').click(function() {
             var getNameType = $("input[name=nameType]:checked").val();
             $('.name').attr('dataType', getNameType);

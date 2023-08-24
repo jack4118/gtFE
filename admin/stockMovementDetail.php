@@ -51,9 +51,15 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                 <div class="row">
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
-                                                            Date
+                                                            Date Range
                                                         </label>
-                                                        <input type="date" class="form-control" dataName="date" dataType="text">
+                                                        <div class="input-daterange input-group" id="datepicker-range">
+                                                            <input id="dateRangeStart" type="text" class="form-control" name="start" dataName="dateRange" dataType="dateRange">
+                                                            <div class="input-group-addon">
+                                                                <?php echo $translations['A00139'][$language]; /* to */?>
+                                                            </div>
+                                                            <input id="dateRangeEnd" type="text" class="form-control" name="end" dataName="dateRange" dataType="dateRange">
+                                                        </div>
                                                     </div>
                                                     <div class="col-sm-4 form-group">
                                                         <label class="control-label">
@@ -66,6 +72,24 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                             Serial Number
                                                         </label>
                                                         <input type="text" class="form-control" dataName="serialNumber" dataType="text">
+                                                    </div>
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            Source
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="source" dataType="text">
+                                                    </div>
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            From
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="fromLocation" dataType="text">
+                                                    </div>
+                                                    <div class="col-sm-4 form-group">
+                                                        <label class="control-label">
+                                                            To
+                                                        </label>
+                                                        <input type="text" class="form-control" dataName="toLocation" dataType="text">
                                                     </div>
                                                 </div>
                                             </div>
@@ -148,6 +172,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var thArray  = Array(
         'Date',
         'Reference',
+        'Source',
         'Serial Number',
         'From',
         'To',
@@ -188,12 +213,28 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                 $(this).val('');
                 $("#searchForm")[0].reset();
             });
-
         });
+
+        pagingCallBack(pageNumber, loadSearch);
+
         /* Toggle search function */
         $('#searchBtn').click(function() {
             pagingCallBack(pageNumber, loadSearch);
-        }); 
+        });
+
+        $('#dateRangeStart').datepicker({
+            // language: language,
+            format      : 'dd/mm/yyyy',
+            orientation : 'auto',
+            autoclose   : true
+        });
+
+        $('#dateRangeEnd').datepicker({
+            // language: language,
+            format      : 'dd/mm/yyyy',
+            orientation : 'auto',
+            autoclose   : true
+        });
     });
 
     /* Call getStockList API */
@@ -225,6 +266,7 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                     // po_id               : v['po_id'],
                     date_done               : v['date_done'],
                     name                    : v['name'],
+                    source                  : v['source'],
                     serial_number           : v['serial_number'],
                     to                      : v['to'],
                     from                    : v['from'],

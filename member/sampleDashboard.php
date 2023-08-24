@@ -305,7 +305,7 @@ function loadDefaultListing(data, message) {
 						<div class="modal-content">
 							<span class="modalIcon"></span>
 							<div class="modal-header">
-								<span class="modal-title newsTitle">News Title ${v['no']}</span>
+								<!-- <span class="modal-title newsTitle">News Title ${v['no']}</span> -->
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#000;"></button>
 							</div>
 							<div class="modalLine"></div>

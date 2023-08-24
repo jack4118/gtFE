@@ -80,7 +80,8 @@
                                                                 </div>
                                                                 <div class="col-md-2">
                                                                     <label>Quantity</label>
-                                                                    <input id="quantity1" type="number" oninput="productListOpt()" class="form-control quantityInput" value="0" placeholder="0" required/>
+                                                                    <!-- <input id="quantity1" type="number" oninput="productListOpt()" class="form-control quantityInput" value="0" placeholder="0" required/> -->
+                                                                    <input id="quantity1" type="number" class="form-control quantityInput" value="0" placeholder="0" required/>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <label>Cost</label>
@@ -91,7 +92,7 @@
                                                                     <input id="total1" type="number" value="0.00" class="form-control totalInput" readonly/>
                                                                     
                                                                     <input id="id1" type="text" class="form-control hide"/>
-                                                                    <input id="action1" type="text" class="form-control hide"/ value="" type="">
+                                                                    <input id="action1" type="text" class="form-control hide" value="" type="">
                                                                     <input id="productType1" type="text" class="form-control hide"/ value="">
                                                                 </div>
                                                             </div>
@@ -181,12 +182,16 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 m-t-20">
-                                            <button id="edit" type="submit" class="btn btn-primary waves-effect waves-light m-r-10">
-                                                Update PO
+                                            <button id="edit" type="submit" class="btn btn-primary waves-effect waves-light">
+                                                Update Purchase Order
                                             </button>
 
                                             <button id="approve" type="submit" class="btn btn-primary waves-effect waves-light">
-                                                Approve PO
+                                                Confirm Purchase Order
+                                            </button>
+
+                                            <button id="cancelled" type="submit" class="btn btn-primary waves-effect waves-light">
+                                                Cancelled Purchase Order
                                             </button>
                                         </div>
                                     </div>
@@ -211,6 +216,7 @@
                                             </label>
                                             <textarea type="text" id="serial" class="form-control" style="height: 100px;"></textarea>
                                             <textarea type="text" id="serialShowIncrement" class="form-control" style="display: none;"></textarea>
+                                            <textarea type="text" id="serialForDone" class="form-control" style="display: none;"></textarea>
                                     </div>
                                     </div>
                                 </div>
@@ -225,6 +231,7 @@
                         <div class="col-lg-12 m-b-30">
                             <div class="card-box">
                                 <p class="text-center foc-title">Stock In</p>
+                                <input class="form-control stockOutInput m-b-10" type="text" id="inputSerial" onchange="removeUrl(this, event)">
                                 <div id="stockInTable">
                                     
                                 </div>
@@ -352,9 +359,10 @@
     var serialInputNum = [];
     var vendorName = "";
     var serial_number = [];
-    var defaultSNUrl = 'https://dev.gotasty.net/sn/';
+    var defaultSNUrl = "<?php echo $config["loginToMemberURL"]; ?>" + "sn/";
     var addImgCount = 0;
     var addImgIDNum = 0;
+    var usedSerialNo = [];
 
     $(document).ready(function() { 
         if (editId) {
@@ -392,10 +400,103 @@
         // });
 
         $('#approve').click(function() {
+            var productSet= [];
+
+            // $.each(totalLoop, function (k, v) {
+            for(var v = 1; v < $(".addProductWrapper").length + 1; v++) {
+                var name = $('option:selected', "#productSelect"+v).text();
+                var cost = $('#cost' + v).val();
+                var quantity = $('#quantity' + v).val();
+                var product_id = $('option:selected', "#productSelect"+v).val();
+                var id = $('#id'+v).val();
+                action = $('#action'+v).val();
+
+                if($('#action'+v).val() == "add" && $('#id'+v).val() != "") {
+                    action = "";
+                    typeR = "";
+                }
+                if($('#action'+v).val() == "add" && $('#id'+v).val() == "") {
+                    action = "add";
+                    typeR = "";
+                }
+                if ($('#action'+v).val() == "foc" && $('#id'+v).val() == "") {
+                    action = "add";
+                    typeR = "foc";
+                }
+                if ($('#action'+v).val() == "delete" && $('#productType'+v).val() == "FOC") {
+                    // action = "delete";
+                    typeR = "foc";
+                }
+                if (v == "1") {
+                    action = "";
+                    typeR = "";
+                }
+
+                var perProduct = {
+                    id : id,
+                    product_id : product_id,
+                    name:name,
+                    cost :cost,
+                    quantity: quantity,
+                    action: action,
+                    type: typeR,
+                }
+                productSet.push(perProduct);
+            }
+            // })
+
+            uploadImage = [];
+            uploadImageData = [];
+            $(".popupMemoImageWrapper").each(function() { 
+                var imgData = $(this).find('[id^="storeFileData"]').val();
+                var imgName = $(this).find('[id^="storeFileName"]').val();
+                var imgType = $(this).find('[id^="storeFileType"]').val();
+                var imgFlag = $(this).find('[id^="storeFileFlag"]').val();
+                var imgSize = $(this).find('[id^="storeFileSize"]').val();
+                var imgUploadType = $(this).find('[id^="storeFileUploadType"]').val();
+
+                if(imgData != "") {
+                    buildUploadImage = {
+                        imgName : imgName,
+                        imgType : imgType,
+                        imgFlag : imgFlag,
+                        imgSize : imgSize,
+                        uploadType : imgUploadType
+                    };
+
+                    // if(parseFloat(imgSize) / 1048576 > 3) {
+                    //     imgSizeFlag = false;
+                    // }
+                    var stringImgData = '';
+
+                    if($(this).find('[id^="storeFileIsExist"]').val() == 'true') {
+                        stringImgData = '"' + $(this).find('[id^="storeFile64Bit"]').val() + '"';
+                    } else {
+                        stringImgData = JSON.stringify(imgData);
+                    }
+
+                    reqData = {
+                        imgName : imgName,
+                        // imgData : JSON.stringify(imgData),
+                        imgData : stringImgData,
+                        // imgType : imgType,
+                        // imgSize : imgSize,
+                        // uploadType : imgUploadType
+                    };
+                    
+                    uploadImageData.push(reqData);
+                    uploadImage.push(reqData);
+                }
+            });
+
             var formData = {
                 command: "approvePurchaseOrder",
-                id: editId,
-                status: 'Confirmed'
+                vendor_id             : $("#vendorDropdown").val(),
+                purchase_product_list : productSet,
+                remarks               : $("#remarks").val(),
+                uploadImage           : uploadImage,
+                id                    : editId,
+                status                : 'Confirmed'
             };
 
             if (fCallback)
@@ -406,12 +507,12 @@
 
         function loadConfirmPurchaseOrder(data, message) {
             showMessage('Purchase Order Has Been Approved', 'success', 'Success Update Purchase Order', 'check', 
-            ['editPurchaseOrder.php', {
-                id: editId,
-                status: "Confirmed",
-                createdAt: createdAt,
-                vendor: vendor
-            }]
+                ['editPurchaseOrder.php', {
+                    id: editId,
+                    status: "Confirmed",
+                    createdAt: createdAt,
+                    vendor: vendor
+                }]
             );
         }
 
@@ -435,13 +536,17 @@
                     action = "add";
                     typeR = "";
                 }
-                if ($('#action'+v).val() == "foc") {
+                if ($('#action'+v).val() == "foc" && $('#id'+v).val() == "") {
                     action = "add";
                     typeR = "foc";
                 }
                 if ($('#action'+v).val() == "delete" && $('#productType'+v).val() == "FOC") {
                     // action = "delete";
                     typeR = "foc";
+                }
+                if (v == "1") {
+                    action = "";
+                    typeR = "";
                 }
 
                 var perProduct = {
@@ -651,6 +756,12 @@
         $("#appendProduct").append(wrapper);
         $("#productSelect"+wrapperLength).html(html);
 
+        $('#productSelect'+wrapperLength).select2({
+            dropdownAutoWidth: true,
+            templateResult: newFormatState,
+            templateSelection: newFormatState,
+        });
+
         totalLoop.push(wrapperLength);
         wrapperLength++;
         // loopQuantity(id);
@@ -692,6 +803,12 @@
 
         $("#appendProduct").append(wrapper);
         $("#productSelect"+wrapperLength).html(html);
+
+        $('#productSelect'+wrapperLength).select2({
+            dropdownAutoWidth: true,
+            templateResult: newFormatState,
+            templateSelection: newFormatState,
+        });
 
         totalLoop.push(wrapperLength);
         wrapperLength++;
@@ -807,6 +924,14 @@
             vendorName = data.productList[0]['vendor_name'];
         }
 
+        if(data.status == "Confirmed" || data.status == "Pending For Stock In" || data.status == "Done" || data.status == "Cancelled") {
+            $("#cancelled").hide();
+        }
+
+        if(data.status == "Pending For Stock In") {
+            $("#inputSerial").removeAttr("disabled").focus();
+        }
+
         $.each(productList, function (k, v) { 
             var newK = k + 1;
             if(k != 0) 
@@ -832,7 +957,10 @@
                 $("#edit").attr("disabled", true);
                 $("#approve").attr("disabled", true);
                 $(".closeBtn").css("display", "none");
-                $("#serialNumberTable").css("display", "block");
+                if(status != "Cancelled") {
+                    $("#serialNumberTable").css("display", "block");
+                }
+                $('.addProductImage').hide();
                 //assignSerialNumber();;
             }         
         });
@@ -869,14 +997,16 @@
             image.src = $('#storeFileData' + newK).val();
         })
 
-        if(status == 'Pending For Stock In')
-        {
+        if(status == 'Pending For Stock In') {
+            assignSerialNumber();
+            $('#serial').prop("readonly", "true");
+            $('#inputSerial').attr('disabled', false);
+        }
+
+        if(status == 'Confirmed') {
             assignSerialNumber();
         }
-        if(status == 'Confirmed')
-        {
-            assignSerialNumber();
-        }
+
         loopQuantity(data.productList.length);
 
         if(status == 'Done') {
@@ -886,9 +1016,14 @@
                 displaySerial += `${n}\n`;  
             })
 
-            // $('#serial').val(serial_number.join('  ||  '));
             $('#serial').val(displaySerial);
             $('#serial').prop("readonly", "true");
+
+            if(data.serialNumberList != null){
+                serial_number = data.serialNumberList;
+            
+                $('#serialForDone').val(serial_number.join('  ||  '));
+            }
         }
 
         vendor_id_ini = data.vendor_id;
@@ -935,6 +1070,12 @@
             var newM = m + 1;
 
             $("#productSelect" + newM).val(v['product_id']);
+
+            $("#productSelect" + newM).select2({
+                dropdownAutoWidth: true,
+                templateResult: newFormatState,
+                templateSelection: newFormatState,
+            });
         });
     }
 
@@ -963,19 +1104,24 @@
 
     function generateSerial(data, message) {
         var showIncrement = data.showIncrement;
+        serial_number = data.serial_number;
 
         showIncrement = showIncrement.join(';');
 
         $('#serialShowIncrement').val(showIncrement);
 
-        serial_number = data.serial_number;
-        $('#serial').val(serial_number.join('  ||  '));
-        if(status != "Pending For Stock In")
-        {
+        var displaySerial = '';
+
+        $.each(data.displaySerialNumber, function(m, n) {
+            displaySerial += `${n}\n`;  
+        })
+
+        $('#serial').val(displaySerial);
+        $('#serial').prop("readonly", "true");
+
+        if(status != "Pending For Stock In") {
             confirmSerialAfterAssign();
-        }
-        else
-        {
+        } else {
             loadStockInTable();
         }
         // serialInputNum = serial_number;
@@ -1076,17 +1222,23 @@
             <tr>
                 <td>${k+1}</td>
                 <td>${productInventory[0].name}</td>
-                <td><input class="form-control stockInInput" type="text" id="stockInSerialNo${k+1}" oninput="removeUrl(this)"></td>
+                <td>
+                    <input class="form-control stockInInput" type="text" id="stockInSerialNo${k+1}" onfocus="serialChecking(this)" oninput="inputSerialChecking(this)"> 
+                    <input class="form-control stockInInputProductId" style="display: none;" type="text" id="stockInProductId${k+1}" value="${productInventory[0].id}">
+                    <input class="form-control hide" type="text" id="skuCode${k+1}" value="${productInventory[0].skuCode.replace('N', '')}">
+                </td>
             </tr>
         `;
 
         $('#stockInTableBody').append(html3);
+        if(status == "Pending For Stock In") $('#inputSerial').removeAttr('disabled').focus();
 
         tableIndex++;
     }
 
     $('#saveStockIn').click(function() {
         var serial = [];
+        var serialProductId = [];
 
         for(i = 0; i < $(".stockInInput").length; i++) {
             var newI = i + 1;
@@ -1096,10 +1248,20 @@
             serial.push(perSerial);
         }
 
+        for(i = 0; i < $(".stockInInputProductId").length; i++) {
+            var newI = i + 1;
+            var perSerialProductId = {
+                serial_number: $("#stockInSerialNo" + newI).val(),
+                product_id: $("#stockInProductId" + newI).val(),
+            }
+            serialProductId.push(perSerialProductId);
+        }
+
         var formData = {
-            command     : 'ActiveSerialCheck',
-            po_id       : editId,
-            serial      : serial,
+            command         : 'ActiveSerialCheck',
+            po_id           : editId,
+            serial          : serial,
+            serialProductId : serialProductId,
         }
 
         fCallback = checkSerialNotInList;
@@ -1168,10 +1330,79 @@
         }
     }
 
-    function removeUrl(e) {
+    function removeUrl(e, evt) {
         var url = $(e).val();
         var serialNo = url.replace(defaultSNUrl, '');
+
+        var index = serialNo.lastIndexOf('GT');
+        serialNo = serialNo.substring(index);
         $(e).val(serialNo);
+
+        $('#stockInTableBody tr').each(function() {
+            var skuCode = $(this).find('[id^=skuCode]').val() + '-';
+            if(serialNo.includes(skuCode)) {
+                var stockInSerialNo = $(this).find('[id^=stockInSerialNo]');
+                if(stockInSerialNo.val() == serialNo) {
+                    $('#canvasMessage').addClass('serialExist');
+                    showMessage(`Serial number ${serialNo} already exist.`, 'warning', 'Warning', 'warning', '');
+                    $('#inputSerial').focus();
+                    return false;
+                } else if(stockInSerialNo.val() == '' || stockInSerialNo.val() == skuCode) {
+
+                    if(!usedSerialNo.includes(serialNo)) {
+                        usedSerialNo.push(serialNo)
+                        stockInSerialNo.val(serialNo);
+                        return false;
+                    }
+                }
+            }   
+        });
+    }
+
+    $('#canvasMessage').on('hidden.bs.modal', function() {
+        if($(this).hasClass('serialExist')) {
+            $('#inputSerial').focus();
+            $(this).removeClass('serialExist');
+        } else if($(this).hasClass('inputSerialExist')) {
+            warningInput.focus();
+            $(this).removeClass('inputSerialExist');
+        }
+    })
+
+    function serialChecking(e) {
+        console.log(e)
+        
+        var skuCode = $(e).parent().find('[id^=skuCode]').val() + '-';
+        if($(e).val() == '') $(e).val(skuCode);
+
+        console.log($(e).val(skuCode),"second")
+
+    }
+
+    function inputSerialChecking(e) {
+        var aNthChild = $(e).attr('id').replace('stockInSerialNo', '');
+        var skuCode = $(e).parent().find('[id^=skuCode]').val() + '-';
+
+        var aSerialLength = $(e).val().length;
+        var bSerialLength = skuCode.length;
+
+        if(aSerialLength < bSerialLength) {
+            $(e).val(skuCode);
+        }
+
+        $('#stockInTableBody tr').each(function() {
+            var stockInSerialNo = $(this).find('[id^=stockInSerialNo]');
+            var bNthChild = stockInSerialNo.attr('id').replace('stockInSerialNo', '');
+            
+            if(bNthChild != aNthChild) {
+                if(stockInSerialNo.val() == $(e).val() && stockInSerialNo.val() != skuCode) {
+                    $('#canvasMessage').addClass('inputSerialExist');
+                    showMessage(`Serial number ${$(e).val()} already exist.`, 'warning', 'Warning', 'warning', '');
+                    $(e).val(skuCode);
+                    warningInput = e;
+                }
+            }
+        });
     }
 
     function closeDivImg(n) {
@@ -1198,7 +1429,8 @@
 
         $("#viewImg"+id).hide();
         $("#deleteImg"+id).hide();
-
+        $("#fileNotUploaded"+id).show()
+        $("#thumbnailImg"+id).attr('src', "");
     }
 
     function showImg(n, imgUrl) {
@@ -1235,7 +1467,9 @@
 
                     <div>
                         <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
-                        <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                        <span id="fileNotUploaded${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                        <!-- <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span> -->
+                        <img id="thumbnailImg${addImgIDNum}" src="${url}" style="width:100%;" />
                         <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="display: none; padding: 6px;" onclick="showImg('${addImgIDNum}', '${url}')">
                             <i class="fa fa-eye"></i>
                         </a>
@@ -1245,6 +1479,14 @@
         `;
 
         $("#buildImg").append(buildImg);
+
+        if(url) $(`#fileNotUploaded${addImgIDNum}`).hide();
+        else $(`#thumbnailImg${addImgIDNum}`).hide();
+
+        if(status != "Draft") {
+            $('#buildImg .btnUpload').hide();
+            $('#buildImg .closeBtn').hide();
+        }
 
         /*if (addImgCount == 1) {
             $(".addImgBtn").hide();
@@ -1282,11 +1524,43 @@
                 // $("#viewImg"+id).attr('data-res', reader["result"]);
                 $("#viewImg"+id).css('display', 'inline-block');
                 $("#deleteImg"+id).css('display', 'inline-block');
+                $("#fileNotUploaded"+id).hide()
+                $("#thumbnailImg"+id).attr('src', $("#storeFileData"+id).val()).show();
             };
 
             reader.readAsDataURL(n.files[0]);
         }
     }
+
+    $('#cancelled').click(function() {
+        var formData   = {
+            command     : "cancelledPurchaseOrder",
+            id          : editId,
+        };
+        
+        fCallback = loadCancelled;
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    });
+
+    function loadCancelled(result, message) {
+        showMessage('Purchase Order has been cancelled.', 'success', 'Purchase Order has been cancelled.', 'check', 'order.php'); 
+    }
+
+    function newFormatState(method) {
+        if (!method.id) {
+            return method.text;
+        }
+
+        var optimage = $(method.element).attr('data-image')
+        if (!optimage) {
+            return method.text;
+        } else {
+            var $opt = $(
+                '<span onclick="changeTokenCategory('+method.text+')"><img src="' + optimage + '" class="tokenOptionImg" /> <span style="vertical-align: middle;">' + method.text + '</span></span>'
+            );
+            return $opt;
+        }
+    };
 
 </script>
 </body>

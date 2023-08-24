@@ -10,13 +10,13 @@ include 'head.php';
 <?php include 'homepageHeader.php';?>
 
 <section class="section section-career-detail">
-    <div class="row">
+    <div class="kt-container row">
         <div class="col-12" id="vacancyDetailTitle"></div>
     </div>
 </section>
 
 <section class="section whiteBg">
-    <div class="row">
+    <div class="kt-container row">
         <div class="col-md-6">
             <p>           
                 <h3 id="objectiveTitle" style="display: none;" data-lang="M03956"><?php echo $translations['M03956'][$language]; //Objective ?></h3>
@@ -36,25 +36,35 @@ include 'head.php';
         <div class="col-md-6">
             <div class="section-shadow mb-5">
                 <!-- <form action="mailto:yixiangkee11.ttwoweb@gmail.com" method="get" enctype="text/plain"> -->
-                <form action="mailto:hanyaolim.thenux@gmail.com" method="get" enctype="text/plain">
-                    <h2 class="mb-5" data-lang="M03959"><?php echo $translations['M03959'][$language]; //Apply For This Job ?></h2>
+                <!-- <form action="mailto:hanyaolim.thenux@gmail.com" method="get" enctype="text/plain"> -->
+
+                <form id="orderForm" action="javascript:;">
+                    <h2 class="mb-5" id="changeIfSuccess" data-lang="M03959"><?php echo $translations['M03959'][$language]; //Apply For This Job ?></h2>
 
                     <label data-lang="M03960"><?php echo $translations['M03960'][$language]; //Name ?></label>
-                    <input type="text" id="name" class="form-control beforeLoginForm col ml-1" placeholder="<?php echo $translations['M03960'][$language]; //Name ?>">
+                    <input type="text" id="name" name="sender_name" class="form-control beforeLoginForm col ml-1" placeholder="<?php echo $translations['M03960'][$language]; //Name ?>">
 
                     <label data-lang="M03961"><?php echo $translations['M03961'][$language]; //Phone ?></label>
-                    <input oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" type="text" id="phone" class="form-control beforeLoginForm col ml-1" placeholder="<?php echo $translations['M03961'][$language]; //Phone ?>">
+                    <input oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" type="text" name="phone" id="phone" class="form-control beforeLoginForm col ml-1" placeholder="<?php echo $translations['M03961'][$language]; //Phone ?>">
 
                     <label data-lang="M03962"><?php echo $translations['M03962'][$language]; //Email Address ?></label>
-                    <input type="email" id="email" class="form-control beforeLoginForm col ml-1" placeholder="<?php echo $translations['M03962'][$language]; //Email Address ?>">
+                    <input name="email" id="email" class="form-control beforeLoginForm col ml-1" placeholder="<?php echo $translations['M03962'][$language]; //Email Address ?>">
 
                     <label data-lang="M03963"><?php echo $translations['M03963'][$language]; //Upload Your Resume ?></label>
-                    <input type="file" id="myFile" name="filename">
+
+                    <div class="uploadWrapper">
+                        <input type="hidden" id="storeFileData0">
+                        <input type="hidden" id="storeFileName0">
+                        <input type="hidden" id="storeFileType0">
+                        <input type="hidden" id="storeFileFlag0">
+                        <input type="hidden" id="storeFileSize0">
+                        <input type="hidden" id="storeFileUploadType0">
+                        <input type="file" id="fileUpload" accept="image/jpeg, image/png, image/gif, image/bmp, image/tiff, application/pdf, application/vnd.ms-excel, video/mp4,video/x-m4v,video/*" onchange="displayFileName('0',this)">
+                    </div>
 
                     <div class="row mt-4">
                         <div class="col">
-                            <!-- <a href="javascript:void(0)" id="submitBtn" type="submit" class="btn button-red button-fix-width"> -->
-                            <button id="submitBtn" type="submit" class="btn button-red button-fix-width" data-lang="M03964">
+                            <button id="submitBtn" class="btn button-red button-fix-width" data-lang="M03964">
                                 <?php echo $translations['M03964'][$language]; //Submit ?>
                             </button>
                         </div>
@@ -85,7 +95,7 @@ $_SESSION["stopRecord"] = 1;
     var bypassBlocking  = 0;
     var bypassLoading   = 0;
     var fCallback = "";
-    var id = "<?php echo $_POST['id']?>";
+    var id = "<?php echo $_SESSION['POST'][$postAryName]['id']?>";
     var vacancy = [
             { 
                 vacancyID: 1, 
@@ -186,6 +196,18 @@ $_SESSION["stopRecord"] = 1;
 
 
     $(document).ready(function(){
+        if(id) {
+            if ( window.history.replaceState ) {
+                window.history.replaceState( null, null, window.location.href );
+            }
+        } else {
+            if ( window.history.replaceState ) {
+                window.history.replaceState( null, null, window.location.href = 'career.php#careerPost' );
+            }
+        }
+
+        getShoppingCart();
+        
         var vacancyDetailTitleHTML = '';
         var vacancyObjectiveHTML = '';
         var vacancyResponsibilitiesHTML = '';
@@ -231,5 +253,153 @@ $_SESSION["stopRecord"] = 1;
     function loadDefaultListing (data,message) {
         
     }
+
+    function displayFileName(id, n) {
+        // var dFileName = $("#fileName"+id);
+
+        if (n.files && n.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                // $('#blah').attr('src', e.target.result);
+                // $("#imgData"+input.id).empty().val(reader["result"]);
+                // dFileName.text(n.files[0]["name"]);
+                // $("#imgSize"+input.id).empty().val(input.files[0]["size"]);
+                // $("#imgType"+input.id).empty().val(input.files[0]["type"]);
+                // $("#imgFlag"+input.id).empty().val("1");
+
+                $("#storeFileData"+id).val(reader["result"]);
+                $("#storeFileName"+id).val(n.files[0]["name"]);
+                $("#storeFileSize"+id).val(n.files[0]["size"]);
+                $("#storeFileType"+id).val(n.files[0]["type"]);
+                $("#storeFileFlag"+id).val('1');
+
+                if((n.files[0]["type"]).split('/')[0] === 'image'){
+                    $("#storeFileUploadType"+id).val('image');
+                    uploadFileType = 'image';
+                }else{
+                    $("#storeFileUploadType"+id).val('video');
+                    uploadFileType = 'video';
+                }
+
+                // $("#viewImg"+id).attr('data-res', reader["result"]);
+                $("#viewImg"+id).css('display', 'inline-block');
+                $("#deleteImg"+id).css('display', 'inline-block');
+            };
+
+            reader.readAsDataURL(n.files[0]);
+        }
+    }
+
+    $('#submitBtn').click(function() {
+        var uploadImage = [];
+        var uploadImageData = [];
+        $(".uploadWrapper").each(function() {
+            var imgData = $("#storeFileData0").val();
+            var imgName = $("#storeFileName0").val();
+            var imgType = $("#storeFileType0").val();
+            var imgFlag = $("#storeFileFlag0").val();
+            var imgSize = $("#storeFileSize0").val();
+            var imgUploadType = $("#storeFileUploadType0").val();
+
+            if(imgData != "") {
+                buildUploadImage = {
+                    imgName : imgName,
+                    imgType : imgType,
+                    imgFlag : imgFlag,
+                    imgSize : imgSize,
+                    uploadType : imgUploadType
+                };
+
+                // if(parseFloat(imgSize) / 1048576 > 3) {
+                //     imgSizeFlag = false;
+                // }
+
+                reqData = {
+                    imgName : imgName,
+                    imgData : JSON.stringify(imgData),
+                    // imgType : imgType,
+                    // imgSize : imgSize,
+                    // uploadType : imgUploadType
+                };
+                
+                uploadImageData.push(reqData);
+                uploadImage.push(reqData);
+            }
+        });
+
+        if(uploadImage != "" && $("#name").val() != "" && $("#email").val() != "" && $("#phone").val() != "") {
+            var formData  = {
+                command     : "submitContactUs",
+                client_name : $("#name").val(),
+                client_email : $("#email").val(),
+                phone : $("#phone").val(),
+                uploadImage : uploadImage,
+                type : "career",
+            };
+            var fCallback = careerSubmitted;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        } else {
+            showMessage('<?php echo $translations['M04052'][$language] /* Please upload your resume. */ ?>', 'Warning', '<?php echo $translations['M04037'][$language] /* Submitted */ ?>', 'check', '');
+        }
+    });
+
+    function careerSubmitted(data, message) {
+        showMessage('<?php echo $translations['M00320'][$language] /* Successfully submitted */ ?>', 'submitted success', '<?php echo $translations['M04037'][$language] /* Submitted */ ?>', 'check', '');
+
+        var uploadImage = [];
+        var uploadImageData = [];
+        $(".uploadWrapper").each(function() {
+            var imgData = $("#storeFileData0").val();
+            var imgName = $("#storeFileName0").val();
+            var imgType = $("#storeFileType0").val();
+            var imgFlag = $("#storeFileFlag0").val();
+            var imgSize = $("#storeFileSize0").val();
+            var imgUploadType = $("#storeFileUploadType0").val();
+
+            if(imgData != "") {
+                buildUploadImage = {
+                    imgName : imgName,
+                    imgType : imgType,
+                    imgFlag : imgFlag,
+                    imgSize : imgSize,
+                    uploadType : imgUploadType
+                };
+
+                // if(parseFloat(imgSize) / 1048576 > 3) {
+                //     imgSizeFlag = false;
+                // }
+
+                reqData = {
+                    imgName : imgName,
+                    imgData : JSON.stringify(imgData),
+                    // imgType : imgType,
+                    // imgSize : imgSize,
+                    // uploadType : imgUploadType
+                };
+
+                uploadImageData.push(reqData);
+                uploadImage.push(reqData);
+            }
+        });
+
+        var formData  = {
+            command     : "emailContactUs",
+            client_name : $("#name").val(),
+            client_email : $("#email").val(),
+            phone : $("#phone").val(),
+            uploadImage : uploadImage,
+            type : "career",
+
+            img_name : $("#storeFileName0").val(),
+        };
+        var fCallback = successSubmitted;
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    }
+
+    function successSubmitted(data, message) {         
+        $("#changeIfSuccess").html('<?php echo $translations['M00320'][$language] /* Successfully submitted */ ?>')
+    }
+
+
 
 </script>

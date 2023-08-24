@@ -1,12 +1,15 @@
-<?php include 'include/config.php'; ?>
-<?php include 'head.php'; ?>
+<?php 
+include 'scripts/sessionStore.php';
+include 'include/config.php';
+include 'head.php'; 
+?>
 
 <?php
 include_once('include/class.cryptDes.php');
 
 $fromQR = false;
-if(isset($_POST['fromQR'])) {
-    $fromQR = $_POST['fromQR']==1?true:false;
+if(isset($_SESSION['POST'][$postAryName]['fromQR'])) {
+    $fromQR = $_SESSION['POST'][$postAryName]['fromQR']==1?true:false;
 }
 
 if($_GET){
@@ -37,22 +40,22 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
 <body  class="kt-page--loading-enabled kt-page--loading kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header--minimize-topbar kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-page--loading loginPage" style="background-color: #f8f8f8">
     <?php include 'homepageHeader.php';?>
 
-    <section class="jp-page-banner login-signup">
-        <div class="kt-container">
-            <div class="row">
+    <section class="section jp-page-banner login-signup">
+        <div class="">
+            <div class="kt-container row">
                 <div class="col-sm-6 col-md-5 col-lg-3">
                     <h1 data-lang="M03848"><?php echo $translations['M03848'][$language]; //Enjoy Favourite Food Instantly!?> </h1>
                 </div>
                 <div class="col-sm-6 col-md-7 offset-lg-3 col-lg-6">
                     <div class="row">
                         <div class="col-12">
-                            <a href="#" target="_blank"><img src="images/project/sm1.png" class="img-fluid"></a>
-                            <a href="#" target="_blank"><img src="images/project/sm2.png" class="img-fluid"></a>
-                            <a href="#" target="_blank"><img src="images/project/sm3.png" class="img-fluid"></a>
-                            <a href="#" target="_blank"><img src="images/project/sm4.png" class="img-fluid"></a>
+                            <a href="https://www.facebook.com/gotasty.net" target="_blank"><img src="images/project/sm1.png" class="img-fluid"></a>
+                        <a href="https://www.instagram.com/gotastynet/" target="_blank"><img src="images/project/sm2.png" class="img-fluid"></a>
+                        <!-- <a href="#" target="_blank"><img src="images/project/sm3.png" class="img-fluid"></a> -->
+                        <a href="https://wa.link/9xiov2" target="_blank"><img src="images/project/sm4.png" class="img-fluid"></a>
                         </div>
                         <div class="col-12 call-us" data-lang="M03849">
-                            <?php echo $translations['M03849'][$language]; //Call us at?>: <font style="font-weight: 400;">+6018-2626000</font>
+                            <?php echo $translations['M03849'][$language]; //Call us at ?>: <a href="tel:+6018-2626000"><font style="font-weight: 400;">+6018-2626000</font></a>
                         </div>
                     </div>
                 </div>
@@ -60,10 +63,10 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
         </div>
     </section>
 
-    <section class="loginPage">
-        <div class="kt-container">
+    <section class="section loginPage py-0">
+        <div class="kt-container row">
             <div class="col-12">
-                <div class="login-signup-card row">
+                <div class="login-signup-card row mx-0">
                     <div class="col-md-6 mb-0 pb-5 pb-md-0">
                         <h3 data-lang="M03855"><?php echo $translations['M03855'][$language]; //Sign Up ?></h3>
 
@@ -81,15 +84,15 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
                                 
                                 <div class="position-relative">
                                     <label data-lang="M03859"><?php echo $translations['M03859'][$language]; //Verification Code ?></label>                        
-                                    <input type="text" class="form-control beforeLoginForm" id="otp">
+                                    <input type="text" class="form-control beforeLoginForm" id="otp" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
                                     <!-- <div id="verificationCodeError" class="customError text-danger"></div> -->
                                     <div class="input-group-append col-md-5 col-6 px-0 resend-otp" style="">
-                                        <button id="resend-otp" class="btn button-grey w-100" data-lang="M03860">
+                                        <button id="resend-otp" class="btn button-green w-100" data-lang="M03860">
                                             <?php echo $translations['M03860'][$language]; //Request OTP ?>
                                         </button>
 
-                                        <span class="form__button-wrapper timer col-6" style="display: none; color: #fff; width: 95px;">
-                                            <span class=" mt-3 " style="display:block; color: #000; width: 95px;"></span>
+                                        <span class="form__button-wrapper timer w-100" style="display: none; color: #fff;">
+                                            <span class=" mt-3 " style="display:block; color: #000;"></span>
                                         </span>                 
                                     </div>
                                 </div>
@@ -129,7 +132,7 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
                                 
                                 <div class="row">
                                     <div class="col-12">
-                                        <p class="note" data-lang="M03862"><?php echo $translations['M03862'][$language]; //Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purpose described in our privacy policy. ?></p>
+                                        <p class="note" data-lang="M03862"><?php echo $translations['M03862'][$language]; //Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purpose described in our ?> <a href="images/project/GoTasty-Privacy-Policy-V1.2-7July2023.pdf" target="_blank" class="text-red"><u><?php echo $translations['M03796'][$language]; // Privacy Policy ?></u></a>.</p>
                                     </div>
                                 </div>
 
@@ -152,7 +155,7 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
                                 <div id="fullNameError" class="invalid-feedback" style="display:block;"></div>
 
                                 <div class="row mt-4">
-                                    <div class="col">
+                                    <div class="col-12 col-sm-4 col-md-3 col-lg-2">
                                         <button class="btn button-red signUpBtn" data-lang="M03855">
                                             <?php echo $translations['M03855'][$language]; //Sign Up ?>
                                         </button>
@@ -162,7 +165,7 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
                             </div>
                         </div>                        
                     </div>
-                    <div class="col-md-6 pt-5 pt-md-0">
+                    <div class="col-md-6 pt-5 pt-md-0" id="signUpSection">
                         <h3 data-lang="M03866"><?php echo $translations['M00108'][$language]; //Sign In ?></h3>
                         <p data-lang="M03867"><?php echo $translations['M03867'][$language]; //Sign in to your account if you already have an account with GoTasty. ?></p>
 
@@ -268,7 +271,7 @@ if (isset($_SESSION["userID"]) && isset($_SESSION["sessionID"])) {
         // getBankOption = $('input[name="bankOption"]:checked').val();
 
         $('.logoBlock img').click(function() {
-            $.redirect('homepage');
+            $.redirect('foodMenu');
         });
 
         // $('#dialingArea').change(function() {
@@ -1026,7 +1029,7 @@ function confirmRegister() {
 }
 
 function completeRegistration(data, message) {
-    showMessage(message,'success','<?php echo $translations['M03136'][$language]; //Register An Account ?>','success','homepage');
+    showMessage(message,'success','<?php echo $translations['M03136'][$language]; //Register An Account ?>','success','foodMenu');
 }
 
 /*function displayFileName(id, n) {
@@ -1091,6 +1094,9 @@ $('#resend-otp').click(function(){
 
     var dialCode = $('#dialingArea option:selected').val();;
     var number = $('#phone').val();
+
+    number = removeFirstTwoCharacters(number);
+
     var phone = dialCode + number;
     // var retypePassword = $('#retypePassword').val();
 
@@ -1152,7 +1158,10 @@ $('.signUpBtn').click(function(){
     var sponsorDialingArea = $('#sponsorDialingArea').val();
     var sponsorId = $('#referral').val();
     var fullName = $('#fullName').val();
-    var username = $('#dialingArea option:selected').val() + $('#phone').val();
+    // var username = $('#dialingArea option:selected').val() + $('#phone').val();
+
+    phone = removeFirstTwoCharacters(phone);
+    var username = $('#dialingArea option:selected').val() + phone;
 
     if($('#fullName').val() == "")
         var step = "";
@@ -1174,6 +1183,7 @@ $('.signUpBtn').click(function(){
     };
 
     if(sponsorId != '') {
+        sponsorId = removeFirstTwoCharacters(sponsorId);
         formData['sponsorId'] = sponsorDialingArea + sponsorId;
     } else {
         formData['sponsorId'] = '';
@@ -1213,6 +1223,9 @@ $('.signUpBtn').click(function(){
                     $('.page2').addClass('active');
                     $('.page2').addClass('in');
                     $('.page2').addClass('show');
+
+                    $('#signUpSection').hide();
+                    $('.page2').parent().parent().toggleClass('col-md-6 col-12').addClass('px-5').css('border-right', 'none');
                 }else {
                     hideCanvas();
                     errorHandler(obj.code, obj.statusMsg); 
@@ -1220,8 +1233,13 @@ $('.signUpBtn').click(function(){
             }
         } else if(obj.status =='ok') {
             hideCanvas();
+            var obj = JSON.parse(data);
+            if(obj.status == "ok") {
+                removeCookie('redeemAmount');
+                window.location.href = "foodMenu";
+            }
             // $.redirect('homepage');
-            var formData  = {
+            /*var formData  = {
                 'command'   : 'memberLogin',
                 'id'  : "",
                 'username'  : username,
@@ -1241,11 +1259,10 @@ $('.signUpBtn').click(function(){
                 hideCanvas();
                 if(obj.status == "ok") {
                     clearCart();
-                    removeCookie('oldToken')
                     removeCookie('redeemAmount');
-                    window.location.href = "homepage";
+                    window.location.href = "foodMenu";
                 }
-            })
+            })*/
         }      
         else {
             $('.page1').removeClass('active');

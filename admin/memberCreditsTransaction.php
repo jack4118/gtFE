@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    //Form submission issue
+    header("Cache-Control: no cache");
+    session_cache_limiter("private_no_expire");
     
 
     include_once("mobileDetect.php");

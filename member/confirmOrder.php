@@ -7,50 +7,61 @@ include 'homepageHeader.php';
 <body>
 <link href="css/homepage.css?v=<?php echo filemtime('css/homepage.css'); ?>" rel="stylesheet" type="text/css" />
 
+<input type="hidden" id="PromoCodeInput" class="">
+<input type="hidden" id="pointsToUse" class="">
+<input type="hidden" id="deliveryMethod" name="deliveryMethod" value="Pickup">
+<input type="hidden" id="postcode" name="postcode" value="Pickup">
+
 <!-- My Cart Title -->
 <section class="section checkoutBg">
-    <div class="titleText larger bold text-white text-center text-md-left" data-lang="M02893"><?php echo $translations['M02893'][$language] /* My Cart */ ?></div>
+    <div class="kt-container row">
+        <div class="col-12 titleText larger bold text-white text-center text-md-left" data-lang="M02893"><?php echo $translations['M02893'][$language] /* My Cart */ ?></div>
+    </div>
 </section>
 
 <!-- My Cart Stepper -->
 <section class="section whiteBg px-0 pb-0">
-    <div class="wrapper option-1 option-1-1 mt-5 mt-md-0">
-    <ol class="c-stepper">
-        <li class="c-stepper__item">
-            <h3 class="c-stepper__title" data-lang="M03815"><?php echo $translations['M03815'][$language] /* Review Order */ ?></h3>
-        </li>
-        <li class="c-stepper__item">
-            <h3 class="c-stepper__title" data-lang="M02466"><?php echo $translations['M02466'][$language] /* Address */ ?></h3>
-        </li>
-        <li class="c-stepper__item active">
-            <h3 class="c-stepper__title" data-lang="M03816"><?php echo $translations['M03816'][$language] /* Confirm Order */ ?></h3>
-        </li>
-        <li class="c-stepper__item">
-            <h3 class="c-stepper__title" data-lang="M00208"><?php echo $translations['M00208'][$language] /* Payment */ ?></h3>
-        </li>
-    </ol>
+    <div class="kt-container row">
+        <div class="col-12">
+            <div class="wrapper option-1 option-1-1 mt-5 mt-md-0">
+                <ol class="c-stepper">
+                    <li class="c-stepper__item">
+                        <h3 class="c-stepper__title" data-lang="M03815"><?php echo $translations['M03815'][$language] /* Review Order */ ?></h3>
+                    </li>
+                    <li class="c-stepper__item">
+                        <h3 class="c-stepper__title" data-lang="M02466"><?php echo $translations['M02466'][$language] /* Address */ ?></h3>
+                    </li>
+                    <li class="c-stepper__item active">
+                        <h3 class="c-stepper__title" data-lang="M03816"><?php echo $translations['M03816'][$language] /* Confirm Order */ ?></h3>
+                    </li>
+                    <li class="c-stepper__item">
+                        <h3 class="c-stepper__title" data-lang="M00208"><?php echo $translations['M00208'][$language] /* Payment */ ?></h3>
+                    </li>
+                </ol>
+            </div>
+        </div>
     </div>
 </section>
 
 <section class="section whiteBg">
-    <div class="row mb-5 mb-md-0">
+    <div class="kt-container row mb-5 mb-md-0">
         <div class="col-md-6 col-12 order-md-2 order-1">
             <!-- Order Summary -->
             <div class="borderAll grey normal">
-                <div class="darkBlueBg p-4 bodyText larger bold text-white" data-lang="M03261"><?php echo $translations['M03261'][$language] /* Order Summary */ ?></div>
+                <!-- <div class="darkBlueBg p-4 bodyText larger bold text-white" data-lang="M03261"><?php echo $translations['M03261'][$language] /* Order Summary */ ?></div> -->
                 <div class="greyBg orderSummary">
                     <table class="w-100">
                         <thead class="borderBottom grey normal">
                             <tr>
-                                <th class="px-4 py-4"><div class="bodyText smaller lightBold" data-lang="M02990"><?php echo $translations['M02990'][$language] /* Product */ ?></div></th>
-                                <th class="text-center px-2 py-4"><div class="bodyText smaller lightBold" data-lang="M00244"><?php echo $translations['M00244'][$language] /* Quantity */ ?></div></th>
-                                <th class="text-right px-4 py-4"><div class="bodyText smaller lightBold" data-lang="M03129"><?php echo $translations['M03129'][$language] /* Price */ ?></div></th>
+                                <th class="px-4 py-4" colspan="4"><div class="bodyText smaller lightBold text-center" data-lang="M02990" style="width: 100%;"><?php echo $translations['M02990'][$language] /* Product */ ?></div></th>
+                                <!-- <th class="text-center px-2 py-4"><div class="bodyText smaller lightBold" data-lang="M00244"><?php echo $translations['M00244'][$language] /* Quantity */ ?></div></th>
+                                <th class="text-right px-4 py-4"><div class="bodyText smaller lightBold" data-lang="M03129"><?php echo $translations['M03129'][$language] /* Price */ ?></div></th> -->
                             </tr>
                         </thead>
                         <tbody id="cartList">
                             <tr>
-                                <td colspan="5" class="p-4 text-center">
-                                    <div class="bodyText smaller lightBold" data-lang="M03803"><?php echo $translations['M03803'][$language] /* No records found */ ?></div>
+                                <td colspan="4" class="p-4 text-center">
+                                    <div class="bodyText smaller lightBold" data-lang="M03803" style="width: 100%;"><?php echo $translations['M03803'][$language] /* No records found */ ?></div>
                                 </td>
                             </tr>
                         </tbody>
@@ -59,13 +70,6 @@ include 'homepageHeader.php';
             </div>
         </div>
         <div class="col-md-6 col-12 order-md-1 order-2 pt-5 pt-md-0">
-            <!-- Delivery Method -->
-            <div class="bodyText larger bold pb-3" data-lang="M03836"><?php echo $translations['M03836'][$language] /* Select a Delivery Method */ ?></div>
-            <div id="deliveryMethods">
-                <label class="radio-group greyBg borderAll grey normal p-4 d-flex align-items-center mb-3">
-                    <div class="bodyText smaller lightBold" data-lang="M03900"><?php echo $translations['M03900'][$language] /* Loading... */ ?></div>
-                </label>
-            </div>
 
             <!-- Payment Method -->
             <div class="bodyText larger bold py-3" data-lang="M03838"><?php echo $translations['M03838'][$language] /* Select a Payment Method */ ?></div>
@@ -76,13 +80,13 @@ include 'homepageHeader.php';
             </div>
             
             <!-- Action Buttons -->
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4">
-                <button type="button" class="btn btn-primary grey px-4 py-3 col-12 col-lg-3 col-md-4 text-center" id="backBtn">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4" id="cart-button">
+                <button type="button" class="btn btn-primary greyr" id="backBtn">
                     <div class="bodyText smaller text-white" data-lang="M00218"><?php echo $translations['M00218'][$language] /* Back */ ?></div>
                 </button>
-                <button type="button" class="btn btn-primary px-4 py-3 col-12 col-lg-5 col-md-7 d-flex justify-content-between align-items-center mt-3 mt-md-0" id="proceedToPaymentBtn">
+                <button type="button" class="btn btn-primary px-3" id="proceedToPaymentBtn">
                     <div class="bodyText smaller text-white" data-lang="M03189"><?php echo $translations['M03189'][$language] /* Proceed to Payment */ ?></div>
-                    <div class="bodyText smaller text-white">></div>
+                    <!-- <div class="bodyText smaller text-white">></div> -->
                 </button>
             </div>
         </div>
@@ -91,7 +95,7 @@ include 'homepageHeader.php';
 
 <!-- FPX Form -->
 <div>
-    <form id= "fpx_interbanking" action= "https://uat.mepsfpx.com.my/FPXMain/seller2DReceiver.jsp" method ="post">
+<form id= "fpx_interbanking" action= "<?php echo $config['fpxUrl'] ?>" method ="post">
         <input type="hidden" name="fpx_msgType" id="fpx_msgType" value="">
         <input type="hidden" name="fpx_msgToken" id="fpx_msgToken" value="">
         <input type="hidden" name="fpx_sellerExId" id="fpx_sellerExId" value="">
@@ -136,6 +140,8 @@ var bypassBlocking          = 0;
 var bypassLoading           = 0;
 
 var userId                  = '<?php echo $_SESSION['userID'] ?>';
+var promoToNextPage         = '<?php echo $_SESSION['POST'][$postAryName]['promoToNextPage']?>';
+var pointsToUse             = '<?php echo $_SESSION['POST'][$postAryName]['pointsToUse'] ?>';
 
 var paymentMethodsLoaded    = false;
 var saleOrderUpdated        = false;
@@ -143,91 +149,58 @@ var settingIsLoaded         = false;
 var checkSumIsLoaded        = false;
 var cartLoaded              = false;
 
-var saleId                  = '<?php echo $_POST['purchaseId'] ?>';
+var saleId                  = '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>';
 var fpx_msgType;
 var fpx_msgToken;
 var fpx_sellerExId;
-var fpx_sellerExOrderNo     = '<?php echo $_POST['purchaseId'] ?>';
-var fpx_sellerTxnTime       = '<?php echo $_POST['txnTime'] ?>';
-var fpx_sellerOrderNo       = '<?php echo $_POST['purchaseId'] ?>';
+var fpx_sellerExOrderNo     = '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>';
+var fpx_sellerTxnTime       = '<?php echo $_SESSION['POST'][$postAryName]['txnTime'] ?>';
+var fpx_sellerOrderNo       = '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>';
 var fpx_sellerId;
 var fpx_sellerBankCode;
 var fpx_txnCurrency;
-var fpx_txnAmount           = '<?php echo $_POST['txnAmount'] ?>';
+var fpx_txnAmount           = '<?php echo $_SESSION['POST'][$postAryName]['txnAmount'] ?>';
 var fpx_buyerEmail;
 var fpx_checkSum;
 var fpx_buyerBankId;
-var fpx_productDesc         = 'Package <?php echo $_POST['purchaseId'] ?>';
+var fpx_productDesc         = 'Package <?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>';
 var fpx_version;
+var deliveryMethodOpt = '<?php echo $_SESSION['POST'][$postAryName]['deliveryMethodOpt'] ?>';
+var postcode = '<?php echo $_SESSION['POST'][$postAryName]['postcode'] ?>';
+
 
 $(document).ready(function() {
+
+
+    $('#pointsToUse').val(pointsToUse);
+    $('#PromoCodeInput').val(promoToNextPage);
+    $('#deliveryMethod').val(deliveryMethodOpt);
+    $('#postcode').val(postcode);
+    
+
+    redeemAmount = pointsToUse;
+    deliveryMethodType = deliveryMethodOpt
     if(!saleId || saleId == '') {
         showMessage('<?php echo $translations['M03899'][$language] /* Invalid cart. */ ?> <br> <a class="modalText text-red text-underline" href="reviewOrder" data-lang="M03846"><?php echo $translations['M03846'][$language] /* Back To Cart */ ?></a>', 'warning', '<?php echo $translations['M03816'][$language] /* Confirm Order */ ?>', 'warning', 'reviewOrder');
     }
 
-    getDeliveryMethod();
     getPaymentMethod();
     getBankDetails();
     // Load summary cart
-    getShoppingCart(1);
-    checkOutCalculation();
+    getShoppingCart();
     
     $('#backBtn').click(function() {
-        $.redirect('checkoutAddress');
+        $.redirect('checkoutAddress', {
+            pointsToUse: pointsToUse, 
+            promoToNextPage: promoToNextPage,
+        });
     });
 
     $('#proceedToPaymentBtn').click(updateSaleOrder);
 });
 
-function getDeliveryMethod() {
-    var clientId = userId;
-    if(!clientId) {
-        clientId = '<?php echo $_POST['clientId'] ?>';
-    }
 
-    var formData = {
-        command         : 'getDeliveryMethod',
-        userID          : clientId
-    };
-    var fCallback = loadDeliveryMethod;
-    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-}
 
-function loadDeliveryMethod(data, message) {
-    var deliveryMethod = data;
-
-    if(deliveryMethod) {
-        var html = '';
-        $.each(deliveryMethod, function(k, v) {
-            if(v['name'] == 'Self Pickup') {
-                html += `
-                    <label class="radio-group greyBg borderAll grey normal p-4 d-flex align-items-center mb-3" for="Pickup">
-                        <input class="radio-control mr-3" type="radio" id="Pickup" name="deliveryMethod" value="Pickup" onchange="checkOutCalculation()">
-                        <div class="d-flex justify-content-between w-100">
-                            <div>
-                                <div class="bodyText smaller lightBold mb-2">${v['name']}</div>
-                                <div class="bodyText smaller">${v['address']}</div>
-                            </div>
-                            <div class="bodyText smaller lightBold text-green text-uppercase" id="selfPickupCharges">${v['fees']}</div>
-                        </div>
-                    </label>
-                `;
-            } else if(v['name'] == 'Delivery Charges') {
-                html += `
-                    <label class="radio-group greyBg borderAll grey normal p-4 d-flex align-items-center mb-3" for="delivery">
-                        <input class="radio-control mr-3" type="radio" id="delivery" name="deliveryMethod" value="delivery" checked onchange="checkOutCalculation()">
-                        <div class="d-flex justify-content-between w-100">
-                            <div class="bodyText smaller lightBold">${v['name']}</div>
-                            <div class="bodyText smaller lightBold text-green text-uppercase" id="deliveryCharges">RM${numberThousand(v['deliveryFees'], 2)}</div>
-                        </div>
-                    </label>
-                `;
-            }
-        });
-
-        $('#deliveryMethods').html(html);
-    }
-}
 
 function getPaymentMethod() {
     var formData = {
@@ -329,48 +302,94 @@ function loadBankLists(data, message) {
 
 function updateSaleOrder() {
     $('#bankPassError').hide();
+    // var deliveryMethodOpt = $('input[name=deliveryMethod]:checked').val();
+    var paymentMethod   = $('input[name=paymentMethod]:checked').val();
+    var paymentDelivery = $('#deliveryMethod').val();
+    var total_price     = $('#totalSalePrice').html().replace('RM', '');
 
-    // Checkpoint
+
+
     if(!$('#ManualBankTransfer').is(':checked') && !$('#QRCode').is(':checked')) {
         if ($('#bankLists').val() === '') {
+            bankPassErrorText = '<?php echo $translations['E01287'][$language] /* Please Choose Bank Type */ ?>'
             $('#bankPassError').show();
-            $('#bankPassErrorText').text("Please Choose Bank Type");
+            $('#bankPassErrorText').text(bankPassErrorText);
             return false;
         }
     }
 
-    var formData = {
-        command     	: 'updateSaleOrder',
-        saleID          : saleId,
-        paymentMethod   : $('input[name=paymentMethod]:checked').val(),
-        paymentDelivery : $('input[name=deliveryMethod]:checked').val(),
-        total_price     : $('#totalSalePrice').html().replace('RM', ''),
-        bkend_token     : $.cookie('oldToken')
-    };
-	var fCallback = proceedToPayment;
-    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-}
-
-function proceedToPayment(data, message) {
-    var deliveryMethodOpt = $('input[name=deliveryMethod]:checked').val();
-
     if($('#ManualBankTransfer').is(':checked')) {
         $.redirect('payment', { 
             manualBankTransfer: true,
-            txnAmount: '<?php echo $_POST['txnAmount'] ?>',
-            purchaseId: '<?php echo $_POST['purchaseId'] ?>',
-            saleId: '<?php echo $_POST['saleId'] ?>',
-            txnTime: '<?php echo $_POST['txnTime'] ?>',
+            txnAmount: '<?php echo $_SESSION['POST'][$postAryName]['txnAmount'] ?>',
+            purchaseId: '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>',
+            saleId: '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>',
+            txnTime: '<?php echo $_SESSION['POST'][$postAryName]['txnTime'] ?>',
+            pointsToUse: redeemAmount,
             deliveryMethodOpt: deliveryMethodOpt,
+            promoToNextPage: promoToNextPage,
+            paymentMethod   : paymentMethod,
+            paymentDelivery : paymentDelivery,
+            total_price     : total_price,
+            postcode  : $('#postcode').val(),
         });
     } else if($('#QRCode').is(':checked')) {
         $.redirect('payment', { 
             qrCodePayment: true,
-            txnAmount: '<?php echo $_POST['txnAmount'] ?>',
-            purchaseId: '<?php echo $_POST['purchaseId'] ?>',
-            saleId: '<?php echo $_POST['saleId'] ?>',
-            txnTime: '<?php echo $_POST['txnTime'] ?>',
+            txnAmount: '<?php echo $_SESSION['POST'][$postAryName]['txnAmount'] ?>',
+            purchaseId: '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>',
+            saleId: '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>',
+            txnTime: '<?php echo $_SESSION['POST'][$postAryName]['txnTime'] ?>',
+            pointsToUse:  '<?php echo $_SESSION['POST'][$postAryName]['pointsToUse'] ?>',
             deliveryMethodOpt: deliveryMethodOpt,
+            promoToNextPage: promoToNextPage,
+            paymentMethod   : paymentMethod,
+            paymentDelivery : paymentDelivery,
+            total_price     : total_price,
+            postcode  : $('#postcode').val(),
+        });
+    } else {
+        var formData = {
+            command     	: 'updateSaleOrder',
+            saleID          : saleId,
+            promo_code      : promoToNextPage,
+            paymentMethod   : $('input[name=paymentMethod]:checked').val(),
+            paymentDelivery : paymentDelivery,
+            total_price     : $('#totalSalePrice').html().replace('RM', ''),
+            redeemAmount    : pointsToUse,
+            bkend_token     : bkend_token,
+            deliveryMethod  : deliveryMethodOpt,
+            postcode  : $('#postcode').val(),
+        };
+        var fCallback = proceedToPayment;
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    }
+}
+
+function proceedToPayment(data, message) {
+    // var deliveryMethodOpt = $('input[name=deliveryMethod]:checked').val();
+
+    if($('#ManualBankTransfer').is(':checked')) {
+        $.redirect('payment', { 
+            manualBankTransfer: true,
+            txnAmount: '<?php echo $_SESSION['POST'][$postAryName]['txnAmount'] ?>',
+            purchaseId: '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>',
+            saleId: '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>',
+            txnTime: '<?php echo $_SESSION['POST'][$postAryName]['txnTime'] ?>',
+            pointsToUse:  '<?php echo $_SESSION['POST'][$postAryName]['pointsToUse'] ?>',
+            deliveryMethodOpt: deliveryMethodOpt,
+            promoToNextPage: promoToNextPage
+        });
+    } else if($('#QRCode').is(':checked')) {
+        $.redirect('payment', { 
+            qrCodePayment: true,
+            txnAmount: '<?php echo $_SESSION['POST'][$postAryName]['txnAmount'] ?>',
+            purchaseId: '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>',
+            saleId: '<?php echo $_SESSION['POST'][$postAryName]['purchaseId'] ?>',
+            txnTime: '<?php echo $_SESSION['POST'][$postAryName]['txnTime'] ?>',
+            pointsToUse:  '<?php echo $_SESSION['POST'][$postAryName]['pointsToUse'] ?>',
+            deliveryMethodOpt: deliveryMethodOpt,
+            promoToNextPage: promoToNextPage
         });
     } else {
         // FPX payment
@@ -469,30 +488,37 @@ function redirectToFPX() {
 }
 
 function checkOutCalculation() {
+    console.log("checkOutCalculation 1");
     $('#bankPassError').hide();
+    getShoppingCart();
 
-    if(!cartLoaded) {
+    /*if(!cartLoaded) {
+        console.log("checkOutCalculation 2");
         setTimeout(function() {
             checkOutCalculation();
         }, 1000);
     } else {
+        console.log("checkOutCalculation 3");
         var clientId = userId;
         if(!clientId) {
-            clientId = '<?php echo $_POST['clientId'] ?>';
+            clientId = '<?php echo $_SESSION['POST'][$postAryName]['clientId'] ?>';
         }
 
         var formData = {
             command     	    : 'CartTotalAmountCalculation',
             userID              : clientId,
+            promo_code          : promoToNextPage,
             deliveryMethod      : $('input[name=deliveryMethod]:checked').val(),
-            bkend_token         : $.cookie('oldToken')
+            bkend_token         : bkend_token,
         };
 
-        if($.cookie('redeemAmount')) formData['redeemAmount'] = $.cookie('redeemAmount');
+        console.log(formData);
 
+        // if($.cookie('redeemAmount')) formData['redeemAmount'] = $.cookie('redeemAmount');
+        if(redeemAmount) formDate['redeemAmount'] = redeemAmount;
         var fCallback = loadCheckoutCalculation;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0); 
-    }
+        */
 }
 
 function loadCheckoutCalculation(data, message) {
@@ -502,6 +528,7 @@ function loadCheckoutCalculation(data, message) {
         $('#redeemedAmount').html('-RM' + numberThousand(data.redeemAmount, 2));
         $('#deliveryCharges').html('RM' + numberThousand(data.deliveryFee, 2));
         $('#deliveryFee').html('RM' + numberThousand(data.shippingFee, 2));
+        $('#voucherApplied').html('-RM' + numberThousand(data.promoDiscount, 2));
         $('#totalSalePrice').html('RM' + numberThousand(data.cartTotal, 2));
     }
 }

@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    //Form submission issue
+    header("Cache-Control: no cache");
+    session_cache_limiter("private_no_expire");
 
     include_once("mobileDetect.php");
     $detect = new Mobile_Detect;
@@ -185,7 +188,6 @@
         var username       = "<?php echo $_POST['username']; ?>";
         var creditName     = "<?php echo $_POST['creditName']; ?>";
 
-        console.log(creditType);
         $(document).ready(function() {
             // if id or creditType empty will be return back memberDetailsList.php
             if((!id) || (!creditType)) {

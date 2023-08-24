@@ -1,6 +1,19 @@
 <?php
-
+// session_name('aaafag5bc2p7hslvh9qg7v4r');
+// session_set_cookie_params(315360000, "/;samesite=None", '.gotasty.net',true,'');
 session_start();
+
+$postAryName = basename($_SERVER['PHP_SELF'], '.php');
+
+// Prevent Confirm Form Resubmission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if(isset($_POST)) {
+        $_SESSION['POST'][$postAryName] = $_POST;
+    }
+    header("HTTP/1.1 303 Refresh");
+    header("Location: /".$postAryName);
+    exit;
+}
 
 include 'include/config.php';
 include 'include/class.general.php';
@@ -141,7 +154,7 @@ $languages = $sys['languages'];
 
 <div class="modal fade" id="canvasMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="padding-left:17px; padding-right: 17px;" aria-modal="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content" style="border-radius: 0;">
+        <div class="modal-content" style="border-radius: 15px;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
@@ -149,9 +162,10 @@ $languages = $sys['languages'];
             <!-- <div class="modalLine"></div> -->
             <div class="modal-body modalBodyFont align-self-center text-center">
                 <!-- <img src="" id="modalIcon" class="modal-icon"> -->
-                <i class="fa fa-check-bell-o modal-icon"></i>
-                <div id="canvasTitle" class="mt-3 modal-title"></div>
-                <div id="canvasAlertMessage" class="mt-3 modalText"></div>
+                <!-- <i class="fa fa-check-bell-o modal-icon"></i> -->
+                <div id="canvasIcon"></div>
+                <!-- <div id="canvasTitle" class="mt-2 modal-title"></div> -->
+                <div id="canvasAlertMessage" class="mt-2 modalText"></div>
             </div>
             <div class="modal-footer justify-content-center">
                  <button id="canvasCloseBtn" type="button" class="btn btn-default letterSpace" data-dismiss="modal" data-lang="M00112">
@@ -173,9 +187,9 @@ $languages = $sys['languages'];
             <div class="modal-body modalBodyFont align-self-center text-center">
                 <!-- <img src="/images/project/successIcon.png" class="modal-icon"> -->
                 <i class="fa fa-check modal-icon"></i>
-                <div class="mt-3 modal-title">
+                <!-- <div class="mt-3 modal-title">
                     <?php echo $translations['M02815'][$language]; //Shopping Cart ?>
-                </div>
+                </div> -->
                 <div class="mt-3 modalText">
                     <?php echo $translations['M03397'][$language]; //Successfully added to cart. ?>
                 </div>
@@ -203,9 +217,9 @@ $languages = $sys['languages'];
             <div class="modal-body modalBodyFont align-self-center text-center">
                 <!-- <img src="/images/project/successIcon.png" class="modal-icon"> -->
                 <i class="fa fa-check modal-icon"></i>
-                <div class="mt-3 modal-title">
+                <!-- <div class="mt-3 modal-title">
                     <?php echo $translations['M02815'][$language]; //Shopping Cart ?>
-                </div>
+                </div> -->
                 <div class="mt-3 modalText">
                     <?php echo $translations['M03396'][$language]; //We are sorry, ?> <span id="countryRemoveText"></span> <?php echo $translations['M03400'][$language]; //package(s) have been removed from your cart due to country eligibility issue. ?>
                 </div>
@@ -230,9 +244,9 @@ $languages = $sys['languages'];
             <div class="modal-body modalBodyFont align-self-center text-center">
                 <!-- <img src="/images/project/successIcon.png" class="modal-icon"> -->
                 <i class="fa fa-check modal-icon"></i>
-                <div class="mt-3 modal-title">
+                <!-- <div class="mt-3 modal-title">
                     <?php echo $translations['M02815'][$language]; //Shopping Cart ?>
-                </div>
+                </div> -->
                 <div class="mt-3 modalText">
                     <?php echo $translations['M03396'][$language]; //We are sorry, ?> <span id="packageRemoveText"></span> <?php echo $translations['M03404'][$language]; //package(s) are unavailable and have been removed from your cart. ?>
                 </div>
@@ -250,7 +264,7 @@ $languages = $sys['languages'];
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="border-radius: 0;">
             <div class="modal-header">
-                <span class="modal-title">Referral Code</span>
+                <!-- <span class="modal-title">Referral Code</span> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center" id="">
@@ -299,7 +313,7 @@ $languages = $sys['languages'];
         <div class="modal-content">
         	<span class="modalIcon"></span>
             <div class="modal-header">
-                <span class="modal-title newsTitle">Title</span>
+                <!-- <span class="modal-title newsTitle">Title</span> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>

@@ -26,14 +26,14 @@
                     "password" => $_POST['password']
                 );
                 $result = $post->curl($command, $params);
-        //        $status = $result['status'];
-        //        $code = $result['code'];
-        //        $statusMsg = $result['statusMsg'];
+                //        $status = $result['status'];
+                //        $code = $result['code'];
+                //        $statusMsg = $result['statusMsg'];
                 $userData = $result['data']['userDetails'];
                // print_r($result);
-        //
-        //        $data = json_decode($data);
-        //        
+                //
+                //        $data = json_decode($data);
+                //        
                 $pages = $result['data']['pages'];
                 $hiddens = $result['data']['hidden'];
                 $permissions = $result['data']['permissions'];

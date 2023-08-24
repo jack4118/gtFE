@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+ //Form submission issue
+ header("Cache-Control: no cache");
+ session_cache_limiter("private_no_expire");
+ 
 // Get current page name
 $thisPage = basename($_SERVER['PHP_SELF']);
 $thisUrl = $_SERVER['REQUEST_URI'];
@@ -48,12 +51,12 @@ else
                                         </label>
                                         <span id="username"></span>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label>
                                             Member ID :
                                         </label>
                                         <span id="name"></span>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <label>
                                             <?php echo $translations['A00207'][$language]; /* Balance */?> :
@@ -265,9 +268,8 @@ else
         }
 
         function loadMemberDetail(data, message) {
-            console.log(data);
             if (data.balance) {
-                $('#balance').text(data.balance.data);
+                $('#balance').text(data.balance);
             } else {
                 $('#balance').text(0);
             }

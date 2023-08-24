@@ -17,7 +17,7 @@
                 <div class="col-md-6">
                     <div class="bodyText larger pb-3" data-lang="M00224"><?php echo $translations['M00224'][$language] /* Name */ ?>:&ensp;<span class="fw-500" id="name"></span></div>
                     <div class="bodyText larger pb-3" data-lang="M02298"><?php echo $translations['M02298'][$language] /* Mobile Number */ ?>:&ensp;<span class="fw-500" id="mobileNumber"></span></div>
-                    <div class="bodyText larger pb-3" data-lang="M02655"><?php echo $translations['M02655'][$language] /* Email */ ?>:&ensp;<span class="fw-500" id="email"></span></div>
+                    <!-- <div class="bodyText larger pb-3" data-lang="M02655"><?php echo $translations['M02655'][$language] /* Email */ ?>:&ensp;<span class="fw-500" id="email"></span></div> -->
                     <div class="bodyText larger pb-3 pb-md-0" data-lang="M03928"><?php echo $translations['M03928'][$language] /* Order Status */ ?>:&ensp;<span class="fw-500" id="orderStatus"></span></div>
                 </div>
                 <div class="col-md-6">
@@ -74,7 +74,7 @@
             <div class="col-6">
                 <div class="bodyText larger pb-3" data-lang="M00224"><?php echo $translations['M00224'][$language] /* Name */ ?>:&ensp;<span class="fw-500" id="name2"></span></div>
                 <div class="bodyText larger pb-3" data-lang="M02298"><?php echo $translations['M02298'][$language] /* Mobile Number */ ?>:&ensp;<span class="fw-500" id="mobileNumber2"></span></div>
-                <div class="bodyText larger pb-3" data-lang="M02655"><?php echo $translations['M02655'][$language] /* Email */ ?>:&ensp;<span class="fw-500" id="email2"></span></div>
+                <!-- <div class="bodyText larger pb-3" data-lang="M02655"><?php echo $translations['M02655'][$language] /* Email */ ?>:&ensp;<span class="fw-500" id="email2"></span></div> -->
                 <div class="bodyText larger" data-lang="M03928"><?php echo $translations['M03928'][$language] /* Order Status */ ?>:&ensp;<span class="fw-500" id="orderStatus2"></span></div>
             </div>
             <div class="col-6">
@@ -123,6 +123,8 @@ var formData        = "";
 var fCallback       = "";
 
 var saleId          = '<?php echo $_POST['fpx_sellerOrderNo'] ?>';
+// var saleId          = '1086';
+
 var responseCode    = '<?php echo $_POST['fpx_debitAuthCode'] ?>';
 
 var invoiceDivId    = 'invoiceDiv';
@@ -134,6 +136,7 @@ var thArrayInvoice  = Array (
     "",
     "<span class='text-white' data-lang='M03930'><?php echo $translations['M03930'][$language] /* Product Name */ ?></span>",
     "<span class='text-white' data-lang='M00244'><?php echo $translations['M00244'][$language] /* Quantity */ ?></span>",
+    "<span class='text-white' data-lang='A00355'><?php echo $translations['A00355'][$language] /* Unit Price */ ?></span>",
     "<span class='text-white' data-lang='M03129'><?php echo $translations['M03129'][$language] /* Price */ ?></span>",
 );
 
@@ -146,7 +149,11 @@ $(document).ready(function() {
     ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
     $('#backBtn').click(function() {
-        $.redirect('paymentListing');
+        <?php if ($_SESSION['userID']) { ?>
+            $.redirect('paymentListing');
+        <?php } else { ?>
+            $.redirect('foodMenu');
+        <?php } ?>
     })
 
     $('#download').click(function() {
@@ -165,11 +172,23 @@ function loadInvoiceDetails(data, message) {
             $('#name').html(invoiceDetail['shipping_name']);
             $('#name2').html(invoiceDetail['shipping_name']);
 
-            $('#mobileNumber').html('+60' + invoiceDetail['shipping_phone']);
-            $('#mobileNumber2').html('+60' + invoiceDetail['shipping_phone']);
+            var shippingPhone = invoiceDetail['shipping_phone'];
+            if (shippingPhone.charAt(0) === '6') {
+                shippingPhone = shippingPhone.substring(1);
+            }else if (shippingPhone.charAt(0) !== '0') {
+                shippingPhone = '0' + shippingPhone;
+            }else{
+                shippingPhone = invoiceDetail['shipping_phone'];
+            }
 
-            $('#email').html(invoiceDetail['shipping_email']);
-            $('#email2').html(invoiceDetail['shipping_email']);
+            $('#mobileNumber').html(shippingPhone);
+            $('#mobileNumber2').html(shippingPhone);
+
+            // $('#mobileNumber').html(invoiceDetail['shipping_phone']);
+            // $('#mobileNumber2').html(invoiceDetail['shipping_phone']);
+
+            // $('#email').html(invoiceDetail['shipping_email']);
+            // $('#email2').html(invoiceDetail['shipping_email']);
 
             $('#deliveryAddress').html(invoiceDetail['shipping_address']);
             $('#deliveryAddress2').html(invoiceDetail['shipping_address']);
@@ -197,7 +216,7 @@ function loadInvoiceDetails(data, message) {
 
         var newList = [];
         $.each(packageList, function(k, v) {
-            if(k == 0) return;
+            // if(k == 0) return;
 
             var productName = '';
 
@@ -215,7 +234,9 @@ function loadInvoiceDetails(data, message) {
                 productImg      : `<img class="orderSummaryImg" src="${v['image']}">`,
                 productName     : productName,
                 quantity        : numberThousand(v['packageQuantity'], 0),
+                singleAmt       : 'RM' + numberThousand(v['packagePrice'], 2),
                 amount          : 'RM' + numberThousand(v['totalPackagePrice'], 2),
+
             };
 
             newList.push(rebuildData);
@@ -228,20 +249,30 @@ function loadInvoiceDetails(data, message) {
 
         var deliveryMethodHtml = '';
 
-        if(invoiceDetail.deliveryMethod != 'delivery') {
-            deliveryMethodHtml = '<span data-lang="M02827"><?php echo $translations['M02827'][$language] /* Self Pickup */ ?></span>';
-        } else {
-            deliveryMethodHtml = '<span data-lang="M02826"><?php echo $translations['M02826'][$language] /* Delivery */ ?></span>';
-        }
+        // if(invoiceDetail.deliveryMethod != 'delivery') {
+        //     deliveryMethodHtml = '<span data-lang="M02827"><?php echo $translations['M02827'][$language] /* Self Pickup */ ?></span>';
+        // } else {
+        //     deliveryMethodHtml = '<span data-lang="M02826"><?php echo $translations['M02826'][$language] /* Delivery */ ?></span>';
+        // }
+
+        // $('#' + invoiceTableId).find('tbody').append(`
+        //     <tr>
+        //         <td></td>
+        //         <td class="text-capitalize">${data.source} - ${deliveryMethodHtml} <span data-lang="M03933"><?php echo $translations['M03933'][$language] /* Go Tasty Sdn. Bhd. */ ?></span></td>
+        //         <td>1</td>
+        //         <td>RM${numberThousand(invoiceDetail.shippingfee, 2)}</td>
+        //     </tr>
+        //     <tr>
+        //         <td></td>
+        //         <td></td>
+        //         <td data-lang="M00250"><?php echo $translations['M00250'][$language] /* Total */ ?>:</td>
+        //         <td>RM${numberThousand(invoiceDetail.paymentAmount, 2)}</td>
+        //     </tr>
+        // `);
 
         $('#' + invoiceTableId).find('tbody').append(`
             <tr>
                 <td></td>
-                <td class="text-capitalize">${data.source} - ${deliveryMethodHtml} <span data-lang="M03933"><?php echo $translations['M03933'][$language] /* Go Tasty Sdn. Bhd. */ ?></span></td>
-                <td>1</td>
-                <td>RM${numberThousand(invoiceDetail.shippingfee, 2)}</td>
-            </tr>
-            <tr>
                 <td></td>
                 <td></td>
                 <td data-lang="M00250"><?php echo $translations['M00250'][$language] /* Total */ ?>:</td>

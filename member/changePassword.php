@@ -38,7 +38,7 @@ include 'homepageHeader.php';
                 <div class="bodyText larger bold mb-2" data-lang="M00580"><?php echo $translations['M00580'][$language] /* Change Password */ ?></div>
                 <div class="borderBottom darkGrey normal myAccountBottomLine"></div>
                 <div class="form-group mt-5">
-                    <label class="mb-0 bodyText smaller" for="currentPassword" data-lang="M00572"><?php echo $translations['M00572'][$language] /* Old Password */ ?></label>
+                    <label class="mb-0 bodyText smaller" for="currentPassword" data-lang="M00572"><?php echo $translations['M00572'][$language] /* Current Password */ ?></label>
                     <input class="form-control" type="password" id="currentPassword">
                 </div>
                 <div class="form-group">
@@ -85,6 +85,8 @@ var bypassLoading   = 0;
 var fCallback       = '';
 
 $(document).ready(function() {
+    getShoppingCart();
+    
     $('#myProfileBtn').click(function() {
         $.redirect('profile');
     });

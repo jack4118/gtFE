@@ -101,20 +101,24 @@ $_SESSION['lastVisited'] = $thisPage;
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
+                                                <label>Delivery Method</label>
+                                                <select id="deliveryMethod" class="form-control category" dataName="deliveryMethod" dataType="text">
+                                                </select>
+                                                <span id="deliveryMethodError" class="errorSpan text-danger"></span>
+                                                <input type="checkbox" id="foc" name="FOC" >
+                                                <label for="foc">FOC</label>
+                                            </div>
                                         </div>
-                                        <div class="row">
-                                            <!-- <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
-                                                <label>Cost</label>
-                                                <input id="cost" type="number" class="form-control">
-                                                <span id="costError" class="errorSpan text-danger"></span>
-                                            </div> -->
+                                        <!-- <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
                                                 <label>Sales Price</label>
                                                 <input id="salePrice" type="number" class="form-control">
                                                 <span id="costSuggest" class="errorSpan"></span>
                                                 <span id="salePriceError" class="errorSpan text-danger"></span>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="row">
                                             <div class="col-sm-6 col-xs-12" style="margin-top: 20px">
@@ -189,10 +193,21 @@ $_SESSION['lastVisited'] = $thisPage;
                                                             <span id="packageError" class="errorSpan text-danger"></span>
                                                         </div>
                                                     </div>
+                                                    
                                                     <div class="col-xs-6" style="margin-top: 20px; align-self: end; text-align: right;">
                                                         <label>Mystery Food</label>
                                                         <div><button class="btn btn-primary" id="mystery">Add Mystery Food</button></div>
                                                         <span id="mysteryError" class="errorSpan text-danger"></span>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="" style="background-color: transparent; padding: 0px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold;">
+                                                            <div style="width: calc(100% - 320px);">Product Name</div>
+                                                            <div style="display: flex; align-items: center; width: 320px;">
+                                                                <div style="width: calc(50% - 24px); text-align: center;">Quantity</div>
+                                                                <div style="width: calc(50% + 24px); text-align: center;">Const</div>
+                                                                <div style="width: calc(50% + 24px); text-align: center;">Total Cost</div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="col-xs-12">
                                                         <div id="packageList" style="margin-top: 10px; border: 1px solid #ddd; height: 200px; overflow: auto; background: white;">
@@ -200,25 +215,19 @@ $_SESSION['lastVisited'] = $thisPage;
                                                     </div>
                                                 </div>
                                             </div>
-<!-- 
-                                            <div class="col-xs-12" style="margin-top: 20px;">
-                                                <label>Save as Archive</label>
-                                                <div id="status" class="m-b-20">
-                                                    <div class="radio radio-info radio-inline">
-                                                    <div class="radio radio-inline">
-                                                        <input class="archiveRadio" id="active" type="radio" value="Yes" name="archiveRadio" />
-                                                        <label for="active">
-                                                            <?php echo $translations['A00056'][$language]; /* Yes */?>
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio radio-inline">
-                                                        <input class="archiveRadio" id="inActive" type="radio" value="No" name="archiveRadio"/>
-                                                        <label for="inActive">
-                                                            <?php echo $translations['A00057'][$language]; /* No */?>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div> -->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-4 col-xs-12" style="margin-top: 20px">
+                                                <label>Package Cost</label>
+                                                <input id="package_cost" type="number" class="form-control" readonly>
+                                            </div>
+                                            <div class="col-sm-4"></div>
+                                            <div class="col-sm-4 col-xs-12" style="margin-top: 20px">
+                                                <label>Sales Price</label>
+                                                <input id="salePrice" type="number" class="form-control">
+                                                <span id="costSuggest" class="errorSpan" style="color: red;"></span>
+                                                <span id="salePriceError" class="errorSpan text-danger"></span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -320,6 +329,11 @@ $_SESSION['lastVisited'] = $thisPage;
     var attributeValList = [];
     var results = [];
     var packageProductList = [];
+    var deliveryMethodOption;
+    var newProductList = [];
+    var sale_price_total;
+    var counter = 1;
+
 
     $(document).ready(function() {
 
@@ -382,24 +396,61 @@ $_SESSION['lastVisited'] = $thisPage;
             var packageID   = $(this).find("option:selected").val();
             var package     = $(this).find("option:selected").text();
             var input       = $(this).attr('id');
-            var quantity    = $(this).attr('data-value') || '';
+            var quantity    = $(this).attr('data-value') || 1;
+            var sale_price; 
 
+            let = newProductList;
+            $.each(newProductList, function(k, v) { 
+                if(v['id'] == packageID) {
+                    sale_price = v['cost'];
+                }
+            })
+
+        
             if(packageID != "") {
-                var packDiv = `
-                    <div id="${packageID}" data-select="${input}" class="packageTag includePackageTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-                        ${package}
-                        <div style="display: flex; align-items: center;">
-                            <input type="number" class="form-control" name="quantity" value="${quantity}" size="7" placeholder="Quantity" onclick="event.stopPropagation(); event.preventDefault();">
-                            <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px;"></i>
+
+                if(packageID != 'mystery') {
+                    var packDiv = `
+                        <div id="${packageID}" data-select="${input}" class=" includePackageTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="width: calc(100% - 320px);">${package}</div>
+                            <div style="display: flex; align-items: center; width: 300px;">
+                                <input id="quantity${packageID}" onchange="checknumber(${packageID})" type="number" class="form-control" name="quantity" value="${quantity}" size="7" placeholder="Quantity" onclick="event.stopPropagation(); event.preventDefault();" style="margin-right: 20px;" oninput="calcTotalCost('${packageID}')">
+                                <input id="sale_price${packageID}" type="number" class="form-control" name="sale_price" value="${sale_price}" size="7" placeholder="Price" onclick="event.stopPropagation(); event.preventDefault();" style="margin-right: 20px;" oninput="calcTotalCost('${packageID}')" readonly>
+                                <input id="total_cost${packageID}" type="number" class="form-control total_cost" value="${sale_price}" name="total_cost" value="" size="7" placeholder="Cost" onclick="event.stopPropagation(); event.preventDefault();" style="cursor: not-allowed;" readonly>
+                                <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px; cursor: pointer;" onclick="deleteRecalc(${packageID})"></i>
+                            </div>
+                        </div>
+                    `;
+                }else {
+                    var packDiv = `
+                    <div id="${packageID+counter}" data-select="${input}" class=" includePackageTag" style="background-color: #c5efc2; padding: 5px 10px; border-radius: 5px; margin-left: 10px; margin-right: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="width: calc(100% - 320px);">${package}</div>
+                        <div style="display: flex; align-items: center; width: 300px;">
+                            <input id="quantity${packageID+counter}" onchange="checknumber(${packageID+counter})" type="number" class="form-control" name="quantity" value="${quantity}" size="7" placeholder="Quantity" onclick="event.stopPropagation(); event.preventDefault();" style="margin-right: 20px;" oninput="calcTotalCost('${packageID+counter}')">
+                            <input id="sale_price${packageID+counter}" type="number" class="form-control" name="sale_price" value="${sale_price}" size="7" placeholder="Price" onclick="event.stopPropagation(); event.preventDefault();" style="margin-right: 20px;" oninput="calcTotalCost('${packageID+counter}')" readonly>
+                            <input id="total_cost${packageID+counter}" type="number" class="form-control total_cost" value="${sale_price}" name="total_cost" value="" size="7" placeholder="Cost" onclick="event.stopPropagation(); event.preventDefault();" style="cursor: not-allowed;" readonly>
+                            <i class="fa fa-times cancelUser" aria-hidden="true" style="margin-left: 10px; cursor: pointer;" onclick="deleteRecalc('${packageID+counter}')"></i>
                         </div>
                     </div>
                 `;
+                }
+                
 
                 $("#packageList").append(packDiv);
 
                 $(this).find("option:selected").remove();
                 $(this).val('');
+
+                if(package == "Mystery Food") {
+                    $("#sale_price" + packageID+counter).removeAttr('readonly');
+                    counter++
+
+                }
+
+
             }
+        calcTotalCost(packageID)
+
         });
 
         $(document).on("click",".packageTag",function() {
@@ -433,15 +484,22 @@ $_SESSION['lastVisited'] = $thisPage;
         });
 
         $('#submitBtn').click(function() {
+            var salePrice       = $('#salePrice').val();
+            salePrice = salePrice;
+            // if( salePrice >= sale_price_total){
+           
+            $('[id$="Error"]').text("");
             $('[id$="Error"]').text("");
 
             var invPackageName  = $('#invPackageName').val();
             var vendorId        = $('#vendorId').val();
             var productType     = $('#productType').val();
+            var foc             = $("#foc").is(":checked") ? 1 : 0; 
             // var expired_day     = $('#expiredDay').val();
             var skuCode         = $('#skuCode').val();
             // var isArchive       = $(".archiveRadio:checked").val();
             // var invPackageNameChinese  = $('#invPackageNameChinese').val();
+            var deliveryMethod = document.getElementById("deliveryMethod").value;
 
             var category = [];
 
@@ -493,9 +551,21 @@ $_SESSION['lastVisited'] = $thisPage;
             var packageProduct = [];
             
             $('.includePackageTag').each(function (index, value) {
+                var valueid;
+                var type;
+                if(value.id.indexOf("mystery")==0){
+                    valueid = "";
+                    type =  "mystery";
+
+                }else{
+                    valueid= value.id;
+                    type = ""
+                }
                 var list = {
-                    product_id  : value.id,
+                    product_id  : valueid,
                     quantity    : $(value).find('input[name=quantity]').val(),
+                    cost        : $(value).find('input[name=total_cost]').val(),
+                    type        : type
                 };
 
                 if(value.id == 'mystery') {
@@ -503,7 +573,7 @@ $_SESSION['lastVisited'] = $thisPage;
                     list['type'] = value.id;
                 }
 
-                packageProduct.push(list);
+                 packageProduct.push(list);
             });
 
             var package = [];
@@ -616,6 +686,8 @@ $_SESSION['lastVisited'] = $thisPage;
                 cookingSuggestionUrl : cookingSuggestionUrl,
                 cookingSuggestionRemark : cookingSuggestionRemark,
                 remarkArray       : remarkArray,
+                deliveryMethod    : deliveryMethod,
+                foc               : foc,
                 // isArchive         : isArchive,
                 // invPackageName      : invPackageName,
                 // productType         : productType,
@@ -631,6 +703,10 @@ $_SESSION['lastVisited'] = $thisPage;
 
             fCallback = successAddPackageInventory;
             ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            // }
+            // else{
+            //     showMessage('sales price cannot lower than suggested price', 'warning', 'warning', 'warning', '');
+            // }
         });
 
         $('#backBtn').click(function() {
@@ -641,25 +717,31 @@ $_SESSION['lastVisited'] = $thisPage;
             showMessage(message, 'success', 'Add Package', 'add', 'getPackageList.php');
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        $('#cost').on('change', function() {
-            if($(this).val() == '') {
-                $('#costSuggest').hide();
+        $('#package_cost').on('change', function() {
+            if($(this).val() == '') { 
+                // $('#costSuggest').hide();
             } else {
-                var cost = $(this).val();
+                var cost = $(this).val(); 
                 var sale_price = (cost * (100 + discountPercentage)) / 100;
+                sale_price_total = sale_price;
 
                 $('#costSuggest').text('Suggested sale price is RM ' + numberThousand(sale_price, 2));
+            }
+        });
+
+        $('#salePrice').on('change', function() {
+            var cost = parseFloat($(this).val());
+            // var sale_price = (cost * (100 + discountPercentage)) / 100;
+            var entered_price = parseFloat($('#salePrice').val());
+            var costSuggestText = $('#costSuggest').text();
+            var suggestedPrice = costSuggestText.match(/RM (\d+\.\d+)/);
+            if (entered_price < suggestedPrice[1]) 
+            {
+                showMessage("Sale Price is lower than suggested sale price.", 'warning', "Warning", '', '', '');
+            } 
+            else 
+            {
+                $('#costSuggest').removeClass('warning');
             }
         });
 
@@ -966,8 +1048,9 @@ $_SESSION['lastVisited'] = $thisPage;
     function loadPackageProductList(data, message) {
         var productList = data.productList;
 
+        newProductList = data.productList
         $.each(productList, function(k, v) {
-            $('#package').append(`<option value="${v['id']}">${v['name']}</option>`);
+            $('#package').append(`<option value="${v['id']}" data-price="${v['cost']}">${v['name']}</option>`);
         });
 
         // Add Mystery Food option (hidden)
@@ -1019,6 +1102,18 @@ $_SESSION['lastVisited'] = $thisPage;
                 `
             });
             $('#vendorName').append(buildSupplier);
+        }
+
+        deliveryMethodOption = "";
+        if(data.deliveryMethodList) {
+            deliveryMethodOption += `
+                <option value="">Select Delivery Method</option>
+            `
+            $.each(data.deliveryMethodList, function(k,v){
+                deliveryMethodOption += `
+                    <option value="${v['id']}">${v['name']}</option>
+                `;
+            });
         }
 
         attributeOption = "";
@@ -1138,6 +1233,7 @@ $_SESSION['lastVisited'] = $thisPage;
 
         $("#category").html(categoryOption);
         $(".attribute").html(attributeOption);
+        $("#deliveryMethod").html(deliveryMethodOption);
         $('#productType').html(typeOption);
         // $("#packageCategory").html(packageCategoryOption);
         // $("#country").html(buildCountry);
@@ -1177,7 +1273,7 @@ $_SESSION['lastVisited'] = $thisPage;
         if(data.productList) {
             $.each(data.productList, function(k,v){
                 packageDetail += `
-                    <option value="${v['id']}">${v['name']}</option>
+                    <option value="${v['id']}" data-price="${v['cost']}">${v['name']}</option>
                 `;
             });
             $('#package').html(packageDetail);
@@ -1245,7 +1341,9 @@ $_SESSION['lastVisited'] = $thisPage;
 
                     <div>
                         <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
-                        <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                        <span id="fileNotUploaded${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                        <!-- <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span> -->
+                        <img id="thumbnailImg${addImgIDNum}" style="width:100%;" />
                         <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="display: none; padding: 6px;" onclick="showImg('${addImgIDNum}')">
                             <i class="fa fa-eye"></i>
                         </a>
@@ -1321,7 +1419,8 @@ $_SESSION['lastVisited'] = $thisPage;
 
         $("#viewImg"+id).hide();
         $("#deleteImg"+id).hide();
-
+        $("#fileNotUploaded"+id).show()
+        $("#thumbnailImg"+id).attr('src', "");
     }
 
     function showImg(n) {
@@ -1361,6 +1460,8 @@ $_SESSION['lastVisited'] = $thisPage;
                 // $("#viewImg"+id).attr('data-res', reader["result"]);
                 $("#viewImg"+id).css('display', 'inline-block');
                 $("#deleteImg"+id).css('display', 'inline-block');
+                $("#fileNotUploaded"+id).hide()
+                $("#thumbnailImg"+id).attr('src', $("#storeFileData"+id).val());
             };
 
             reader.readAsDataURL(n.files[0]);
@@ -1676,6 +1777,97 @@ $_SESSION['lastVisited'] = $thisPage;
         }
     }
 
+    function calcTotalCost(id) {
+        let a = $("#quantity"+id).val();
+        let b = $("#sale_price"+id).val();
+
+        b = parseFloat(b);
+
+        let c = a * b;
+
+        $("#total_cost"+id).val(c.toFixed(2));
+
+        calcPackagePrice();
+    }
+
+    function calcPackagePrice() {
+        var total_sum = 0;
+
+        $('.total_cost').each(function (){
+            total_sum += parseFloat($(this).val());
+        })
+
+        $("#package_cost").val(total_sum.toFixed(2));
+        $("#package_cost").trigger("change");
+    }
+    function deleteRecalc(total_cost) {
+    let a = $("#quantity"+total_cost).val();
+    let b = $("#sale_price"+total_cost).val();
+    var total_sum = $("#package_cost").val();
+
+    b = parseFloat(b);
+
+    let c = a * b;
+    let total = total_sum - c;
+
+    // $("#package_cost").val(); 
+    
+
+    $('.total_cost').each(function (){
+        
+
+        total_sum += parseFloat($(this).val());
+    })
+    
+    $("#package_cost").val(total.toFixed(2))
+    $("#package_cost").trigger("change");
+    $("#total_cost"+total_cost).val(total.toFixed(2));
+    $("#"+total_cost).remove();
+
+    
+}
+
+    function newFormatState(method) {
+        if (!method.id) {
+            return method.text;
+        }
+
+        var optimage = $(method.element).attr('data-image')
+        if (!optimage) {
+            return method.text;
+        } else {
+            var $opt = $(
+                '<span onclick="changeTokenCategory('+method.text+')"><img src="' + optimage + '" class="tokenOptionImg" /> <span style="vertical-align: middle;">' + method.text + '</span></span>'
+            );
+            return $opt;
+        }
+    };
+
+    $('#vendorId').select2({
+        dropdownAutoWidth: true,
+        templateResult: newFormatState,
+        templateSelection: newFormatState,
+    });
+
+    $('#package').select2({
+        dropdownAutoWidth: true,
+        templateResult: newFormatState,
+        templateSelection: newFormatState,
+    });
+
+    $('#category').select2({
+        dropdownAutoWidth: true,
+        templateResult: newFormatState,
+        templateSelection: newFormatState,
+    });
+
+function checknumber(id){
+    let a = $("#quantity"+id).val();
+        if(a == "" || a == 0){
+            $("#quantity"+id).val(1)
+        }
+        calcTotalCost(id);
+    }
 </script>
 </body>
 </html>

@@ -150,6 +150,8 @@ $countryList = $_SESSION['countryList'];
             $("#searchForm")[0].reset();
         });
 
+        pagingCallBack(pageNumber, loadSearch);
+
         $('#searchBtn').click(function() {
             var getShopType = $("input[name=shopType]:checked").val();
             $('#shopnameSearch').attr('dataType', getShopType);
@@ -201,27 +203,32 @@ $countryList = $_SESSION['countryList'];
         // }
 
         var tableNo;
-        var shopList = data.shopList;
 
-        if (data != "" && shopList.length > 0) {
-            var newList = [];
+        if (data && data != "") {
+            var shopList = data.shopList;
 
-            $.each(shopList, function(k, v) {
-                var editBtn = `
-                    <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
-                `;
+            if(shopList && shopList.length > 0) {
+                var newList = [];
 
-                var rebuildData = {
-                    editBtn     : editBtn,
-                    id          : v['id'],
-                    name        : v['name'],
-                    address     : v['address'],
-                    ownername   : v['ownername'],
-                    deleted     : v['deleted'],
-                    createdAt   : v['createdAt']
-                };
-                newList.push(rebuildData);
-            });
+                $.each(shopList, function(k, v) {
+                    var editBtn = `
+                        <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
+                    `;
+
+                    var rebuildData = {
+                        editBtn     : editBtn,
+                        id          : v['id'],
+                        name        : v['name'],
+                        address     : v['address'],
+                        ownername   : v['ownername'],
+                        deleted     : v['deleted'],
+                        createdAt   : v['createdAt']
+                    };
+                    newList.push(rebuildData);
+                });
+            }
+        } else {
+            data = '';
         }
 
         buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo);

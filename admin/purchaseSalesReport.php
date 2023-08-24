@@ -204,6 +204,8 @@
             $("#searchForm")[0].reset();
         });
 
+        pagingCallBack(pageNumber, loadSearch);
+
         $('#searchBtn').click(function () {
             pagingCallBack(pageNumber, loadSearch);
         });

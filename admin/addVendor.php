@@ -423,7 +423,9 @@ var resizefunc = [];</script>
 
                     <div>
                         <a href="javascript:;" onclick="$('#fileUpload${addImgIDNum}').click()" class="btn btn-primary btnUpload">Upload</a>
-                        <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                        <span id="fileNotUploaded${addImgIDNum}" class="fileName">No Image Uploaded</span>
+                        <!-- <span id="fileName${addImgIDNum}" class="fileName">No Image Uploaded</span> -->
+                        <img id="thumbnailImg${addImgIDNum}" style="width:100%;" />
                         <a id="viewImg${addImgIDNum}" href="javascript:;" class="btn" style="display: none; padding: 6px;" onclick="showImg('${addImgIDNum}')">
                             <i class="fa fa-eye"></i>
                         </a>
@@ -550,7 +552,8 @@ var resizefunc = [];</script>
 
         $("#viewImg"+id).hide();
         $("#deleteImg"+id).hide();
-
+        $("#fileNotUploaded"+id).show()
+        $("#thumbnailImg"+id).attr('src', "");
     }
 
     function showImg(n) {
@@ -591,6 +594,8 @@ var resizefunc = [];</script>
                 // $("#viewImg"+id).attr('data-res', reader["result"]);
                 $("#viewImg"+id).css('display', 'inline-block');
                 $("#deleteImg"+id).css('display', 'inline-block');
+                $("#fileNotUploaded"+id).hide()
+                $("#thumbnailImg"+id).attr('src', $("#storeFileData"+id).val());
             };
 
             reader.readAsDataURL(n.files[0]);

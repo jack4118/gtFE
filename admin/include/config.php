@@ -14,7 +14,7 @@
 			"chineseTraditional" => "繁体中文"),
 
 	    'logoDashboardURL' =>'images/abc/company_logo.png',
-	    "loginToMemberURL" => "http://abcmember.speed101.pw/login.php",
+	    "loginToMemberURL" => "http://gotastymember/",
 	    'sampleFormatURL' => "http://abcmember.speed101.pw/sampleFormat/"
     );
     

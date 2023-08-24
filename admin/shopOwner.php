@@ -156,6 +156,8 @@ $countryList = $_SESSION['countryList'];
             $("#searchForm")[0].reset();
         });
 
+        pagingCallBack(pageNumber, loadSearch);
+
         $('#searchBtn').click(function() {
             var getUsernameType = $("input[name=usernameType]:checked").val();
             $('#usernameSearch').attr('dataType', getUsernameType);

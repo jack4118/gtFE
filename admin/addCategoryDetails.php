@@ -196,6 +196,12 @@
 
             $("#parentCategorySelect").html(html);
 
+            $('#parentCategorySelect').select2({
+                dropdownAutoWidth: true,
+                templateResult: newFormatState,
+                templateSelection: newFormatState,
+            });
+
             // $.each(data.languageList, function(k,v){
 
             //     var getArr = (data.nameTranslationList).filter((item) => item.language == v['languageType'])[0];
@@ -214,6 +220,22 @@
         function submitCallback(data, message) {
             showMessage(message, 'success', 'Congratulations', 'plus', 'getCategoryList.php');
         }
+
+        function newFormatState(method) {
+            if (!method.id) {
+                return method.text;
+            }
+
+            var optimage = $(method.element).attr('data-image')
+            if (!optimage) {
+                return method.text;
+            } else {
+                var $opt = $(
+                    '<span onclick="changeTokenCategory('+method.text+')"><img src="' + optimage + '" class="tokenOptionImg" /> <span style="vertical-align: middle;">' + method.text + '</span></span>'
+                );
+                return $opt;
+            }
+        };
 
     </script>
 </body>

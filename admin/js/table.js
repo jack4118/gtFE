@@ -15,7 +15,7 @@
 *   tableNo - If this is set, replace ID with table numbering.
 * 
 **/
-function buildTable(data, tableId, divId, thArray, btnArray, message, tableNo) {
+function buildTable(data, tableId, divId, thArray, btnArray, message, tableNo, sortArray) {
     var btnArrayIsObject = jQuery.isPlainObject(btnArray) ? 1 : 0;
 
     $('#'+divId).find('table#'+tableId).remove();
@@ -54,6 +54,44 @@ function buildTable(data, tableId, divId, thArray, btnArray, message, tableNo) {
 
     if(btnArray.length > 0 || !jQuery.isEmptyObject(btnArray)) {
         $('#'+tableId).find('thead tr').append('<th></th>');
+    }
+
+    // Sort Array
+    var sortSpan;
+    var sortOrder = 'ASC'; // Default set to DESC
+    var sortOrderSet = 'ASC'; // Variable to store current sorting order from db
+    var sortOrderIcon = 'fa-sort-up';
+    var sortOrderIconStyle = 'vertical-align:bottom';
+    var sortField;
+    var sortFlag = false;
+    if (sortArray) {
+        if (sortArray['sortBy']) {
+            var sortBy = sortArray['sortBy'];
+            if (sortBy['order'] == 'DESC') {
+                sortOrderSet = 'DESC';
+                sortOrderIcon = 'fa-sort-down';
+                sortOrderIconStyle = 'vertical-align:top';
+            }
+            if (sortBy['field'])
+                sortField = sortBy['field'];
+            if (sortBy['order'] && sortBy['field']) {
+                sortFlag = true;
+                sortSpan = '<span class="my-auto" style="color: var(--main-color); margin-right: 3px"><i class="fa '+sortOrderIcon+'" style="'+sortOrderIconStyle+'"></i></span>';
+            }
+        }
+        var sortThArray = sortArray['sortThArray'];
+        $.each(sortThArray, function(key, val) {
+            if (val != '') {
+                var thText = thArray[key];
+                $('#'+tableId).find('thead tr th:eq('+key+')').html('');
+                if (sortField == val) {
+                    $('#'+tableId).find('thead tr th:eq('+key+')').attr('sortfield', val).attr('sortorder', sortOrderSet).attr('sortflag', 1).append('<div class="row mx-0"><a class="cursorPointer" onclick="buildSortData(this)" style="margin-right:3px">'+thText+'</a>'+sortSpan+'</div>');
+                }
+                else {
+                    $('#'+tableId).find('thead tr th:eq('+key+')').attr('sortfield', val).attr('sortorder', sortOrder).append('<div class="row mx-0"><a class="cursorPointer" onclick="buildSortData(this)">'+thText+'</a></div>');
+                }
+            }
+        });
     }
 
     //Counter for iconArray
@@ -259,6 +297,37 @@ function buildTable2(data, tableId, divId, thArray, btnArray, message, tableNo, 
     }
     // To initialize the tooltip
     $('[data-toggle="tooltip"]').tooltip();
+}
+
+function buildSortData(th) {
+    // Check whether current sortflag is 1
+    if ($(th).parent().parent().attr('sortflag') == 1) {
+        var sortorder = $(th).parent().parent().attr('sortorder');
+        if (sortorder == 'DESC')
+            $(th).parent().parent().attr('sortorder', 'ASC');
+        else
+            $(th).parent().parent().attr('sortorder', 'DESC');
+    }
+    // Then reset all sortflag
+    $(th).parent().parent().parent().find('th').attr('sortflag', 0);
+    // After that set the one to sort
+    $(th).parent().parent().attr('sortflag', 1);
+    pagingCallBack();
+}
+
+function getSortData(tableID) {
+    var sortData = Array();
+    var sortField = $('#'+tableID).find('thead tr th').filter('[sortflag="1"]').attr('sortfield');
+    var sortOrder = $('#'+tableID).find('thead tr th').filter('[sortflag="1"]').attr('sortorder');
+
+    if (sortField && sortOrder) {
+        var sortData = {
+            field   : sortField,
+            order   : sortOrder
+        };
+        return sortData;
+    }
+    return sortData;
 }
 
 

@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    //Form submission issue
+    header("Cache-Control: no cache");
+    session_cache_limiter("private_no_expire");
 
     include_once("mobileDetect.php");
     $detect = new Mobile_Detect;
@@ -187,7 +190,7 @@
                                                 <div class="col-sm-12">
                                                     <div class="col-sm-12">
                                                         <label class="control-label" style="font-size: 1.2em;">
-                                                            Delivery Address
+                                                            Address
                                                         </label>
                                                     </div>
                                                 </div>
@@ -212,8 +215,12 @@
                                                                                 <input id="contact1" class="form-control" required/>
                                                                             </div>
                                                                             <div class="col-md-6">
-                                                                                <label>Street Number</label>
+                                                                                <label>Address Line 1</label>
                                                                                 <input id="street1" class="form-control" required/>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label>Address Line 2</label>
+                                                                                <input id="streetline1" class="form-control" required/>
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <label>City</label>
@@ -221,7 +228,7 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <label>Postcode</label>
-                                                                                <input id="postcode1" class="form-control" required/>
+                                                                                <input id="postcode1" class="form-control"  maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required/>
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <label>State</label>
@@ -511,20 +518,24 @@
 
                 for(var v = 1; v < $(".addProductWrapper").length + 1; v++) {
                     var address = $('#street' + v).val();
+                    var address2 = $('#streetline' + v).val();
                     var post_code = $('#postcode' + v).val();
                     var city = $('#city' + v).val();
-                    var name = $('#name').val();
+                    var addressName = $('#name'+ v).val();
                     var contact = $('#contact' + v).val();
+                    contact = removeFirstTwoCharacters(contact);
+                    contact = "60"+contact;
                     var stateName = $('option:selected', "#stateSelect"+v).text();;
 
                     var perShipping = {
                         address:  address,
+                        address2: address2,
                         post_code: post_code,
                         city: city,
                         address_type: "shipping",
                         countryName: "Malaysia",
                         stateName: stateName,
-                        name: name,
+                        name: addressName,
                         phone: contact,
                     }
 
@@ -534,7 +545,7 @@
                 var formData = {
                                     command             : "editMemberDetails",
                                     clientID            : $("#clientIdInput").val(),
-                                    name                : name,
+                                    fullName            : name,
                                     email               : email,
                                     dialingArea         : dialingArea,
                                     phone               : phone,
@@ -982,6 +993,7 @@
                 $("#contact" + newK).val(v['phone']);
                 $("#name" + newK).val(v['name']);
                 $("#street" + newK).val(v['address']);
+                $("#streetline" + newK).val(v['address_2']);
                 $("#postcode" + newK).val(v['post_code']);
                 $("#city" + newK).val(v['city']);
                 $("#state" + newK).val(v['state_id']);
@@ -1085,9 +1097,7 @@
                 value: data.adminSession
             }).appendTo(form);
 
-
             form.submit();
-
             form.remove();
         }
 
@@ -1113,8 +1123,12 @@
                                 <input id="contact${(wrapperLength)}" class="form-control" required/>
                             </div>
                             <div class="col-md-6">
-                                <label>Street Number</label>
+                                <label>Address line 1</label>
                                 <input id="street${(wrapperLength)}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Address line 2</label>
+                                <input id="streetline${(wrapperLength)}" class="form-control" required/>
                             </div>
                             <div class="col-md-6">
                                 <label>City</label>
@@ -1122,7 +1136,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label>Postcode</label>
-                                <input id="postcode${(wrapperLength)}" class="form-control" required/>
+                                <input id="postcode${(wrapperLength)}" class="form-control" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required/>
                             </div>
                             <div class="col-md-6">
                                 <label>State</label>
@@ -1192,6 +1206,8 @@
             $("#contact" + id).val("");
             $("#street" + id).attr("disabled", true);
             $("#street" + id).val("");
+            $("#streetline" + id).attr("disabled", true);
+            $("#streetline" + id).val("");
             $("#city" + id).attr("disabled", true);
             $("#city" + id).val("");
             $("#postcode" + id).attr("disabled", true);

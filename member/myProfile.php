@@ -161,7 +161,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span id="canvasTitle" class="modal-title"><?php echo $translations['M00417'][$language]; //Edit Profile ?></span>
+                <!-- <span id="canvasTitle" class="modal-title"><?php echo $translations['M00417'][$language]; //Edit Profile ?></span> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
