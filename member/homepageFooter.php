@@ -8,7 +8,7 @@
                 <div class="bodyText smaller text-white pb-1">56000 W.P. Kuala Lumpur.</div>
             </div>
             <div class="col-md-2 col-12 mt-5 mt-md-0">
-                <div class="bodyText smaller bold text-white mb-3" data-lang="M02806"><?php echo $translations['M02806'][$language] /* Menu */ ?></div>
+                <div class="bodyText smaller bold text-white mb-3" data-lang="M04106"><?php echo $translations['M04106'][$language] /* Directory */ ?></div>
                 <div class="bodyText smaller pb-2"><a class="text-white" href="homepage" data-lang="M02184"><?php echo $translations['M02184'][$language] /* Home */ ?></a></div>
                 <div class="bodyText smaller pb-2"><a class="text-white" href="foodMenu" data-lang="M02806"><?php echo $translations['M02806'][$language] /* Menu */ ?></a></div>
                 <div class="bodyText smaller pb-2"><a class="text-white" href="career" data-lang="M03793"><?php echo $translations['M03793'][$language] /* Career */ ?></a></div>

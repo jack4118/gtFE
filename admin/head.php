@@ -110,7 +110,7 @@
 				</div>
             </div>
             <div class="modal-footer">
-				<button id="canvasCloseBtn" type="button" class="btn btn-primary waves-effect waves-light" data-dismiss="modal"><?php echo $translations['A00742'][$language]; /* Close */ ?></button>
+				<button id="canvasCloseBtn" type="button" class="custom-button2" data-dismiss="modal"><?php echo $translations['A00742'][$language]; /* Close */ ?></button>
             </div>
         </div>
     </div>

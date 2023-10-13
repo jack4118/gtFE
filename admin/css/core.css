@@ -38,7 +38,7 @@ File: Core
 }*/
 
 body {
-  background: #ebeff2;
+  background: #ffffff;
   font-family: 'Roboto', sans-serif;
   margin: 0;
   padding-bottom: 60px;
@@ -56,7 +56,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #505458;
+  color: #ffffff;
   font-family: 'Karla', sans-serif;
   margin: 10px 0;
 }
@@ -143,6 +143,12 @@ a:focus {
   margin-bottom: 0px;
   margin-top: 0px;
   line-height: 70px;
+}
+.title-height {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  margin-left: -5px;
+  line-height: 52px;
 }
 .page-header {
   border-bottom: 1px solid #DBDDDE;

@@ -219,7 +219,7 @@ function loadShoppingCart(data, message) {
                     <tr id="${v['productID']}">
                         <td class="pl-4 py-3 d-flex">
                             <div class="img-div">
-                                <img class="img-fluid" src="${v['img']}">
+                                <img class="img-fluid" src="${v['img'] ? v['img'] : 'images/project/newlogo-dark.png'}">
                             </div>
                             <div class="bodyText smaller lightBold ml-3">
                                 ${v['productName']}
@@ -428,7 +428,7 @@ function loadSummaryCart(data, message) {
                 <tr id="${v['productID']}">
                     <td class="pl-4 py-3 d-flex">
                         <div class="img-div">
-                            <img class="img-fluid" src="${v['img']}">
+                            <img class="img-fluid" src="${v['img'] ? v['img'] : 'images/project/newlogo-dark.png'}">
                         </div>
                         
             `;

@@ -791,6 +791,102 @@ function pagination(pagerId, pageNumber, totalPage, totalRecord, numRecord) {
     }
 }
 
+function paginationv2(pagerId, pageNumber, totalPage, totalRecord, numRecord) {
+    var pager = $('#'+pagerId);
+    var endRow = pageNumber * numRecord;
+    var startRow = endRow - numRecord + 1;
+    
+    var pagerSize = 10;
+    var pagerLeftInterval = 4;
+    var pagerRightInterval = 4;
+    
+    var spanText = pager.parent('div').prev();
+    spanText.html('');
+    pager.find('li').remove();
+    if(!totalPage) return;
+
+    if (endRow > totalRecord)
+        endRow = totalRecord;
+
+    var paginateMsg = "%%from%%-%%to%% / %%total%%";
+    
+    var findText = ['%%from%%', '%%to%%', '%%total%%'];
+    var replaceText = [startRow, endRow, totalRecord];
+    
+    $.each(findText, function(k, val) {
+        paginateMsg = paginateMsg.replace(val, replaceText[k], paginateMsg);
+    });
+    
+    spanText.html(paginateMsg);
+    // spanText.html('Showing ' + startRow + ' - ' + endRow + ' of ' + totalRecord + ' records.');
+
+    if(pagerSize > totalPage) {
+        pagerSize = totalPage;
+    }
+
+    if(pageNumber >= 1) {
+        pager.append('<li class="link"><a href="#" class="prevLink"><i class="fa fa-angle-left"></i></a></li>');
+    }
+    var curr = 0;
+    while(totalPage > curr && totalPage > 1) {
+        pager.append('<li><a href="#" class="pageLink">'+(curr+1)+'</a></li>');
+        $('.pageLink').hide();
+        curr++;
+    }
+    if(pageNumber <= totalPage) {
+        pager.append('<li class="link"><a href="#" class="nextLink"><i class="fa fa-angle-right"></a></li>');
+    }
+    
+    function paginateNum(pageNum) {
+        pager.find('li').not('.link').hide();
+        pageNum-=1;
+        var pagerMin = pageNum - pagerLeftInterval;
+        var pagerMax = pageNum + pagerRightInterval;
+        if(pagerMin < 0) {
+            pagerMin = 0;
+            pagerMax = pagerSize;
+        }
+        pager.find('li').not('.link').slice(pagerMin, pagerMax+1).show();
+    }
+
+    var eq = parseInt(pageNumber)-1;
+
+    pager.find('li').not('.link').eq(eq).addClass("active");
+    paginateNum(parseInt(pageNumber));
+    
+    pager.find('.prevLink').click(function() {
+        var pageNum = parseInt(pager.find('li.active a').text())-1;
+        goPage(pageNum);
+    });
+    pager.find('.nextLink').click(function() {
+        var pageNum = parseInt(pager.find('li.active a').text())+1;
+        goPage(pageNum);
+    });
+
+    if (totalPage > 1) {
+        pager.find('.prevLink').click(function () {
+            var pageNum = parseInt(pager.find('li.active a').text()) - 1;
+            goPage(pageNum);
+        });
+        pager.find('.nextLink').click(function () {
+            var pageNum = parseInt(pager.find('li.active a').text()) + 1;
+            goPage(pageNum);
+        });
+    } else {
+        // Disable prevLink and nextLink when totalPage is one
+        pager.find('.prevLink').addClass('disabled');
+        pager.find('.nextLink').addClass('disabled');
+    }
+    
+    function goPage(pageNum) {
+        paginateNum(pageNum);
+        pager.children().removeClass("active");
+        pager.children().eq(pageNum+1).addClass("active");
+        pagingCallBack(pageNum);
+
+    }
+}
+
 /**
  * Javascript functions for tables
  * 

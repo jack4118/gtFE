@@ -388,6 +388,7 @@ $(document).ready(function(){
             window.history.replaceState( null, null, window.location.href );
         }
     } else {
+        console.log('id',id);
         if ( window.history.replaceState ) {
             window.history.replaceState( null, null, window.location.href = 'foodMenu.php' );
         }
@@ -602,6 +603,17 @@ function loadDefaultListing (data,message,session) {
             $.each(n['media'], function(m1, n1) {
                 imageSliderHTML +=  `
                     <li data-thumb="${n1['url']}"> <img src="${n1['url']}" /> </li>
+                `;
+            });
+
+            $.each(n['video'], function(m1, n1) {
+                imageSliderHTML += `
+                    <li>
+                        <video controls>
+                            <source src="${n1['url']}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </li>
                 `;
             });
 

@@ -86,6 +86,13 @@
                                                 </label>
                                                 <input id="newPassword" type="password" class="form-control"  />
                                             </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    <?php echo $translations['A01739'][$language]; /* Warehouse */ ?>
+                                                </label>
+                                                <select id="warehouseID" class="form-control">
+                                                </select>
+                                            </div>
                                             <!--<div class="form-group">
                                                     <label class="control-label">
                                                         <?php echo $translations['A01109'][$language]; /* Leader Username */ ?>
@@ -158,6 +165,7 @@
     var bypassLoading  = 0;
     var role           = [];
     var userRole       = "<?php echo $_POST['role']; ?>";
+    var selectWarehouse = '';
 
     var fCallback      = "";
     $(document).ready(function() {
@@ -169,6 +177,14 @@
         fCallback = loadFormDropdown;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
         
+        var formData = {
+            command        : "getWarehouse",
+            module         : 'warehouse',
+            permissionType : 'createAdmin',
+        };
+        fCallback = loadWarehouse
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
         editId    = "<?php echo $_POST['id']; ?>";
 
         if(editId) {
@@ -195,13 +211,14 @@
                 var password = $('input#newPassword').val();
                 var roleID   = $('#roleID option:selected').val();
                 var status   = $('#status').find('input[type=radio]:checked').val();
+                var warehouseID = $('#warehouseID').find('option:selected').val();
                 
                 var formData = {
                     'command'    : 'editAdmins',
                     'id'         : id,
                     'fullName'   : fullName,
                     'username'   : username,
-                    //'leaderUsername'   : leaderUsername,
+                    'warehouseID' : warehouseID,
                     'email'      : email,
                     'roleID'     : roleID,
                     'password'   : password,
@@ -222,6 +239,14 @@
 
         $("#roleID option[name='" + userRole + "']").attr('selected', 'selected');
     }
+
+    function loadWarehouse(data, message) {
+        warehouseData = data;
+
+        $.each(warehouseData, function(key) {
+            $('#warehouseID').append('<option value="' + warehouseData[key]['id'] + '">' + warehouseData[key]['warehouse_location'] + '</option>');
+        });
+    }
     
     function loadEdit(data, message) {
         $.each(data.adminDetail, function(key, val) {
@@ -232,6 +257,8 @@
                 $('#'+key).val(val);
             }
         });
+        selectWarehouse = data.adminWarehouse.id;
+        $("#warehouseID option[value='" + selectWarehouse + "']").attr('selected', 'selected');
     }
     
     function sendEdit(data, message) {

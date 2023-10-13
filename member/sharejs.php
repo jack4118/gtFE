@@ -1237,18 +1237,21 @@ function successResetPwd(data,message){
   showMessage(message , 'success', '<?php echo $translations['M02651'][$language]; //Congratulation ?>', 'success', 'homepage.php');
 }
 
-function deliveryModal(data,message) {
-  var imageLink;
-  if(language == "chineseSimplified" || language == "chineseTraditional")imageLink = 'images/project/delivery-chinese-01.png';
-  else imageLink = 'images/project/delivery-english-01.jpg';
+function deliveryModal(data, message) {
+    var imageLink;
+    if (language == "chineseSimplified" || language == "chineseTraditional") imageLink = 'images/project/GoTasty-Delivery-Fees-Banner-01.jpg';
+    else imageLink = 'images/project/GoTasty-Delivery-Fees-Banner-02.jpg';
 
-  showMessage('<img src="'+imageLink+'" class="img-fluid">', '', '', 'edit', '');
+    showMessage('<img src="' + imageLink + '" class="img-fluid">', '', '', 'edit', '');
 
-  $(".modal-content i").css("display","none");
-  $("#canvasTitle").css("display","none");
-  $(".modal-header").css("padding","0px 20px");
-  $(".modal-body").css("padding-top","0px");
-  $(".modal-footer").css("padding-bottom","20px");
+    var modalDialog = $(".modal-dialog");
+    modalDialog.css("max-width", "50%"); 
+
+    $(".modal-content i").css("display", "none");
+    $("#canvasTitle").css("display", "none");
+    $(".modal-header").css("padding", "0px 20px");
+    $(".modal-body").css("padding-top", "0px");
+    $(".modal-footer").css("padding-bottom", "20px");
 }
 
 function getNumberOfWishlistItems() {

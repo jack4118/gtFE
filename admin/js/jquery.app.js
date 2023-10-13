@@ -11,11 +11,16 @@
     var Sidemenu = function() {
         this.$body = $("body"),
         this.$openLeftBtn = $(".open-left"),
-        this.$menuItem = $("#sidebar-menu a")
+        this.$menuItem = $("#sidebar-menu a"),
+        $("#wrapper").addClass("enlarged");
+        $("#wrapper").addClass("forced");
+        $("#topbarImage").addClass("flip-horizontal");
+
     };
     Sidemenu.prototype.openLeftBar = function() {
       $("#wrapper").toggleClass("enlarged");
       $("#wrapper").addClass("forced");
+      $("#topbarImage").addClass("flip-horizontal");
 
       if($("#wrapper").hasClass("enlarged") && $("body").hasClass("fixed-left")) {
         $("body").removeClass("fixed-left").addClass("fixed-left-void");
@@ -27,6 +32,7 @@
         $(".left ul").removeAttr("style");
       } else {
         $(".subdrop").siblings("ul:first").show();
+        $("#topbarImage").removeClass("flip-horizontal");
       }
 
       toggle_slimscroll(".slimscrollleft");
@@ -231,6 +237,7 @@ var changeptype = function(){
         $("body").removeClass("widescreen").addClass("smallscreen");
         $("#wrapper").addClass("enlarged");
         $(".left ul").removeAttr("style");
+        $("#topbarImage").removeClass("flip-horizontal");
       }
       if($("#wrapper").hasClass("enlarged") && $("body").hasClass("fixed-left")){
         $("body").removeClass("fixed-left").addClass("fixed-left-void");

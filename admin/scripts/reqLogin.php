@@ -21,19 +21,19 @@
         switch ($command) {   //switch function for command//
             case 'adminLogin':
 
-            // if($_SESSION['captcha'] == strtoupper($_POST['captcha'])) {
+            if($_SESSION['captcha'] == strtoupper($_POST['captcha'])) {
                 $params = array("username" => $_POST['username'],
                     "password" => $_POST['password']
                 );
                 $result = $post->curl($command, $params);
-                //        $status = $result['status'];
-                //        $code = $result['code'];
-                //        $statusMsg = $result['statusMsg'];
+        //        $status = $result['status'];
+        //        $code = $result['code'];
+        //        $statusMsg = $result['statusMsg'];
                 $userData = $result['data']['userDetails'];
                // print_r($result);
-                //
-                //        $data = json_decode($data);
-                //        
+        //
+        //        $data = json_decode($data);
+        //        
                 $pages = $result['data']['pages'];
                 $hiddens = $result['data']['hidden'];
                 $permissions = $result['data']['permissions'];
@@ -123,12 +123,12 @@
                 $_SESSION['menuPath'] = $menuPath;
                 $myJson = json_encode($result);
                 echo $myJson;
-            // }
-            // else {
-            //     $myJson = array('status' => 'error', 'code' => 1, 'statusMsg' => 'Incorrect security code.', 'data' => "");
-            //     $myJson = json_encode($myJson);
-            //     echo $myJson;
-            // }
+            }
+            else {
+                $myJson = array('status' => 'error', 'code' => 1, 'statusMsg' => 'Incorrect security code.', 'data' => "");
+                $myJson = json_encode($myJson);
+                echo $myJson;
+            }
 
             break;
 

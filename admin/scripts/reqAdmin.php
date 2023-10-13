@@ -26,8 +26,9 @@
             case "getAdminList":
                 
                 $params = array("pageNumber" => $_POST['pageNumber'],
-                                "inputData" => $_POST['inputData']
-                );
+                                "inputData" => $_POST['inputData'],
+                                "sortData" => $_POST['sortData']
+                            );
                 $result = $post->curl($command, $params);
 
                 echo $result;
@@ -48,6 +49,7 @@
                                 "username" => $_POST['username'],
                                 "email"    => $_POST['email'],
                                 "roleID"   => $_POST['roleID'],
+                                "warehouseID"  => $_POST['warehouseID'],
                                 "password" => $_POST['password'],
                                 "leaderUsername" => $_POST['leaderUsername'],
                                 "status"   => $_POST['status']
@@ -95,6 +97,7 @@
                                 "leaderUsername" => $_POST['leaderUsername'],
                                 "email"    => $_POST['email'],
                                 "roleID"   => $_POST['roleID'],
+                                "warehouseID" => $_POST['warehouseID'],
                                 "password"   => $_POST['password'],
                                 "status"   => $_POST['status']
                                 );
@@ -129,7 +132,8 @@
 
                 $params = array("searchData"     => $_POST['inputData'],
                                 "site"           => $_POST['site'],
-                                "vendor_name"    => $_POST['vendor_name']
+                                "vendor_name"    => $_POST['vendor_name'],
+                                "vendor_id"      => $_POST['vendor_id']
                                 );
                 $result = $post->curl($command, $params);
                 
@@ -1652,6 +1656,12 @@
             case "getActiveSupplier":
             case "getAddressList":
             case "getPVPListing":
+            case "getGTBannerList":
+            case "getGTBanner":
+            case "getGTBannerData":
+            case "addGTBanner":
+            case "editGTBanner":
+            case "deleteGTBanner":
             case "getBannerList":
             case "getBanner":
             case "addBanner":
@@ -1754,6 +1764,16 @@
             case "changeSOItem":
             case "editOrderDetails":
             case "cancelParcelhub":
+            case "addPurchase":
+            case "acceptRejectPurchaseOrder":
+            case "getPostCodeList":
+            case "getPostCodeData":
+            case "getJournalLog":
+            case "poBatchAction":
+            case "addPackageInventory":
+            case "editPackageInventory":
+            case "awsGeneratePreSignedUrl":
+            case "editAddress":
 
                 foreach($_POST AS $key => $val){
                     if($key == "command") continue;
@@ -1775,70 +1795,7 @@
         
                 echo $result;
                 break;
-
-
-            case "addPackageInventory":
-                $params = array(
-                    "invPackageName"    => $_POST['invPackageName'],
-                    "package"           => $_POST['package'],
-                    "packageDesc"       => $_POST['packageDesc'],
-                    "productType"       => $_POST['productType'],
-                    "description"       => $_POST['description'],
-                    "skuCode"           => $_POST['skuCode'],
-                    "expired_day"       => $_POST['expired_day'],
-                    "salePrice"         => $_POST['salePrice'],
-                    "vendorId"          => $_POST['vendorId'],
-                    "category"          => $_POST['category'],
-                    "uploadImage"       => $_POST['uploadImage'],
-                    "packageProduct"    => $_POST['packageProduct'],
-                    "isArchive"         => $_POST['isArchive'],
-                    "cookingSuggestionName"       => $_POST['cookingSuggestionName'],
-                    "cookingSuggestionUrl"    => $_POST['cookingSuggestionUrl'],
-                    "cookingSuggestionRemark"         => $_POST['cookingSuggestionRemark'],
-                    "remarkArray"         => $_POST['remarkArray'],
-                    "deliveryMethod"      => $_POST['deliveryMethod'],
-                    "foc"                 => $_POST['foc'],
-                );
-                                    
-                $result = $post->curl($command, $params);
-        
-                echo $result;
-                break;
                 
-            case "editPackageInventory":
-                $params = array(
-                    "packageInvId"             => $_POST['packageInvId'],
-                    "invPackageName"           => $_POST['invPackageName'],
-                    "productType"              => $_POST['productType'],
-                    "description"              => $_POST['description'],
-                    "skuCode"                  => $_POST['skuCode'],
-                    "expired_day"              => $_POST['expired_day'],
-                    "salePrice"                => $_POST['salePrice'],
-                    "vendorId"                 => $_POST['vendorId'],
-                    "category"                 => $_POST['category'],
-                    "uploadImage"              => $_POST['uploadImage'],
-                    "packageProduct"           => $_POST['packageProduct'],
-                    "isArchive"                => $_POST['isArchive'],
-                    "isPublish"                => $_POST['isPublish'],
-                    "isIgnore"                 => $_POST['isIgnore'],
-                    "package"                  => $_POST['package'],
-                    "packageDesc"              => $_POST['packageDesc'],
-                    "cookingSuggestionName"    => $_POST['cookingSuggestionName'],
-                    "cookingSuggestionUrl"     => $_POST['cookingSuggestionUrl'],
-                    "cookingSuggestionRemark"  => $_POST['cookingSuggestionRemark'],
-                    "cookingFullInstruction"   => $_POST['cookingFullInstruction'],
-                    "invTranslationList"       => $_POST['invTranslationList'],
-                    "remarkArray"              => $_POST['remarkArray'],
-                    "deliveryMethod"           => $_POST['deliveryMethod'],
-                    "skuCode"                  => $_POST['skuCode'],
-                    "foc"                      => $_POST['foc'],
-                );
-                                    
-                $result = $post->curl($command, $params);
-        
-                echo $result;
-                break;
-
             case "getCustomerReviewDetailAdmin":
                 
                 $params = array("reviewID"     => $_POST['reviewID'],

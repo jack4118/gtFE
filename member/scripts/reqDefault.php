@@ -42,6 +42,16 @@ else {
 
             break;
 
+        case "getGTBanner":
+            $params = array (
+                'bannerPage' => $_POST['bannerPage'],
+            );
+            $result = $post->curl($command, $params);
+
+            echo $result;
+
+            break;
+
         case "recordPerformance":
 
             $params["usedTime"] = $_POST["usedTime"];
@@ -1186,6 +1196,7 @@ else {
         case 'updateGuestToken':
         case 'orderDetailCheck':
         case 'checkStockQuantity':
+        case 'awsGeneratePreSignedUrl':
             $params = array ("userID" => $userID);
 
             foreach($_POST AS $key => $val){

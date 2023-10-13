@@ -113,13 +113,37 @@ $thisPage = basename($_SERVER['PHP_SELF']);
                                                                 <div class="row" id="address1">
                                                                     <input id="addressId1" class="form-control hide" required/>
 
-                                                                    <div class="col-md-5">
+                                                                    <div class="col-md-7">
                                                                         <label>1. Branch Name</label>
                                                                         <input id="branchName1" class="form-control" required/>
                                                                     </div>
                                                                     <div class="col-md-7">
+                                                                        <label>Mobile Number <span class="text-danger">*</span></label>
+                                                                        <input id="branchMobile1" class="form-control" required/>
+                                                                    </div>
+                                                                    <div class="col-md-7">
                                                                         <label>Address <span class="text-danger">*</span></label>
                                                                         <input id="branchAddress1" class="form-control" required/>
+                                                                    </div>
+                                                                    <div class="col-md-7">
+                                                                        <label>Address Line 2 <span class="text-danger">*</span></label>
+                                                                        <input id="branchAddressLineTwo1" class="form-control" required/>
+                                                                    </div>
+                                                                    <div class="col-md-7">
+                                                                        <label>City <span class="text-danger">*</span></label>
+                                                                        <input id="branchCity1" class="form-control" required/>
+                                                                    </div>
+                                                                    <div class="col-md-7">
+                                                                        <label>State <span class="text-danger">*</span></label>
+                                                                        <input id="branchState1" class="form-control" required/>
+                                                                    </div>
+                                                                     <div class="col-md-7">
+                                                                        <label>ZIP Code <span class="text-danger">*</span></label>
+                                                                        <input id="branchZIP1" class="form-control" required/>
+                                                                    </div>
+                                                                    <div class="col-md-7">
+                                                                        <label>Country <span class="text-danger">*</span></label>
+                                                                        <input id="branchCountry1" class="form-control" required/>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -243,6 +267,8 @@ var resizefunc = [];</script>
     var uploadImage;
     var imageId = [];
     var vendorName;
+    var uploadImage = [];
+    var imgUploadFinishFile = [];
 
 
     $(document).ready(function() {
@@ -292,13 +318,26 @@ var resizefunc = [];</script>
 	        addressArray = [];
             for(var v = 1; v < $(".addProductWrapper").length + 1; v++) {
                 if($('#branchAddress' + v).val() != "") {
-                    var branchName = $('#branchName' + v).val();
-                    var branchAddress = $('#branchAddress' + v).val();
+                    var branch_name = $('#branchName' + v).val();
+                    var mobile = $('#branchMobile' + v).val();
+                    var address_line_1 = $('#branchAddress' + v).val();
+                    var address_line_2 = $('#branchAddressLineTwo' + v).val();
+                    var city = $('#branchCity' + v).val();
+                    var state = $('#branchState' + v).val();
+                    var zip = $('#branchZIP' + v).val();
+                    var country = $('#branchCountry' + v).val();
                     var branchAddressID = $('#addressId' + v).val();
 
                     var perBranch = {
-                        address: branchAddress,
-                        branch_name: branchName,
+                        mobile : mobile,
+                        address: address_line_1 + ',' + address_line_2 + ',' + city + ',' + state + ',' + zip + ',' + country,
+                        address_line_1 : address_line_1,
+                        address_line_2 : address_line_2,
+                        city : city,
+                        state : state,
+                        zip : zip,
+                        country : country,
+                        branch_name: branch_name,
                         addressID: branchAddressID
                     }
 
@@ -306,43 +345,59 @@ var resizefunc = [];</script>
                 }
             }
 
+            imgFileDataArray = [];
+            imgUploadFinishFile = [];
             uploadImage = [];
             uploadImageData = [];
-            $(".popupMemoImageWrapper").each(function() {
-                var imgData = $(this).find('[id^="storeFileData"]').val();
-                var imgName = $(this).find('[id^="storeFileName"]').val();
-                var imgType = $(this).find('[id^="storeFileType"]').val();
-                var imgSize = $(this).find('[id^="storeFileSize"]').val();
-                var imgFlag = $(this).find('[id^="storeFileFlag"]').val();
-                var imgID   = $(this).find('[id^="storeFileID"]').val();
-                var imgUploadType = $(this).find('[id^="storeFileUploadType"]').val();
-
-                if(typeof(imgID) == 'undefined') {
-                    imgID = '';
+            // get all the image file
+            $('[id^="fileUpload"]').each(function() {
+                const addImgIDNum = this.id.match(/\d+/)[0]; // Extract addImgIDNum from the id
+                if (this.files && this.files[0]) {
+                    const uploadTypeValue = $('#uploadType' + addImgIDNum).val();
+                    const uploadNameValue = $('#storeFileName' + addImgIDNum).val();
+                    imgFileDataArray.push({ file: this.files[0], uploadType: uploadTypeValue , imgName : uploadNameValue});
                 }
-
-                buildUploadImage = {
-                    imgName : imgName,
-                    imgType : imgType,
-                    imgSize : imgSize,
-                    imgFlag : imgFlag,
-                    uploadType : imgUploadType
-                };
-
-                // if(parseFloat(imgSize) / 1048576 > 3) {
-                //     imgSizeFlag = false;
-                // }
-
-                reqData = {
-                    imgID      : imgID,
-                    imgName    : imgName,
-                    imgData    : JSON.stringify(imgData),
-                    uploadType : imgUploadType
-                };
-                
-                uploadImageData.push(reqData);
-                uploadImage.push(reqData);
             });
+
+            if(imgFileDataArray.length > 0)
+            {
+                handleFileUpload(imgFileDataArray);
+            }
+            // $(".popupMemoImageWrapper").each(function() {
+            //     var imgData = $(this).find('[id^="storeFileData"]').val();
+            //     var imgName = $(this).find('[id^="storeFileName"]').val();
+            //     var imgType = $(this).find('[id^="storeFileType"]').val();
+            //     var imgSize = $(this).find('[id^="storeFileSize"]').val();
+            //     var imgFlag = $(this).find('[id^="storeFileFlag"]').val();
+            //     var imgID   = $(this).find('[id^="storeFileID"]').val();
+            //     var imgUploadType = $(this).find('[id^="storeFileUploadType"]').val();
+
+            //     if(typeof(imgID) == 'undefined') {
+            //         imgID = '';
+            //     }
+
+            //     buildUploadImage = {
+            //         imgName : imgName,
+            //         imgType : imgType,
+            //         imgSize : imgSize,
+            //         imgFlag : imgFlag,
+            //         uploadType : imgUploadType
+            //     };
+
+            //     // if(parseFloat(imgSize) / 1048576 > 3) {
+            //     //     imgSizeFlag = false;
+            //     // }
+
+            //     reqData = {
+            //         imgID      : imgID,
+            //         imgName    : imgName,
+            //         imgData    : JSON.stringify(imgData),
+            //         uploadType : imgUploadType
+            //     };
+                
+            //     uploadImageData.push(reqData);
+            //     uploadImage.push(reqData);
+            // });
 
 	    
             var contact = "60" + $('#phone').val();
@@ -351,23 +406,25 @@ var resizefunc = [];</script>
             var note = $('#internalNote').val();
             var status = $("input[name=statusRadio]:checked").val();
 
-            var formData  = {
-                command     : 'editSupplier',
-                supplierID  : supplierID,
-                name        : name,
-                code        : code,
-                address     : addressArray,
-                email       : email,
-                pic         : pic,
-                // dialCode    : dialCode,
-                contact     : contact,
-                status      : status,
-                uploadImage : uploadImage,
-                imageId     : imageId,
-                note        : note
-            };
-            fCallback = submitCallback;
-            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            if(imgFileDataArray.length == 0){
+                var formData  = {
+                    command     : 'editSupplier',
+                    supplierID  : supplierID,
+                    name        : name,
+                    code        : code,
+                    address     : addressArray,
+                    email       : email,
+                    pic         : pic,
+                    // dialCode    : dialCode,
+                    contact     : contact,
+                    status      : status,
+                    uploadImage : uploadImage,
+                    imageId     : imageId,
+                    note        : note
+                };
+                fCallback = submitCallback;
+                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            }
         });
 
         $('#backBtn').click(function() {
@@ -389,7 +446,8 @@ var resizefunc = [];</script>
         $('#addProductBtn').click(function() {
             $('#redirectForm').empty().html(`
                 <input type="text" name="vendorId" value="${supplierID}">
-            `).attr('action', 'addProductInventory.php').submit();
+                <input type="text" name="actionType" value="add">
+            `).attr('action', 'Product.php').submit();
         });
 
         $('#viewPOBtn').click(function() {
@@ -414,13 +472,37 @@ var resizefunc = [];</script>
 
                         <input id="addressId${(wrapperLength)}" class="form-control hide" required/>
 
-                        <div class="col-md-5">
+                        <div class="col-md-7">
                             <label>${(wrapperLength)}. Branch Name</label>
                             <input id="branchName${(wrapperLength)}" class="form-control" required/>
                         </div>
                         <div class="col-md-7">
+                            <label>Mobile Number</label>
+                            <input id="branchMobile${(wrapperLength)}" class="form-control" required/>
+                        </div>
+                        <div class="col-md-7">
                             <label>Address <span class="text-danger">*</span></label>
                             <input id="branchAddress${(wrapperLength)}" class="form-control" required/>
+                        </div>
+                        <div class="col-md-7">
+                            <label>Address Line 2<span class="text-danger">*</span></label>
+                            <input id="branchAddressLineTwo${(wrapperLength)}" class="form-control" required/>
+                        </div>
+                        <div class="col-md-7">
+                            <label>City <span class="text-danger">*</span></label>
+                            <input id="branchCity${(wrapperLength)}" class="form-control" required/>
+                        </div>
+                        <div class="col-md-7">
+                            <label>State <span class="text-danger">*</span></label>
+                            <input id="branchState${(wrapperLength)}" class="form-control" required/>
+                        </div>
+                        <div class="col-md-7">
+                            <label>ZIP Code <span class="text-danger">*</span></label>
+                            <input id="branchZIP${(wrapperLength)}" class="form-control" required/>
+                        </div>
+                        <div class="col-md-7">
+                            <label>Country <span class="text-danger">*</span></label>
+                            <input id="branchCountry${(wrapperLength)}" class="form-control" required/>
                         </div>
                     </div>
                 </div>
@@ -482,7 +564,7 @@ var resizefunc = [];</script>
         $('#pic').val(data.pic);
         $('#dialCode option[value="'+data.dialCode+'"]').prop('selected', true);
         $('#phone').val(data.phone);
-	$('#internalNote').val(data.note);
+	    $('#internalNote').val(data.note);
         $('input[name=statusRadio]').filter('[value='+data.status+']').prop('checked', true);
         $('#productUnitOnHandNumber').text(data.productUnitOnHandNumber);
         $('#packageUnitOnHandNumber').text(data.packageUnitOnHandNumber);
@@ -495,8 +577,14 @@ var resizefunc = [];</script>
 
                 // loopQuantity(k);
 
-                $("#branchName" + newK).val(v['branch_name']);                
-                $("#branchAddress" + newK).val(v['address']);                
+                $("#branchName" + newK).val(v['branch_name']); 
+                $("#branchMobile" + newK).val(v['mobile']);                
+                $("#branchAddress" + newK).val(v['address_line_1']); 
+                $("#branchAddressLineTwo" + newK).val(v['address_line_2']);  
+                $("#branchCity" + newK).val(v['city']);                
+                $("#branchState" + newK).val(v['state']);                
+                $("#branchZIP" + newK).val(v['zip']);                
+                $("#branchCountry" + newK).val(v['country']);                
                 $("#addressId" + newK).val(v['addressID']);                
             });
         }
@@ -681,6 +769,7 @@ var resizefunc = [];</script>
                     <input type="hidden" id="storeFileType${addImgIDNum}">
                     <input type="hidden" id="storeFileSize${addImgIDNum}">
                     <input type="hidden" id="storeFileUploadType${addImgIDNum}">
+                    <input type="hidden" id="uploadType${addImgIDNum}" value="image">
                     <input type="file" id="fileUpload${addImgIDNum}" class="hide" accept="image/jpeg, image/png, image/gif, image/bmp, image/tiff, video/mp4,video/x-m4v,video/*" onchange="displayFileName('${addImgIDNum}', this)">
 
                     <div>
@@ -737,6 +826,132 @@ var resizefunc = [];</script>
             };
 
             reader.readAsDataURL(n.files[0]);
+        }
+    }
+
+    function handleFileUpload(file, action) {
+        file.forEach(function(file, index) {
+            var formData = {
+                command  : "awsGeneratePreSignedUrl",
+                action   : "upload",
+                mimeType : file.file.type,
+            };
+            ajaxSend(url, formData, method, function(data, message) {
+                verificationImgVideoLink(data, message, file, action);  // Pass the file to the function
+            }, debug, bypassBlocking, bypassLoading, 0);
+        });
+    }
+
+    function verificationImgVideoLink(data, message, file, action){
+        const presignedUrl = data;
+        $.ajax({
+            type: 'PUT',
+            url: presignedUrl,
+            contentType: 'binary/octet-stream',
+            processData: false,
+            crossDomain : true,
+            data: file.file,
+            headers: {
+                'x-amz-acl': 'public-read',
+                'Access-Control-Allow-Headers' : 'Content-Type, Authorization',
+                'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE',
+            },
+            })
+            .success(function() {
+            })
+            .error(function() {
+        })
+
+        const indexOfDO = presignedUrl.indexOf('?');
+        const extractedUrl = presignedUrl.substring(0, indexOfDO);
+        if (file.file.type.startsWith('image/'))
+        {
+            if(file.imgName && extractedUrl && file.uploadType)
+            {
+                uploadImage.push({
+                    imgName : file.imgName,
+                    imgData : extractedUrl,
+                    uploadType : file.uploadType,
+                });
+            }
+            imgUploadFinishFile.push({
+                file : file.file,
+            })
+        }
+
+        if(imgFileDataArray.length == imgUploadFinishFile.length)
+        {
+            $('.customError').text('');
+
+            var name = $('#name').val();
+            var code = $('#code').val();
+
+            if($('#phone').val()=="") {
+                showMessage("Phone number cannot be empty!", 'warning', 'Add Vendor', 'warning', '');
+                return;
+            }
+
+            for(var checkingLength = 1; checkingLength < $(".addProductWrapper").length + 1; checkingLength++) {
+                if($('#branchName' + checkingLength).val() != "") {
+                    if($('#branchAddress' + checkingLength).val() == "") {
+                        showMessage("Address cannot be empty!", 'warning', 'Edit Vendor', 'warning', '');
+                        return;
+                    }
+                }
+            }
+
+            addressArray = [];
+            for(var v = 1; v < $(".addProductWrapper").length + 1; v++) {
+                if($('#branchAddress' + v).val() != "") {
+                    var branch_name = $('#branchName' + v).val();
+                    var mobile = $('#branchMobile' + v).val();
+                    var address_line_1 = $('#branchAddress' + v).val();
+                    var address_line_2 = $('#branchAddressLineTwo' + v).val();
+                    var city = $('#branchCity' + v).val();
+                    var state = $('#branchState' + v).val();
+                    var zip = $('#branchZIP' + v).val();
+                    var country = $('#branchCountry' + v).val();
+                    var branchAddressID = $('#addressId' + v).val();
+
+                    var perBranch = {
+                        mobile : mobile,
+                        address: address_line_1 + ',' + address_line_2 + ',' + city + ',' + state + ',' + zip + ',' + country,
+                        address_line_1 : address_line_1,
+                        address_line_2 : address_line_2,
+                        city : city,
+                        state : state,
+                        zip : zip,
+                        country : country,
+                        branch_name: branch_name,
+                        addressID: branchAddressID
+                    }
+
+                    addressArray.push(perBranch);
+                }
+                var contact = "60" + $('#phone').val();
+                var email = $('#email').val();
+                var pic = $('#pic').val();
+                var note = $('#internalNote').val();
+                var status = $("input[name=statusRadio]:checked").val();
+
+                var formData  = {
+                    command     : 'editSupplier',
+                    supplierID  : supplierID,
+                    name        : name,
+                    code        : code,
+                    address     : addressArray,
+                    email       : email,
+                    pic         : pic,
+                    // dialCode    : dialCode,
+                    contact     : contact,
+                    status      : status,
+                    uploadImage : uploadImage,
+                    imageId     : imageId,
+                    note        : note
+                };
+                fCallback = submitCallback;
+                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        }
         }
     }
 

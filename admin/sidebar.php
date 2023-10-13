@@ -116,8 +116,20 @@
 
         <!--- Sidemenu -->
         <div id="sidebar-menu">
+            <ul class="hide-sidebar">
+                <li style="display: flex; align-items: center;"> 
+                    <a href="index.php" class="logo">
+                        <?php echo "<img src=\"".$config["logoDashboardURL"]."\" class=\"imgLogo\" alt=\"LOGO\" style=\"max-width: 80%; height: auto;\">"; ?>
+                        <?php echo "<img src=\"".$config["logoDashboardURL"]."\" class=\"iconLogo\" alt=\"LOGO\" width=\"40\">"; ?>
+                    </a>
+                
+                    <button class="button-menu-mobile open-left" style="line-height: 45px">
+                        <img id="topbarImage" src="images/close-sidebar.png" style="height: 25px;">
+                    </button>
+                </li>
+            </ul>
             <ul>
-                <li class="text-muted menu-title">Navigation</li>
+                <!-- <li class="text-muted menu-title">Navigation</li> -->
 
                 <?php 
 

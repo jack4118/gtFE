@@ -12,6 +12,7 @@
 ?>
 <!DOCTYPE html>
 <html>
+<body class="hideScroll">
 <?php include("head.php"); ?>
     <!-- Begin page -->
     <div id="wrapper">
@@ -29,21 +30,305 @@
         <div class="content-page">
             <!-- Start content -->
             <div class="content">
-                <div class="container">
+                <div class="container bg-white">       
+                    <div class="row" style="margin-top:-30px;">
 
-                    <div class="row">
-                        <div class="col-sm-4">
-                             <a href="purchaseOrder.php" class="btn btn-primary btn-md waves-effect waves-light m-b-20">
-                                <i class="md md-add"></i>
-                                <?php echo $translations['A00115'][$language]; /* Back */ ?>
-                            </a>
-                        </div><!-- end col -->
+                        <div class="col-md-10">
+                            <?php if($_POST['id']) { ?>
+                                <span style="font-size: 16px;color: black;" id="title" data-lang="M01015"><?php echo 'Sales Order / Edit Sales Order' ?></span>
+                            <?php } else { ?>
+                                <span style="font-size: 16px;color: black;" id="title" data-lang="M01015"><?php echo 'Sales Order / Create Sales Order' ?></span>
+                            <?php } ?>
+                        </div>
+
+                        <div class="col-md-12 m-t-10 mb-10">
+                            <div class="btn-group mr-2">
+                                <button class="btn custom-button1" id="backBtn">Back</button>
+                            </div>
+
+                            <div class="btn-group mr-2">
+                                <button class="btn custom-button2" id="addSOBtn">
+                                    <span><i class="fa fa-floppy-o m-r-5" aria-hidden="true"></i></span>Save
+                                </button>
+                            </div>
+
+                            <div class="btn-group mr-2">
+                                <button class="btn custom-button2" id="editSO">
+                                    <span><i class="fa fa-pencil m-r-5" aria-hidden="true"></i></span>Edit
+                                </button>
+                            </div>
+
+                            <div class="btn-group mr-2">
+                                <button class="btn custom-button2" id="edit">
+                                    <span><i class="fa fa-floppy-o m-r-5" aria-hidden="true"></i></span>Save
+                                </button>
+                            </div>
+                    
+                            <div class="btn-group mr-2">
+                                <button class="btn custom-button1" id="discard">
+                                    <span><i class="fa fa-trash" aria-hidden="true"></i></span>Discard
+                                </button>
+                            </div>
+
+                            <!-- <div class="btn-group">
+                                <button id="actionBtn" type="button" class="btn custom-button1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><i class="fa fa-cog" aria-hidden="true"></i></span> Action
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right custom-dropdown-menu">
+                                    <a class="dropdown-item custom-dropdown-item" id="duplicateBtn">
+                                        <i class="fa fa-clone"></i> Duplicate
+                                    </a>
+                                </div>
+                            </div> -->
+                        </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card-box">
-                                <h4 class="header-title m-t-0 m-b-30">
+                    <div class="row customRow m-t-5">
+                        <div class="col-md-8 bg-custom2" style="border-right: 1px solid #d6d4d4;">
+                            <div class="row bg-white" style="border-bottom: 1px solid #d6d4d4; display: flex;">
+                                <div class="col-md-3"></div>
+                                <div id="quotStatusLbl" class="col-md-1 customLabel">Quatation</div>
+                                <div id="ppaStatusLbl" class="col-md-1 customLabel">Pending Payment Approved</div>
+                                <div id="paidStatusLbl" class="col-md-1 customLabel">Paid</div>
+                                <div id="opStatusLbl" class="col-md-5 customLabel">Order Processing</div>
+                                <div id="packedStatusLbl" class="col-md-1 customLabel">Packed</div>
+                                <div id="oudStatusLbl" class="col-md-1 customLabel">Out For Delivery</div>
+                                <div id="delivStatusLbl" class="col-md-1 customLabel">Delivered</div>
+                                <div id="cancStatusLbl" class="col-md-1 customLabel" style="display:none">Cancelled</div>
+                            </div>
+
+                            <div class="row bg-white" style = margin-bottom:-10px;>
+                                <div class="col-md-12 m-t-5 m-b-5">
+                                    <button id="editPaid" type="submit" class="custom-button2">
+                                        <?php echo $translations['A01787'][$language]; /* Register Payment */ ?>
+                                    </button>
+
+                                    <button id="editOrderProcessing" type="submit" class="custom-button2" style="display:none">
+                                        Update to order processing
+                                    </button>
+
+                                    <button id="addCreditNoteBtn" type="submit" class="custom-button2">
+                                        Add Credit Note
+                                    </button>
+
+                                    <button id="updateTrackStatus" type="submit" class="custom-button2">
+                                        Confirmed Received
+                                    </button>
+
+                                    <button id="updateDeliverStatus" type="submit" class="custom-button2">
+                                        Confirmed Delivered
+                                    </button>
+
+                                    <button id="displayDO" type="submit" class="custom-button2">
+                                        Start DO
+                                    </button>
+
+                                    <button id="updatePickUpDelivered" type="submit" class="custom-button2">
+                                        Confirmed PickUp
+                                    </button>
+
+                                    <button id="saveDeliveryOrder" class="custom-button2" style="">Create Airway Draft</button>
+
+                                    <button id="editCancel" type="submit" class="custom-button2">
+                                        <?php echo $translations['A01788'][$language]; /* Cancel SO */ ?>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div id="soSection" class="card-box m-t-15" style="border-radius: 0px; padding:5px 30px;overflow-y: scroll;height: 400px;" >
+                                <div class="row">
+                                    <div class="col-md-6" id="viewReceiptBtn">
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="form-group row">     
+                                        <label for="" class="col-md-12 col-form-label customFont">Sales Order</label>
+                                        <?php if($_POST['id']) { ?>
+                                            <label for="" class="col-md-12 col-form-label customFont"><h1 style="font-weight: bold; color: black;margin-top: -18px;" id="saleNo"></h1></label>   
+                                        <?php } else { ?>
+                                            <label for="" class="col-md-12 col-form-label customFont"><h1 style="font-weight: bold; color: black;margin-top: -18px;">NEW</h1></label>   
+                                        <?php } ?>
+                                    </div>   
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="name" class="col-md-3 col-form-label customFont">Customer Name</label>
+                                    <div class="col-md-9">
+                                        <input id="name" type="text" class="form-control" readonly/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="mobileNo" class="col-md-3 col-form-label customFont">Mobile Number</label>
+                                    <div class="col-md-9">
+                                        <input id="mobileNo" type="text" class="form-control" onchange="getCustomerDetail()" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" disabled />
+                                        <span id="mobileNoError" class="errorSpan text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="billingAddressList" class="col-md-3 col-form-label customFont">Billing Address</label>
+                                        <input id="billingID" type="text" class="form-control" style="display:none;" readonly>
+                                    <div class="col-md-9">
+                                        <select id="billingAddressList" type="text" class="form-control" onchange="getBillingAddressDetail()">
+                                        </select>
+                                        <div id="addBillAddress"><img src="images/View.png"></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="shippingAddressList" class="col-md-3 col-form-label customFont">Shipping Address</label>
+                                        <input id="shippingID" type="text" class="form-control" style="display:none;" readonly>
+                                        <input id="shippingPostCode" type="text" class="form-control" style="display:none;" readonly>
+                                    <div class="col-md-9">
+                                        <select id="shippingAddressList" type="text" class="form-control" onchange="getShippingAddressDetail()">
+                                        </select>
+                                        <div id="addShipAddress"><img src="images/View.png"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-top:40px">
+                                    <div class="col-md-12 m-t-15">
+                                        <table id="productTable" class="customTable table m-b-20">
+                                            <caption class="customFont" style="color:#3a5999;">Products</caption>
+                                            <thead>
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Quantity</th>
+                                                    <th>Unit Price</th>
+                                                    <th>Subtotal</th>
+                                                    <th><i class="fa fa-ellipsis-v"></i></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!-- <tr>
+                                                <td colspan="5">
+                                                    <input type="text" name="inputField" placeholder="Enter something...">
+                                                </td>
+                                            </tr> -->
+                                            </tbody>
+                                        </table>
+                                        
+                                        <button class="custom-button2" onclick="addRow3()" id="addProductRow">Add Product</button>
+                                        <button class="custom-button1" onclick="addNoteRow2()" id="addNoteRow">Add Note</button>
+                                        <button class="custom-button1" onclick="applyPromoCode()" id="addPromoCode">Apply Promo</button>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 m-t-15 float-right text-right" style="">
+                                        <label>Total : </label>
+                                        <label id="subtotal" value="0.00">RM0.00</label>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="row" style="margin-top:40px">
+                                    <div class="col-md-12 m-t-15">
+                                        <table id="stockOut" class="customTable table m-b-20">
+                                            <caption class="customFont" style="color:#3a5999;">Item List</caption>
+                                            <input class="form-control m-b-10" type="text" id="inputSerial" onchange="removeUrl(this, event)" style="display:none">
+                                            <div id="stockOutTable">
+                                                
+                                            </div>
+                                            <button id="saveStockOut" class="btn btn-primary m-t-10" style="background-color: #1ca011 !important; border: 1px solid #1ca011 !important;display:none">Stock Out</button>
+                                            <button id="displayDO" class="btn btn-primary m-t-10" style="background-color: #1ca011 !important; border: 1px solid #1ca011 !important;display:none;">Start DO</button>
+                                        </table>
+                                    <div>
+                                </div> -->
+
+                                <div class="row" style="margin-top:40px" id="itemListSection">
+                                    <div class="col-md-12 m-t-15">
+                                        <table id="stockOut" class="customTable table m-b-20">
+                                            <label for="" class="col-md-12 col-form-label customFont"><h3 style="font-weight: bold; color: black;margin-top: -18px;">Item List</h3></label>   
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Package Name</th>
+                                                    <th>Product Name</th>
+                                                    <th>SKU Code</th>
+                                                    <th>Serial No</th>
+                                                    <th><i class="fa fa-ellipsis-v"></i></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="stockOutTableBody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <button id="saveStockOut" class="btn btn-primary m-t-10" style="background-color: #1ca011 !important; border: 1px solid #1ca011 !important;display:none">Stock Out</button>
+
+                                <div class="row" style="margin-top: 40px; display: none;" id="stockOutDO">
+                                    <div class="col-md-12 m-t-15">
+                                        <table id="deliveryOrderTable" class="customTable table m-b-20">
+                                            <label for="" class="col-md-12 col-form-label customFont"><h3 style="font-weight: bold; color: black;margin-top: -18px;">Stock Out List</h3></label>   
+                                                <div class="row">
+                                                    <div class="col-md-9">
+                                                        <div class="form-check" id="checkboxWrapper">
+                                                            <div class="form-check-item">
+                                                                <input type="checkbox" class="form-check-input" id="skipWarning">
+                                                                <label class="form-check-label" for="skipWarning">Check to ignore extra stock warning</label>
+                                                            </div>
+                                                            <div class="form-check-item">
+                                                                <input type="checkbox" class="form-check-input" id="stockOutMystery">
+                                                                <label class="form-check-label archive-label" for="stockOutMystery">Check to stock out mystery food</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input class="form-control m-b-10" type="text" id="inputSerialDO" >
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Product Name</th>
+                                                    <th>Serial No</th>
+                                                    <th><i class="fa fa-ellipsis-v"></i></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="deliveryOrderTableBody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="row" style="margin-top:40px" id="deliveryOrderListSection">
+                                    <div class="col-md-12 m-t-15">
+                                        <table id="deliveryOrderList" class="customTable table m-b-20">
+                                            <label for="" class="col-md-12 col-form-label customFont"><h3 style="font-weight: bold; color: black;margin-top: -18px;">Delivery Order List</h3></label>   
+                                            <thead>
+                                                <tr>
+                                                    <th>DO No</th>
+                                                    <th>Created At</th>
+                                                    <th>Delivery Logistics</th>
+                                                    <th>Tracking No</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="deliveryOrderListTableBody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4" id="journalSection">
+                            <?php if(!$_POST['id']) { ?>
+                                <div class="card-box m-t-10" style="background-color: #eee; color: black; overflow-y:scroll; height: 200px">
+                                    <div class="customFont"><?php echo $_SESSION['username'] ?></div>
+                                    <div>Creating a new Sales Order...</div>
+                                </div>
+                            <?php } ?>
+                        </div> 
+                    </div>
+
+                    <!-- <div class="row"> -->
+                        <!-- <div class="col-lg-12"> -->
+                            <!-- <div class="card-box"> -->
+                                <!-- <h4 class="header-title m-t-0 m-b-30">
                                     Sales Order: <b id="saleNo"></b>
                                 </h4>
 
@@ -87,7 +372,6 @@
                                             <input id="name" type="text" class="form-control" readonly/>
                                         </div>
 
-                                        <!-- New Address List plugin -->
                                         <div class="col-xs-12 contentPageTitle" style="margin-top: 20px;">
                                             <label>Address List</label>
                                         </div>
@@ -271,7 +555,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- New Address List plugin end here -->
                                     </div>
 
                                     <div class="row">
@@ -353,63 +636,34 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <!-- Upload Receipt -->
-                                    <div class="row">
-                                        <!-- <div class="col-md-12"> -->
+                                    <!-- <div class="row">
                                             <div id="uploadReceiptSection" class="col-md-12 mt-5"  style="margin-top: 10px;margin-bottom: 20px;display:none">
-                                                <!-- <?php if($_POST['manualBankTransfer']) { ?> -->
-                                                    <!-- Manual Bank Transfer -->
-                                                    <!-- <div class="bodyText larger bold pb-3" data-lang="M03839"><?php echo $translations['M03839'][$language] /* Manual Bank Transfer */ ?></div>
-                                                    <div class="greyBg">
-                                                        <div class="borderAll grey normal px-5 py-4">
-                                                            <div class="mx-2" data-lang="M03841"><?php echo $translations['M03841'][$language] /* Please transfer the total price to the below bank account. */ ?></div>
-                                                            <div class="text-center my-3">
-                                                                <img class="paymentMethodContainer" src="images/maybank.png" width="220px" height="180px">
-                                                            </div>
-                                                            <div class="text-red font-italic" data-lang="M03842"><?php echo $translations['M03842'][$language] /* ** Please DM us with your location and postcode to ensure your location is cover by us ** */ ?></div>
-                                                        </div>
-                                                    </div> -->
-                                                <!-- <?php } else if ($_POST['qrCodePayment']) { ?> -->
-                                                    <!-- QR Code Payment -->
-                                                    <!-- <div class="bodyText larger bold pb-3" data-lang="M03840"><?php echo $translations['M03840'][$language] /* QR Code */ ?></div>
-                                                    <div class="greyBg">
-                                                        <div class="borderAll grey normal px-5 py-4">
-                                                            <div class="mx-2" data-lang="M03843"><?php echo $translations['M03843'][$language] /* Please scan the QR Code below to make payment. */ ?></div>
-                                                            <div class="text-center my-3">
-                                                                <img class="paymentMethodContainer" src="images/project/qr-code.png" width="220px" height="250px">
-                                                            </div>
-                                                            <div class="text-red font-italic" data-lang="M03842"><?php echo $translations['M03842'][$language] /* ** Please DM us with your location and postcode to ensure your location is cover by us ** */ ?></div>
-                                                        </div>
-                                                    </div>
-                                                <?php } ?> -->
 
-                                                <!-- Upload Receipt -->
                                                 <div class="form-group mt-5">
-                                                    <!-- <label for="uploadReceipt"><span class="text-red">*</span data-lang="M03844"> <?php echo $translations['M03844'][$language] /* Upload Receipt */ ?></label> -->
                                                     <div class="position-relative">
                                                         <input class="form-control" type="text" id="receiptName" readonly>
                                                         <input class="form-control" type="hidden" id="receiptData">
                                                         <input class="form-control" type="hidden" id="receiptSize">
                                                         <input class="form-control" type="hidden" id="receiptType">
-                                                        <!-- <button type="button" class="btn btn-primary grey px-3 py-2 bodyText smaller uploadReceipt" id="uploadBtn" data-lang="M03844"> <?php echo $translations['M03844'][$language] /* Upload Receipt */ ?></button> -->
                                                     </div>
                                                     <input type="file" id="uploadReceipt" class="d-none" accept=".jpg, .jpeg, .png, .pdf">
                                                 </div>
                                             </div>
-                                    </div>
+                                    </div> -->
 
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-md-6" style="margin-top: 30px;">
                                             <label>
                                                 Promo Code
                                             </label>
                                             <input id="promoCode" type="text" class="form-control"/>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-                                    <div class="row" style = "display:none">
+                                    <!-- <div class="row" style = "display:none">
                                         <div class="col-md-6" style="margin-top: 30px;">
                                             <label>Subtotal</label>
                                             <input id="subtotal" class="form-control" value="0.00" type="number" readonly>
@@ -421,16 +675,16 @@
                                             <label>Shipping Fee</label>
                                             <input id="shipping_fee" class="form-control" value="0.00" type="number" readonly>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-md-6" style="margin-top: 30px;">
                                             <label>Grand Total</label>
                                             <input id="grandtotal" class="form-control" value="0.00" type="number" readonly>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <p id="errorInput" style="margin-bottom:10px;text-align: left;display:none;margin-top: 20px;margin-left: 20px;"><img src="images/alertIcon.png" width="20px"><span id="errorText" style="margin-left: 15px;">&nbsp;Your mobile or password is incorrect. Please try again.</span></p>
                                         <div class="col-md-12 m-t-20" id="actions">
                                             <button id="addSOBtn" class="btn btn-primary waves-effect waves-light m-r-10">
@@ -453,15 +707,15 @@
                                             </button>
 
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                    </div> -->
+                                <!-- </div> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
+                    <!-- </div> -->
                     <!-- End row -->
 
                     <!-- Item List -->
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-lg-12 m-b-30">
                             <div class="card-box" id="stockOut">
                                 <p class="text-center foc-title">Item List</p>
@@ -473,11 +727,11 @@
                                 <button id="displayDO" class="btn btn-primary m-t-10" style="background-color: #1ca011 !important; border: 1px solid #1ca011 !important;display:none;">Start DO</button>
                             </div>
                         <div>
-                    </div>
+                    </div> -->
                     <!-- End Item List -->
 
                     <!-- Delivery Order -->
-                    <div class="row" id="deliveryOrderRow">
+                    <!-- <div class="row" id="deliveryOrderRow">
                         <div class="col-lg-12 m-b-30">
                             <div class="card-box" id="deliveryOrder" style="display:none">
                                 <p class="text-center foc-title">Delivery Order <font id="deliveryOrderID"></font></p>
@@ -500,24 +754,22 @@
                                 <button id="saveDeliveryOrder" class="btn btn-primary m-t-10" style="background-color: #1ca011 !important; border: 1px solid #1ca011 !important;">Create Airway Draft</button>
                             </div>
                         <div>
-                    </div>
+                    </div> -->
                     <!-- End of Delivery Order -->
 
                      <!-- Delivery Order List-->
                      <div class="row" id="displayDOList" style="display:none">
                         <div class="col-lg-12 m-b-30">
                             <div class="card-box">
-                                <div id="doList">
+                                <!-- <div id="doList">
                                     <p class="text-center foc-title">Delivery Order List</p>
-                                </div>
-                                <button id="updateTrackStatus" class="btn btn-primary m-t-15" style="background-color: #1ca011 !important; border: 1px solid #1ca011 !important;display:none">Confirmed Received</button>
-                                <button id="updateDeliverStatus" class="btn btn-primary m-t-15" style="background-color: #1ca011 !important; border: 1px solid #1ca011 !important;display:none">Confirmed Delivered</button>
+                                </div> -->
                             </div>
                         <div>
                     </div>
                     <!-- End of Delivery Order List -->
 
-                    <div class="row" id="shippingMethodDiv" style="display: none;">
+                    <!-- <div class="row" id="shippingMethodDiv" style="display: none;">
                         <div class="col-lg-12 m-b-30">
                             <div class="card-box">
                                 <div class="row">
@@ -543,7 +795,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="row" id="trackingNoDiv" style="display: none;">
                         <div class="col-lg-12 m-b-30">
@@ -574,7 +826,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Parcel Weight (in kg)*</label>
@@ -599,9 +851,9 @@
                                                     <input id="parcelLength" class="form-control" type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
-                                    <div class="col-md-6" id="receiverDetails">
+                                    <!-- <div class="col-md-6" id="receiverDetails">
                                         <div class="form-group">
                                             <label>Receiver / Company Name*</label>
                                             <input id="receiverName" class="form-control" type="text">
@@ -634,16 +886,16 @@
                                             <label>Receiver Country Code*</label>
                                             <input id="receiverCountryCode" class="form-control" type="text">
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
+                                    </div> -->
+                                    <!-- <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Remark*</label>
                                             <input id="remark" class="form-control" type="text">
                                         </div>
-                                    </div>
-                                    <div class="col-md-12" id="whalloSubmitBtnDiv">
+                                    </div> -->
+                                    <!-- <div class="col-md-12" id="whalloSubmitBtnDiv">
                                         <button id="whalloSubmitBtn" class="btn btn-primary m-t-10" style="background-color: #1ca011 !important; border: 1px solid #1ca011 !important;">Submit</button>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-12" id="whalloOutOfDeliveryDiv" style="display: none;">
                                         <div class="row" style="display: flex; align-items: center;">
                                             <div class="col-md-6">
@@ -682,6 +934,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     
                 </div> <!-- container -->
@@ -701,6 +954,36 @@
     </div>
     <!-- END wrapper -->
 
+    <div class="modal fade" id="showImage" role="dialog">
+        <div class="modal-dialog modal-xs" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImg" width="100%" src="">
+                    <video id="modalVideo" width="400" controls>
+                      <source src="" type="">
+                    </video>
+                </div>
+                <div class="modal-footer">
+                    <button id="canvasCloseBtn" type="button" class="custom-button2" data-dismiss="modal"><?php echo $translations['A00742'][$language]; /* Close */ ?></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php include("applyPromoCode.php"); ?>
+    <?php include("addEditAddress.php"); ?>
+    <?php include("registerPaymentModal.php"); ?>
+    <?php include("creditNoteModal.php"); ?>
+    <?php include("soChangeItemModal.php"); ?>
+    <?php include("soStockOutListModal.php"); ?>
+    <?php include("doLogisticsModal.php"); ?>
+    
     <!-- Receipt Modal -->
     <div class="modal fade" id="viewReceiptModal" role="dialog">
         <div class="modal-dialog modal-xs" role="document">
@@ -718,14 +1001,14 @@
 		    <embed id="receiptPdf" style="width:100%;"  src="">
                 </div>
                 <div class="modal-footer">
-                    <button id="canvasCloseBtn" type="button" class="btn btn-primary waves-effect waves-light" data-dismiss="modal"><?php echo $translations['A00742'][$language]; /* Close */ ?></button>
+                    <button id="canvasCloseBtn" type="button" class="custom-button2" data-dismiss="modal"><?php echo $translations['A00742'][$language]; /* Close */ ?></button>
                 </div>
             </div>
         </div>
     </div>
 
 
-    <div class="modal fade" id="creditNoteModal" role="dialog">
+    <!-- <div class="modal fade" id="creditNoteModal" role="dialog">
         <div class="modal-dialog modal-xs" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -764,16 +1047,16 @@
                         </div>
 
                         <div class="col-xs-12" style="margin-top: 20px;margin-bottom: 20px;">
-                            <div id="submitCreditNoteBtn" class="btn btn-primary waves-effect waves-light">
+                            <button id="submitCreditNoteBtn" type="submit" class="custom-button2">
                                 <?php echo $translations['A00323'][$language]; /* Submit */?>
-                            </div>
+                            </button>
                         </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     
-    <div class="modal fade" id="changeItemModal" role="dialog">
+    <!-- <div class="modal fade" id="changeItemModal" role="dialog">
         <div class="modal-dialog modal-xs" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -785,16 +1068,12 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-                     <!-- Add a dropdown list here -->
                      <label for="originalItemSelection">Original Item:</label>
                     <select id="originalItemSelection" class="form-control">
-                        <!-- Add more options as needed -->
                     </select>
                     <br>
-                    <!-- Add a dropdown list here -->
                     <label for="itemSelection">Change Item:</label>
                     <select id="itemSelection" class="form-control">
-                        <!-- Add more options as needed -->
                     </select>
                 </div>
                 <div class="modal-footer">
@@ -809,7 +1088,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div id="printarea">
         <div class="printSticker" id="1">
@@ -852,13 +1131,12 @@
     var bypassLoading       = 0;
     var fCallback           = "";
     var editId              = "<?php echo $_POST['id']; ?>";
-    // var status              = "<?php echo $_POST['status']; ?>";
     var status              = "";
     var createdAt           = "<?php echo $_POST['createdAt']; ?>";
     var vendor              = "<?php echo $_POST['vendor']; ?>";
     var html                = `<option value="">Select Product</option>`;
     var product_list        = null;
-    var wrapperLength       = 2;
+    var wrapperLength       = 1;
     var subtotal            = 0;
     var action              = "";
     var typeR               = "";
@@ -875,7 +1153,7 @@
     var hawbNo;
     var clientID            = '';
     var warningInput;
-    var productArray        = [1];
+    var productArray        = [];
     var serviceArray        = [];
     var usedSerialNo        = [];
     var usedSerialNoDO      = [];
@@ -893,13 +1171,57 @@
     var storeDOSerialItemList = [];
     var storeProductList = [];
     var paymentMethodList = [];
-    var countNote = 1;
+    var countNote = 0;
     var soType          = "<?php echo $_POST['soType']; ?>";
     var currentDO       = '-';
+    var billingName;
+    var billingMobileNo;
+    var billingAddr1;
+    var billingAddr2;
+    var billingCity;
+    var billingState;
+    var billingZip;
+    var billingCountry;
+    var shippingName;
+    var shippingMobileNo;
+    var shippingAddr1;
+    var shippingAddr2;
+    var shippingCity;
+    var shippingState;
+    var shippingZip;
+    var shippingCountry;
+    var uploadImage = [];
+    var imgFileDataArray = [];
+    var videoFileDataArray = [];
 
     $(document).ready(function() {
+        $('#saveDeliveryOrder').hide();
+        $("#updateTrackStatus").hide();
+        $("#updateDeliverStatus").hide();
+        $("#deleteImg").hide();
+        $("#displayDO").hide();
+        $('#updatePickUpDelivered').hide();
+
+        resizableGrid(document.getElementById('productTable'));
+        resizableGrid(document.getElementById('stockOut'));
+        resizableGrid(document.getElementById('deliveryOrderList'));
         if(soType != 'add')
         {
+            var formData = {
+                'command': 'getJournalLog',
+                'module_id'     : editId,
+                'module' : 'SO',
+                'permissionType'   : 'action'
+            };
+            fCallback = loadJournalLog;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
+            var formData = {
+                command             : "getListing",
+            };
+            var fCallback = displayShipCountryList;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
             $("#addSOBtn").css("display", "none");
 
             var formData = {
@@ -915,6 +1237,12 @@
                 }
             });
 
+            $("#inputSerialModalDO").on('keyup', function (e) {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    removeUrlModalDO(this, e);
+                }
+            });
+
             $("#addCreditNoteBtn").hide();
     
                 if(status == "Order Processing"){
@@ -926,43 +1254,43 @@
     
                 var stockOut_html = '';
     
-                stockOut_html += `
-                    <table class="table table-striped table-bordered no-footer m-0">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Package Name</th>
-                                <th>Product Name</th>
-                                <th>Serial No</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="stockOutTableBody">
-                        </tbody>
-                    </table>
-                `;
+                // stockOut_html += `
+                //     <table class="table table-striped table-bordered no-footer m-0">
+                //         <thead>
+                //             <tr>
+                //                 <th>No</th>
+                //                 <th>Package Name</th>
+                //                 <th>Product Name</th>
+                //                 <th>Serial No</th>
+                //                 <th>Action</th>
+                //             </tr>
+                //         </thead>
+                //         <tbody id="stockOutTableBody">
+                //         </tbody>
+                //     </table>
+                // `;
     
-                $('#stockOutTable').html(stockOut_html);
+                // $('#stockOutTable').html(stockOut_html);
     
                 // Delivery Order Table
                 var deliveryOrder_html = '';
     
-                deliveryOrder_html += `
-                    <table class="table table-striped table-bordered no-footer m-0">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Product Name</th>
-                                <th>Serial No</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="deliveryOrderTableBody">
-                        </tbody>
-                    </table>
-                `;
+                // deliveryOrder_html += `
+                //     <table class="table table-striped table-bordered no-footer m-0">
+                //         <thead>
+                //             <tr>
+                //                 <th>No</th>
+                //                 <th>Product Name</th>
+                //                 <th>Serial No</th>
+                //                 <th><i class="fa fa-ellipsis-v"></i></th>
+                //             </tr>
+                //         </thead>
+                //         <tbody id="deliveryOrderTableBody">
+                //         </tbody>
+                //     </table>
+                // `;
     
-                $('#deliveryOrderTable').html(deliveryOrder_html);
+                // $('#deliveryOrderTable').html(deliveryOrder_html);
     
                 tableIndex = 0;
     
@@ -976,16 +1304,65 @@
                 fCallback = loadStockOutTableBody;
                 ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
             // }
+
+            $('#addBillAddress').click(function() {
+                $('.errorSpan').empty();
+                $('#errorInput').hide();
+                $('#addressType').val('billing');
+
+                $("#customerName").val(billingName);
+                $("#mobileNumber").val(billingMobileNo);
+                $("#addr1").val(billingAddr1);
+                $("#addr2").val(billingAddr2);
+                $("#city").val(billingCity);
+                $("#stateList").val(billingState);
+                $("#zipCode").val(billingZip);
+                var selectedCountryId = billingCountry;
+                $("#countryList").val(selectedCountryId);
+                if(billingName == '' && billingMobileNo == '')
+                {
+                    $("#editAddress").val('');
+                }
+
+                $('#addEditAddress').appendTo("body").modal('show');
+            });
+
+            $('#addShipAddress').click(function() {
+                $('.errorSpan').empty();
+                $('#errorInput').hide();
+                $('#addressType').val('shipping');
+
+                $("#customerName").val(shippingName);
+                $("#mobileNumber").val(shippingMobileNo);
+                $("#addr1").val(shippingAddr1);
+                $("#addr2").val(shippingAddr2);
+                $("#city").val(shippingCity);
+                $("#stateList").val(shippingState);
+                $("#zipCode").val(shippingZip);
+                var selectedCountryId = shippingCountry;
+                $("#countryList").val(selectedCountryId);
+                if(shippingName == '' && shippingMobileNo == '')
+                {
+                    $("#editAddress").val('');
+                }
+
+                $('#addEditAddress').appendTo("body").modal('show');
+            });
         }
         else if(soType === 'add')
         {
-            $("#mobileNo").prop("disabled", false);
+            $("#quotStatusLbl").css("background-color", "#3a5999");
+            $("#quotStatusLbl").css("color", "white");
 
+            $("#mobileNo").prop("disabled", false);
             $("#edit").css("display", "none");
             $("#editPaid").css("display", "none");
             $("#editCancel").css("display", "none");
             $("#addCreditNoteBtn").css("display", "none");
             $("#stockOut").css("display", "none");
+            $("#itemListSection").css("display", "none");
+            $("#deliveryOrderListSection").css("display", "none");
+            $('#editSO').hide();
 
             var formData = {
                 command        : "getProduct",
@@ -995,31 +1372,55 @@
 
             ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
+            var formData = {
+                command             : "getListing",
+            };
+            var fCallback = displayShipCountryList;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
+
             $('#addBillAddress').click(function() {
                 $('.errorSpan').empty();
                 $('#errorInput').hide();
+                $('#addressType').val('billing');
 
-                $("#billingAddrSec").show();
+                $("#customerName").val(billingName);
+                $("#mobileNumber").val(billingMobileNo);
+                $("#addr1").val(billingAddr1);
+                $("#addr2").val(billingAddr2);
+                $("#city").val(billingCity);
+                $("#stateList").val(billingState);
+                $("#zipCode").val(billingZip);
+                var selectedCountryId = billingCountry;
+                $("#countryList").val(selectedCountryId);
+                if(billingName == '' && billingMobileNo == '')
+                {
+                    $("#editAddress").val('');
+                }
 
-                var formData = {
-                    command             : "getListing",
-                };
-                var fCallback = displayCountryList;
-                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-
+                $('#addEditAddress').appendTo("body").modal('show');
             });
 
             $('#addShipAddress').click(function() {
                 $('.errorSpan').empty();
                 $('#errorInput').hide();
-                $("#shippingAddrSec").show();
+                $('#addressType').val('shipping');
 
-                var formData = {
-                    command             : "getListing",
-                };
-                var fCallback = displayShipCountryList;
-                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+                $("#customerName").val(shippingName);
+                $("#mobileNumber").val(shippingMobileNo);
+                $("#addr1").val(shippingAddr1);
+                $("#addr2").val(shippingAddr2);
+                $("#city").val(shippingCity);
+                $("#stateList").val(shippingState);
+                $("#zipCode").val(shippingZip);
+                var selectedCountryId = shippingCountry;
+                $("#countryList").val(selectedCountryId);
+                if(shippingName == '' && shippingMobileNo == '')
+                {
+                    $("#editAddress").val('');
+                }
 
+                $('#addEditAddress').appendTo("body").modal('show');
             });
 
             $('#insertBillAddress').click(function() {
@@ -1098,7 +1499,6 @@
                 var    billingAddr         = $("#billingID").val();
                 var    shippingAddr        = $("#shippingID").val();
                 // var    statusSelect        = $("#statusSelect").val();
-
                 for (var v of productArray) {
                     var name = $('option:selected', "#productSelect" + v).text();
                     var cost = $('#cost' + v).val();
@@ -1146,7 +1546,7 @@
                         type  : type,
                     };
 
-                    if(perProduct['action'] != "delete"){
+                    if(perProduct['action'] != "delete" && product_id){
                         productSet.push(perProduct);
                     }
                 } 
@@ -1197,8 +1597,8 @@
                     payment_method      : payment_method,
                     delivery_method     : delivery_method,
                     status              : status,
-                    billingAddr         : $("#billingID").val(),
-                    shippingAddr        : $("#shippingID").val(),
+                    billingAddr         : $('#billingID').val(),
+                    shippingAddr        : $('#shippingID').val(),
                     receiptData         : $('#receiptData').val(),
                     receiptName         : $("#receiptName").val(),
                     promoCode           : $("#promoCode").val(),
@@ -1221,26 +1621,20 @@
 
         if(status == "Order Processing") {
             $("#stockOut").css("display", "block");
-            // $('#shippingMethodDiv').css("display", "block");
             $("#deliveredDiv").css("display", "none");
-            // $("#trackingNoDiv").css("display", "block");
-            $("#displayDO").css("display", "block");
+            $("#displayDO").show();
             var radBtnDefault = document.getElementById("PARCELHUB");
             radBtnDefault.checked = true;
         }
 
         if(status == "Packed") {
             $("#deliveredDiv").css("display", "none");
-            // $("#stockOut").css("display", "none");
-            // $('#whalloOutOfDeliveryDiv').show();
-            // $('#whalloSubmitBtnDiv').hide();
             $("#deliveryOrder").css("display", "none");
             $("#stockOut").find("input, button").each(function () {
                 $(this).attr("disabled", true).hide();
             });
             $("#skipWarning").parent().hide();
             $("#trackingNoDiv").css("display", "none");
-            $("#displayDO").css("display", "none");
             $('#shippingMethodDiv').css("display", "none");
             $("#trackingNoDiv").css("display", "none");
 
@@ -1260,8 +1654,8 @@
             $("#skipWarning").parent().hide();
             $("#saveTrackingNo").attr("disabled", true);
             $("#trackingNoDiv").css("display", "none");
-            $("#updateTrackStatus").css("display", "none");
-            $("#updateDeliverStatus").css("display", "block");
+            $("#updateTrackStatus").show();
+            $("#updateDeliverStatus").show();
             // $("#trackingNoDiv").css("display", "none");
         }
 
@@ -1278,9 +1672,7 @@
                                 <td id="Package_name${k2}">${v['package_name']}</td>
                                 <td id="item_name${k2}">${v['item_name']}</td>
                                 <td>
-                                    <input class="form-control stockOutInput" type="text" id="stockOutSerialNo${k2}" product-id="${v['product_id']}" onfocus="serialChecking(this)" oninput="inputSerialChecking(this)" value="${v['barcode']}" data-id="${v['id']}" disabled>
-                                    <input class="form-control hide" type="text" id="stockOutSerialID${k2}" value="${v['product_id']}">
-                                    <input class="form-control hide" type="text" id="skuCode${v['id']}" data-id="${v['id']}" value="${v['barcode'].replace('N', '')}">
+                                <input class="form-control stockOutInput" type="text" id="stockOutSerialNo${k2}" product-id="${v['product_id']}" onfocus="serialChecking(this)" oninput="inputSerialChecking(this)" value="${v['SKU_code']}" data-id="${v['id']}" disabled>
                         `;
 
                     if (v['product_type']) {
@@ -1292,11 +1684,16 @@
                     html_SO += `
                             </td>
                             <td>
-                            <button class="btn btn-icon waves-effect waves-light btn-primary changeItemBtn" style=""
+                                <input class="form-control" type="text" id="stockOutSkuCode${k2}" product-id="${v['product_id']}" onfocus="serialChecking(this)" oninput="inputSerialChecking(this)" value="${v['suggestedSerial'] !== '' ? v['suggestedSerial'] : v['barcode']}"" data-id="${v['id']}" disabled>
+                                <input class="form-control hide" type="text" id="stockOutSerialID${k2}" value="${v['product_id']}">
+                                <input class="form-control hide" type="text" id="skuCode${v['id']}" data-id="${v['id']}" value="${v['barcode'].replace('N', '')}">
+                            </td>
+                            <td>
+                            <button class="btn btn-icon waves-effect waves-light  changeItemBtn" style=""
                                     onclick="changeItem(this)" data-id="${v['id']}" data-skuCode="skuCode${v['id']}"
                                     data-name="${v['item_name']}" data-productID="${v['product_id']}" data-original-title="Change Item"
                                     title="Change Item" disabled> 
-                                <i class="fa fa-edit"></i> 
+                                <i class="fa fa-edit" style="color: blue;"></i>
                             </button>
                         </td>
                         </tr>
@@ -1330,7 +1727,7 @@
             }
 
             if (stockedOutArr && stockedOutArr != "") {
-                insertSerialNumberData();
+                // insertSerialNumberData();
             }
         }
 
@@ -1338,13 +1735,13 @@
             $.each(serialNumberList, function(snlK, snlV) {
                 if(snlV.deliveryOrder == 1){
                     $('tr[id^="stockOutTable"]').each(function() {
-                        var barcode = $(this).find('input#stockOutSerialNo' + this.id.substring('stockOutTable'.length)).attr('value');
+                        var barcode = $(this).find('input#stockOutSkuCode' + this.id.substring('stockOutTable'.length)).attr('value');
                         var snlBarcode = snlV.barcode;
 
                         if (barcode === snlBarcode) {
                             var tableElement = $('#stockOutTable').find('table');
                             tableElement.removeClass('table-striped');
-                            $(this).css('background-color', '#90EE90');
+                            $(this).css('background-color', '#B0C4DE');
                         }
                     });
                 }
@@ -1404,10 +1801,8 @@
             var serviceSet  = [];
 
             var    payment_method      = $("#payment_method").val();
-            // var    delivery_method     = $("#delivery").val();
             var    billingAddr         = $("#billingID").val();
             var    shippingAddr        = $("#shippingID").val();
-            // var    statusSelect        = $("#statusSelect").val();
 
             for (var v of productArray) {
                 var name = $('option:selected', "#productSelect" + v).text();
@@ -1456,7 +1851,7 @@
                     type  : type,
                 };
 
-                if(perProduct['action'] != "delete"){
+                if(perProduct['action'] != "delete" && product_id){
                     productSet.push(perProduct);
                 }
             } 
@@ -1507,8 +1902,8 @@
                 payment_method      : payment_method,
                 delivery_method     : delivery_method,
                 status              : status,
-                billingAddr         : $("#billingID").val(),
-                shippingAddr        : $("#shippingID").val(),
+                billingAddr         : $('#billingID').val(),
+                shippingAddr        : $('#shippingID').val(),
                 receiptData         : $('#receiptData').val(),
                 receiptName         : $("#receiptName").val(),
                 promoCode           : $("#promoCode").val(),
@@ -1517,8 +1912,36 @@
             var fCallback = sendEdit;
             ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
         });
-
+        
         $('#editPaid').click(function() {
+            registerPayment();
+        });
+        $('#submitPayment').click(function() {
+            imgFileDataArray = [];
+            imgUploadFinishFile = [];
+            uploadImage = [];
+            // get all the image file
+            $('[id^="fileUpload"]').each(function() {
+                if (this.files && this.files[0]) {
+                    const uploadTypeValue = $('#uploadType').val();
+                    const uploadNameValue = $('#storeFileName').val();
+                    imgFileDataArray.push({ file: this.files[0], uploadType: uploadTypeValue , imgName : uploadNameValue});
+                }
+            });
+
+            if(imgFileDataArray.length > 0)
+            {
+                handleFileUpload(imgFileDataArray);
+            }
+
+            // $('#receiptInputError').val('');
+            // var receiptInput = document.getElementById('receiptData').value;
+            // if (receiptInput.trim() === '') {
+            //     document.getElementById('receiptInputError').innerText = 'Please Upload Receipt';
+            //     return;
+            // }
+
+            $('#registerPaymentModal').modal('hide');
             var productSet= [];
             var serviceSet  = [];
 
@@ -1611,27 +2034,29 @@
                     serviceSet.push(perService);
                 }
             }
-           
-            var formData = {
-                command             : "editOrderDetails",
-                orderDetailArray    : productSet,
-                orderServiceArray   : serviceSet,
-                saleID              : editId,
-                shipping_fee        : $("#shipping_fee").val(),
-                payment_amount      : $("#grandtotal").val(),
-                payment_tax         : $("#payment_tax").val(),
-                payment_method      : payment_method,
-                delivery_method     : delivery_method,
-                status              : 'Paid',
-                billingAddr         : $("#billingID").val(),
-                shippingAddr        : $("#shippingID").val(),
-                receiptData         : $('#receiptData').val(),
-                receiptName         : $("#receiptName").val(),
-                promoCode           : $("#promoCode").val(),
-                shippingPostCode    : $("#shippingPostCode").val(),
-            };
-            var fCallback = sendEdit;
-            ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            if(imgFileDataArray.length == 0)
+            {
+                var formData = {
+                    command             : "editOrderDetails",
+                    orderDetailArray    : productSet,
+                    orderServiceArray   : serviceSet,
+                    saleID              : editId,
+                    shipping_fee        : $("#shipping_fee").val(),
+                    payment_amount      : $("#grandtotal").val(),
+                    payment_tax         : $("#payment_tax").val(),
+                    payment_method      : payment_method,
+                    delivery_method     : delivery_method,
+                    status              : 'Paid',
+                    billingAddr         : $("#billingID").val(),
+                    shippingAddr        : $("#shippingID").val(),
+                    receiptData         : $('#receiptData').val(),
+                    receiptName         : $("#receiptName").val(),
+                    promoCode           : $("#promoCode").val(),
+                    shippingPostCode    : $("#shippingPostCode").val(),
+                };
+                var fCallback = sendEdit;
+                ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            }
         });
 
         $("#submitCreditNoteBtn").click(function() {
@@ -1786,9 +2211,7 @@
 
 
         $('#addCreditNoteBtn').click(function() {
-
-            
-            $('#creditNoteModal').modal();
+            $('#creditNoteModal').appendTo("body").modal('show');
 
             $("#uploadCreditNoteReceipt").attr("disabled", false);
             $("#creditNoteReferenceInput").attr("disabled", false);
@@ -1853,14 +2276,24 @@
 
     function insertAddress(data, message) {  
 
+        $('#addEditAddress').modal('hide');
         $('.errorSpan').empty();
         $('#errorInput').hide();
         var soType = "add";
+        getCustomerDetail();
+        $('#addEditAddress').modal('hide');
+        showMessage('Address has been successfully added', 'success', 'Address added', 'check', '');
+    }
 
-        showMessage('Billing Address has been successfully added', 'success', 'Billing Address added', 'check');
-        setTimeout(function() {
-            $.redirect("editSaleOrder.php", { soType, soType });
-        }, 1000); 
+    function updateAddress(data, message) {
+        $('.errorSpan').empty();
+        $('#errorInput').hide();
+        var billingID = $('#billingAddressList').val();
+        var shippingID = $('#shippingAddressList').val();
+
+        getCustomerDetail(billingID, shippingID);
+        $('#addEditAddress').modal('hide');
+        showMessage('Address has been successfully updated', 'success', 'Address updated', 'check', '');
     }
 
     function insertAddressShipping(data, message) {  
@@ -1868,10 +2301,10 @@
         $('#errorInput').hide();
         var soType = "add";
 
-        showMessage('Shipping Address has been successfully added', 'success', 'Shipping Address added', 'check');
-        setTimeout(function() {
-            $.redirect("editSaleOrder.php", { soType, soType });
-        }, 1000); 
+        getCustomerDetail();
+        var closeBillingAddressButton = document.getElementById("closeShippingAddress");
+        closeBillingAddressButton.click();
+        showMessage('Address has been successfully added', 'success', 'Address added', 'check');
     }
 
     function sendAdd(data, message) {       
@@ -2068,7 +2501,8 @@
                 </div>
             </div>
         `;
-        $("#appendProduct").append(wrapper);
+        // $("#appendProduct").append(wrapper);
+        $("#productTable tbody").append(wrapper);
         $("#productSelect"+wrapperLength).html(html);
 
         $('#productSelect'+wrapperLength).select2({
@@ -2119,7 +2553,8 @@
             </div>
         `;
 
-        $("#appendProduct").append(wrapper);
+        // $("#appendProduct").append(wrapper);
+        $("#productTable tbody").append(wrapper);
         $("#productSelect"+wrapperLength).html(html);
 
         $('#productSelect'+wrapperLength).select2({
@@ -2152,7 +2587,7 @@
             });
         }
 
-        var selectList = $('#stateShippingList');
+        var selectList = $('#stateList');
         selectList.empty(); 
         selectList.append(buildOptionState2);
 
@@ -2168,10 +2603,9 @@
             });
         }
 
-        var selectList = $('#countryShippingList');
+        var selectList = $('#countryList');
         selectList.empty(); 
         selectList.append(buildOptionCountry2);
-
     }
 
     function displayCountryList(data) {
@@ -2207,7 +2641,6 @@
                 buildOptionLengthCountry = buildOptionLengthCountry + 1;
             });
         }
-
         var selectList = $('#countryList');
         selectList.empty(); 
         selectList.append(buildOptionCountry);
@@ -2237,18 +2670,58 @@
         countSubtotal();
     }
 
+    // function countSubtotal() {
+    //     var subtotal = 0;
+    //     for(var i = 1; i < $(".totalInput").length + 1; i++) {
+    //         if($("#total" + i).val() == "undefined") {
+    //             $("#total" + i).val(0);
+    //         }
+
+    //         var total = $("#total" + i).val();
+    //         subtotal += parseFloat(total);
+    //     }
+
+    //     $("#subtotal").val(subtotal.toFixed(2)).change();
+    // }
+
     function countSubtotal() {
+        var tableBody = document.getElementById("productTable").getElementsByTagName("tbody")[0];
+        var rows = tableBody.getElementsByTagName("tr");
+        var rowDataArray = [];
         var subtotal = 0;
-        for(var i = 1; i < $(".totalInput").length + 1; i++) {
-            if($("#total" + i).val() == "undefined") {
-                $("#total" + i).val(0);
+        var maxId = 0;
+
+        $(".totalInput").each(function() {
+            var id = parseInt($(this).attr("id").replace("total", ""));
+            if (!isNaN(id) && id > maxId) {
+                maxId = id;
             }
-
-            var total = $("#total" + i).val();
-            subtotal += parseFloat(total);
+        });
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var quantityInput = row.querySelector(".quantityInput");
+            var costInput = row.querySelector(".costInput");
+            var productType = $('#productType' + (i+1)).val();
+            if(quantityInput && costInput)
+            {
+                var quantity = parseFloat(quantityInput.value);
+                var cost = parseFloat(costInput.value);
+                if(productType == 'promo_code')
+                {
+                    cost = -cost;
+                }
+            }
+            if(quantity && cost)
+            {
+                var total = quantity * cost;
+                if(total > 0 || total < 0)
+                {
+                    subtotal += total;
+                }
+            }
         }
-
-        $("#subtotal").val(subtotal.toFixed(2)).change();
+        subtotal = parseFloat(subtotal.toFixed(2));
+        $('#subtotal').text(subtotal);
     }
 
     function productListOpt(data, message) {
@@ -2258,7 +2731,7 @@
 
             if(product) {
                 $.each(product, function(i, obj) {
-                    if(obj.product_type === 'product') {
+                    if(obj.product_type == 'product' || obj.product_type == 'package') {
                         storeProductList.push(obj);
                     }
                     html += `<option value="${obj.id}" datacost="${obj.sale_price}">${obj.name}</option>`;
@@ -2342,6 +2815,34 @@
         countSubtotal();
     })
 
+    $('#closeBillingAddress').click(function() {
+        $("#billingAddrSec").hide();
+    });
+
+    $('#closeShippingAddress').click(function() {
+        $("#shippingAddrSec").hide();
+    });
+
+    function relaodDeliveryOrderList()
+    {
+        var formData = {
+            'command': 'getSaleOrderDetails',
+            'SaleID'     : editId
+        };
+        fCallback = rebuildDOList;
+        ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
+    }
+
+    function rebuildDOList(data, message)
+    {
+        // rebuild delivery order list table
+        deliveryDisplayList = data.deliveryOrderDetails2;
+        if(deliveryOrderList.length != 0){
+            displayDeliveryOrderList(deliveryDisplayList);
+        }
+    }
+
     function loadSelect() {
         var formData = {
             'command': 'getSaleOrderDetails',
@@ -2358,18 +2859,30 @@
         }
         $.each(data.orderDetails, function (m, v) {
             var newM = m + 1;
+            var productSelect = $("#productSelect" + newM);
+            var optionExists = productSelect.find("option[value='" + v['product_id'] + "']").length > 0;
 
-            $("#productSelect" + newM).val(v['product_id']);
+            if (!optionExists) {
+                var newOption = new Option(v['item_name'], v['product_id']);
 
+                productSelect.append(newOption);
+            }
+            productSelect.val(v['product_id']).trigger('change');
+            $("#cost" + newM).val(v['cost']);
+            var quantity = parseInt($("#quantity" + newM).val());
+            var editTotal = (v['cost'] * quantity).toFixed(2);
+            $("#total" + newM).val(editTotal);
             $("#productSelect" + newM).select2({
                 dropdownAutoWidth: true,
                 templateResult: newFormatState,
                 templateSelection: newFormatState,
             });
         });
+        countSubtotal();
     }
 
-    function sendEdit(data, message) {    
+    function sendEdit(data, message) {   
+        $('#applyPromoCode').modal('hide');
         showMessage('Sale Order Has Been Updated', 'success', 'Sale Order Updated', 'check');        
         location.reload();
     }
@@ -2492,20 +3005,34 @@
     })
 
     $('#displayDO').click(function() {
+        storeDOSerialItemList = [];
+        $('#deliveryOrderModalTableBody').empty();
+        $('#deliveryOrderTableBody').empty();
         var formData = {
             command             : "insertDeliveryOrder",
             sale_id             : editId,
+            type                : "startDO",
         };
         var fCallback = displayDeliveryOrder;
         ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     })
 
     $('#saveDeliveryOrder').click(function() {
+        stockInDO();
+    });
+
+    $('#saveDeliveryOrderModal').click(function() {
+        stockInDO();
+    });
+
+    function stockInDO()
+    {
+        $('#soStockOutListModal').modal('hide');
+
         var deliveryOrderserial     = [];
         var boxDetail               = [];
         var stock_out_serial        = [];
         var serialProductId         = [];
-
 
         for(i = 0; i < $(".deliveryOrderInput").length; i++) {
             var newI = i + 1;
@@ -2524,22 +3051,25 @@
 
         for(i = 0; i < $(".deliveryOrderInput").length; i++) {
             var newI = i + 1;
-            var serialNumber = $("#deliveryOrderSerialNo" + newI).val().trim();
-            if (serialNumber.trim() !== '') {
-                var perSerial = {
-                    serial_number: serialNumber,
-                    item_name: $("#itemNameDO" + newI).text(),
-                };
-                stock_out_serial.push(perSerial);
-            }
-
-            if (serialNumber !== '') {
-                var perSerialID = {
-                    serial_number: serialNumber,
-                    product_id: $("#deliveryOrderSerialID" + newI).val(),
-                    product_type: $("#deliveryOrderProductType" + newI).val(),
-                };
-                serialProductId.push(perSerialID);
+            var serialNumber = $("#deliveryOrderSerialNo" + newI).val()
+            if(serialNumber)
+            {
+                if (serialNumber.trim() !== '') {
+                    var perSerial = {
+                        serial_number: serialNumber,
+                        item_name: $("#itemNameDO" + newI).text(),
+                    };
+                    stock_out_serial.push(perSerial);
+                }
+    
+                if (serialNumber !== '') {
+                    var perSerialID = {
+                        serial_number: serialNumber,
+                        product_id: $("#deliveryOrderSerialID" + newI).val(),
+                        product_type: $("#deliveryOrderProductType" + newI).val(),
+                    };
+                    serialProductId.push(perSerialID);
+                }
             }
         }
 
@@ -2566,74 +3096,72 @@
         };
         var fCallback = showCloseDOMessage;
         ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-    })
+    }
 
     function showCloseDOMessage() {
         showMessage('Delivery Order Saved.', 'success', 'Stock Out', 'check', ['editSaleOrder.php', {id : editId, status : status} ]);
     }
 
-    function displayDOList() {
+    function displayDOList(data) {
         $("#displayDOList").css("display", "block");
         var container = document.getElementById("doList");
-
         // Generate Delivery Order List
-        for (let i = 0; i < deliveryOrderList.length; i++) {
-            var additionalContent = document.createElement("p");
-            additionalContent.innerHTML = `<strong class="bold-text" style="font-size: 19px;text-decoration: underline;">Delivery Info</strong> <br> ` +
-                `DO No: ${deliveryDisplayList[i].do_no} <br>` +
-                `Status: ${deliveryDisplayList[i].status} <br>`;
-                
-            if (deliveryDisplayList[i].tracking_number) {
-                if(deliveryDisplayList[i].status === 'Pending for Pickup')
-                {
-                    additionalContent.innerHTML += `Tracking No: ${deliveryDisplayList[i].tracking_number} <br>` +
-                        `<button id="extraBtn${i}" class="btn btn-primary waves-effect waves-light popup-button" onclick="addExtra('${deliveryDisplayList[i].do_no}')">Add Item</button>` +
-                        `<span style="margin: 0 10px;"></span>` +
-                        `<button id="labelBtn${i}" class="btn btn-primary waves-effect waves-light popup-button" onclick="showLabel('${deliveryDisplayList[i].tracking_number}')">Show Airway Label</button>` +
-                        `<span style="margin: 0 10px;"></span>` +
-                        `<button id="trackingBtn${i}" class="btn btn-primary waves-effect waves-light popup-button" onclick="viewDO('${deliveryDisplayList[i].do_no}')";">View DO</button>` +
-                        `<span style="margin: 0 10px;"></span>` +
-                        `<button id="trackingBtn${i}" class="btn btn-primary waves-effect waves-light popup-button" onclick="openTrackingLink('${deliveryDisplayList[i].tracking_number}')";">Tracking Link</button>` +
-                        `<span style="margin: 0 10px;"></span>` +
-                        `<button id="cancelAirway${i}" class="btn btn-primary waves-effect waves-light popup-button" onclick="cancelAirway('${deliveryDisplayList[i].tracking_number}')";">Cancel Airway Bill</button>`;
-                }
-                else
-                {
-                    additionalContent.innerHTML += `Tracking No: ${deliveryDisplayList[i].tracking_number} <br>` +
-                        `<button id="labelBtn${i}" class="btn btn-primary waves-effect waves-light popup-button" onclick="showLabel('${deliveryDisplayList[i].tracking_number}')">Show Airway Label</button>` +
-                        `<span style="margin: 0 10px;"></span>` +
-                        `<button id="trackingBtn${i}" class="btn btn-primary waves-effect waves-light popup-button" onclick="viewDO('${deliveryDisplayList[i].do_no}')";">View DO</button>` +
-                        `<span style="margin: 0 10px;"></span>` +
-                        `<button id="trackingBtn${i}" class="btn btn-primary waves-effect waves-light popup-button" onclick="openTrackingLink('${deliveryDisplayList[i].tracking_number}')";">Tracking Link</button>`;
-                }
-            }
-            else if(deliveryDisplayList[i].status === 'Draft')
-            {
-                additionalContent.innerHTML += `Tracking No: ${deliveryDisplayList[i].tracking_number} <br>` +
-                `<button id="extraBtn${i}" class="btn btn-primary waves-effect waves-light popup-button" onclick="addExtra('${deliveryDisplayList[i].do_no}')">Add Item</button>`;
-            }
+        var additionalContent = document.createElement("p");
             
-            container.appendChild(additionalContent);
-
-            var deliveryOrderTable = createTable(deliveryOrderList[i]);
-            container.appendChild(deliveryOrderTable);
-
-            if (i !== deliveryOrderList.length - 1) {
-                container.appendChild(document.createElement("br"));
+        if (data.tracking_number) {
+            if(data.status === 'Pending for Pickup')
+            {
+                additionalContent.innerHTML += 
+                `<button id="labelBtn${i}" class="custom-button2" onclick="showLabel('${data.tracking_number}')">Show Airway Label</button>` +
+                `<span style="margin: 0 10px;"></span>` +
+                `<button id="trackingBtn${i}" class="custom-button2" onclick="viewDO('${data.do_no}')";">View DO</button>` +
+                `<span style="margin: 0 10px;"></span>` +
+                `<button id="trackingBtn${i}" class="custom-button2" onclick="openTrackingLink('${data.tracking_number}')";">Tracking Link</button>` +
+                `<span style="margin: 0 10px;"></span>` +
+                `<button id="cancelAirway${i}" class="custom-button2" onclick="cancelAirway('${data.tracking_number}')";">Cancel Airway Bill</button>`;
+            }
+            else
+            {
+                additionalContent.innerHTML += `Tracking No: ${data.tracking_number} <br>` +
+                    `<button id="labelBtn${i}" class="custom-button2" onclick="showLabel('${data.tracking_number}')">Show Airway Label</button>` +
+                    `<span style="margin: 0 10px;"></span>` +
+                    `<button id="trackingBtn${i}" class="custom-button2" onclick="viewDO('${data.do_no}')";">View DO</button>` +
+                    `<span style="margin: 0 10px;"></span>` +
+                    `<button id="trackingBtn${i}" class="custom-button2" onclick="openTrackingLink('${data.tracking_number}')";">Tracking Link</button>`;
             }
         }
-
-        for (var data of deliveryDisplayList) {
-            if (data.status === "Draft" && status == "Order Processing") {
-                $("#shippingMethodDiv input").removeAttr('disabled');
-                $('#trackingNoDiv input').removeAttr('disabled'); 
-                $('#shippingMethodDiv').css("display", "block");
-                $("#trackingNoDiv").css("display", "block");
-                break;
-            }else if (status == "Packed") {
-                $('#updateTrackStatus').css("display", "block");
-                break;
+        else if(data.tracking_number == '' && data.delivery_partner == '')
+        {
+            if(data.status === 'Pending for Pickup')
+            {
+                additionalContent.innerHTML += 
+                `<button id="trackingBtn${i}" class="custom-button2" onclick="viewDO('${data.do_no}')";">View DO</button>` +
+                `<span style="margin: 0 10px;"></span>` +
+                `<button id="cancelAirway${i}" class="custom-button2" onclick="cancelAirway('${data.tracking_number}')";">Cancel Airway Bill</button>`;
             }
+            else
+            {
+                additionalContent.innerHTML += `Tracking No: ${data.tracking_number} <br>` +
+                    `<button id="trackingBtn${i}" class="custom-button2" onclick="viewDO('${data.do_no}')";">View DO</button>` +
+                    `<span style="margin: 0 10px;"></span>`;
+            }
+        }
+        else if(data.status === 'Draft')
+        {
+            additionalContent.innerHTML += 
+            `<button id="extraBtn${i}" class="custom-button2" onclick="addExtra('${data.do_no}')">Add Item</button>`;
+        }
+        
+        container.appendChild(additionalContent);
+
+
+        if (data.status === "Draft" && status == "Order Processing") {
+            $("#shippingMethodDiv input").removeAttr('disabled');
+            $('#trackingNoDiv input').removeAttr('disabled'); 
+            $('#shippingMethodDiv').css("display", "block");
+            $("#trackingNoDiv").css("display", "block");
+        }else if (status == "Packed") {
+            $("#updateTrackStatus").show();
         }
     }
 
@@ -2649,7 +3177,6 @@
 
     function addExtra(doNo){
         const deliveryOrderRow = document.getElementById('deliveryOrderRow');
-        console.log('deliveryOrderRow', deliveryOrderRow);
         if (deliveryOrderRow) {
             // Scroll to the target section
             deliveryOrderRow.scrollIntoView({
@@ -2719,6 +3246,19 @@
     }
 
     function displayDeliveryOrder(data) {
+        var formData = {
+                'command': 'getJournalLog',
+                'module_id'     : editId,
+                'module' : 'SO',
+                'permissionType'   : 'action'
+            };
+            fCallback = loadJournalLog;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
+        $('#deliveryOrderListTableBody').empty();
+        $('#saveDeliveryOrder').show();
+        $("#stockOutDO").css("display", "block");
+
         deliveryID = data.deliveryOrderID;
         if(currentDO != '-')
         {
@@ -2731,7 +3271,6 @@
         
         $("#deliveryOrderID").text('(' + deliveryID + ')');
         $("#deliveryOrder").css("display", "block");
-
         if (data.existingDODetail) {
             var existingSerialNumbers = data.existingDODetail.map(function(item) {
                 return item.serialNo;
@@ -2764,6 +3303,8 @@
             }
         }
         currentDO = deliveryID;
+
+        relaodDeliveryOrderList();
     }
 
     function successSaveStockOut() {
@@ -2805,12 +3346,22 @@
         ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0)    
     })
 
+    $("#updatePickUpDelivered").click(function() {
+        
+        var formData = {
+            command     : 'updateStatusOnDelivered',
+            saleID       : editId,
+        }
+        fCallback = successDelivered;
+        ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0)    
+    })
+
     function successDelivered() {
         showMessage('Status updated to Delivered', 'success', 'Delivered', 'check', ['editSaleOrder.php', {id : editId, status : status} ]);
     }
 
     function viewReceipt() {
-        $('#viewReceiptModal').modal();
+        $('#viewReceiptModal').appendTo("body").modal('show');
     }
 
     function changeItem(n) {
@@ -2865,6 +3416,16 @@
     }
 
     function loadEdit(data, message) {
+        $('#edit').hide();
+        $('#addProductRow').hide();
+        $('#addNoteRow').hide();
+        $('#addPromoCode').hide();
+        $('#itemListSection').hide();
+        $('#deliveryOrderListSection').hide();
+        document.getElementById('billingAddressList').disabled = true;
+        document.getElementById('shippingAddressList').disabled = true;
+
+        editId = data.SaleID;
         productDetails();
         soNo = data.soNo;
 
@@ -2881,7 +3442,21 @@
         deliveryOrderList = data.deliveryOrderDetails;
         deliveryDisplayList = data.deliveryOrderDetails2;
         if(deliveryOrderList.length != 0){
-            displayDOList();
+            displayDeliveryOrderList(deliveryDisplayList);
+        }
+
+        if(data.warehouseList)
+        {
+            var buildOptionWarehouse = '<option value="">Select a Shipping Branch</option>';
+            $.each(data.warehouseList, function(k,v) {
+                buildOptionWarehouse += `
+                    <option value="${v['warehouse_location']}">${v['warehouse_location']}</option>
+                `;
+            });
+
+            var selectListBranch = $('#shippingBranch');
+            selectListBranch.empty(); 
+            selectListBranch.append(buildOptionWarehouse);
         }
 
         if(data.remark){
@@ -2890,11 +3465,25 @@
         }
 
         var buildOptionPayment = '<option value="">Select a Payment Method</option>';
-        $.each(data.paymentArray, function(k,v) {
-            buildOptionPayment += `
-                <option value="${v['name']}" style="display:${v['status']}">${v['name']}</option>
-            `;
-        });
+        if(data.paymentMethod != 'FPX')
+        {
+            $.each(data.paymentArray, function(k,v) {
+                if(v['name'] != 'FPX')
+                {
+                    buildOptionPayment += `
+                        <option value="${v['name']}" style="display:${v['status']}">${v['name']}</option>
+                    `;
+                }
+            });
+        }
+        else if(data.paymentMethod == 'FPX')
+        {
+            $.each(data.paymentArray, function(k,v) {
+                buildOptionPayment += `
+                    <option value="${v['name']}" style="display:${v['status']}">${v['name']}</option>
+                `;
+            });
+        }
 
         var selectListPayment = $('#payment_method');
         selectListPayment.empty(); 
@@ -2938,13 +3527,6 @@
         if(data){
             $('#payment_method').val(data.paymentMethod);
 
-            if(data.paymentMethod == 'FPX'){
-                document.querySelector('#payment_method option[value="FPX"]').style.display = 'block';
-            } 
-            // else {
-            //     document.querySelector('#payment_method option[value="FPX"]').style.display = 'none';
-            // }
-
             if(data.paymentMethod && data.paymentMethod != 'FPX'){
                 if(data.so_status ==  "Pending Payment Approve" || data.so_status ==  "Draft"){
                     var uploadReceiptSection = document.getElementById('uploadReceiptSection');
@@ -2955,12 +3537,7 @@
 
         buildOptionLength = 0;
         if(data.clientDetail){
-            if(data.billingAddr){
-                var billingAddr  = data.billingAddr;
-
-            }else{
-                var billingAddr  = 'Select Address';
-            }
+            var billingAddr  = 'Select Address';
 
             buildOption = `
                 <option value="">${billingAddr}</option>
@@ -2978,6 +3555,9 @@
                 var selectList = $('#billingAddressList');
                 selectList.empty(); 
                 selectList.append(buildOption);
+
+                $("#billingAddressList").val(data.billingID);
+                getBillingAddressDetail();
             }
            
             if(data.billingEmail){
@@ -2988,11 +3568,11 @@
 
         if(data.clientDetail){
 
-            if(data.shippingAddr){
-                var shippingAddr  = data.shippingAddr;
-            }else{
-                var shippingAddr  = 'Select Address';
-            }
+            // if(data.shippingAddr){
+            //     var shippingAddr  = data.shippingAddr;
+            // }else{
+            // }
+            var shippingAddr  = 'Select Address';
             
             buildOption2 = `
                 <option value="">${shippingAddr}</option>
@@ -3010,6 +3590,8 @@
                 var selectList = $('#shippingAddressList');
                 selectList.empty(); 
                 selectList.append(buildOption2);
+                $("#shippingAddressList").val(data.shippingID);
+                getShippingAddressDetail();
             }
             
             if(data.shippingEmail){
@@ -3026,14 +3608,13 @@
         }
 
         productList = data.orderDetails;
-        
+        addRow3(productList);
         $.each(productList, function (k, v) { 
             var newK = k + 1;
             if(k != 0) 
-                addRow(productList);
+                addRow3(productList);
 
             loopQuantity(k);
-
             $("#quantity" + newK).val(v['quantity']);
             $("#id" + newK).val(v['purchase_product_id']);
             $("#productType" + newK).val(v['type']);
@@ -3124,8 +3705,26 @@
             }
         });
 
+        var productSelects = document.querySelectorAll(".productSelect");
+
+        productSelects.forEach(function(select) {
+            select.disabled = true;
+        });
+
+        var quantityInputs = document.querySelectorAll(".quantityInput");
+
+        quantityInputs.forEach(function(input) {
+            input.disabled = true;
+        });
+
+        var removeBtn = document.querySelectorAll(".removeButton");
+
+        removeBtn.forEach(function(input) {
+            input.disabled = true;
+        });
+
         // Allow admin to change status & view receipt if status = Pending Payment Approve
-        if(status == "Pending Payment Approve") {
+        if(status != "Draft") {
             var receiptImg = data.receipt;
             if(receiptImg) {
                 $('#receiptImg').attr('src', receiptImg);
@@ -3141,7 +3740,7 @@
 
                 $('#viewReceiptBtn').append(`
                     <button onclick="viewReceipt()" type="submit" class="btn btn-info waves-effect waves-light m-r-10 m-b-10">
-                        View Receipt
+                        Receipt
                     </button>
                 `);
             } 
@@ -3165,6 +3764,9 @@
             $(".closeBtn").css("display", "none");
             $("#serialNumberTable").css("display", "block");
             $('input[type="checkbox"]').attr("disabled", false);
+            $('#itemListSection').show();
+            $('#editSO').hide();
+            $('#submitAddress').hide();
         }
 
         if(data.so_status == "Paid") {
@@ -3179,9 +3781,11 @@
             $("#inputSerial").removeAttr("disabled").focus();
             $("#inputSerialDO").removeAttr("disabled").focus();
             $("#addCreditNoteBtn").show();
-            $("#displayDO").css("display", "block");
+            $("#displayDO").show();
             $("#shippingMethodDiv input").removeAttr('disabled');
             $('#trackingNoDiv input').removeAttr('disabled'); 
+            $('#deliveryOrderListSection').show();
+            $('#edit').hide();
             autoInpsertShippingData();
         }
 
@@ -3190,27 +3794,84 @@
             $("#inputSerial").attr("disabled", true);
             $('#shippingMethodDiv').css("display", "none");
             $("#trackingNoDiv").css("display", "none");
-            $("#updateTrackStatus").css("display", "block");
-            $("#displayDO").css("display", "none");
+            if(data.deliveryMethod == 'pickup' && data.so_status == 'Packed')
+            {
+                $('#updateTrackStatus').hide();
+                $('#updatePickUpDelivered').show();
+            }
+            else
+            {
+                $("#updateTrackStatus").show();
+            }
             $("#addCreditNoteBtn").show();
+            $('#deliveryOrderListSection').show();
+            $('#edit').hide();
         }
 
         if(data.so_status == "Out of Delivery" || data.so_status == "Out For Delivery") {
             $("#trackingNo").removeAttr('disabled');
             $('#trackingNoDiv input').attr('disabled', true);
-            $("#updateTrackStatus").css("display", "none");
-            $("#updateDeliverStatus").css("display", "block");
+            $("#updateTrackStatus").hide();
+            $("#updateDeliverStatus").show();
             $("#addCreditNoteBtn").show();
+            $('#deliveryOrderListSection').show();
+            $('#edit').hide();
+            $('#saveDeliveryOrderModal').hide();
         }
 
         if(data.so_status == "Delivered") {
             $("#trackingNo").removeAttr('disabled');
             $('#trackingNoDiv input').attr('disabled', true);
             $("#updateDelivered").attr("disabled", "true");
-            $("#updateDeliverStatus").css("display", "none");
-            $("#updateTrackStatus").css("display", "none");
+            $("#updateDeliverStatus").hide();
+            $("#updateTrackStatus").hide();
             $("#addCreditNoteBtn").show();
+            $('#deliveryOrderListSection').show();
+            $('#edit').hide();
+            $('#saveDeliveryOrderModal').hide();
         }  
+
+        if(data.so_status == "Draft")
+        {
+            $("#quotStatusLbl").css("background-color", "#3a5999");
+            $("#quotStatusLbl").css("color", "white");
+        }
+        else if(data.so_status == "Pending Payment Approved")
+        {
+            $("#ppaStatusLbl").css("background-color", "#3a5999");
+            $("#ppaStatusLbl").css("color", "white");
+        }
+        else if(data.so_status == "Paid")
+        {
+            $("#paidStatusLbl").css("background-color", "#3a5999");
+            $("#paidStatusLbl").css("color", "white");
+        }
+        else if(data.so_status == "Order Processing")
+        {
+            $("#opStatusLbl").css("background-color", "#3a5999");
+            $("#opStatusLbl").css("color", "white");
+        }
+        else if(data.so_status == "Packed")
+        {
+            $("#packedStatusLbl").css("background-color", "#3a5999");
+            $("#packedStatusLbl").css("color", "white");
+        }
+        else if(data.so_status == "Out For Delivery")
+        {
+            $("#oudStatusLbl").css("background-color", "#3a5999");
+            $("#oudStatusLbl").css("color", "white");
+        }
+        else if(data.so_status == "Delivered")
+        {
+            $("#delivStatusLbl").css("background-color", "#3a5999");
+            $("#delivStatusLbl").css("color", "white");
+        }
+        else if(data.so_status == "Cancelled")
+        {
+            $('#cancStatusLbl').show();
+            $("#cancStatusLbl").css("background-color", "#3a5999");
+            $("#cancStatusLbl").css("color", "white");
+        }
 
         if (data.serial_number_list) {
             stockedOutArr = data.serial_number_list;
@@ -3341,8 +4002,8 @@
         // Now perform the checks on stockOutTableBody
         $('#stockOutTableBody tr').each(function() {
             var skuCode = $(this).find('[id^=skuCode]').val();
-            console.log('serialNo:', serialNo);
-            console.log('skuCode:', skuCode);
+            // console.log('serialNo:', serialNo);
+            // console.log('skuCode:', skuCode);
             if (serialNo.includes(skuCode)) {
                 var stockOutSerialNo = $(this).find('[id^=stockOutSerialNo]');
                 var insertedSkuAry = serialNo.split("-");
@@ -3410,6 +4071,91 @@
         }
     }
 
+    function removeUrlModalDO(e, evt) {
+        var url = $(e).val();
+        var serialNo = url.replace(defaultSNUrl, '');
+        var index = serialNo.lastIndexOf('GT');
+        serialNo = serialNo.substring(index);
+        var html_SO = "";
+        var targetBarcode = $("#inputSerialDO").val();
+        var productQuantity = 0;
+        $(e).val(serialNo);
+        var appendedInputID = "";
+        serialNo = serialNo.trim(); // remove space from the serial number input
+        var combinedData = combineQuantities(serialNumberList);
+        $('#deliveryOrderModalTableBody').empty();
+
+        // Now perform the checks on stockOutTableBody
+        $('#stockOutTableBody tr').each(function() {
+            var skuCode = $(this).find('[id^=skuCode]').val();
+            // console.log('serialNo:', serialNo);
+            // console.log('skuCode:', skuCode);
+            if (serialNo.includes(skuCode)) {
+                var stockOutSerialNo = $(this).find('[id^=stockOutSerialNo]');
+                var insertedSkuAry = serialNo.split("-");
+                if (stockOutSerialNo.val() == skuCode && skuCode != "" && insertedSkuAry.length > 2 && insertedSkuAry[2].length > 2 && !$("#stockOutMystery").is(":checked")) {
+                    if (!usedSerialNo.includes(serialNo)) {
+                        usedSerialNo.push(serialNo);
+                        stockOutSerialNo.val(serialNo);
+                        $("#"+appendedInputID).val(serialNo);
+                        $(this).find('[id^=skuCode]').val(serialNo);                        
+                        enteredBarcodes.push(serialNo);
+                        var productName = $(this).find('[id^=item_name]').html();
+                        var productID = $(this).find('[id^=stockOutSerialID]').val();
+                        var soItemID = $(this).find('[id^=stockOutSerialNo]').data('id');
+
+                        storeDOSerialItemList.push({
+                            serialNo: serialNo,
+                            productName: productName,
+                            productID: productID,
+                            soItemID: soItemID
+                        });
+                        
+                        deliverOrderTableRow++;
+                        return false;
+                    }
+                }
+                if ($("#stockOutMystery").is(":checked")) {
+                    var skuCode = $(this).find('[id^=skuCode]').val();
+                    var insertedSkuAry = serialNo.split("-");
+                    if (skuCode == "" && insertedSkuAry.length > 2 && insertedSkuAry[2].length > 2) {
+                        if (!usedSerialNo.includes(serialNo)) {
+                            usedSerialNo.push(serialNo);
+                            stockOutSerialNo.val(serialNo);
+                            $("#"+appendedInputID).val(serialNo);
+                            $(this).find('[id^=skuCode]').val(serialNo);
+
+                            var productName = $(this).find('[id^=item_name]').html();
+                            var productID = $(this).find('[id^=stockOutSerialID]').val();
+                            var soItemID = $(this).find('[id^=stockOutSerialNo]').data('id');
+
+                            storeDOSerialItemList.push({
+                                serialNo: serialNo,
+                                productName: productName,
+                                productID: productID,
+                                soItemID: soItemID
+                            });
+
+                            enteredBarcodes.push(serialNo);
+
+                            deliverOrderTableRow++;
+                            return false;
+                        }
+                    }
+                }
+            }  
+        });
+        for (var i = 0; i < storeDOSerialItemList.length; i++) {
+            var serialNo = storeDOSerialItemList[i].serialNo;
+            var productName = storeDOSerialItemList[i].productName;
+            var productID = storeDOSerialItemList[i].productID;
+            var skuCode = storeDOSerialItemList[i].skuCode || ''; 
+            var soItemID = storeDOSerialItemList[i].soItemID || ''; 
+            var rowIndex = i + 1;
+
+            generateDOTableModalRow(serialNo, productName, productID, skuCode, soItemID, rowIndex);
+        }
+    }
 
     $('#canvasMessage').on('hidden.bs.modal', function() {
         if($(this).hasClass('serialExist')) {
@@ -3523,6 +4269,40 @@
     }
 
     function displayAddressDetail(data){
+        var billingOption = $('#billingAddressList').val();
+        var shippingOption = $('#shippingAddressList').val();
+        $("#customerName").val('');
+        $("#mobileNumber").val('');
+        $("#addr1").val('');
+        $("#addr2").val('');
+        $("#city").val('');
+        $("#stateList").val('');
+        $("#zipCode").val('');
+        $("#countryList").val('');
+        if(billingOption == '')
+        {
+            billingName = '';
+            billingMobileNo = '';
+            billingAddr1 = '';
+            billingAddr2 = '';
+            billingCity = '';
+            billingState = '';
+            billingZip = '';
+            billingCountry = '';
+        }
+        if(shippingOption == '')
+        {
+            shippingName = '';
+            shippingMobileNo = '';
+            shippingAddr1 = '';
+            shippingAddr2 = '';
+            shippingCity = '';
+            shippingState = '';
+            shippingZip = '';
+            shippingCountry = '';
+        }
+        $("#editAddress").val('');
+
         var    shippingAddressList       = $("#shippingAddressList").val();
         var    billingAddressList        = $("#billingAddressList").val();
        if(data){
@@ -3534,6 +4314,15 @@
                     $("#billingEmail").val('');
                 }
                 $("#shippingPostCode").val(data.addressList.post_code);
+
+                billingName     = data.addressList.name;
+                billingMobileNo = data.addressList.phone;
+                billingAddr1    = data.addressList.address;
+                billingAddr2    = data.addressList.address_2;
+                billingCity     = data.addressList.city;
+                billingState    = data.addressList.state_id;
+                billingZip      = data.addressList.post_code;
+                billingCountry  = data.addressList.country_id;
             }else if(data.address_type == 'shipping'){
                 $("#shippingEmail").val(data.addressList.email);
                 // $("#shippingRemark").val(data.addressList.remark);
@@ -3542,13 +4331,35 @@
                 if(!data.addressList.email){
                     $("#shippingEmail").val('');
                 }
+                shippingName     = data.addressList.name;
+                shippingMobileNo = data.addressList.phone;
+                shippingAddr1    = data.addressList.address;
+                shippingAddr2    = data.addressList.address_2;
+                shippingCity     = data.addressList.city;
+                shippingState    = data.addressList.state_id;
+                shippingZip      = data.addressList.post_code;
+                shippingCountry  = data.addressList.country_id;
             }
+
+            $("#customerName").val(data.addressList.name);
+            $("#mobileNumber").val(data.addressList.phone);
+            $("#addr1").val(data.addressList.address);
+            $("#addr2").val(data.addressList.address_2);
+            $("#city").val(data.addressList.city);
+            $("#stateList").val(data.addressList.state_id);
+            $("#zipCode").val(data.addressList.post_code);
+            var selectedCountryId = data.addressList.country_id;
+            $("#countryList").val(selectedCountryId);
+            $("#editAddress").val('edit');
+       }
+       else
+       {
+        $("#editAddress").val('');
        }
     }
 
     function getShippingAddressDetail(){
         var selectedValue = $('#shippingAddressList').val();
-
         var formData = {
             command         : 'getCustomerDetail',
             addressID       : selectedValue,
@@ -3558,7 +4369,7 @@
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0, "", "");            
     }
 
-    function getCustomerDetail(){
+    function getCustomerDetail(billingID, shippingID){
         $('.errorSpan').empty();
         $('#errorInput').hide();
 
@@ -3569,11 +4380,12 @@
             command         : 'getCustomerDetail',
             mobileNo        : mobileNo,
         }
-        fCallback = displayUserDetail;
-        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0, "", "");            
+        ajaxSend(url, formData, method, function(data, message) {
+                displayUserDetail(data, message, billingID, shippingID);
+                }, debug, bypassBlocking, bypassLoading, 0);
     }
 
-    function displayUserDetail(data){
+    function displayUserDetail(data, message, billingID, shippingID){
         if(!data){
             $('#name').val('');
             $('#mobileNo').val('');
@@ -3633,6 +4445,11 @@
                 selectList.append(buildOption2);
             }
         }
+
+        $("#billingAddressList").val(billingID);
+        getBillingAddressDetail();
+        $("#shippingAddressList").val(shippingID);
+        getShippingAddressDetail();
     }
 
     function cancelDORow(n) {
@@ -3647,7 +4464,6 @@
                 sku = serialNumberList[i]["barcode"];
             }
         }
-        
         $("#skuCode"+soItemID).val(sku);
 
         usedSerialNo = usedSerialNo.filter(e => e !== sn); // will return ['A', 'C']
@@ -3694,7 +4510,6 @@
     function getDeliveryFee(id) {
         $('.errorSpan').empty();
         $('#errorInput').hide();
-
         // store delivery method id 
         var select_id       = id;
         var getSelectNameID = document.getElementById("serviceSelect" + select_id);
@@ -3759,6 +4574,8 @@
     });
 
     $('#whalloSubmitBtn').click(function() {
+        $('#soStockOutListModal').modal('hide');
+        $('#doLogisticsModal').modal('hide');
         
         var shipperBranch = $('input[name=shipperBranch]').val();
 
@@ -3966,7 +4783,7 @@
                 if(snlBarcode.includes(barcode)){
                     var tableElement = $('#stockOutTable').find('table');
                     tableElement.removeClass('table-striped');
-                    $(this).css('background-color', '#90EE90');
+                    // $(this).css('background-color', '#90EE90');
                 }
             });
         });
@@ -3994,7 +4811,9 @@
         var formData = {
             command     : 'cancelParcelhub',
             shipment_id : trackingNo,
+            saleID      : editId,
         };
+        $('#soStockOutListModal').modal('hide');
         fCallback = cancelAirwayBill;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
     }
@@ -4002,6 +4821,813 @@
     function cancelAirwayBill(data, message) {    
         showMessage('Cancelled Airway Bill', 'success', 'Sale Order Updated', 'check');        
         location.reload();
+    }
+
+    function addRow2(action, data) {
+        if(storeProductList.length > 0)
+        {
+            var wrapper = `
+                <tr>
+                    <td>
+                        <select id="productSelect${wrapperLength}" class="form-control productSelect" required>
+                        </select>
+                    </td>
+                    <td>
+                        <input id="quantity${wrapperLength}" type="number" oninput="calcTotalCost(${wrapperLength})" class="form-control quantityInput" value="1" placeholder="1" onkeypress="return isNumberKey(event)" required/>
+                    </td>
+                    <td>
+                        <input id="cost${wrapperLength}" type="number" value="0.00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control costInput" value="0.00" required readonly/>
+                    </td>
+                    <td>
+                        <input id="total${wrapperLength}" type="number" value="0.00" class="form-control totalInput" readonly/>
+                    </td>
+                    <td>
+                        <button class="removeButton" onclick="removeRow(this)"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+    
+            $("#productTable tbody").append(wrapper);
+    
+            var selectElement = $('#productSelect' + wrapperLength);
+    
+            // Initialize Select2
+            selectElement.select2({
+                dropdownAutoWidth: true,
+                templateResult: newFormatState,
+                templateSelection: newFormatState,
+            });
+    
+            // Populate options
+            if(action == 'add')
+            {
+                var option =  `<option>Please select product</option>`;
+                selectElement.append(option);
+                storeProductList.forEach(function (product) {
+                    var option = `<option value="${product.id}" data-cost="${product.sale_price}">${product.name}</option>`;
+                    selectElement.append(option);
+                });
+            }
+            // Event listener for select change
+            selectElement.on('change', function () {
+                var selectedOption = $(this).find(':selected');
+                var productId = selectedOption.val();
+                var productCost = selectedOption.data('cost');
+                var costInput = $(this).closest('tr').find('.costInput');
+                var quantityInput = parseInt($(this).closest('tr').find('.quantityInput').val());
+                var totalInput = $(this).closest('tr').find('.totalInput');
+                var totalCost = quantityInput * productCost;
+                var formattedTotalCost = totalCost.toFixed(2);
+                var productName = selectedOption.text();
+                selectElement.data('productName', productName);
+                totalInput.val(formattedTotalCost);
+                costInput.val(productCost);
+                $(this).data('productid', productId);
+                selectedOption.val(productId);
+                countSubtotal();
+            });
+    
+            if (action == 'add') {
+                selectElement.data('action', 'add');
+            }
+    
+            var firstOption = selectElement.find('option:first');
+            var firstOptionValue = firstOption.val();
+            selectElement.val(firstOptionValue).trigger('change');
+    
+            loopSelect(wrapperLength);
+    
+            totalLoop.push(wrapperLength);
+            wrapperLength++;
+        }
+    }
+
+    function addNoteRow2(data) {
+        // if(productList.length > 0)
+        // {
+        var wrapper = `
+            <tr>
+                <td>
+                    <input id="noteProductInput${(wrapperLength)}" type="text" class="form-control quantityInput" style="width: 100%;" placeholder="Enter your note here...">
+                    <input id="productType${(wrapperLength)}" class="form-control hide" value = "note">
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <button class="removeButton" onclick="removeRow(this)"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        `;
+
+        $("#productTable tbody").append(wrapper);
+
+        var selectElement = $('#productSelect' + wrapperLength);
+
+        // Initialize Select2
+        selectElement.select2({
+            dropdownAutoWidth: true,
+            templateResult: newFormatState,
+            templateSelection: newFormatState,
+        });
+
+        productArray.push(wrapperLength);
+        totalLoop.push(wrapperLength);
+        wrapperLength++;
+        // }
+    }
+
+    function calcTotalCost(id) {
+        let a = $("#quantity"+id).val();
+        let b = $("#cost"+id).val();
+
+        b = parseFloat(b);
+
+        let c = a * b;
+
+        $("#total"+id).val(c.toFixed(2));
+
+        calcPackagePrice();
+        countSubtotal();
+    }
+
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+    function calcPackagePrice() {
+        var total_sum = 0;
+
+        $('.total').each(function (){
+            total_sum += parseFloat($(this).val());
+        })
+
+        $("#subtotal").text(total_sum.toFixed(2)); 
+        goCalc = false;
+        $("#subtotal").trigger("change");
+    }
+
+    function removeRow(button) {
+        var tableBody = document.getElementById("productTable").getElementsByTagName('tbody')[0];
+        var row = button.closest('tr'); 
+
+        var productSelect = row.querySelector(".productSelect");
+        if(productSelect)
+        {
+            var productId = productSelect.value;
+        }
+        tableBody.removeChild(row);
+
+        countSubtotal();
+    }
+
+    function applyPromoCode() {
+        if ($(this).prop('readonly') || $(this).is(':disabled')) {
+            return;
+        }
+
+        $('#applyPromoCode').appendTo("body").modal('show');
+    }
+
+    function registerPayment() {
+        if ($(this).prop('readonly') || $(this).is(':disabled')) {
+            return;
+        }
+
+        $('#registerPaymentModal').appendTo("body").modal('show');
+    }
+
+    $("#submitAddress").click(function() {
+        $('#customerNameInputError').text('');
+        $('#customerMobileInputError').text('');
+        $('#customerAddr1InputError').text('');
+        $('#customerAddr2InputError').text('');
+        $('#customerCityInputError').text('');
+        $('#customerZipInputError').text('');
+        var customerNameInput = document.getElementById('customerName').value;
+        var customerMobileInput = document.getElementById('mobileNumber').value;
+        var customerAddr1Input = document.getElementById('addr1').value;
+        var customerAddr2Input = document.getElementById('addr2').value;
+        var customerCityInput = document.getElementById('city').value;
+        var customerZipInput = document.getElementById('zipCode').value;
+        if (customerNameInput.trim() === '') {
+            document.getElementById('customerNameInputError').innerText = 'Please Enter Name';
+            return;
+        }
+        else if(customerMobileInput.trim() === '') {
+            document.getElementById('customerMobileInputError').innerText = 'Please Enter Mobile Number';
+            return;
+        }
+        else if(customerAddr1Input.trim() === '') {
+            document.getElementById('customerAddr1InputError').innerText = 'Please Enter Address Line 1';
+            return;
+        }
+        else if(customerAddr2Input.trim() === '') {
+            document.getElementById('customerAddr2InputError').innerText = 'Please Enter Address Line 2';
+            return;
+        }
+        else if(customerCityInput.trim() === '') {
+            document.getElementById('customerCityInputError').innerText = 'Please Enter City';
+            return;
+        }
+        else if(customerZipInput.trim() === '') {
+            document.getElementById('customerZipInputError').innerText = 'Please Enter ZIP Code';
+            return;
+        }
+
+        var editAddress = $("#editAddress").val();
+        if(editAddress != 'edit')
+        {
+            var addrName         = $("#customerName").val();
+            var addrPhone        = $("#mobileNumber").val();
+            var addrAddress      = $("#addr1").val();
+            var addrAddressLine2 = $("#addr2").val();
+            var addrCity         = $("#city").val();
+            var addrState        = $("#stateList").val();
+            var addrPostCode     = $("#zipCode").val();
+            var addrCountry      = $("#countryList").val();
+            var addressType      = $("#addressType").val();
+
+            var formData = {
+                command             : "insertMemberAddress",
+                billingName         : addrName,
+                billingPhone        : addrPhone,
+                billingAddress      : addrAddress,
+                billingAddressLine2 : addrAddressLine2,
+                billingPostCode     : addrPostCode,
+                billingCity         : addrCity,
+                billingState        : addrState,
+                billingCountry      : addrCountry,
+                clientID            : clientID,
+                addressType         : addressType,
+            }
+            var fCallback = insertAddress;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        }
+        else
+        {
+            var addrName         = $("#customerName").val();
+            var addrPhone        = $("#mobileNumber").val();
+            var addrAddress      = $("#addr1").val();
+            var addrAddressLine2 = $("#addr2").val();
+            var addrCity         = $("#city").val();
+            var addrState        = $("#stateList").val();
+            var addrPostCode     = $("#zipCode").val();
+            var addrCountry      = $("#countryList").val();
+            var addressType      = $("#addressType").val();
+            if(addressType == 'billing')
+            {
+                var addressId = $('#billingAddressList').val();
+            }
+            else
+            {
+                var addressId = $('#shippingAddressList').val();
+            }
+            var formData = {
+                command             : "editAddress",
+                id                  : addressId,
+                fullName            : addrName,
+                phone               : addrPhone,
+                address             : addrAddress,
+                address2            : addrAddressLine2,
+                postalCodeID        : addrPostCode,
+                cityID              : addrCity,
+                stateID             : addrState,
+                countryID           : addrCountry,
+                clientID            : clientID,
+                addressType         : addressType,
+                saleID              : editId,
+            }
+            var fCallback = updateAddress;
+            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        }
+    })
+
+    $("#submitPromoCode").click(function() {
+        $('#applyPromoCode').modal('hide');
+    })
+
+    function addRow3(data){
+        if(data)
+        {
+            var wrapper = `
+                <tr>
+                    <td>
+                        <select id="productSelect${(wrapperLength)}" onchange="loopSelect(${(wrapperLength)});" class="form-control productSelect" required>                                                                 
+                        </select>
+                        <input id="noteProductInput${(wrapperLength)}" class="form-control" style="display: none;">
+                        <input id="productType${(wrapperLength)}" class="form-control hide">
+                        <select id="serviceSelect${(wrapperLength)}" onchange="getDeliveryFee(${(wrapperLength)});" class="form-control" style="display: none;" required>  
+                        </select>       
+                    </td>     
+                    <td>
+                        <input id="quantity${(wrapperLength)}" type="number" oninput="loopQuantity(${(wrapperLength)})" class="form-control quantityInput" value="1" placeholder="1" required/>
+                    </td>     
+                    <td>
+                        <input id="cost${(wrapperLength)}" type="number" value="0.00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control costInput" value="0.00" required readonly/>
+                    </td>     
+                    <td>
+                        <input id="total${(wrapperLength)}" type="number" value="0.00" class="form-control totalInput" readonly/>
+                    </td>     
+                    <td>
+                        <button class="removeButton" onclick="removeRow(this)"><i class="fa fa-trash"></i></button>
+                    </td>  
+                </tr>
+            `;
+
+            if (data[countNote].type === "note") {
+                // Hide elements when type is "note"
+                wrapper = $(wrapper).find(".quantityInput, .costInput, .totalInput").hide().end().prop("outerHTML");
+            }
+            countNote++;
+            // Append wrapper to the DOM
+            $("#productTable tbody").append(wrapper);
+
+        }
+        else
+        {
+            var wrapper = `
+                <tr>
+                    <td>
+                        <select id="productSelect${(wrapperLength)}" onchange="loopSelect(${(wrapperLength)});" class="form-control productSelect" required>                                                                 
+                        </select>
+                        <input id="noteProductInput${(wrapperLength)}" class="form-control" style="display: none;">
+                        <input id="productType${(wrapperLength)}" class="form-control hide">
+                        <select id="serviceSelect${(wrapperLength)}" onchange="getDeliveryFee(${(wrapperLength)});" class="form-control" style="display: none;" required>  
+                        </select>                                                               
+                    </td>
+                    <td>
+                        <input id="quantity${(wrapperLength)}" type="number" oninput="loopQuantity(${(wrapperLength)})" class="form-control quantityInput" value="1" placeholder="1" required/>
+                    </td>
+                    <td>
+                        <input id="cost${(wrapperLength)}" type="number" value="0.00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control costInput" value="0.00" required readonly/>
+                    </td>
+                    <td>
+                        <input id="total${(wrapperLength)}" type="number" value="0.00" class="form-control totalInput" readonly/>
+                    </td>
+                    <td>
+                        <button class="removeButton" onclick="removeRow(this)"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+            // Append wrapper to the DOM
+            $("#productTable tbody").append(wrapper);
+            $('#productSelect' + wrapperLength).select2({
+                dropdownAutoWidth: true,
+                templateResult: newFormatState,
+                templateSelection: newFormatState,
+            });
+            $("#productSelect"+wrapperLength).html(html);
+        }
+
+
+        productArray.push(wrapperLength);
+        totalLoop.push(wrapperLength);
+        wrapperLength++;
+    }
+
+    $("#backBtn").click(function() {
+        $.redirect("purchaseOrder.php");
+    })
+
+    $('#editSO').click(function() {
+        $("#editSO").hide();
+        $('#edit').show();
+        $('#addProductRow').show();
+        $('#addNoteRow').show();
+        $('#addPromoCode').show();
+
+        document.getElementById('billingAddressList').disabled = false;
+        document.getElementById('shippingAddressList').disabled = false;
+
+        var productSelects = document.querySelectorAll(".productSelect");
+
+        productSelects.forEach(function(select) {
+            select.disabled = false;
+        });
+
+        var quantityInputs = document.querySelectorAll(".quantityInput");
+
+        quantityInputs.forEach(function(input) {
+            input.disabled = false;
+        });
+
+        var removeBtn = document.querySelectorAll(".removeButton");
+
+        removeBtn.forEach(function(input) {
+            input.disabled = false;
+        });
+    })
+
+    $("#discard").click(function() {
+        $.redirect("editSaleOrder.php",{id: editId});
+    })
+
+    function displayDeliveryOrderList(data) {
+        $('#deliveryOrderListTableBody').empty();
+        serialNumberList = data;
+        var html_SO = "";
+        var k2 = 1;
+        
+        $.each(data, function (k, v) {
+            // for (var w = 0; w < data.length; w++) {
+            html_SO += `
+                <tr>
+                    <td>${k2}</td>
+                    <td id="doCreatedAt${k2}">${v['created_at']}</td>
+                    <td id="doDelivery${k2}">${v['delivery_partner']}</td>
+                    <td id="doTrackingNo${k2}">${v['tracking_number']}</td>
+                    <td id="doStatus${k2}">${v['status']}</td>
+                    <td>
+                        <button class="btn btn-icon waves-effect waves-light  changeItemBtn" style=""
+                                onclick="openStockOutList('${v['do_no']}',this)" data-id="${v['do_no']}"> 
+                            <i class="fa fa-edit" style="color: blue;"></i>
+                        </button>
+                    </td>
+                <tr>
+            `;
+            k2++;
+            // }
+        })
+
+        $('#deliveryOrderListTableBody').append(html_SO);
+    }
+
+    function displayFileName(n) {
+        var dFileName = $("#fileName");
+
+        if (n.files && n.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                dFileName.text(n.files[0]["name"]);
+
+                const file = n.files[0];
+
+                $("#storeFileData").val(reader["result"]);
+                $("#storeFileName").val(n.files[0]["name"]);
+                $("#storeFileSize").val(n.files[0]["size"]);
+                $("#storeFileUploadType").val(n.files[0]["type"]);
+
+                $("#viewImg").css('display', 'inline-block');
+                $("#deleteImg").css('display', 'inline-block');
+                $("#fileNotUploaded").hide()
+                $("#thumbnailImg").attr('src', $("#storeFileData").val());
+            };
+
+            reader.readAsDataURL(n.files[0]);
+        }
+    }
+
+    function showImg() {
+        $("#modalImg").attr('style','display: block');
+        var imageSrc = $("#storeFileData").val();
+        $("#modalImg").attr('src', imageSrc);
+        $("#modalVideo").attr('style','display:none');
+        $('#showImage').appendTo("body").modal('show');
+    }
+
+    function deleteImg() {
+        $("#fileUpload").val("");
+        $("#fileName").text("No File Uploaded");
+        $("#receiptData").val("");
+        $("#receiptName").val("");
+        $("#receiptType").val("");
+        $("#uploadReceipt").val("");
+
+        $("#viewImg").hide();
+        $("#deleteImg").hide();
+        $("#fileNotUploaded").show()
+        $("#thumbnailImg").attr('src', "");
+    }
+
+    function openStockOutList(doNo, rowData) 
+    {
+        var formData = {
+            command             : "insertDeliveryOrder",
+            sale_id             : editId,
+            do_no               : doNo,
+            type                : 'checkDO',
+        };
+        var fCallback = displayDeliveryOrderModal;
+        ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        $('#soStockOutListModal').appendTo("body").modal('show');
+    }
+
+    function displayDeliveryOrderModal(data) {
+        $('#doList').empty();
+        for(let k = 0; k < deliveryDisplayList.length; k++)
+        {
+            if(deliveryDisplayList[k].do_no == data.deliveryOrderID)
+            {
+                displayDOList(deliveryDisplayList[k]);
+            }
+        }
+        if(data.existingDO)
+        {
+            if(data.existingDO.status != 'Draft')
+            {
+                $('#selectDelivery').hide();
+            }
+        }
+        $("#parcelWeight").removeAttr("disabled").focus();
+        $("#parcelHeight").removeAttr("disabled").focus();
+        $("#parcelWidth").removeAttr("disabled").focus();
+        $("#parcelLength").removeAttr("disabled").focus();
+        $("#receiverName").removeAttr("disabled").focus();
+        $("#receiverPhone").removeAttr("disabled").focus();
+        $("#receiverAddress1").removeAttr("disabled").focus();
+        $("#receiverAddress2").removeAttr("disabled").focus();
+        $("#receiverCity").removeAttr("disabled").focus();
+        $("#receiverPostCode").removeAttr("disabled").focus();
+        $("#receiverState").removeAttr("disabled").focus();
+        $("#receiverCountryCode").removeAttr("disabled").focus();
+        $("#shippingBranch").removeAttr("disabled").focus();
+        $("#remark").removeAttr("disabled").focus();
+
+
+        $("#inputSerialModalDO").removeAttr("disabled").focus();
+        $("#stockOutModalDO").css("display", "block");
+
+        deliveryID = data.deliveryOrderID;
+        if(currentDO != '-')
+        {
+            if(deliveryID != currentDO)
+            {
+                currentDO = deliveryID;
+                $('#deliveryOrderModalTableBody').empty(); // clear DO table
+            }
+        }
+        
+        $("#deliveryOrderID").text('(' + deliveryID + ')');
+        $("#deliveryOrder").css("display", "block");
+        if (data.existingDODetail) {
+            var existingSerialNumbers = data.existingDODetail.map(function(item) {
+                return item.serialNo;
+            });
+
+            storeDOSerialItemList = storeDOSerialItemList.filter(function(item) {
+                return existingSerialNumbers.includes(item.serialNo);
+            });
+            for (var i = 0; i < data.existingDODetail.length; i++) {
+                var serialNo = data.existingDODetail[i].serialNo;
+                var productName = data.existingDODetail[i].productName;
+                var productID = data.existingDODetail[i].productID;
+                var skuCode = data.existingDODetail[i].skuCode || '';
+                var soItemID = data.existingDODetail[i].soItemID || '';
+                var rowIndex = i + 1;
+
+                // Check if an item with the same serialNo or soItemID already exists
+                var isDuplicate = storeDOSerialItemList.some(function(item) {
+                    return item.serialNo === serialNo || item.soItemID === soItemID;
+                });
+                if (!isDuplicate) {
+                    storeDOSerialItemList.push({
+                        serialNo: serialNo,
+                        productName: productName,
+                        productID: productID,
+                        soItemID: soItemID
+                    });
+                    generateDOTableModalRow(serialNo, productName, productID, skuCode, soItemID, rowIndex);
+                }
+            }
+        }
+        currentDO = deliveryID;
+    }
+
+    function generateDOTableModalRow(serialNo, productName, productID, skuCode, soItemID, rowIndex) {
+        var formattedSkuCode = skuCode ? skuCode.replace('N', '') : ''; 
+        var html_SO = `
+            <tr>
+                <td>${rowIndex}</td>
+                <td id="itemNameDO${rowIndex}">${productName}</td>
+                <td>
+                    <input class="form-control deliveryOrderInput" type="text" id="deliveryOrderSerialNo${rowIndex}" product-id="${productID}" onfocus="serialCheckingDO(this)" oninput="inputSerialCheckingDO(this)" value="${serialNo}" data-id="${soItemID}" disabled>
+                    <input class="form-control hide" type="text" id="deliveryOrderSerialID${rowIndex}" value="${productID}">
+                    <input class="form-control hide" type="text" id="deliveryOrderSkuCode${rowIndex}" value="${formattedSkuCode}">
+        `;
+
+        html_SO += `
+                <input class="form-control additionalClass" type="text" id="deliveryOrderProductType${rowIndex}" value="product" style="display: none;">
+        
+            </td>
+            <td>
+                <a href="javascript:void(0);" class="btn btn-danger removeBtn" data-id="${soItemID}" data-sku="${formattedSkuCode}" data-rowIndex="${rowIndex}" data-sn="${serialNo}" onclick="cancelDORow(this)">&times;</a>
+            </td>
+        </tr>
+        `;
+
+        $('#deliveryOrderModalTableBody').append(html_SO);
+        return html_SO;
+    }
+
+    $("#selectDelivery").click(function() {
+        // $('#soStockOutListModal').modal('hide');
+        $('#doLogisticsModal').appendTo("body").modal('show');
+    })
+
+    function loadJournalLog(data, message) {
+        if(data.journal_list){
+
+            $("#journalSection").empty();
+
+            var html = '';
+            $.each(data.journal_list, function (k, v) {
+                html += '<div class="card-box m-t-10" style="background-color: #eee; color: black;">';
+                html += '<div class="customFont">'+v['action_user']+'</div>';
+                html += '<div>'+v['action_msg']+'</div>';
+
+                if(v['msg']){
+                    html += '<div><ul>';
+                    $.each(v['msg'], function (k2, v2) {
+                        html += '<li>'+v2+'</li>';
+                    });
+                    html += '</ul></div>';
+                }
+
+                html += '</div>';
+            });
+
+            $("#journalSection").append(html);
+
+        }
+    }
+
+    function handleFileUpload(file, action) {
+        console.log('handle file', file);
+        file.forEach(function(file, index) {
+            var formData = {
+                command  : "awsGeneratePreSignedUrl",
+                action   : "upload",
+                mimeType : file.file.type,
+            };
+            ajaxSend(url, formData, method, function(data, message) {
+                verificationImgVideoLink(data, message, file, action);  // Pass the file to the function
+            }, debug, bypassBlocking, bypassLoading, 0);
+        });
+    }
+
+    function verificationImgVideoLink(data, message, file, action){
+        const presignedUrl = data;
+        $.ajax({
+            type: 'PUT',
+            url: presignedUrl,
+            contentType: 'binary/octet-stream',
+            processData: false,
+            crossDomain : true,
+            data: file.file,
+            headers: {
+                'x-amz-acl': 'public-read',
+                'Access-Control-Allow-Headers' : 'Content-Type, Authorization',
+                'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE',
+            },
+            })
+            .success(function() {
+            })
+            .error(function() {
+        })
+
+        const indexOfDO = presignedUrl.indexOf('?');
+        const extractedUrl = presignedUrl.substring(0, indexOfDO);
+        console.log('file', file);
+        if (file.file.type.startsWith('image/'))
+        {
+            if(file.imgName && extractedUrl && file.uploadType)
+            {
+                uploadImage.push({
+                    imgName : file.imgName,
+                    imgData : extractedUrl,
+                    uploadType : file.uploadType,
+                });
+            }
+            imgUploadFinishFile.push({
+                file : file.file,
+            })
+        }
+  
+        if(imgFileDataArray.length == imgUploadFinishFile.length)
+        {
+            console.log('start process');
+
+            var productSet= [];
+            var serviceSet  = [];
+
+            var    payment_method      = $("#payment_method").val();
+            var    billingAddr         = $("#billingID").val();
+            var    shippingAddr        = $("#shippingID").val();
+
+            for (var v of productArray) {
+                var name = $('option:selected', "#productSelect" + v).text();
+                var cost = $('#cost' + v).val();
+                var quantity = $('#quantity' + v).val();
+
+                if ($("#productType" + v).val() == "shipping_fee") {
+                    var product_id = "0";
+                    var name = $("#serviceSelect" + v).val();
+                    var delivery_method = $("#serviceSelect" + v).val();
+                } else if ($("#productType" + v).val() == "promo_code") {
+                    var product_id = "0";
+                    var name = $("#noteProductInput" + v).val();
+                }  else if ($("#productType" + v).val() == "redeem_point") {
+                    var product_id = "0";
+                    var name = $("#noteProductInput" + v).val();
+                } 
+                else {
+                    var product_id = $('option:selected', "#productSelect" + v).val();
+                }
+
+                var type = $("#productType" + v).val();
+                var id = $('#id' + v).val();
+                var action = $('#action' + v).val();
+
+                if(type == 'note')
+                {
+                    product_id = '0'; 
+                    var name = $("#noteProductInput" + v).val();
+                }
+
+                if ($('#action' + v).val() == "add" && $('#id' + v).val() != "") {
+                    action = "";
+                }
+                if ($('#action' + v).val() == "add" && $('#id' + v).val() == "") {
+                    action = "add";
+                }
+
+                var perProduct = {
+                    product_id: product_id,
+                    name: name,
+                    cost: cost,
+                    quantity: quantity,
+                    action: action,
+                    type  : type,
+                };
+
+                if(perProduct['action'] != "delete"){
+                    productSet.push(perProduct);
+                }
+            } 
+
+            for (var i of serviceArray) {
+                var name = $('option:selected', "#serviceSelect"+i).val();
+                var cost = $('#cost' + i).val();
+                var quantity = $('#quantity' + i).val();
+
+                if($("#productType" + i).val() == "note") {
+                    var product_id = "0";
+                    var name = $("#noteProductInput"+i).val();
+                } else {
+                    var product_id = $('option:selected', "#serviceSelect"+i).val();
+                }
+
+                var id = $('#id'+i).val();
+                action = $('#action'+i).val();
+
+                if($('#action'+i).val() == "add" && $('#id'+i).val() != "") {
+                    action = "";
+                }
+                if($('#action'+i).val() == "add" && $('#id'+i).val() == "") {
+                    action = "add";
+                }
+
+                var perService = {
+                    product_id : product_id,
+                    name : name,
+                    cost :cost,
+                    quantity: quantity,
+                    action: action,
+                }
+
+                if(perService['action'] != "delete"){
+                    serviceSet.push(perService);
+                }
+            }
+
+            var formData = {
+                command             : "editOrderDetails",
+                orderDetailArray    : productSet,
+                orderServiceArray   : serviceSet,
+                saleID              : editId,
+                shipping_fee        : $("#shipping_fee").val(),
+                payment_amount      : $("#grandtotal").val(),
+                payment_tax         : $("#payment_tax").val(),
+                payment_method      : payment_method,
+                delivery_method     : delivery_method,
+                status              : 'Paid',
+                billingAddr         : $("#billingID").val(),
+                shippingAddr        : $("#shippingID").val(),
+                uploadImage         : uploadImage,
+                promoCode           : $("#promoCode").val(),
+                shippingPostCode    : $("#shippingPostCode").val(),
+            };
+            var fCallback = sendEdit;
+            ajaxSend(url2, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+        }
     }
 
 </script>

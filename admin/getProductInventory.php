@@ -25,150 +25,76 @@
             <!-- Start content -->
             <div class="content">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                <div class="panel panel-default bx-shadow-none">
-                                    <div class="panel-heading" role="tab" id="headingOne">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapse">
-                                                <?php echo $translations['A00051'][$language]; /* Search */?>
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                        <div class="panel-body">
-                                            <div id="searchMsg" class="text-center alert" style="display: none;"></div>
-                                            <form id="searchForm" role="form">
-                                                <div class="col-sm-12 px-0">
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            SKU Code
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="code" dataType="text">
-                                                    </div>
-
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            Product Name
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="productName" dataType="text">
-                                                    </div>
-
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            Vendor Name
-                                                        </label>
-                                                        <input id="vendorName" type="text" class="form-control" dataName="vendorName" dataType="text">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-12 px-0">
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            Category
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="category" dataType="text">
-                                                    </div>
-
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label" for="" data-th="">
-                                                             Publish Status
-                                                        </label>
-                                                        <select class="form-control" dataName="publishStatus" dataType="select">
-                                                            <option value="">
-                                                                <?php echo $translations['A00055'][$language]; /* All */?>
-                                                            </option>
-                                                            <option value="yes" selected>
-                                                                Yes
-                                                            </option>
-                                                            <option value="no">
-                                                                No
-                                                            </option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label" for="" data-th="">
-                                                             Archive Status
-                                                        </label>
-                                                        <select class="form-control" dataName="archiveStatus" dataType="select">
-                                                            <option value="">
-                                                                <?php echo $translations['A00055'][$language]; /* All */?>
-                                                            </option>
-                                                            <option value="yes">
-                                                                Yes
-                                                            </option>
-                                                            <option value="no" selected>
-                                                                No
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            <div class="col-sm-12">
-                                                <div id="searchBtn" class="btn btn-primary waves-effect waves-light">
-                                                    <?php echo $translations['A00051'][$language]; /* Search */?>
-                                                </div>
-                                                <div id="resetBtn" class="btn btn-default waves-effect waves-light">
-                                                    <?php echo $translations['A00053'][$language]; /* Reset */?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="row m-b-5">
+                        <div class="col-lg-12" style="display: flex; align-items: center; justify-content: space-between;">
+                            <span style="color: black; font-size: 20px; margin-right: auto;">Product</span>
+                            <div id="searchForm" class="form-inline search">
+                                <div class="input-container">
+                                    <input id="searchBtn" type="text" placeholder="Search..." class="searchview_input">
+                                    <button id="searchIcon" class="fa fa-search"></button>
+                                    <ul class="searchview_opt" id="selType">
+                                        <li name="search-option" value="SKU Code" dataName="code" dataType="text">Search <em>SKU Code</em></li>
+                                        <li name="search-option" value="Product Name" dataName="productName" dataType="text">Search <em>Product Name</em></li>
+                                        <li name="search-option" value="Vendor Name" dataName="vendorName" dataType="text">Search <em>Vendor Name</em></li>
+                                        <li name="search-option" value="Publish" dataName="publishStatus" dataType="text">Search <em>Publish</em></li>
+                                        <li name="search-option" value="Archive" dataName="archiveStatus" dataType="text">Search <em>Archive</em></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row m-b-5">
                         <div class="col-lg-12 productList-buttonGrp">
-                            <!-- <div class="card-box p-b-0"> -->
-                                <div>
-                                    <div id="addProduct" class="btn btn-primary waves-effect waves-light m-b-20">
-                                        Add Product
+                            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; height: 70px;">
+                                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <button id="addProduct" class="text-white" style="padding: 5px 10px; background: #3a5999; border: 1px solid #ccc;">
+                                        <span style="display: inline-block; margin-right: 5px;">
+                                            <i class="fa fa-plus text-white" aria-hidden="true"></i>
+                                        </span>
+                                        Create
+                                    </button>
+
+                                    <button id="exportBtn" style="padding: 5px 10px; background: white; border: 1px solid #ccc;">
+                                        <span style="display: inline-block; color: black;">
+                                            <i class="fa fa-download" aria-hidden="true"></i>
+                                        </span>
+                                    </button>
+
+                                    <button id="printButton" style="padding: 5px 10px; background: white; border: 1px solid #ccc; color: black;">
+                                        <span style="display: inline-block; margin-right: 5px;">
+                                            <i class="fa fa-print" aria-hidden="true"></i>
+                                        </span>
+                                        Print
+                                    </button>
+
+                                    <div class="btn-group">
+                                        <button type="button" class="btn custom-button1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span><i class="fa fa-cog" aria-hidden="true"></i></span> Action
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right custom-dropdown-menu">
+                                            <a class="dropdown-item custom-dropdown-item" id="archiveBtn">
+                                                <div class="text-center">Archive</div>
+                                            </a>
+                                            <a class="dropdown-item custom-dropdown-item" id="unArchiveBtn">
+                                                <div class="text-center">Unarchive</div>
+                                            </a>
+                                            <a class="dropdown-item custom-dropdown-item" id="publishBtn">
+                                                <div class="text-center">publish</div>
+                                            </a>
+                                            <a class="dropdown-item custom-dropdown-item" id="unPublishBtn">
+                                                <div class="text-center">Unpublish</div>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <button id="exportBtn" class="btn btn-primary waves-effect waves-light m-b-20" style="display: none">
-                                        Export to xlsx
-                                    </button>
-                                    <button id="seeAllBtn" class="btn btn-primary waves-effect waves-light m-b-20" style="display: none">
-                                        See All
-                                    </button>
                                 </div>
-                                <!-- <div> -->
-                                    <!-- <span class="waves-effect waves-light m-b-20" data-lang="A00663">
-                                        <?php echo $translations['A00663'][$language]; /* With selected */ ?> : 
-                                    </span> -->
-                                    <!-- <div id="selectionDiv" class="waves-effect waves-light m-b-20" style="display: inline-block; margin-left: 5px; width: 120px">
-                                        <select id="actionSelect" class="form-control" 
-                                            dataType="select"> -->
-                                            <!-- <option value="Export">
-                                                Export
-                                            </option> -->
-                                            <!-- <option value="Archive" selected>
-                                                Archive
-                                            </option>
-                                            <option value="Unarchive">
-                                                Unarchive
-                                            </option>
-                                            <option value="Publish">
-                                                Publish
-                                            </option>
-                                            <option value="Unpublish">
-                                                Unpublish
-                                            </option> -->
-                                            <!-- <option value="Delete">
-                                                Generate Pricelist Report
-                                            </option>
-                                            <option value="Delete">
-                                                Compute Price from BoM
-                                            </option> -->
-                                        <!-- </select> -->
-                                    <!-- </div> -->
-                                    <!-- <button id="updateBtn" class="btn btn-primary waves-effect waves-light m-b-20 m-l-rem1">
-                                        Update
-                                    </button> -->
-                                <!-- </div> -->
-                            <!-- </div> -->
+                            </div>
+                                    <div class="paginationContainer" style="display: flex; align-items: center; margin-right: 10px;">
+                                        <span id="paginateText" style="display: inline-block; margin-right: 7px; font-size:10px; color: black;"></span>
+                                        <div class="text-center">
+                                            <ul class="pagination pagination-md" id="pagerList"></ul>
+                                        </div>
+                                    </div>
+                            </div>
                         </div>
                         <div class="col-lg-12">
                             <form>
@@ -176,15 +102,11 @@
                                     <div class="tab-content b-0 m-b-0 p-t-0">
                                         <div id="alertMsg" class="text-center alert" style="display: none;"></div>
                                         <div id="listingDiv" class="table-responsive verticalTable"></div>
-                                        <span id="paginateText"></span>
-                                        <div class="text-center">
-                                            <ul class="pagination pagination-md" id="pagerList"></ul>
-                                        </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                    </div><!-- End row -->
+                    </div>
                 </div><!-- container -->
             </div><!-- content -->
             <?php include("footer.php"); ?>
@@ -248,35 +170,20 @@
         var pagerId  = 'pagerList';
         var btnArray = {};
         var thArray  = Array (
-            // "check",
+            "check",
             "Image",
-            // "Created Date",
             "SKU Code",
             "Product Name",
-            // "Status",
-            // "Product Type",
-            // "Description",
             "Vendor Name",
             "Category",
             "Best Before Days",
             "Cost",
             "Sales Price",
             "Publish Status",
-            // "Archive Status",
-            // "Weight",
-            // "Price",
-            // "Total Stock",
-            // "No. of Stock Sold",
-            // "Stock Balance",
-            // "Updater ID",
-            // "Updated At",
-            "Button (View/Edit)",
-            // "Add Stock",
-            // "View Stock",
-            // "View Transaction"
         );
 
         var sortThArray = Array(
+            "",
             "",
             "p.barcode",
             "p.name",
@@ -294,15 +201,6 @@
         var pagerIdDetails = 'listingPagerDetails';
         var btnArrayDetails = {};
 
-        /*var thArrayDetails = Array(
-            'Subscription Date',
-            'Reference No',
-            'User ID',
-            'Tib Subscribed',
-            'FIL / Tib',
-            'Total FIL'
-        );*/
-            
         // Initialize the arguments for ajaxSend function
         var url             = 'scripts/reqAdmin.php';
         var method          = 'POST';
@@ -310,11 +208,12 @@
         var bypassBlocking  = 0;
         var bypassLoading   = 0;
         var pageNumber      = 1; 
+        var maxPageNumber;
 
-        // var saveProductID=[];
         var saveData = {};
 
         var vendorName = '<?php echo $_POST['vendorName'] ?>';
+        var inputField = document.getElementById("searchBtn");
 
         $(document).ready(function() {
             $('#vendorName').val(vendorName);
@@ -325,19 +224,98 @@
                 }
             });
 
+            $('#searchIcon').click(function() {
+                if ($("#searchIcon").hasClass("fa fa-times")) {
+                    $("#searchBtn").val(""); 
+                    $(".searchview_opt").css("display", "none");
+                    $("#searchIcon").removeClass("fa fa-times");
+                    $("#searchIcon").addClass("fa fa-search");
+                    var inputValue = '';
+                    $('.searchview_opt li').each(function() {
+                        var dataNameAttribute = $(this).attr("value");
+                        $(this).html(`Search <em>${dataNameAttribute}</em> ${inputValue}`);
+                    });
+
+                    pagingCallBack(pageNumber, loadSearch);
+                }
+            });
                 
             $('#resetBtn').click(function() {
                 $("#searchForm")[0].reset();
             });
 
             pagingCallBack(pageNumber, loadSearch);
+
+            $(document).on('click', function (event) {
+                var $inputContainer = $('.input-container');
+                var $searchOptions = $('.searchview_opt');
+
+                if (!$inputContainer.is(event.target) && $inputContainer.has(event.target).length === 0) {
+                    $(".searchview_opt").css("display", "none");
+                }else{
+                    $(".searchview_opt").css("display", "block");
+                }
+            });
             
-            $('#searchBtn').click(function() {
-                pagingCallBack(pageNumber, loadSearch);
+            $('#searchBtn').on('keyup', function() {
+                var inputValue = $(this).val();
+                var searchview_opt = $('.searchview_opt');
+
+                $('.searchview_opt li').each(function() {
+                    var dataNameAttribute = $(this).attr("value");
+                    $(this).html(`Search <em>${dataNameAttribute}</em> ${inputValue}`);
+                });
+
+                if (inputValue !== "") {
+                    $('.searchview_opt').css('display', 'block');
+                    $("#searchIcon").removeClass("fa fa-search");
+                    $("#searchIcon").removeClass("fa-times fa");
+                    $("#searchIcon").addClass("fa fa-times");
+                } else {
+                    $('.searchview_opt').css('display', 'none');
+                    $("#searchIcon").removeClass("fa fa-times");
+                    $("#searchIcon").addClass("fa fa-search");
+                }
+
+            });
+
+            $('#selType li').on('click', function () {
+                var dataName = $(this).attr('dataName'); 
+                var dataType = $(this).attr('dataType');
+                var dataValue = inputField.value;
+
+                $('#searchBtn').attr('dataName', dataName);
+
+                if (dataType === "dateRange") {
+                    if (dataValue) {
+                        dataValue = dateToTimestamp(dataValue);
+                    } else {
+                        dataValue = 0;
+                    }
+                }
+
+                dataForm = [];
+                dataForm.push({dataName : dataName, dataType : dataType, dataValue : dataValue});
+                pagingCallBack(pageNumber, loadSearch, dataForm);
+            });
+
+            $('#searchBtn').on('keyup', function(event) {            
+                if (event.key === "Enter") {
+                    event.preventDefault(); 
+                    var dataName = "code";
+                    var dataType = "text";
+                    var dataValue = $(this).val();
+                    if (dataValue.trim() !== "") {
+                        dataForm = [];
+                        dataForm.push({ dataName: dataName, dataType: dataType, dataValue: dataValue });
+                        pagingCallBack(pageNumber, loadSearch, dataForm);
+                    }
+                }
             });
 
             $('#addProduct').click(function() {
-                $.redirect("addProductInventory.php");
+                var actionType = "add";
+                $.redirect("Product.php", {actionType, actionType})
             });
 
             // Initialize date picker
@@ -381,7 +359,6 @@
                     "Cost",
                     "Sales Price",
                     "Publish Status",
-                    // "Archive Status",
                 );
                 var key = Array(
                     "skuCode",
@@ -392,7 +369,6 @@
                     "cost",
                     "sale_price",
                     "publishStatus",
-                    // "archiveStatus",
                 );
 
                 var formData = {
@@ -428,13 +404,22 @@
                     ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
                 }
             });
+
+            $(document).on("click", "#listingTable td", function(e) {
+                if (!$(this).is(':first-child')) {
+                    $.redirect("Product.php", {
+                        id: $(this).parent().data('th'),
+                    });
+                }
+            });
         });
 
-        function pagingCallBack(pageNumber, fCallback){
-                if(pageNumber > 1) bypassLoading = 1;
+        function pagingCallBack(pageNumber, fCallback, dataForm) {
+            if ((pageNumber == 1 || pageNumber <= maxPageNumber) && pageNumber != 0) {
 
+                if(pageNumber > 1) bypassLoading = 1;
+                var searchData = dataForm;
                 var searchID = "searchForm";
-                var searchData = buildSearchDataByType(searchID);
 
                 var sortData = getSortData(tableId);
 
@@ -447,24 +432,141 @@
                 if(!fCallback)
                     fCallback = loadDefaultListing;
                 ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            }
+            else
+            {
+                pageNumber = maxPageNumber;
+            }
         }
 
-        /*function pagingCallBackModal(pageNumber, fCallback){
-                if(pageNumber > 1) bypassLoading = 1;
+        function pagination(pagerId, pageNumber, totalPage, totalRecord, numRecord) {
+            if (!isNaN(pageNumber)) {
 
-                var searchID = "searchForm";
-                var searchData = buildSearchDataByType(searchID);
-                var formData   = {
-                    command     : "getPortfolioListQuickView",
-                    productID   : saveProductID,
-                    pageNumber  : pageNumber
-                };
-                if(!fCallback)
-                    fCallback = loadSaleDetails;
-                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-        }*/
+                var pager = $('#'+pagerId);
+                var endRow = pageNumber * numRecord;
+                var startRow = endRow - numRecord + 1;
+            
+                var pagerSize = 10;
+                var pagerLeftInterval = 4;
+                var pagerRightInterval = 4;
+                
+                var spanText = pager.parent('div').prev();
+                spanText.html('');
+                pager.find('li').remove();
+                if(!totalPage) return;
+
+                if (endRow > totalRecord)
+                    endRow = totalRecord;
+
+                var paginateMsg = "%%from%%-%%to%% / %%total%%";
+                
+                var findText = ['%%from%%', '%%to%%', '%%total%%'];
+                var replaceText = [startRow, endRow, totalRecord];
+                
+                $.each(findText, function(k, val) {
+                    paginateMsg = paginateMsg.replace(val, replaceText[k], paginateMsg);
+                });
+            
+                spanText.html(paginateMsg);
+                // spanText.html('Showing ' + startRow + ' - ' + endRow + ' of ' + totalRecord + ' records.');
+
+                if(pagerSize > totalPage) {
+                    pagerSize = totalPage;
+                }
+
+                if(pageNumber >= 1) {
+                    pager.append('<li class="link"><a href="#" class="prevLink"><i class="fa fa-angle-left"></i></a></li>');
+                }
+                var curr = 0;
+                while(totalPage > curr && totalPage > 1) {
+                    pager.append('<li><a href="#" class="pageLink">'+(curr+1)+'</a></li>');
+                    $('.pageLink').hide();
+                    curr++;
+                }
+                if(pageNumber <= totalPage) {
+                    pager.append('<li class="link"><a href="#" class="nextLink"><i class="fa fa-angle-right"></a></li>');
+                }
+            
+                function paginateNum(pageNum) {
+                    pager.find('li').not('.link').hide();
+                    pageNum-=1;
+                    var pagerMin = pageNum - pagerLeftInterval;
+                    var pagerMax = pageNum + pagerRightInterval;
+                    if(pagerMin < 0) {
+                        pagerMin = 0;
+                        pagerMax = pagerSize;
+                    }
+                    pager.find('li').not('.link').slice(pagerMin, pagerMax+1).show();
+                }
+                
+                var eq = parseInt(pageNumber)-1;
+
+                pager.find('li').not('.link').eq(eq).addClass("active");
+                paginateNum(parseInt(pageNumber));
+
+                if (totalPage > 1) {
+                    var dataName = $('#searchBtn').attr('dataName');
+                    var dataType = 'text'
+                    var dataValue = inputField.value;
+
+                    if (dataType === "dateRange") {
+                        if (dataValue) {
+                            dataValue = dateToTimestamp(dataValue);
+                        } else {
+                            dataValue = 0;
+                        }
+                    }
+                    dataForm = [];
+                    if(dataName != null)
+                    {
+                        dataForm.push({dataName : dataName, dataType : dataType, dataValue : dataValue});
+                    }
+
+                    pager.find('.prevLink').click(function () {
+                        var pageNum = parseInt(pager.find('li.active a').text()) - 1;
+                        goPage(pageNum, dataForm);
+                    });
+                    if(pageNumber != totalPage)
+                    {
+                        pager.find('.nextLink').click(function () {
+                            var pageNum = parseInt(pager.find('li.active a').text()) + 1;
+                            if(dataForm.length > 0)
+                            {
+                                goPage(pageNum, dataForm);
+                            }
+                            else
+                            {
+                                goPage(pageNum);
+                            }
+                        });
+                    }
+                } else {
+                    // Disable prevLink and nextLink when totalPage is one
+                    pager.find('.prevLink').addClass('disabled');
+                    pager.find('.nextLink').addClass('disabled');
+                }
+
+                function goPage(pageNum, dataForm) {
+                    var searchData = dataForm;
+
+                    paginateNum(pageNum);
+                    pager.children().removeClass("active");
+                    pager.children().eq(pageNum+1).addClass("active");
+                    pagingCallBack(pageNum, '', searchData);
+                }
+            }
+            else
+            {
+                pageNumber = maxPageNumber;
+            }
+        }
         
         function loadDefaultListing(data, message) {
+            if(data.totalPage)
+            {
+                maxPageNumber = data.totalPage;
+            }
+
             if (data) {
                 $("#exportBtn, #seeAllBtn").show();
             } else {
@@ -485,18 +587,6 @@
 
                 $.each(saveData, function(k, v) {
 
-                    var buildBtn = `
-                        <a data-toggle="tooltip" title="" onclick="editRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="Edit" aria-describedby="tooltip645115"><i class="fa fa-edit"></i></a>
-                    `;
-
-                    /*if(v['totalSales'] > 0){
-                        var viewBtn = `
-                            <a href="javascript:;" onclick="viewModal('${v['id']}')" class="tableMenu">${addCommas(Number(v['totalSales']).toFixed(2))}</a>
-                        `;
-                    }else{
-                        var viewBtn = `${addCommas(Number(v['totalSales']).toFixed(2))}`;
-                    }*/
-
                     var adjustBtn = `-`;
                     if (v['isAdjustable'] == 1) {
                         adjustBtn = `
@@ -514,28 +604,11 @@
                         <a data-toggle="tooltip" title="" onclick="viewRecord('${v['id']}')" class="btn btn-icon waves-effect waves-light btn-primary" data-original-title="View Transaction" aria-describedby="tooltip645115"><i class="fa fa-eye"></i></a>
                     `;
 
-                    /*var dropClass = "dropdown";
-                    if(k==list.length-1 || k==list.length-2) {
-                        dropClass = "dropup";
-                    }
-
-                    var buildStatusDropdown = `
-                        <div class="${dropClass}">
-                            <a href="javascript:;" data-toggle="dropdown" class="tableMenu">${v['statusDisplay']}</a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <li><a href="javascript:;" onclick="changeStatus('${v['id']}', 'On Sale')">On Sale</a></li>
-                                <li><a href="javascript:;" onclick="changeStatus('${v['id']}', 'Sold Out')">Sold Out</a></li>
-                                <li><a href="javascript:;" onclick="changeStatus('${v['id']}', 'Close')">Close</a></li>
-                            </div>
-                        </div>
-                    `;*/
-
-                    // var checkbox = "<input name ='checkbox' type ='checkbox'>";
+                    var checkbox = "<input name ='checkbox' type ='checkbox'>";
 
                     var rebuildData = {
-                        // checkdate           : checkbox,
+                        checkdate           : checkbox,
                         image               : v['productImage'],
-                        // created_at          : v['created_at'],
                         code                : v['skuCode'],
                         name                : v['name'],
                         vendorName          : v['vendorName'],
@@ -544,26 +617,6 @@
                         cost                : numberThousand(v['cost'], 2),
                         salePrice           : numberThousand(v['salePrice'], 2),
                         publishStatus       : v['publishStatus'],
-                        // status              : v['status'],
-                        // productType         : v['productType'],
-                        // description         : v['description'],
-                        // cookingTime         : v['cookingTime'],
-                        // cookingSuggestion   : v['cookingSuggestion'],
-                        // fullInstruction     : v['fullInstruction'],
-                        // fullInstruction2    : v['fullInstruction2'],
-                        // weight              : addCommas(v['weight']),
-                        // productCost      : numberThousand(v['productCost'], 2),
-                        // totalStock          : numberThousand(v['totalStock'], 0),
-                        // totalStockOut       : numberThousand(v['totalStockOut'], 0),
-                        // quantity            : numberThousand(v['quantity'], 0),
-                        // updater_id          : v['updater_id'],
-                        // updated_at          : v['updated_at'],
-                        // status           : buildStatusDropdown,
-                        // archiveStatus       : v['archiveStatus'],
-                        buildBtn            : buildBtn,
-                        // adjustBtn           : adjustBtn,
-                        // viewStockBtn        : viewStockBtn,
-                        // viewTransBtn        : viewTransBtn
                     };
                     newList.push(rebuildData);
                 });
@@ -572,6 +625,10 @@
             buildTable(newList, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
             pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
 
+            if (data != "" && saveData.length > 0) {
+                var tables = document.getElementsByTagName('table');
+                resizableGrid(tables[0]);
+            }
             if(saveData) {
                 $.each(saveData, function(k, v) {
                     $('#'+tableId).find('tr#'+k).attr('data-th', v['id']);
@@ -579,33 +636,15 @@
             }
 
             $('#' + tableId).find('tbody tr, thead tr').each(function () {
-                // $(this).find('td:last-child, th:last-child').css('text-align', "center");
-                // $(this).find('td:eq(-2), th:eq(-2)').css('text-align', "center");
-                // $(this).find('td:eq(-3), th:eq(-3)').css('text-align', "center");
-                // $(this).find('td:eq(-4), th:eq(-4)').css('text-align', "center");
-                // $(this).find('td:eq(4), th:eq(4)').css('text-align', "right");
-                // $(this).find('td:eq(5), th:eq(5)').css('text-align', "right");
                 $(this).find('td:eq(6)').css('text-align', "right");
                 $(this).find('td:eq(7)').css('text-align', "right");
+
             });
+            $('.searchview_opt').css('display', 'none');
         }
 
-        /*function changeStatus(id, status) {
-            var formData  = {
-                command         : 'editProductInventory',
-                productID       : id,
-                status          : status,
-                updateType      : "subscriptionStatus"
-            };
-
-            // console.log(formData);
-
-            fCallback = changeStatusSuccess;
-            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-        }*/
-
         function editRecord(id) {
-            $.redirect('editProductInventory.php', {
+            $.redirect('Product.php', {
                 id : id
             });
         }
@@ -636,61 +675,89 @@
             }, 3000);
         }
         
-        /*function changeStatusSuccess(data, message) {
-            pagingCallBack(pageNumber)
-        }*/
-
-        /*function viewModal(id) {
-
-            var formData = {
-                command  : "getPortfolioListQuickView",
-                productID  : [id]
-            };
-
-            fCallback = loadSaleDetails;
-            ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
-        }*/
-
-        /*function loadSaleDetails(data, message) {
-            
-            $("#basicwizardDetails").show();
-            $("#viewModal").modal();
-
-            var tableNo;
-
-            if (data.portfolioList) {
-            var newList = [];
-                $.each(data.portfolioList, function (k, v) {
-                    var rebuildData = {
-                        created_at: v['created_at'],
-                        reference_no: v['reference_no'],
-                        username: v['username'],
-                        tibSubscribed: numberThousand(v['tibSubscribed'], 6),
-                        filTib: v['filTib'],
-                        product_price: numberThousand(v['product_price'], 6)
-
-                    };
-                    newList.push(rebuildData);
-                });
-            }
-
-            buildTable(newList, tableIdDetails, divIdDetails, thArrayDetails, btnArrayDetails, message, tableNo);
-            pagination(pagerIdDetails, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
-
-            $('#' + tableIdDetails).find('tr').each(function () {
-                $(this).find('td:eq(3), th:eq(3)').css('text-align', "right");
-                $(this).find('td:eq(4), th:eq(4)').css('text-align', "right");
-                $(this).find('td:eq(5), th:eq(5)').css('text-align', "right");
+        $('#archiveBtn').click(function () {
+            var checkedIDs = [];
+            var checkedDetails = [];
+            $('#' + tableId).find('tbody [type=checkbox]:checked').each(function () {
+                var checkboxID = $(this).parent('td').parent('tr').attr('data-th');
+                checkedIDs.push(checkboxID);
             });
+            if (checkedIDs.length === 0)
+                showMessage('<?php echo $translations['A00613'][$language]; /* No check box selected. */ ?>', 'warning', '<?php echo $translations['A00614'][$language]; /* Update Status */ ?>', 'edit', '');
+            else {
 
-            $('#' + tableIdDetails).find('tbody').append(`
-                <tr style="">
-                    <td colspan='3' class="text-right"><b><?php echo $translations['A00651'][$language]; /* Grand Total */?>:</b></td>
-                    <td style="text-align: right;"><b> ${numberThousand(data.grandTotal,6)} </b></td>
-                    <td colspan='2'></td>
-                </tr>
-            `);
-        }*/
+                var formData = {
+                    command: 'updateBatchProduct',
+                    checkedIDs: checkedIDs,
+                    status: 'Archive',
+                };
+                fCallback = updateCallback;
+                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            }
+        });
+
+        $('#unArchiveBtn').click(function () {
+            var checkedIDs = [];
+            var checkedDetails = [];
+            $('#' + tableId).find('tbody [type=checkbox]:checked').each(function () {
+                var checkboxID = $(this).parent('td').parent('tr').attr('data-th');
+                checkedIDs.push(checkboxID);
+            });
+            if (checkedIDs.length === 0)
+                showMessage('<?php echo $translations['A00613'][$language]; /* No check box selected. */ ?>', 'warning', '<?php echo $translations['A00614'][$language]; /* Update Status */ ?>', 'edit', '');
+            else {
+
+                var formData = {
+                    command: 'updateBatchProduct',
+                    checkedIDs: checkedIDs,
+                    status: 'Unarchive',
+                };
+                fCallback = updateCallback;
+                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            }
+        });
+
+        $('#unPublishBtn').click(function () {
+            var checkedIDs = [];
+            var checkedDetails = [];
+            $('#' + tableId).find('tbody [type=checkbox]:checked').each(function () {
+                var checkboxID = $(this).parent('td').parent('tr').attr('data-th');
+                checkedIDs.push(checkboxID);
+            });
+            if (checkedIDs.length === 0)
+                showMessage('<?php echo $translations['A00613'][$language]; /* No check box selected. */ ?>', 'warning', '<?php echo $translations['A00614'][$language]; /* Update Status */ ?>', 'edit', '');
+            else {
+
+                var formData = {
+                    command: 'updateBatchProduct',
+                    checkedIDs: checkedIDs,
+                    status: 'Unpublish',
+                };
+                fCallback = updateCallback;
+                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            }
+        });
+
+        $('#publishBtn').click(function () {
+            var checkedIDs = [];
+            var checkedDetails = [];
+            $('#' + tableId).find('tbody [type=checkbox]:checked').each(function () {
+                var checkboxID = $(this).parent('td').parent('tr').attr('data-th');
+                checkedIDs.push(checkboxID);
+            });
+            if (checkedIDs.length === 0)
+                showMessage('<?php echo $translations['A00613'][$language]; /* No check box selected. */ ?>', 'warning', '<?php echo $translations['A00614'][$language]; /* Update Status */ ?>', 'edit', '');
+            else {
+
+                var formData = {
+                    command: 'updateBatchProduct',
+                    checkedIDs: checkedIDs,
+                    status: 'Publish',
+                };
+                fCallback = updateCallback;
+                ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+            }
+        });
 
         function updateCallback(data, message) {
             showMessage('<span data-lang="A00616"><?php echo $translations['A00616'][$language]; /* Successful updated status. */ ?></span>', 'success', '<span data-lang="A00617"><?php echo $translations['A00617'][$language]; /* Update Status */ ?></span>', 'edit', 'getProductInventory.php');

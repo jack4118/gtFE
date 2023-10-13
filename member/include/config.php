@@ -11,10 +11,10 @@
 			"english" => "English",
 			"chineseSimplified" => "简体中文",
 			"chineseTraditional" => "繁体中文"),
-
+		"defaultLanguage" => "chineseSimplified",
 	    'logoDashboardURL' =>'images/abc/company_logo.png',
 	    "loginToMemberURL" => "http://abcmember.speed101.pw/login.php",
-	    'sampleFormatURL' => "http://abcmember.speed101.pw/sampleFormat/"
+	    'sampleFormatURL' => "http://abcmember.speed101.pw/sampleFormat/",
     );
     
 ?>

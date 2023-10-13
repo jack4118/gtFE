@@ -369,7 +369,6 @@ $_SESSION['lastVisited'] = $thisPage;
                     });
                 }
             }
-            console.log(data);
         }
 
         function loadCategoryList(data, message) {

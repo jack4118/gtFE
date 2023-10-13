@@ -157,7 +157,9 @@ var paymentMethod =  '<?php echo $_SESSION['POST'][$postAryName]['paymentMethod'
 var paymentDelivery =  '<?php echo $_SESSION['POST'][$postAryName]['paymentDelivery'] ?>';
 var total_price =  '<?php echo $_SESSION['POST'][$postAryName]['total_price'] ?>';
 var postcode =  '<?php echo $_SESSION['POST'][$postAryName]['postcode'] ?>';
-
+var uploadImage = [];
+var imgFileDataArray = [];
+var videoFileDataArray = [];
 
 $(document).ready(function() {
     redeemAmount = pointsToUse;
@@ -233,18 +235,34 @@ function updateSaleOrder() {
 }
 
 function uploadReceipt() {    
-    var formData = {
-        command     	: 'uploadReceipt',
-        data            : $('#receiptData').val(),
-        type            : 'receipt',
-        fileName        : $("#receiptName").val(),
-        saleID          : saleId,
-        bkend_token     : bkend_token,
-        redeemAmount    : pointsToUse,
-    };
-    var fCallback = updateSaleOrder;
+    imgFileDataArray = [];
+    imgUploadFinishFile = [];
+    uploadImage = [];
+    // get all the image file
+    $('[id^="uploadReceipt"]').each(function() {
+        if (this.files && this.files[0]) {
+            const uploadTypeValue = $('#receiptType').val();
+            const uploadNameValue = $('#receiptName').val();
+            imgFileDataArray.push({ file: this.files[0], uploadType: uploadTypeValue , imgName : uploadNameValue});
+        }
+    });
+
+    if(imgFileDataArray.length > 0)
+    {
+        handleFileUpload(imgFileDataArray);
+    }
+    // var formData = {
+    //     command     	: 'uploadReceipt',
+    //     data            : $('#receiptData').val(),
+    //     type            : 'receipt',
+    //     fileName        : $("#receiptName").val(),
+    //     saleID          : saleId,
+    //     bkend_token     : bkend_token,
+    //     redeemAmount    : pointsToUse,
+    // };
+    // var fCallback = updateSaleOrder;
 	// var fCallback = successPlaceOrder;
-    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    // ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 }
 
 
@@ -274,6 +292,66 @@ function successPlaceOrder(data, message) {
             '/orderStatus?SONO=' + encodeURIComponent(data.so_no)+"&phone="+guestPhoneNumber.substr(-4)
         );
     } 
+}
+
+function handleFileUpload(file, action) {
+    file.forEach(function(file, index) {
+        var formData = {
+            command  : "awsGeneratePreSignedUrl",
+            action   : "upload",
+            mimeType : file.file.type,
+        };
+        ajaxSend(url, formData, method, function(data, message) {
+            verificationImgVideoLink(data, message, file, action);  // Pass the file to the function
+        }, debug, bypassBlocking, bypassLoading, 0);
+    });
+}
+
+function verificationImgVideoLink(data, message, file, action){
+    const presignedUrl = data;
+    $.ajax({
+        type: 'PUT',
+        url: presignedUrl,
+        contentType: 'binary/octet-stream',
+        processData: false,
+        crossDomain : true,
+        data: file.file,
+        headers: {
+            'x-amz-acl': 'public-read',
+            'Access-Control-Allow-Headers' : 'Content-Type, Authorization',
+            'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE',
+        },
+        })
+
+    const indexOfDO = presignedUrl.indexOf('?');
+    const extractedUrl = presignedUrl.substring(0, indexOfDO);
+    if (file.file.type.startsWith('image/'))
+    {
+        if(file.imgName && extractedUrl && file.uploadType)
+        {
+            uploadImage.push({
+                imgName : file.imgName,
+                imgData : extractedUrl,
+                uploadType : file.uploadType,
+            });
+        }
+        imgUploadFinishFile.push({
+            file : file.file,
+        })
+    }
+
+    if(imgFileDataArray.length == imgUploadFinishFile.length)
+    {
+        var formData = {
+            command     	: 'uploadReceipt',
+            uploadImage     : uploadImage,
+            saleID          : saleId,
+            bkend_token     : bkend_token,
+            redeemAmount    : pointsToUse,
+        };
+        var fCallback = updateSaleOrder;
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+    }
 }
 
 </script>

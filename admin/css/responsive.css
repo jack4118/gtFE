@@ -46,14 +46,17 @@ File: Responsive
   }
   .topbar .topbar-left {
     height: 75px;
+    display: none;
   }
   .navbar-default {
-    background-color: #ffffff;
+    background-color: #243c6c;
     box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+    padding-left: 0px;
   }
   .navbar-nav {
-    margin: 0px;
     display: inline-block;
+    margin-left: -20px;
+    margin-top: 0px;
   }
   .navbar-nav li {
     display: inline-block;
@@ -61,6 +64,7 @@ File: Responsive
   }
   .navbar-nav.navbar-right {
     float: right;
+    margin-right: 0px;
   }
   .content-page {
     margin-left: 0px !important;
@@ -88,10 +92,19 @@ File: Responsive
   .ms-container {
     width: 100%;
   }
+  .side-menu{
+    z-index: 9999 !important;
+    padding-top: 0px;
+  }
+  .hide-sidebar{
+    display: block;
+  }
+  
 }
 @media (max-width: 480px) {
   .side-menu {
-    z-index: 10 !important;
+    z-index: 9999 !important;
+    padding-top: 0px;
   }
   .button-menu-mobile {
     display: block;
@@ -114,6 +127,9 @@ File: Responsive
 @media (min-width: 768px) {
   .container-alt {
     width: 750px;
+  }
+  .container{
+    border-left-style: none !important;
   }
   .nav-tabs.nav-justified > li > a {
     border-bottom: 2px solid #eeeeee;
@@ -148,6 +164,7 @@ File: Responsive
   }
   .forced .side-menu.left {
     box-shadow: 0 12px 12px rgba(0, 0, 0, 0.1);
+    padding-top: 0px;
   }
   .enlarged .side-menu.left {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) !important;
@@ -163,6 +180,7 @@ File: Responsive
   }
   .navbar-default .navbar-left {
     padding-left: 0px !important;
+    margin-left: -10px;
   }
   .navbar-default .navbar-left li {
     padding: 0px 5px;

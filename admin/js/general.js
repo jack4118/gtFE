@@ -53,7 +53,7 @@ function showMessage(message, status, title, favicon, url, canvasBtnArray) {
         if(canvasBtnArray == '')
             return false;
         $.each(canvasBtnArray, function(key, val) {
-            $('<button id="canvas'+val+'Btn" type="button" class="btn btn-primary waves-effect waves-light" data-dismiss="modal">'+val+'</button>').insertBefore('#canvasCloseBtn');
+            $('<button id="canvas'+val+'Btn" type="button" class="custom-button2" data-dismiss="modal">'+val+'</button>').insertBefore('#canvasCloseBtn');
         });
     }
     

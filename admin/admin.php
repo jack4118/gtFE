@@ -13,99 +13,59 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     <div class="content-page">
         <div class="content">
             <div class="container">
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                            <div class="panel panel-default bx-shadow-none">
-                                <div class="panel-heading" role="tab" id="headingOne">
-                                    <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapse">
-                                            <?php echo $translations['A00051'][$language]; /* Search */ ?>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                    <div class="panel-body">
-                                        <div id="searchMsg" class="text-center alert" style="display: none;"></div>
-                                        <form id="searchForm" role="form">
-                                            <div class="col-xs-12">
-                                                <div class="row">
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            <?php echo $translations['A00101'][$language]; /* Name */ ?>
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="name" dataType="text">
-                                                    </div>
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label">
-                                                            <?php echo $translations['A00102'][$language]; /* Username */ ?>
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="username" dataType="text">
-                                                    </div>
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label" for="" data-th="email">
-                                                            <?php echo $translations['A00103'][$language]; /* Email */ ?>
-                                                        </label>
-                                                        <input type="text" class="form-control" dataName="email" dataType="text">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-12">
-                                                <div class="row">
-                                                    <div class="col-sm-4 form-group">
-                                                        <label class="control-label" data-th="disabled">
-                                                            <?php echo $translations['A00104'][$language]; /* Disabled */ ?>
-                                                        </label>
-                                                        <select class="form-control" dataName="disabled" dataType="select">
-                                                            <option value="">
-                                                                <?php echo $translations['A00055'][$language]; /* All */ ?>
-                                                            </option>
-                                                            <option value="1">
-                                                                <?php echo $translations['A00056'][$language]; /* Yes */ ?>
-                                                            </option>
-                                                            <option value="0">
-                                                                <?php echo $translations['A00057'][$language]; /* No */ ?>
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-
-
-                                        <div class="col-xs-12 m-t-rem1">
-                                            <button id="searchBtn" type="submit" class="btn btn-primary waves-effect waves-light">
-                                                <?php echo $translations['A00051'][$language]; /* Search */ ?>
-                                            </button>
-                                            <button id="resetBtn" type="submit" class="btn btn-default waves-effect waves-light">
-                                                <?php echo $translations['A00053'][$language]; /* Reset */ ?>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="row m-b-5">
+                    <div class="col-lg-12" style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="color: black; font-size: 20px; margin-right: auto;">Admin</span>
+                        <div id="searchForm" class="form-inline search">
+                            <div class="input-container">
+                                <input id="searchBtn" type="text" placeholder="Search..." class="searchview_input">
+                                <button id="searchIcon" class="fa fa-search"></button>
+                                <ul class="searchview_opt" id="selType">
+                                    <li name="search-option" value="Full Name"    dataName="adminFullName"      dataType="text">Search <em>Full Name</em></li>
+                                    <li name="search-option" value="Username"     dataName="adminUsername"  dataType="text">Search <em>Username</em></li>
+                                    <li name="search-option" value="Email"        dataName="adminEmail"     dataType="text">Search <em>Email</em></li>
+                                    <li name="search-option" value="Created Date" dataName="adminCreatedAt" dataType="dateRange">Search <em>Created Date</em></li>
+                                    <li name="search-option" value="Status"       dataName="adminDisabled"  dataType="text">Search <em>Status</em></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row m-b-5">
                     <div class="col-lg-12">
-                        <a href="newAdmin.php" type="button" class="btn btn-primary waves-effect w-md waves-light m-b-20">
-                            <?php echo $translations['A00105'][$language]; /* New Admin */ ?>
-                        </a>
-                        <form>
-                            <div id="basicwizard" class="pull-in">
-                                <div class="tab-content b-0 m-b-0 p-t-0">
-                                    <div id="alertMsg" class="text-center alert" style="display: none;"></div>
-                                    <div id="listingDiv" class="table-responsive"></div>
-                                    <span id="paginateText"></span>
-                                    <div class="text-center">
-                                        <ul class="pagination pagination-md" id="listingPager"></ul>
-                                    </div>
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; height: 70px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <button id="addAEbutton" class="text-white" style="padding: 5px 10px; background: #3a5999; border: 1px solid #ccc;">
+                                    <span style="display: inline-block; margin-right: 5px;">
+                                        <i class="fa fa-plus text-white" aria-hidden="true"></i>
+                                    </span>
+                                    Create
+                                </button>
+                            </div>
+
+                            <div class="paginationContainer" style="display: flex; align-items: center; margin-right: 10px;">
+                                <span id="paginateText" style="display: inline-block; margin-right: 7px; font-size:10px; color: black;"></span>
+                                <div class="text-right" style="display: inline-block;">
+                                    <ul class="pagination justify-content-end" id="listingPager"></ul>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="basicwizard" class="pull-in">
+                            <div class="tab-content b-0 m-b-0 p-t-0">
+                                <div id="alertMsg" class="text-center alert" style="display: none;"></div>
+                                <div id="listingDiv" class="table-responsive"></div>
+                                <span id="paginateText"></span>
+                                <div class="text-center">
+                                    <ul class="pagination pagination-md" id="listingPager"></ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -129,17 +89,31 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var divId    = 'listingDiv';
     var tableId  = 'listingTable';
     var pagerId  = 'listingPager';
-    var btnArray = Array('edit');
+    var btnArray = {};
     var thArray  = Array(
         '<?php echo $translations['A00106'][$language]; /* ID */ ?>',
+        '<?php echo $translations['A00117'][$language]; /* Full Name */ ?>',
         '<?php echo $translations['A00102'][$language]; /* Username */ ?>',
-        '<?php echo $translations['A00101'][$language]; /* Name */ ?>',
         '<?php echo $translations['A00103'][$language]; /* Email */ ?>',
         '<?php echo $translations['A00110'][$language]; /* Role Name */ ?>',
-        '<?php echo $translations['A00104'][$language]; /* Disabled */ ?>',
+        '<?php echo $translations['A01739'][$language]; /* Warehouse */ ?>',
+        '<?php echo $translations['A00318'][$language]; /* Status */ ?>',
         '<?php echo $translations['A00112'][$language]; /* Created At */ ?>',
         '<?php echo $translations['A00113'][$language]; /* Last Login */ ?>'
         );
+
+    var sortThArray  = Array(
+        'id',
+        'adminFullName',
+        'adminUsername',
+        'adminEmail',
+        'adminRoleName',
+        '',
+        'adminDisabled',
+        'adminCreatedAt',
+        'adminLastLogin',
+        );
+
     var searchId = 'searchForm';
 
     var url             = 'scripts/reqAdmin.php';
@@ -149,45 +123,151 @@ $thisPage = basename($_SERVER['PHP_SELF']);
     var bypassLoading   = 0;
     var pageNumber      = 1;
     var formData        = "";
-    var fCallback       = "";  
+    var fCallback       = ""; 
+    var dataForm        =[];         
 
-    $(document).ready(function() {
 
-        $("body").keyup(function(event) {
-            if (event.keyCode == 13) {
-                $("#searchBtn").click();
+    var inputField = document.getElementById("searchBtn");
+
+        $(document).ready(function() {
+            pagingCallBack(pageNumber, loadSearch);
+
+            $('#searchIcon').click(function() {
+                if($("#searchIcon").hasClass("fa fa-times")){
+                    $("#searchBtn").val("");
+                    $(".searchview_opt").css("display", "none");
+                    $("#searchIcon").removeClass("fa fa-times");
+                    $("#searchIcon").addClass("fa fa-search");
+                    pagingCallBack(pageNumber, loadSearch);
+                }
+            });
+
+            $(document).on('click', function (event) {
+                var $inputContainer = $('.input-container');
+                var $searchOptions = $('.searchview_opt');
+
+                if (!$inputContainer.is(event.target) && $inputContainer.has(event.target).length === 0) {
+                    $(".searchview_opt").css("display", "none");
+                }else{
+                    $(".searchview_opt").css("display", "block");
+                }
+            });
+
+        $('#searchBtn').on('keyup', function() {
+            var inputValue = $(this).val();
+            var searchview_opt = $('.searchview_opt');
+
+            $('.searchview_opt li').each(function() {
+                var dataNameAttribute = $(this).attr("value");
+                $(this).html(`Search <em>${dataNameAttribute}</em> ${inputValue}`);
+            });
+
+            if (inputValue !== "") {
+                $('.searchview_opt').css('display', 'block');
+                $("#searchIcon").removeClass("fa fa-search");
+                $("#searchIcon").removeClass("fa-times fa");
+                $("#searchIcon").addClass("fa fa-times");
+            } else {
+                $('.searchview_opt').css('display', 'none');
+                $("#searchIcon").removeClass("fa fa-times");
+                $("#searchIcon").addClass("fa fa-search");
+            }
+
+        });
+
+        $('#selType li').on('click', function () {
+            var dataName = $(this).attr('dataName'); 
+            var dataType = $(this).attr('dataType');
+            var dataValue = inputField.value;
+
+            // if (dataType === "dateRange") {
+            //     if (dataValue) {
+            //         dataValue = dateToTimestamp(dataValue);
+            //     } else {
+            //         dataValue = 0;
+            //     }
+            // }
+
+            dataForm = [];
+            dataForm.push({dataName : dataName, dataType : dataType, dataValue : dataValue});
+            pagingCallBack(pageNumber, loadSearch, dataForm);
+        });
+
+        $('#searchBtn').on('keyup', function(event) {            
+            if (event.key === "Enter") {
+                event.preventDefault(); 
+                var dataName = "adminFullName";
+                var dataType = "text";
+                var dataValue = $(this).val();
+                if (dataValue.trim() !== "") {
+                    dataForm = [];
+                    dataForm.push({ dataName: dataName, dataType: dataType, dataValue: dataValue });
+                    pagingCallBack(pageNumber, loadSearch, dataForm);
+                }
             }
         });
 
-        $('#resetBtn').click(function() {
-            $('#alertMsg').removeClass('alert-success').html('').hide();
-            $('#searchForm').find('input').each(function() {
-                $(this).val(''); 
+        // Initialize date picker
+        $('.input-daterange input').each(function() {
+            $(this).daterangepicker({
+                singleDatePicker: true,
+                timePicker: false,
+                locale: {
+                    format: 'YYYY-MM-DD'
+                }
             });
-            $('#searchForm').find('select').each(function() {
-                $(this).val('');
-                $("#searchForm")[0].reset();
-            });
-
+            $(this).val('');
         });
 
-        pagingCallBack(pageNumber, loadSearch);
+        // $("body").keyup(function(event) {
+        //     if (event.keyCode == 13) {
+        //         $("#searchBtn").click();
+        //     }
+        // });
 
-        $('#searchBtn').click(function() {
+        // $('#resetBtn').click(function() {
+        //         $('#alertMsg').removeClass('alert-success').html('').hide();
+        //         $('#searchForm').find('input').each(function() {
+        //             $(this).val(''); 
+        //         });
+        //         $('#searchForm').find('select').each(function() {
+        //             $(this).val('');
+        //             $("#searchForm")[0].reset();
+        //         });
+
+        //     });
+
+        $('#addAEbutton').click(function () {
+            aeType = "add";
+            $.redirect("editAdmin.php", {aeType, aeType})
+        });
+
+        $(document).on("click", "#listingTable td", function(e) {
+            if (!$(this).is(':first-child')) {
+                $.redirect("editAdmin.php", {
+                    id: $(this).parent().data('th'),
+                });
+            }
+        });
             pagingCallBack(pageNumber, loadSearch);
-        }); 
-    });
 
-    function pagingCallBack(pageNumber, fCallback){
+            $('#searchBtn').click(function() {
+            }); 
+        });
+
+    function pagingCallBack(pageNumber, fCallback, dataForm){
         if(pageNumber > 1) bypassLoading = 1;
-
-        var searchData = buildSearchDataByType(searchId);
+        var searchData = dataForm;
+        var sortData = getSortData(tableId);
+        console.log (sortData);
         var formData   = {
-            command     : "getAdminList",
-            pageNumber  : pageNumber,
-            inputData   : searchData
+            command         : "getAdminList",
+            pageNumber      : pageNumber,
+            inputData       : searchData,
+            sortData        : sortData,
+            module          : 'warehouse',
+            permissionType  : 'filter',
         };
-
         if(!fCallback)
             fCallback = loadDefaultListing;
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
@@ -195,11 +275,83 @@ $thisPage = basename($_SERVER['PHP_SELF']);
 
     function loadDefaultListing(data, message) {
         var tableNo;
-        buildTable(data.adminList, tableId, divId, thArray, btnArray, message, tableNo);
-        pagination(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
+        var adminList = data.getAdminlist;
+
+        var sortArray = {
+            'sortThArray'   : sortThArray,
+            'sortBy'        : data['sortBy'],
+        }
+
+        if (data != "" && data.adminList.length > 0) {
+            var newTable = [];
+
+            $.each(data.adminList, function(k, v) {
+
+                var rebuildData = {
+                    id            : v['id'],
+                    name          : v['name'],
+                    username      : v['username'],
+                    email         : v['email'],
+                    roleName      : v['roleName'],
+                    warehouse     : v['warehouse_location'],
+                    disabled      : v['disabled'],
+                    createdAt     : v['createdAt'],
+                    lastLogin     : v['lastLogin'],
+                };
+                newTable.push(rebuildData);
+            });
+        }
+        buildTable(newTable, tableId, divId, thArray, btnArray, message, tableNo, sortArray);
+        addColumn(tableId);
+        paginationv2(pagerId, data.pageNumber, data.totalPage, data.totalRecord, data.numRecord);
+
+        if (data != "" && newTable.length > 0) {
+            var tables = document.getElementsByTagName('table');
+            resizableGrid(tables[0]);
+        }
 
         $('#'+ tableId).find('tbody tr').each(function(){
             $(this).find('td:last-child').css('text-align','center');
+            
+        });
+
+        $('#' + tableId).find('tbody tr td:nth-child(7)').click(function() {
+            tableBtnClick(editId, role);
+        });
+
+        $('th:nth-child(2), td:nth-child(2)').hide();
+        $('.searchview_opt').css('display', 'none');
+
+    }
+
+    function loadSearch(data, message) {
+        loadDefaultListing(data, message);
+        $('#searchMsg').addClass('alert-success').html(
+            '<span><?php echo $translations['A00114'][$language]; /* Search successful. */ ?></span>').show();
+        setTimeout(function() {
+            $('#searchMsg').removeClass('alert-success').html('').hide();
+        }, 3000);
+    }
+
+    function addColumn(tableId) {
+        var rows = $('#' + tableId + ' tr');
+        
+        for (var i = 0; i < rows.length; i++) {
+            var checkbox = $('<input />', {
+                type: 'checkbox',
+                id: 'chk' + i,
+                value: 'myvalue' + i,
+                class: 'larger-checkbox',
+            });
+            if(i == 0){
+                checkbox.wrap('<th style="width : 12px !important;"></th>').parent().prependTo(rows[i]);
+            }
+            else{
+                checkbox.wrap('<td style="width : 12px !important; cursor: default !important;"></td>').parent().prependTo(rows[i]);
+            }
+        }
+        $("#chk0").click(function(){
+            $('input:checkbox').not(this).prop('checked', this.checked);
         });
     }
 
@@ -215,13 +367,6 @@ $thisPage = basename($_SERVER['PHP_SELF']);
         }
     }
 
-    function loadSearch(data, message) {
-        loadDefaultListing(data, message);
-        $('#searchMsg').addClass('alert-success').html('<span><?php echo $translations['A00114'][$language]; /* Search successful. */ ?></span>').show();
-        setTimeout(function() {
-            $('#searchMsg').removeClass('alert-success').html('').hide(); 
-        }, 3000);
-    }
 
 
 </script>

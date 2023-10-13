@@ -12,7 +12,7 @@ File: Menu
   z-index: 999;
 }
 .topbar .topbar-left {
-  background: #253138;
+  background: #243c6c;
   float: left;
   text-align: center;
   height: 73px;
@@ -24,11 +24,15 @@ File: Menu
   line-height: 70px;
 }
 .navbar-default {
-  background-color: #ebeff2;
+  background-color: #243c6c;
   border-radius: 0px;
   border: none;
   margin-bottom: 0px;
   padding: 0px 20px;
+  height: 50px;
+}
+.flip-horizontal{
+  transform: scaleX(-1);
 }
 .navbar-default .navbar-left {
   padding-left: 10px;
@@ -37,7 +41,7 @@ File: Menu
   padding: 0px 10px;
 }
 .navbar-default .button-menu-mobile {
-  display: none;
+  display: block;
 }
 .logo {
   color: #059607!important;
@@ -183,7 +187,7 @@ File: Menu
   top: 0px;
   width: 250px;
   z-index: 10;
-  background: #253138;
+  background: #243c6c;
   bottom: 50px;
   height: 100vh;
   padding-top: 80px;
@@ -204,7 +208,7 @@ File: Menu
 .button-menu-mobile {
   background: transparent;
   border: none;
-  color: #d5d5d5;
+  color: #ffffff;
   font-size: 21px;
   line-height: 68px;
 }
@@ -268,10 +272,10 @@ File: Menu
   border-top: 0;
 }
 #sidebar-menu ul ul li.active a {
-  color: #08b71a !important;
+  color: #ffffff !important;
 }
 #sidebar-menu ul ul a {
-  color: #d5d5d5;
+  color: #b3c5eb;
   -webkit-transition: all 0.3s ease-out;
   -moz-transition: all 0.3s ease-out;
   -o-transition: all 0.3s ease-out;
@@ -282,7 +286,7 @@ File: Menu
   padding: 10px 20px 10px 65px;
 }
 #sidebar-menu ul ul a:hover, #sidebar-menu ul ul li.active a:hover{
-  color: #45c6ec;
+  color: #2c7198;
 }
 #sidebar-menu ul ul a i {
   margin-right: 5px;
@@ -294,11 +298,11 @@ File: Menu
   margin-top: 2px;
 }
 #sidebar-menu .subdrop {
-  border-left: 3px solid #45c6ec;
-  color: #45c6ec;
+  border-left: 3px solid #8b9dc3;
+  color: #8b9dc3;
 }
 #sidebar-menu > ul > li > a {
-  color: #d5d5d5;
+  color: #b3c5eb;
   display: block;
   padding: 12px 20px;
   margin: 4px 0px;
@@ -306,7 +310,7 @@ File: Menu
   border-left: 3px solid transparent;
 }
 #sidebar-menu > ul > li > a:hover {
-  color: #45c6ec;
+  color: #2c7198;
   text-decoration: none;
   background: #2a414e;
 }
@@ -335,11 +339,11 @@ File: Menu
   margin-right: 0px;
 }
 #sidebar-menu > ul > li > a.active {
-  border-left: 3px solid #a9edad;
-  color: #08b71a !important;
+  border-left: 3px solid #2c7198;
+  color: white !important;
 }
 #sidebar-menu > ul > li > a.active:hover {
-  color: #45c6ec;
+  color: #2c7198;
 }
 .menu-title {
   padding: 12px 20px !important;
@@ -360,7 +364,7 @@ File: Menu
   display: none;
 }
 #wrapper.enlarged #sidebar-menu ul ul {
-  border: 2px solid #f4f8fb;
+  border: 2px solid #ffffff;
   margin-top: -5px;
   padding-top: 5px;
   z-index: 9999;
@@ -374,13 +378,13 @@ File: Menu
   padding: 15px 20px;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu > ul > li > a:hover {
-  background: #f4f8fb !important;
+  background: #2c7198 !important;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu > ul > li > a:active {
   background: #f4f8fb !important;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu > ul > li > a:focus {
-  background: #f4f8fb !important;
+  background: #2c7198 !important;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu > ul > li > a i {
   margin-right: 20px !important;
@@ -402,7 +406,7 @@ File: Menu
   position: relative;
   width: 260px;
   background: #f4f8fb;
-  color: #08b71a;
+  color: #8B9DC3;
   border-color: #a9edad;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu ul > li:hover > ul {
@@ -420,7 +424,7 @@ File: Menu
   z-index: 6;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu ul > li:hover > ul a:hover {
-  color: #08b71a;
+  color: #8B9DC3;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu ul > li:hover a span {
   display: inline;
@@ -440,10 +444,10 @@ File: Menu
   z-index: 6;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu li .show-menu + ul a:hover {
-  color: #08b71a;
+  color: #8B9DC3;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu a.subdrop {
-  color: #08b71a !important;
+  color: #8B9DC3 !important;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu ul > li > ul {
   display: none;
@@ -464,7 +468,7 @@ File: Menu
   transform: rotate(270deg);
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu ul ul li.active a {
-  color: #08b71a;
+  color: #8B9DC3;
 }
 #wrapper.enlarged .left.side-menu #sidebar-menu ul > li > a span {
   display: none;
@@ -640,4 +644,8 @@ input.app-search-input::-moz-placeholder {
 }
 input.app-search-input:-ms-input-placeholder {
   color: rgba(255, 255, 255, 0.7);
+}
+
+.hide-sidebar{
+  display: none;
 }

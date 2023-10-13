@@ -10,15 +10,29 @@ include 'head.php';
 
 <?php include 'homepageHeader.php';?>
 
-<section class="section">
+<section class="section" id="banner">
     <div class="kt-container row">
         <div class="col-12 text-center">
             <h3 class="jp-title" data-lang="M03887"><?php echo $translations['M03887'][$language]; //Explore Our Menu ?></h3>
 
-            <div class="row">
+            <div id="carousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators"></ol>
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" id="myCarousel"></div>
+                <!-- Controls -->
+                    <a class="carousel-control-prev" href="#carousel" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    </a>
+                <a class="carousel-control-next" href="#carousel" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+            </div>
+
+            <!-- <div class="row">
                 <div class="col-12">
                     <img src="images/project/food-menu-img.jpg" class="img-fluid mb-4 foodMenu-img">
-                </div>
+                </div> -->
 
                 <!-- <div class="col-12">
                     <button id="loginBtn" class="btn button-red button-fix-width" data-lang="M03888">
@@ -196,6 +210,13 @@ $(document).ready(function(){
     var fromUrl = document.referrer; 
     var fromUrl2 = fromUrl.substring(fromUrl.lastIndexOf('/') + 1); 
 
+    var formData ={
+        command : "getGTBanner",
+        bannerPage : "foodMenu"
+    }
+    fCallback = menuBanner;
+    ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
     // if(fromUrl2 == 'foodDetails') {
         let scrollCookie = $.cookie("cookieScrollPos")
 
@@ -272,7 +293,7 @@ $(document).ready(function(){
 
 function pagingCallBack(pageNumber, fCallback) {
     var searchID = "searchForm";
-    console.log(searchID+" , "+selectedCatID);
+    // console.log(searchID+" , "+selectedCatID);
     //var searchData = buildSearchDataByType(searchID ,liname);
     var formData = {
         command: "getCategoryInventoryMember",
@@ -476,6 +497,21 @@ function loadDefaultListing (data,message,session) {
             $.cookie("cookieScrollPos","");
         }
     },1000);
+}
+
+function menuBanner(data,message,session){
+    var imgUrls = data.imgUrl;
+    if(data.imgUrl){
+        for (var imgUrl of imgUrls) {
+        $('#myCarousel').append($('<div class="carousel-item"><img src="' + imgUrl + '" /></div>'));
+        }
+    }else{
+       return
+    }
+
+    $('.carousel-item').first().addClass('active');
+    $('.carousel-indicators > li').first().addClass('active');
+    $('#carousel').carousel();
 }
 
 

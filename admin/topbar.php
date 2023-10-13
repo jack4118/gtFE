@@ -56,16 +56,21 @@
 
     <!-- Button mobile view to collapse sidebar menu -->
     <div class="navbar navbar-default" role="navigation">
-        <div class="container">
+        <div class="container" style="border-left-style: solid; border-left-color: white;">
 
             <!-- Page title -->
-             <ul class="nav navbar-nav navbar-left">
+            <ul class="nav navbar-nav navbar-left">
                 <li>
-                    <button class="button-menu-mobile open-left">
-                        <i class="zmdi zmdi-menu"></i>
+                    <button class="button-menu-mobile open-left" style="line-height: 45px">
+                        <!-- <i class="zmdi zmdi-menu"></i> -->
+                        <img id="topbarImage" src="images/close-sidebar.png" style="height: 25px;">
                     </button>
                 </li>
-                <li>    <!-- $translations[$_SESSION['menuLanguage'][$thisPage]][$language] -->
+                <li>
+                    <h4 class="title-height visible-lg hidden-xs visible-md visible-sm">Menu</h4>
+                    <h4 class="title-height visible-xs mobileFont">Menu</h4>
+                </li>
+                <!-- <li>    //$translations[$_SESSION['menuLanguage'][$thisPage]][$language]
                     <?php if($_SESSION['access'][$pageName] == "memberDetailsList.php"){ ?>
 
                         <h4 class="page-title visible-lg hidden-xs visible-md visible-sm"><?php echo $_SESSION['access'][$thisPage]; ?> <?php echo $_SESSION['access'][$pageName]; ?></h4>
@@ -80,19 +85,28 @@
                         <h4 class="page-title visible-xs mobileFont"><?php echo $_SESSION['access'][$pageName]; ?></h4>
                         
                     <?php } ?>
-                </li>
+                </li> -->
             </ul>
 
             <!-- Right(Notification and Searchbox -->
             <ul class="nav navbar-nav navbar-right">
+                <li style="margin-right: 20px;">
+                    <h4 class="title-height visible-lg hidden-xs visible-md visible-sm"><?php echo $_SESSION['username'];?></h4>
+                    <h4 class="title-height visible-xs mobileFont"><?php echo $_SESSION['username'];?></h4>
+                </li>
                 <li>
+                    <a id="logoutBtn" onclick="beforeLogout();" class="btn headerIcon" style="margin-top: -10px;">
+                        <i class="zmdi zmdi-power logoutIcon" style="color: white;"></i>
+                    </a>
+                </li>
+                <!-- <li>
                     <a href="passwordMaintain.php" class="btn passwordMaintainBtn">
                         <span class="hidden-xs"><?php echo $translations['A00282'][$language]; ?></span>
                         <i class="fa fa-unlock-alt visible-xs" aria-hidden="true"></i>
                     </a>
-                </li>
+                </li> -->
                  <!-- language button -->
-                   <li class="dropdown">
+                   <!-- <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-globe languageButton"></i>
                         </a>
@@ -107,14 +121,14 @@
                                   
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
                 <!-- End language button -->
 
-                <li>
+                <!-- <li>
                     <a id="logoutBtn" onclick="beforeLogout();" class="btn headerIcon">
                         <i class="zmdi zmdi-power logoutIcon"></i>
                     </a>
-                </li>
+                </li> -->
                    
                    
                   
@@ -124,7 +138,7 @@
  
         </div><!-- end container -->
     </div><!-- end navbar -->
-    <div id="breadcrumbs">
+    <!-- <div id="breadcrumbs">
         <ul class="breadcrumb">
             <li class="breadcrumb-item"><a href="admin.php"><?php echo $translations['A01144'][$language]; /*Home*/?></a></li>
                 <?php
@@ -136,5 +150,5 @@
                     }
                 ?>  
         </ul>
-    </div>
+    </div> -->
 </div>

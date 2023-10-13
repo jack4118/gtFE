@@ -89,6 +89,13 @@
                                                     <select id="roleID" class="form-control">
                                                     </select>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        <?php echo $translations['A01739'][$language]; /* Warehouse */ ?>
+                                                    </label>
+                                                    <select id="warehouseID" class="form-control">
+                                                    </select>
+                                                </div>
                                                  <div class="form-group">
                                                     <label class="control-label">
                                                         <?php echo $translations['A00104'][$language]; /* Disabled */ ?>
@@ -165,6 +172,14 @@
         fCallback = loadFormDropdown
         ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
 
+        var formData = {
+            command        : "getWarehouse",
+            module         : 'warehouse',
+            permissionType : 'createAdmin',
+        };
+        fCallback = loadWarehouse
+        ajaxSend(url, formData, method, fCallback, debug, bypassBlocking, bypassLoading, 0);
+
         $('#add').click(function() {
             var validate = $('#newAdmin').parsley().validate();
             if(validate) {
@@ -173,6 +188,7 @@
                 var username = $('#username').val();
                 var email    = $('#email').val();
                 var roleID   = $('#roleID').find('option:selected').val();
+                var warehouseID = $('#warehouseID').find('option:selected').val();
                 var password = $('#password').val();
                 //var leaderUsername = $("#leaderUsername").val();
                 var status   = $('#status').find('input[type=radio]:checked').val();
@@ -183,8 +199,8 @@
                     username : username,
                     email    : email,
                     roleID   : roleID,
+                    warehouseID : warehouseID,
                     password : password,
-                    //leaderUsername : leaderUsername,
                     status   : status
                 };
                 var fCallback = sendNew;
@@ -201,15 +217,14 @@
             $('#roleID').append('<option value="' + roleData[key]['id'] + '">' + roleData[key]['name'] + '</option>');
         });
 
-        // $('#roleID').on('change', function(){
-        //     if($(this).find('option:selected').val() == "3"){
-        //         $("#passwordForm").hide();
-        //         $("#leaderUsernameForm").show();
-        //     }else{
-        //         $("#passwordForm").show();
-        //         $("#leaderUsernameForm").hide();
-        //     }
-        // });
+    }
+
+    function loadWarehouse(data, message) {
+        warehouseData = data;
+
+        $.each(warehouseData, function(key) {
+            $('#warehouseID').append('<option value="' + warehouseData[key]['id'] + '">' + warehouseData[key]['warehouse_location'] + '</option>');
+        });
     }
     
     function sendNew(data, message) {
