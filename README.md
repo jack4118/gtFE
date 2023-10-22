@@ -1,4 +1,4 @@
-# goTasty Frontend Project
+# GT Frontend Project
 
 Things to becareful while pushing updates : 
 1. Please enter meaningful message
